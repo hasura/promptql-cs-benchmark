@@ -1,0 +1,135 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: data_generation_seeds
+  fields:
+    - name: initial_request_pattern_type
+      type: text
+    - name: price_per_model_advanced
+      type: int4
+    - name: project_id
+      type: uuid
+    - name: support_request_pattern_type
+      type: text
+    - name: ticket_frequency
+      type: text
+  graphql:
+    typeName: data_generation_seeds
+    inputTypeName: data_generation_seeds_input
+  dataConnectorTypeMapping:
+    - dataConnectorName: control_plane_pg
+      dataConnectorObjectType: data_generation_seeds
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: data_generation_seeds
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - initial_request_pattern_type
+          - price_per_model_advanced
+          - project_id
+          - support_request_pattern_type
+          - ticket_frequency
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: data_generation_seeds_bool_exp
+  operand:
+    object:
+      type: data_generation_seeds
+      comparableFields:
+        - fieldName: initial_request_pattern_type
+          booleanExpressionType: text_bool_exp
+        - fieldName: price_per_model_advanced
+          booleanExpressionType: int4_bool_exp
+        - fieldName: project_id
+          booleanExpressionType: uuid_bool_exp
+        - fieldName: support_request_pattern_type
+          booleanExpressionType: text_bool_exp
+        - fieldName: ticket_frequency
+          booleanExpressionType: text_bool_exp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: data_generation_seeds_bool_exp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: data_generation_seeds_agg_exp
+  operand:
+    object:
+      aggregatedType: data_generation_seeds
+      aggregatableFields:
+        - fieldName: initial_request_pattern_type
+          aggregateExpression: text_agg_exp
+        - fieldName: price_per_model_advanced
+          aggregateExpression: int4_agg_exp
+        - fieldName: project_id
+          aggregateExpression: uuid_agg_exp
+        - fieldName: support_request_pattern_type
+          aggregateExpression: text_agg_exp
+        - fieldName: ticket_frequency
+          aggregateExpression: text_agg_exp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: data_generation_seeds_agg_exp
+
+---
+kind: Model
+version: v1
+definition:
+  name: data_generation_seeds
+  objectType: data_generation_seeds
+  source:
+    dataConnectorName: control_plane_pg
+    collection: data_generation_seeds
+  filterExpressionType: data_generation_seeds_bool_exp
+  aggregateExpression: data_generation_seeds_agg_exp
+  orderableFields:
+    - fieldName: initial_request_pattern_type
+      orderByDirections:
+        enableAll: true
+    - fieldName: price_per_model_advanced
+      orderByDirections:
+        enableAll: true
+    - fieldName: project_id
+      orderByDirections:
+        enableAll: true
+    - fieldName: support_request_pattern_type
+      orderByDirections:
+        enableAll: true
+    - fieldName: ticket_frequency
+      orderByDirections:
+        enableAll: true
+  graphql:
+    selectMany:
+      queryRootField: data_generation_seeds
+    selectUniques: []
+    orderByExpressionType: data_generation_seeds_order_by
+    filterInputTypeName: data_generation_seeds_filter_input
+    aggregate:
+      queryRootField: data_generation_seeds_aggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: data_generation_seeds
+  permissions:
+    - role: admin
+      select:
+        filter: null
+

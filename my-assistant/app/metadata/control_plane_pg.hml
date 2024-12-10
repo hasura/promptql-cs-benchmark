@@ -1,0 +1,3326 @@
+kind: DataConnectorLink
+version: v1
+definition:
+  name: control_plane_pg
+  url:
+    readWriteUrls:
+      read:
+        valueFromEnv: APP_CONTROL_PLANE_PG_READ_URL
+      write:
+        valueFromEnv: APP_CONTROL_PLANE_PG_WRITE_URL
+  headers:
+    Authorization:
+      valueFromEnv: APP_CONTROL_PLANE_PG_AUTHORIZATION_HEADER
+  schema:
+    version: v0.1
+    schema:
+      scalar_types:
+        bool:
+          representation:
+            type: boolean
+          aggregate_functions:
+            bool_and:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: bool
+            bool_or:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: bool
+            every:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: bool
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: bool
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: bool
+            _in:
+              type: in
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: bool
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: bool
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: bool
+        date:
+          representation:
+            type: date
+          aggregate_functions:
+            max:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: date
+            min:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: date
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: date
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: date
+            _in:
+              type: in
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: date
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: date
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: date
+        float8:
+          representation:
+            type: float64
+          aggregate_functions:
+            avg:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: float8
+            max:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: float8
+            min:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: float8
+            stddev:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: float8
+            stddev_pop:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: float8
+            stddev_samp:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: float8
+            sum:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: float8
+            var_pop:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: float8
+            var_samp:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: float8
+            variance:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: float8
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: float8
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: float8
+            _in:
+              type: in
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: float8
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: float8
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: float8
+        int4:
+          representation:
+            type: int32
+          aggregate_functions:
+            avg:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            bit_and:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            bit_or:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            bit_xor:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            max:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            min:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            stddev:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            stddev_pop:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            stddev_samp:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            sum:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int8
+            var_pop:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            var_samp:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            variance:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: int4
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: int4
+            _in:
+              type: in
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: int4
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: int4
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: int4
+        int8:
+          representation:
+            type: int64
+          aggregate_functions:
+            avg:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            bit_and:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int8
+            bit_or:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int8
+            bit_xor:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int8
+            max:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int8
+            min:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int8
+            stddev:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            stddev_pop:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            stddev_samp:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            sum:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            var_pop:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            var_samp:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            variance:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: int8
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: int8
+            _in:
+              type: in
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: int8
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: int8
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: int8
+        numeric:
+          representation:
+            type: bigdecimal
+          aggregate_functions:
+            avg:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            max:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            min:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            stddev:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            stddev_pop:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            stddev_samp:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            sum:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            var_pop:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            var_samp:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            variance:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: numeric
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: numeric
+            _in:
+              type: in
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: numeric
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: numeric
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: numeric
+        text:
+          representation:
+            type: string
+          aggregate_functions:
+            max:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            min:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _ilike:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _in:
+              type: in
+            _iregex:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _like:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _nilike:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _niregex:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _nlike:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _nregex:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _regex:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            starts_with:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            ts_match_tt:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+        timestamptz:
+          representation:
+            type: timestamptz
+          aggregate_functions:
+            max:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamptz
+            min:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamptz
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: timestamptz
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: timestamptz
+            _in:
+              type: in
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: timestamptz
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: timestamptz
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: timestamptz
+        uuid:
+          representation:
+            type: uuid
+          aggregate_functions: {}
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: uuid
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: uuid
+            _in:
+              type: in
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: uuid
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: uuid
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: uuid
+      object_types:
+        data_generation_seeds:
+          fields:
+            initial_request_pattern_type:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            price_per_model_advanced:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            project_id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: uuid
+            support_request_pattern_type:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            ticket_frequency:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        delete_error_rate_daily_by_date_and_project_id_response:
+          description: Responses from the 'delete_error_rate_daily_by_date_and_project_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: error_rate_daily
+        delete_invoice_by_stripe_invoice_id_response:
+          description: Responses from the 'delete_invoice_by_stripe_invoice_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: invoice
+        delete_invoice_item_by_id_response:
+          description: Responses from the 'delete_invoice_item_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: invoice_item
+        delete_plans_by_id_response:
+          description: Responses from the 'delete_plans_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: plans
+        delete_project_plan_changelogs_by_id_response:
+          description: Responses from the 'delete_project_plan_changelogs_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: project_plan_changelogs
+        delete_projects_by_id_response:
+          description: Responses from the 'delete_projects_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: projects
+        delete_requests_daily_count_by_date_and_project_id_response:
+          description: Responses from the 'delete_requests_daily_count_by_date_and_project_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: requests_daily_count
+        delete_users_by_customer_id_response:
+          description: Responses from the 'delete_users_by_customer_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: users
+        delete_users_by_id_response:
+          description: Responses from the 'delete_users_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: users
+        error_rate_daily:
+          fields:
+            date:
+              type:
+                type: named
+                name: date
+            error_count:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            error_rate:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: float8
+            project_id:
+              type:
+                type: named
+                name: uuid
+            success_count:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+        insert_data_generation_seeds_object:
+          fields:
+            initial_request_pattern_type:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            price_per_model_advanced:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            project_id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: uuid
+            support_request_pattern_type:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            ticket_frequency:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        insert_data_generation_seeds_response:
+          description: Responses from the 'insert_data_generation_seeds' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: data_generation_seeds
+        insert_error_rate_daily_object:
+          fields:
+            date:
+              type:
+                type: named
+                name: date
+            error_count:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            error_rate:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: float8
+            project_id:
+              type:
+                type: named
+                name: uuid
+            success_count:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+        insert_error_rate_daily_response:
+          description: Responses from the 'insert_error_rate_daily' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: error_rate_daily
+        insert_invoice_item_object:
+          fields:
+            amount:
+              type:
+                type: named
+                name: numeric
+            created_at:
+              type:
+                type: named
+                name: timestamptz
+            description:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            error:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            has_updated_to_stripe:
+              type:
+                type: named
+                name: bool
+            id:
+              type:
+                type: named
+                name: uuid
+            invoice_id:
+              type:
+                type: named
+                name: text
+            month:
+              type:
+                type: named
+                name: int4
+            project_id:
+              type:
+                type: named
+                name: uuid
+            type:
+              type:
+                type: named
+                name: text
+            updated_at:
+              type:
+                type: named
+                name: timestamptz
+            year:
+              type:
+                type: named
+                name: int4
+        insert_invoice_item_response:
+          description: Responses from the 'insert_invoice_item' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: invoice_item
+        insert_invoice_object:
+          fields:
+            attempt_count:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            created_at:
+              type:
+                type: named
+                name: timestamptz
+            customer_id:
+              type:
+                type: named
+                name: text
+            description:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            invoice_url:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            month:
+              type:
+                type: named
+                name: int4
+            status:
+              type:
+                type: named
+                name: text
+            stripe_invoice_id:
+              type:
+                type: named
+                name: text
+            subscription_id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            updated_at:
+              type:
+                type: named
+                name: timestamptz
+            year:
+              type:
+                type: named
+                name: int4
+        insert_invoice_response:
+          description: Responses from the 'insert_invoice' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: invoice
+        insert_plans_object:
+          fields:
+            created_at:
+              type:
+                type: named
+                name: timestamptz
+            id:
+              type:
+                type: named
+                name: uuid
+            name:
+              type:
+                type: named
+                name: text
+            updated_at:
+              type:
+                type: named
+                name: timestamptz
+        insert_plans_response:
+          description: Responses from the 'insert_plans' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: plans
+        insert_project_plan_changelogs_object:
+          fields:
+            comment:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            created_at:
+              type:
+                type: named
+                name: timestamptz
+            id:
+              type:
+                type: named
+                name: uuid
+            plan_id:
+              type:
+                type: named
+                name: uuid
+            project_id:
+              type:
+                type: named
+                name: uuid
+        insert_project_plan_changelogs_response:
+          description: Responses from the 'insert_project_plan_changelogs' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: project_plan_changelogs
+        insert_projects_object:
+          fields:
+            active_models:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            created_at:
+              type:
+                type: named
+                name: timestamptz
+            deleted_at:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamptz
+            id:
+              type:
+                type: named
+                name: uuid
+            name:
+              type:
+                type: named
+                name: text
+            owner_id:
+              type:
+                type: named
+                name: uuid
+            updated_at:
+              type:
+                type: named
+                name: timestamptz
+        insert_projects_response:
+          description: Responses from the 'insert_projects' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: projects
+        insert_requests_daily_count_object:
+          fields:
+            date:
+              type:
+                type: named
+                name: date
+            project_id:
+              type:
+                type: named
+                name: uuid
+            request_count:
+              type:
+                type: named
+                name: int4
+        insert_requests_daily_count_response:
+          description: Responses from the 'insert_requests_daily_count' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: requests_daily_count
+        insert_users_object:
+          fields:
+            created_at:
+              type:
+                type: named
+                name: timestamptz
+            customer_id:
+              type:
+                type: named
+                name: text
+            email:
+              type:
+                type: named
+                name: text
+            first_name:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            id:
+              type:
+                type: named
+                name: uuid
+            last_name:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            updated_at:
+              type:
+                type: named
+                name: timestamptz
+        insert_users_response:
+          description: Responses from the 'insert_users' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: users
+        invoice:
+          fields:
+            attempt_count:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            created_at:
+              type:
+                type: named
+                name: timestamptz
+            customer_id:
+              type:
+                type: named
+                name: text
+            description:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            invoice_url:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            month:
+              type:
+                type: named
+                name: int4
+            status:
+              type:
+                type: named
+                name: text
+            stripe_invoice_id:
+              type:
+                type: named
+                name: text
+            subscription_id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            updated_at:
+              type:
+                type: named
+                name: timestamptz
+            year:
+              type:
+                type: named
+                name: int4
+        invoice_item:
+          fields:
+            amount:
+              type:
+                type: named
+                name: numeric
+            created_at:
+              type:
+                type: named
+                name: timestamptz
+            description:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            error:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            has_updated_to_stripe:
+              type:
+                type: named
+                name: bool
+            id:
+              type:
+                type: named
+                name: uuid
+            invoice_id:
+              type:
+                type: named
+                name: text
+            month:
+              type:
+                type: named
+                name: int4
+            project_id:
+              type:
+                type: named
+                name: uuid
+            type:
+              type:
+                type: named
+                name: text
+            updated_at:
+              type:
+                type: named
+                name: timestamptz
+            year:
+              type:
+                type: named
+                name: int4
+        plans:
+          fields:
+            created_at:
+              type:
+                type: named
+                name: timestamptz
+            id:
+              type:
+                type: named
+                name: uuid
+            name:
+              type:
+                type: named
+                name: text
+            updated_at:
+              type:
+                type: named
+                name: timestamptz
+        project_plan_changelogs:
+          fields:
+            comment:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            created_at:
+              type:
+                type: named
+                name: timestamptz
+            id:
+              type:
+                type: named
+                name: uuid
+            plan_id:
+              type:
+                type: named
+                name: uuid
+            project_id:
+              type:
+                type: named
+                name: uuid
+        projects:
+          fields:
+            active_models:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            created_at:
+              type:
+                type: named
+                name: timestamptz
+            deleted_at:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamptz
+            id:
+              type:
+                type: named
+                name: uuid
+            name:
+              type:
+                type: named
+                name: text
+            owner_id:
+              type:
+                type: named
+                name: uuid
+            updated_at:
+              type:
+                type: named
+                name: timestamptz
+        requests_daily_count:
+          fields:
+            date:
+              type:
+                type: named
+                name: date
+            project_id:
+              type:
+                type: named
+                name: uuid
+            request_count:
+              type:
+                type: named
+                name: int4
+        update_column_error_rate_daily_date:
+          description: Update the 'date' column in the 'error_rate_daily' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: date
+        update_column_error_rate_daily_error_count:
+          description: Update the 'error_count' column in the 'error_rate_daily' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+        update_column_error_rate_daily_error_rate:
+          description: Update the 'error_rate' column in the 'error_rate_daily' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: float8
+        update_column_error_rate_daily_project_id:
+          description: Update the 'project_id' column in the 'error_rate_daily' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: uuid
+        update_column_error_rate_daily_success_count:
+          description: Update the 'success_count' column in the 'error_rate_daily' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+        update_column_invoice_attempt_count:
+          description: Update the 'attempt_count' column in the 'invoice' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+        update_column_invoice_created_at:
+          description: Update the 'created_at' column in the 'invoice' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: timestamptz
+        update_column_invoice_customer_id:
+          description: Update the 'customer_id' column in the 'invoice' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: text
+        update_column_invoice_description:
+          description: Update the 'description' column in the 'invoice' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        update_column_invoice_invoice_url:
+          description: Update the 'invoice_url' column in the 'invoice' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        update_column_invoice_item_amount:
+          description: Update the 'amount' column in the 'invoice_item' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: numeric
+        update_column_invoice_item_created_at:
+          description: Update the 'created_at' column in the 'invoice_item' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: timestamptz
+        update_column_invoice_item_description:
+          description: Update the 'description' column in the 'invoice_item' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        update_column_invoice_item_error:
+          description: Update the 'error' column in the 'invoice_item' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        update_column_invoice_item_has_updated_to_stripe:
+          description: Update the 'has_updated_to_stripe' column in the 'invoice_item' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: bool
+        update_column_invoice_item_id:
+          description: Update the 'id' column in the 'invoice_item' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: uuid
+        update_column_invoice_item_invoice_id:
+          description: Update the 'invoice_id' column in the 'invoice_item' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: text
+        update_column_invoice_item_month:
+          description: Update the 'month' column in the 'invoice_item' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: int4
+        update_column_invoice_item_project_id:
+          description: Update the 'project_id' column in the 'invoice_item' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: uuid
+        update_column_invoice_item_type:
+          description: Update the 'type' column in the 'invoice_item' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: text
+        update_column_invoice_item_updated_at:
+          description: Update the 'updated_at' column in the 'invoice_item' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: timestamptz
+        update_column_invoice_item_year:
+          description: Update the 'year' column in the 'invoice_item' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: int4
+        update_column_invoice_month:
+          description: Update the 'month' column in the 'invoice' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: int4
+        update_column_invoice_status:
+          description: Update the 'status' column in the 'invoice' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: text
+        update_column_invoice_stripe_invoice_id:
+          description: Update the 'stripe_invoice_id' column in the 'invoice' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: text
+        update_column_invoice_subscription_id:
+          description: Update the 'subscription_id' column in the 'invoice' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        update_column_invoice_updated_at:
+          description: Update the 'updated_at' column in the 'invoice' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: timestamptz
+        update_column_invoice_year:
+          description: Update the 'year' column in the 'invoice' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: int4
+        update_column_plans_created_at:
+          description: Update the 'created_at' column in the 'plans' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: timestamptz
+        update_column_plans_id:
+          description: Update the 'id' column in the 'plans' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: uuid
+        update_column_plans_name:
+          description: Update the 'name' column in the 'plans' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: text
+        update_column_plans_updated_at:
+          description: Update the 'updated_at' column in the 'plans' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: timestamptz
+        update_column_project_plan_changelogs_comment:
+          description: Update the 'comment' column in the 'project_plan_changelogs' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        update_column_project_plan_changelogs_created_at:
+          description: Update the 'created_at' column in the 'project_plan_changelogs' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: timestamptz
+        update_column_project_plan_changelogs_id:
+          description: Update the 'id' column in the 'project_plan_changelogs' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: uuid
+        update_column_project_plan_changelogs_plan_id:
+          description: Update the 'plan_id' column in the 'project_plan_changelogs' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: uuid
+        update_column_project_plan_changelogs_project_id:
+          description: Update the 'project_id' column in the 'project_plan_changelogs' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: uuid
+        update_column_projects_active_models:
+          description: Update the 'active_models' column in the 'projects' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+        update_column_projects_created_at:
+          description: Update the 'created_at' column in the 'projects' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: timestamptz
+        update_column_projects_deleted_at:
+          description: Update the 'deleted_at' column in the 'projects' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamptz
+        update_column_projects_id:
+          description: Update the 'id' column in the 'projects' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: uuid
+        update_column_projects_name:
+          description: Update the 'name' column in the 'projects' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: text
+        update_column_projects_owner_id:
+          description: Update the 'owner_id' column in the 'projects' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: uuid
+        update_column_projects_updated_at:
+          description: Update the 'updated_at' column in the 'projects' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: timestamptz
+        update_column_requests_daily_count_date:
+          description: Update the 'date' column in the 'requests_daily_count' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: date
+        update_column_requests_daily_count_project_id:
+          description: Update the 'project_id' column in the 'requests_daily_count' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: uuid
+        update_column_requests_daily_count_request_count:
+          description: Update the 'request_count' column in the 'requests_daily_count' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: int4
+        update_column_users_created_at:
+          description: Update the 'created_at' column in the 'users' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: timestamptz
+        update_column_users_customer_id:
+          description: Update the 'customer_id' column in the 'users' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: text
+        update_column_users_email:
+          description: Update the 'email' column in the 'users' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: text
+        update_column_users_first_name:
+          description: Update the 'first_name' column in the 'users' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        update_column_users_id:
+          description: Update the 'id' column in the 'users' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: uuid
+        update_column_users_last_name:
+          description: Update the 'last_name' column in the 'users' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        update_column_users_updated_at:
+          description: Update the 'updated_at' column in the 'users' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: timestamptz
+        update_error_rate_daily_by_date_and_project_id_response:
+          description: Responses from the 'update_error_rate_daily_by_date_and_project_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: error_rate_daily
+        update_error_rate_daily_by_date_and_project_id_update_columns:
+          description: Update the columns of the 'error_rate_daily' collection
+          fields:
+            date:
+              description: Update the 'date' column in the 'error_rate_daily' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_error_rate_daily_date
+            error_count:
+              description: Update the 'error_count' column in the 'error_rate_daily' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_error_rate_daily_error_count
+            error_rate:
+              description: Update the 'error_rate' column in the 'error_rate_daily' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_error_rate_daily_error_rate
+            project_id:
+              description: Update the 'project_id' column in the 'error_rate_daily' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_error_rate_daily_project_id
+            success_count:
+              description: Update the 'success_count' column in the 'error_rate_daily' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_error_rate_daily_success_count
+        update_invoice_by_stripe_invoice_id_response:
+          description: Responses from the 'update_invoice_by_stripe_invoice_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: invoice
+        update_invoice_by_stripe_invoice_id_update_columns:
+          description: Update the columns of the 'invoice' collection
+          fields:
+            attempt_count:
+              description: Update the 'attempt_count' column in the 'invoice' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_attempt_count
+            created_at:
+              description: Update the 'created_at' column in the 'invoice' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_created_at
+            customer_id:
+              description: Update the 'customer_id' column in the 'invoice' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_customer_id
+            description:
+              description: Update the 'description' column in the 'invoice' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_description
+            invoice_url:
+              description: Update the 'invoice_url' column in the 'invoice' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_invoice_url
+            month:
+              description: Update the 'month' column in the 'invoice' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_month
+            status:
+              description: Update the 'status' column in the 'invoice' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_status
+            stripe_invoice_id:
+              description: Update the 'stripe_invoice_id' column in the 'invoice' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_stripe_invoice_id
+            subscription_id:
+              description: Update the 'subscription_id' column in the 'invoice' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_subscription_id
+            updated_at:
+              description: Update the 'updated_at' column in the 'invoice' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_updated_at
+            year:
+              description: Update the 'year' column in the 'invoice' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_year
+        update_invoice_item_by_id_response:
+          description: Responses from the 'update_invoice_item_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: invoice_item
+        update_invoice_item_by_id_update_columns:
+          description: Update the columns of the 'invoice_item' collection
+          fields:
+            amount:
+              description: Update the 'amount' column in the 'invoice_item' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_item_amount
+            created_at:
+              description: Update the 'created_at' column in the 'invoice_item' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_item_created_at
+            description:
+              description: Update the 'description' column in the 'invoice_item' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_item_description
+            error:
+              description: Update the 'error' column in the 'invoice_item' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_item_error
+            has_updated_to_stripe:
+              description: Update the 'has_updated_to_stripe' column in the 'invoice_item' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_item_has_updated_to_stripe
+            id:
+              description: Update the 'id' column in the 'invoice_item' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_item_id
+            invoice_id:
+              description: Update the 'invoice_id' column in the 'invoice_item' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_item_invoice_id
+            month:
+              description: Update the 'month' column in the 'invoice_item' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_item_month
+            project_id:
+              description: Update the 'project_id' column in the 'invoice_item' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_item_project_id
+            type:
+              description: Update the 'type' column in the 'invoice_item' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_item_type
+            updated_at:
+              description: Update the 'updated_at' column in the 'invoice_item' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_item_updated_at
+            year:
+              description: Update the 'year' column in the 'invoice_item' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_invoice_item_year
+        update_plans_by_id_response:
+          description: Responses from the 'update_plans_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: plans
+        update_plans_by_id_update_columns:
+          description: Update the columns of the 'plans' collection
+          fields:
+            created_at:
+              description: Update the 'created_at' column in the 'plans' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_plans_created_at
+            id:
+              description: Update the 'id' column in the 'plans' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_plans_id
+            name:
+              description: Update the 'name' column in the 'plans' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_plans_name
+            updated_at:
+              description: Update the 'updated_at' column in the 'plans' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_plans_updated_at
+        update_project_plan_changelogs_by_id_response:
+          description: Responses from the 'update_project_plan_changelogs_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: project_plan_changelogs
+        update_project_plan_changelogs_by_id_update_columns:
+          description: Update the columns of the 'project_plan_changelogs' collection
+          fields:
+            comment:
+              description: Update the 'comment' column in the 'project_plan_changelogs' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_project_plan_changelogs_comment
+            created_at:
+              description: Update the 'created_at' column in the 'project_plan_changelogs' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_project_plan_changelogs_created_at
+            id:
+              description: Update the 'id' column in the 'project_plan_changelogs' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_project_plan_changelogs_id
+            plan_id:
+              description: Update the 'plan_id' column in the 'project_plan_changelogs' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_project_plan_changelogs_plan_id
+            project_id:
+              description: Update the 'project_id' column in the 'project_plan_changelogs' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_project_plan_changelogs_project_id
+        update_projects_by_id_response:
+          description: Responses from the 'update_projects_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: projects
+        update_projects_by_id_update_columns:
+          description: Update the columns of the 'projects' collection
+          fields:
+            active_models:
+              description: Update the 'active_models' column in the 'projects' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_projects_active_models
+            created_at:
+              description: Update the 'created_at' column in the 'projects' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_projects_created_at
+            deleted_at:
+              description: Update the 'deleted_at' column in the 'projects' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_projects_deleted_at
+            id:
+              description: Update the 'id' column in the 'projects' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_projects_id
+            name:
+              description: Update the 'name' column in the 'projects' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_projects_name
+            owner_id:
+              description: Update the 'owner_id' column in the 'projects' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_projects_owner_id
+            updated_at:
+              description: Update the 'updated_at' column in the 'projects' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_projects_updated_at
+        update_requests_daily_count_by_date_and_project_id_response:
+          description: Responses from the 'update_requests_daily_count_by_date_and_project_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: requests_daily_count
+        update_requests_daily_count_by_date_and_project_id_update_columns:
+          description: Update the columns of the 'requests_daily_count' collection
+          fields:
+            date:
+              description: Update the 'date' column in the 'requests_daily_count' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_requests_daily_count_date
+            project_id:
+              description: Update the 'project_id' column in the 'requests_daily_count' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_requests_daily_count_project_id
+            request_count:
+              description: Update the 'request_count' column in the 'requests_daily_count' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_requests_daily_count_request_count
+        update_users_by_customer_id_response:
+          description: Responses from the 'update_users_by_customer_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: users
+        update_users_by_customer_id_update_columns:
+          description: Update the columns of the 'users' collection
+          fields:
+            created_at:
+              description: Update the 'created_at' column in the 'users' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_users_created_at
+            customer_id:
+              description: Update the 'customer_id' column in the 'users' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_users_customer_id
+            email:
+              description: Update the 'email' column in the 'users' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_users_email
+            first_name:
+              description: Update the 'first_name' column in the 'users' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_users_first_name
+            id:
+              description: Update the 'id' column in the 'users' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_users_id
+            last_name:
+              description: Update the 'last_name' column in the 'users' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_users_last_name
+            updated_at:
+              description: Update the 'updated_at' column in the 'users' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_users_updated_at
+        update_users_by_id_response:
+          description: Responses from the 'update_users_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: users
+        update_users_by_id_update_columns:
+          description: Update the columns of the 'users' collection
+          fields:
+            created_at:
+              description: Update the 'created_at' column in the 'users' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_users_created_at
+            customer_id:
+              description: Update the 'customer_id' column in the 'users' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_users_customer_id
+            email:
+              description: Update the 'email' column in the 'users' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_users_email
+            first_name:
+              description: Update the 'first_name' column in the 'users' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_users_first_name
+            id:
+              description: Update the 'id' column in the 'users' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_users_id
+            last_name:
+              description: Update the 'last_name' column in the 'users' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_users_last_name
+            updated_at:
+              description: Update the 'updated_at' column in the 'users' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_users_updated_at
+        users:
+          fields:
+            created_at:
+              type:
+                type: named
+                name: timestamptz
+            customer_id:
+              type:
+                type: named
+                name: text
+            email:
+              type:
+                type: named
+                name: text
+            first_name:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            id:
+              type:
+                type: named
+                name: uuid
+            last_name:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            updated_at:
+              type:
+                type: named
+                name: timestamptz
+      collections:
+        - name: data_generation_seeds
+          arguments: {}
+          type: data_generation_seeds
+          uniqueness_constraints: {}
+          foreign_keys: {}
+        - name: error_rate_daily
+          arguments: {}
+          type: error_rate_daily
+          uniqueness_constraints:
+            error_rate_daily_pkey:
+              unique_columns:
+                - date
+                - project_id
+          foreign_keys:
+            error_rate_daily_project_id_fkey:
+              column_mapping:
+                project_id: id
+              foreign_collection: projects
+        - name: invoice
+          arguments: {}
+          type: invoice
+          uniqueness_constraints:
+            invoice_pkey:
+              unique_columns:
+                - stripe_invoice_id
+          foreign_keys:
+            invoice_customer_id_fkey:
+              column_mapping:
+                customer_id: customer_id
+              foreign_collection: users
+        - name: invoice_item
+          arguments: {}
+          type: invoice_item
+          uniqueness_constraints:
+            invoice_item_pkey:
+              unique_columns:
+                - id
+          foreign_keys:
+            invoice_item_invoice_id_fkey:
+              column_mapping:
+                invoice_id: stripe_invoice_id
+              foreign_collection: invoice
+            invoice_item_project_id_fkey:
+              column_mapping:
+                project_id: id
+              foreign_collection: projects
+        - name: plans
+          arguments: {}
+          type: plans
+          uniqueness_constraints:
+            plans_pkey:
+              unique_columns:
+                - id
+          foreign_keys: {}
+        - name: project_plan_changelogs
+          arguments: {}
+          type: project_plan_changelogs
+          uniqueness_constraints:
+            project_plan_changelogs_pkey:
+              unique_columns:
+                - id
+          foreign_keys:
+            project_plan_changelogs_plan_id_fkey:
+              column_mapping:
+                plan_id: id
+              foreign_collection: plans
+            project_plan_changelogs_project_id_fkey:
+              column_mapping:
+                project_id: id
+              foreign_collection: projects
+        - name: projects
+          arguments: {}
+          type: projects
+          uniqueness_constraints:
+            projects_pkey:
+              unique_columns:
+                - id
+          foreign_keys:
+            projects_owner_id_fkey:
+              column_mapping:
+                owner_id: id
+              foreign_collection: users
+        - name: requests_daily_count
+          arguments: {}
+          type: requests_daily_count
+          uniqueness_constraints:
+            requests_daily_count_pkey:
+              unique_columns:
+                - date
+                - project_id
+          foreign_keys:
+            requests_daily_count_project_id_fkey:
+              column_mapping:
+                project_id: id
+              foreign_collection: projects
+        - name: users
+          arguments: {}
+          type: users
+          uniqueness_constraints:
+            users_customer_id_key:
+              unique_columns:
+                - customer_id
+            users_pkey:
+              unique_columns:
+                - id
+          foreign_keys: {}
+      functions: []
+      procedures:
+        - name: delete_error_rate_daily_by_date_and_project_id
+          description: Delete any row on the 'error_rate_daily' collection using the 'date' and 'project_id' keys
+          arguments:
+            key_date:
+              type:
+                type: named
+                name: date
+            key_project_id:
+              type:
+                type: named
+                name: uuid
+            pre_check:
+              description: Delete permission predicate over the 'error_rate_daily' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: error_rate_daily
+          result_type:
+            type: named
+            name: delete_error_rate_daily_by_date_and_project_id_response
+        - name: delete_invoice_by_stripe_invoice_id
+          description: Delete any row on the 'invoice' collection using the 'stripe_invoice_id' key
+          arguments:
+            key_stripe_invoice_id:
+              type:
+                type: named
+                name: text
+            pre_check:
+              description: Delete permission predicate over the 'invoice' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: invoice
+          result_type:
+            type: named
+            name: delete_invoice_by_stripe_invoice_id_response
+        - name: delete_invoice_item_by_id
+          description: Delete any row on the 'invoice_item' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: uuid
+            pre_check:
+              description: Delete permission predicate over the 'invoice_item' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: invoice_item
+          result_type:
+            type: named
+            name: delete_invoice_item_by_id_response
+        - name: delete_plans_by_id
+          description: Delete any row on the 'plans' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: uuid
+            pre_check:
+              description: Delete permission predicate over the 'plans' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: plans
+          result_type:
+            type: named
+            name: delete_plans_by_id_response
+        - name: delete_project_plan_changelogs_by_id
+          description: Delete any row on the 'project_plan_changelogs' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: uuid
+            pre_check:
+              description: Delete permission predicate over the 'project_plan_changelogs' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: project_plan_changelogs
+          result_type:
+            type: named
+            name: delete_project_plan_changelogs_by_id_response
+        - name: delete_projects_by_id
+          description: Delete any row on the 'projects' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: uuid
+            pre_check:
+              description: Delete permission predicate over the 'projects' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: projects
+          result_type:
+            type: named
+            name: delete_projects_by_id_response
+        - name: delete_requests_daily_count_by_date_and_project_id
+          description: Delete any row on the 'requests_daily_count' collection using the 'date' and 'project_id' keys
+          arguments:
+            key_date:
+              type:
+                type: named
+                name: date
+            key_project_id:
+              type:
+                type: named
+                name: uuid
+            pre_check:
+              description: Delete permission predicate over the 'requests_daily_count' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: requests_daily_count
+          result_type:
+            type: named
+            name: delete_requests_daily_count_by_date_and_project_id_response
+        - name: delete_users_by_customer_id
+          description: Delete any row on the 'users' collection using the 'customer_id' key
+          arguments:
+            key_customer_id:
+              type:
+                type: named
+                name: text
+            pre_check:
+              description: Delete permission predicate over the 'users' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: users
+          result_type:
+            type: named
+            name: delete_users_by_customer_id_response
+        - name: delete_users_by_id
+          description: Delete any row on the 'users' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: uuid
+            pre_check:
+              description: Delete permission predicate over the 'users' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: users
+          result_type:
+            type: named
+            name: delete_users_by_id_response
+        - name: insert_data_generation_seeds
+          description: Insert into the data_generation_seeds table
+          arguments:
+            objects:
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: insert_data_generation_seeds_object
+            post_check:
+              description: Insert permission predicate over the 'data_generation_seeds' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: data_generation_seeds
+          result_type:
+            type: named
+            name: insert_data_generation_seeds_response
+        - name: insert_error_rate_daily
+          description: Insert into the error_rate_daily table
+          arguments:
+            objects:
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: insert_error_rate_daily_object
+            post_check:
+              description: Insert permission predicate over the 'error_rate_daily' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: error_rate_daily
+          result_type:
+            type: named
+            name: insert_error_rate_daily_response
+        - name: insert_invoice
+          description: Insert into the invoice table
+          arguments:
+            objects:
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: insert_invoice_object
+            post_check:
+              description: Insert permission predicate over the 'invoice' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: invoice
+          result_type:
+            type: named
+            name: insert_invoice_response
+        - name: insert_invoice_item
+          description: Insert into the invoice_item table
+          arguments:
+            objects:
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: insert_invoice_item_object
+            post_check:
+              description: Insert permission predicate over the 'invoice_item' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: invoice_item
+          result_type:
+            type: named
+            name: insert_invoice_item_response
+        - name: insert_plans
+          description: Insert into the plans table
+          arguments:
+            objects:
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: insert_plans_object
+            post_check:
+              description: Insert permission predicate over the 'plans' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: plans
+          result_type:
+            type: named
+            name: insert_plans_response
+        - name: insert_project_plan_changelogs
+          description: Insert into the project_plan_changelogs table
+          arguments:
+            objects:
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: insert_project_plan_changelogs_object
+            post_check:
+              description: Insert permission predicate over the 'project_plan_changelogs' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: project_plan_changelogs
+          result_type:
+            type: named
+            name: insert_project_plan_changelogs_response
+        - name: insert_projects
+          description: Insert into the projects table
+          arguments:
+            objects:
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: insert_projects_object
+            post_check:
+              description: Insert permission predicate over the 'projects' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: projects
+          result_type:
+            type: named
+            name: insert_projects_response
+        - name: insert_requests_daily_count
+          description: Insert into the requests_daily_count table
+          arguments:
+            objects:
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: insert_requests_daily_count_object
+            post_check:
+              description: Insert permission predicate over the 'requests_daily_count' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: requests_daily_count
+          result_type:
+            type: named
+            name: insert_requests_daily_count_response
+        - name: insert_users
+          description: Insert into the users table
+          arguments:
+            objects:
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: insert_users_object
+            post_check:
+              description: Insert permission predicate over the 'users' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: users
+          result_type:
+            type: named
+            name: insert_users_response
+        - name: update_error_rate_daily_by_date_and_project_id
+          description: Update any row on the 'error_rate_daily' collection using the 'date' and 'project_id' keys
+          arguments:
+            key_date:
+              type:
+                type: named
+                name: date
+            key_project_id:
+              type:
+                type: named
+                name: uuid
+            post_check:
+              description: Update permission post-condition predicate over the 'error_rate_daily' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: error_rate_daily
+            pre_check:
+              description: Update permission pre-condition predicate over the 'error_rate_daily' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: error_rate_daily
+            update_columns:
+              type:
+                type: named
+                name: update_error_rate_daily_by_date_and_project_id_update_columns
+          result_type:
+            type: named
+            name: update_error_rate_daily_by_date_and_project_id_response
+        - name: update_invoice_by_stripe_invoice_id
+          description: Update any row on the 'invoice' collection using the 'stripe_invoice_id' key
+          arguments:
+            key_stripe_invoice_id:
+              type:
+                type: named
+                name: text
+            post_check:
+              description: Update permission post-condition predicate over the 'invoice' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: invoice
+            pre_check:
+              description: Update permission pre-condition predicate over the 'invoice' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: invoice
+            update_columns:
+              type:
+                type: named
+                name: update_invoice_by_stripe_invoice_id_update_columns
+          result_type:
+            type: named
+            name: update_invoice_by_stripe_invoice_id_response
+        - name: update_invoice_item_by_id
+          description: Update any row on the 'invoice_item' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: uuid
+            post_check:
+              description: Update permission post-condition predicate over the 'invoice_item' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: invoice_item
+            pre_check:
+              description: Update permission pre-condition predicate over the 'invoice_item' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: invoice_item
+            update_columns:
+              type:
+                type: named
+                name: update_invoice_item_by_id_update_columns
+          result_type:
+            type: named
+            name: update_invoice_item_by_id_response
+        - name: update_plans_by_id
+          description: Update any row on the 'plans' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: uuid
+            post_check:
+              description: Update permission post-condition predicate over the 'plans' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: plans
+            pre_check:
+              description: Update permission pre-condition predicate over the 'plans' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: plans
+            update_columns:
+              type:
+                type: named
+                name: update_plans_by_id_update_columns
+          result_type:
+            type: named
+            name: update_plans_by_id_response
+        - name: update_project_plan_changelogs_by_id
+          description: Update any row on the 'project_plan_changelogs' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: uuid
+            post_check:
+              description: Update permission post-condition predicate over the 'project_plan_changelogs' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: project_plan_changelogs
+            pre_check:
+              description: Update permission pre-condition predicate over the 'project_plan_changelogs' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: project_plan_changelogs
+            update_columns:
+              type:
+                type: named
+                name: update_project_plan_changelogs_by_id_update_columns
+          result_type:
+            type: named
+            name: update_project_plan_changelogs_by_id_response
+        - name: update_projects_by_id
+          description: Update any row on the 'projects' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: uuid
+            post_check:
+              description: Update permission post-condition predicate over the 'projects' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: projects
+            pre_check:
+              description: Update permission pre-condition predicate over the 'projects' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: projects
+            update_columns:
+              type:
+                type: named
+                name: update_projects_by_id_update_columns
+          result_type:
+            type: named
+            name: update_projects_by_id_response
+        - name: update_requests_daily_count_by_date_and_project_id
+          description: Update any row on the 'requests_daily_count' collection using the 'date' and 'project_id' keys
+          arguments:
+            key_date:
+              type:
+                type: named
+                name: date
+            key_project_id:
+              type:
+                type: named
+                name: uuid
+            post_check:
+              description: Update permission post-condition predicate over the 'requests_daily_count' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: requests_daily_count
+            pre_check:
+              description: Update permission pre-condition predicate over the 'requests_daily_count' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: requests_daily_count
+            update_columns:
+              type:
+                type: named
+                name: update_requests_daily_count_by_date_and_project_id_update_columns
+          result_type:
+            type: named
+            name: update_requests_daily_count_by_date_and_project_id_response
+        - name: update_users_by_customer_id
+          description: Update any row on the 'users' collection using the 'customer_id' key
+          arguments:
+            key_customer_id:
+              type:
+                type: named
+                name: text
+            post_check:
+              description: Update permission post-condition predicate over the 'users' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: users
+            pre_check:
+              description: Update permission pre-condition predicate over the 'users' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: users
+            update_columns:
+              type:
+                type: named
+                name: update_users_by_customer_id_update_columns
+          result_type:
+            type: named
+            name: update_users_by_customer_id_response
+        - name: update_users_by_id
+          description: Update any row on the 'users' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: uuid
+            post_check:
+              description: Update permission post-condition predicate over the 'users' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: users
+            pre_check:
+              description: Update permission pre-condition predicate over the 'users' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: users
+            update_columns:
+              type:
+                type: named
+                name: update_users_by_id_update_columns
+          result_type:
+            type: named
+            name: update_users_by_id_response
+    capabilities:
+      version: 0.1.6
+      capabilities:
+        query:
+          aggregates: {}
+          variables: {}
+          explain: {}
+          nested_fields:
+            filter_by: {}
+            order_by: {}
+          exists:
+            nested_collections: {}
+        mutation:
+          transactional: {}
+          explain: {}
+        relationships:
+          relation_comparisons: {}
+          order_by_aggregate: {}

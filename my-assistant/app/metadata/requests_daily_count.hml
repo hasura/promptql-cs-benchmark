@@ -1,0 +1,138 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: requests_daily_count
+  fields:
+    - name: date
+      type: date!
+    - name: project_id
+      type: uuid!
+    - name: request_count
+      type: int4!
+  graphql:
+    typeName: requests_daily_count
+    inputTypeName: requests_daily_count_input
+  dataConnectorTypeMapping:
+    - dataConnectorName: control_plane_pg
+      dataConnectorObjectType: requests_daily_count
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: requests_daily_count
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - date
+          - project_id
+          - request_count
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: requests_daily_count_bool_exp
+  operand:
+    object:
+      type: requests_daily_count
+      comparableFields:
+        - fieldName: date
+          booleanExpressionType: date_bool_exp
+        - fieldName: project_id
+          booleanExpressionType: uuid_bool_exp
+        - fieldName: request_count
+          booleanExpressionType: int4_bool_exp
+      comparableRelationships:
+        - relationshipName: project
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: requests_daily_count_bool_exp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: requests_daily_count_agg_exp
+  operand:
+    object:
+      aggregatedType: requests_daily_count
+      aggregatableFields:
+        - fieldName: date
+          aggregateExpression: date_agg_exp
+        - fieldName: project_id
+          aggregateExpression: uuid_agg_exp
+        - fieldName: request_count
+          aggregateExpression: int4_agg_exp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: requests_daily_count_agg_exp
+
+---
+kind: Model
+version: v1
+definition:
+  name: requests_daily_count
+  objectType: requests_daily_count
+  source:
+    dataConnectorName: control_plane_pg
+    collection: requests_daily_count
+  filterExpressionType: requests_daily_count_bool_exp
+  aggregateExpression: requests_daily_count_agg_exp
+  orderableFields:
+    - fieldName: date
+      orderByDirections:
+        enableAll: true
+    - fieldName: project_id
+      orderByDirections:
+        enableAll: true
+    - fieldName: request_count
+      orderByDirections:
+        enableAll: true
+  graphql:
+    selectMany:
+      queryRootField: requests_daily_count
+    selectUniques:
+      - queryRootField: requests_daily_count_by_requests_daily_count_pkey
+        uniqueIdentifier:
+          - date
+          - project_id
+    orderByExpressionType: requests_daily_count_order_by
+    filterInputTypeName: requests_daily_count_filter_input
+    aggregate:
+      queryRootField: requests_daily_count_aggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: requests_daily_count
+  permissions:
+    - role: admin
+      select:
+        filter: null
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: project
+  sourceType: requests_daily_count
+  target:
+    model:
+      name: projects
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: project_id
+      target:
+        modelField:
+          - fieldName: id
+

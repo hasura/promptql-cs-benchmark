@@ -1,0 +1,1472 @@
+kind: DataConnectorLink
+version: v1
+definition:
+  name: support_tickets_pg
+  url:
+    readWriteUrls:
+      read:
+        valueFromEnv: APP_SUPPORT_TICKETS_PG_READ_URL
+      write:
+        valueFromEnv: APP_SUPPORT_TICKETS_PG_WRITE_URL
+  headers:
+    Authorization:
+      valueFromEnv: APP_SUPPORT_TICKETS_PG_AUTHORIZATION_HEADER
+  schema:
+    version: v0.1
+    schema:
+      scalar_types:
+        bool:
+          representation:
+            type: boolean
+          aggregate_functions:
+            bool_and:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: bool
+            bool_or:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: bool
+            every:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: bool
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: bool
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: bool
+            _in:
+              type: in
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: bool
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: bool
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: bool
+        int4:
+          representation:
+            type: int32
+          aggregate_functions:
+            avg:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            bit_and:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            bit_or:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            bit_xor:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            max:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            min:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            stddev:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            stddev_pop:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            stddev_samp:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            sum:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int8
+            var_pop:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            var_samp:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            variance:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: int4
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: int4
+            _in:
+              type: in
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: int4
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: int4
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: int4
+        int8:
+          representation:
+            type: int64
+          aggregate_functions:
+            avg:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            bit_and:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int8
+            bit_or:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int8
+            bit_xor:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int8
+            max:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int8
+            min:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int8
+            stddev:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            stddev_pop:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            stddev_samp:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            sum:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            var_pop:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            var_samp:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            variance:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: int8
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: int8
+            _in:
+              type: in
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: int8
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: int8
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: int8
+        numeric:
+          representation:
+            type: bigdecimal
+          aggregate_functions:
+            avg:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            max:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            min:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            stddev:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            stddev_pop:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            stddev_samp:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            sum:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            var_pop:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            var_samp:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            variance:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: numeric
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: numeric
+            _in:
+              type: in
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: numeric
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: numeric
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: numeric
+        text:
+          representation:
+            type: string
+          aggregate_functions:
+            max:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            min:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _ilike:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _in:
+              type: in
+            _iregex:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _like:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _nilike:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _niregex:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _nlike:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _nregex:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _regex:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            starts_with:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            ts_match_tt:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+        timestamptz:
+          representation:
+            type: timestamptz
+          aggregate_functions:
+            max:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamptz
+            min:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamptz
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: timestamptz
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: timestamptz
+            _in:
+              type: in
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: timestamptz
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: timestamptz
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: timestamptz
+      object_types:
+        delete_support_ticket_by_id_response:
+          description: Responses from the 'delete_support_ticket_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: support_ticket
+        delete_support_ticket_comment_by_id_response:
+          description: Responses from the 'delete_support_ticket_comment_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: support_ticket_comment
+        delete_support_user_by_id_response:
+          description: Responses from the 'delete_support_user_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: support_user
+        insert_support_ticket_comment_object:
+          fields:
+            body:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            created_at:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamptz
+            id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            ticket_id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            user_id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+        insert_support_ticket_comment_response:
+          description: Responses from the 'insert_support_ticket_comment' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: support_ticket_comment
+        insert_support_ticket_object:
+          fields:
+            assignee_id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            created_at:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamptz
+            description:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            is_public:
+              type:
+                type: named
+                name: bool
+            priority:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            requester_id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            status:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            subject:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            type:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            url:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        insert_support_ticket_response:
+          description: Responses from the 'insert_support_ticket' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: support_ticket
+        insert_support_user_object:
+          fields:
+            email:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            role:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        insert_support_user_response:
+          description: Responses from the 'insert_support_user' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: support_user
+        support_ticket:
+          fields:
+            assignee_id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            created_at:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamptz
+            description:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            id:
+              type:
+                type: named
+                name: int4
+            is_public:
+              type:
+                type: named
+                name: bool
+            priority:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            requester_id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            status:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            subject:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            type:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            url:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        support_ticket_comment:
+          fields:
+            body:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            created_at:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamptz
+            id:
+              type:
+                type: named
+                name: int4
+            ticket_id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            user_id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+        support_user:
+          fields:
+            email:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            id:
+              type:
+                type: named
+                name: int4
+            role:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        update_column_support_ticket_assignee_id:
+          description: Update the 'assignee_id' column in the 'support_ticket' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+        update_column_support_ticket_comment_body:
+          description: Update the 'body' column in the 'support_ticket_comment' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        update_column_support_ticket_comment_created_at:
+          description: Update the 'created_at' column in the 'support_ticket_comment' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamptz
+        update_column_support_ticket_comment_id:
+          description: Update the 'id' column in the 'support_ticket_comment' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: int4
+        update_column_support_ticket_comment_ticket_id:
+          description: Update the 'ticket_id' column in the 'support_ticket_comment' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+        update_column_support_ticket_comment_user_id:
+          description: Update the 'user_id' column in the 'support_ticket_comment' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+        update_column_support_ticket_created_at:
+          description: Update the 'created_at' column in the 'support_ticket' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamptz
+        update_column_support_ticket_description:
+          description: Update the 'description' column in the 'support_ticket' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        update_column_support_ticket_id:
+          description: Update the 'id' column in the 'support_ticket' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: int4
+        update_column_support_ticket_is_public:
+          description: Update the 'is_public' column in the 'support_ticket' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: bool
+        update_column_support_ticket_priority:
+          description: Update the 'priority' column in the 'support_ticket' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        update_column_support_ticket_requester_id:
+          description: Update the 'requester_id' column in the 'support_ticket' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+        update_column_support_ticket_status:
+          description: Update the 'status' column in the 'support_ticket' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        update_column_support_ticket_subject:
+          description: Update the 'subject' column in the 'support_ticket' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        update_column_support_ticket_type:
+          description: Update the 'type' column in the 'support_ticket' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        update_column_support_ticket_url:
+          description: Update the 'url' column in the 'support_ticket' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        update_column_support_user_email:
+          description: Update the 'email' column in the 'support_user' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        update_column_support_user_id:
+          description: Update the 'id' column in the 'support_user' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: int4
+        update_column_support_user_role:
+          description: Update the 'role' column in the 'support_user' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+        update_support_ticket_by_id_response:
+          description: Responses from the 'update_support_ticket_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: support_ticket
+        update_support_ticket_by_id_update_columns:
+          description: Update the columns of the 'support_ticket' collection
+          fields:
+            assignee_id:
+              description: Update the 'assignee_id' column in the 'support_ticket' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_support_ticket_assignee_id
+            created_at:
+              description: Update the 'created_at' column in the 'support_ticket' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_support_ticket_created_at
+            description:
+              description: Update the 'description' column in the 'support_ticket' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_support_ticket_description
+            id:
+              description: Update the 'id' column in the 'support_ticket' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_support_ticket_id
+            is_public:
+              description: Update the 'is_public' column in the 'support_ticket' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_support_ticket_is_public
+            priority:
+              description: Update the 'priority' column in the 'support_ticket' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_support_ticket_priority
+            requester_id:
+              description: Update the 'requester_id' column in the 'support_ticket' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_support_ticket_requester_id
+            status:
+              description: Update the 'status' column in the 'support_ticket' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_support_ticket_status
+            subject:
+              description: Update the 'subject' column in the 'support_ticket' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_support_ticket_subject
+            type:
+              description: Update the 'type' column in the 'support_ticket' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_support_ticket_type
+            url:
+              description: Update the 'url' column in the 'support_ticket' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_support_ticket_url
+        update_support_ticket_comment_by_id_response:
+          description: Responses from the 'update_support_ticket_comment_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: support_ticket_comment
+        update_support_ticket_comment_by_id_update_columns:
+          description: Update the columns of the 'support_ticket_comment' collection
+          fields:
+            body:
+              description: Update the 'body' column in the 'support_ticket_comment' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_support_ticket_comment_body
+            created_at:
+              description: Update the 'created_at' column in the 'support_ticket_comment' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_support_ticket_comment_created_at
+            id:
+              description: Update the 'id' column in the 'support_ticket_comment' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_support_ticket_comment_id
+            ticket_id:
+              description: Update the 'ticket_id' column in the 'support_ticket_comment' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_support_ticket_comment_ticket_id
+            user_id:
+              description: Update the 'user_id' column in the 'support_ticket_comment' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_support_ticket_comment_user_id
+        update_support_user_by_id_response:
+          description: Responses from the 'update_support_user_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: support_user
+        update_support_user_by_id_update_columns:
+          description: Update the columns of the 'support_user' collection
+          fields:
+            email:
+              description: Update the 'email' column in the 'support_user' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_support_user_email
+            id:
+              description: Update the 'id' column in the 'support_user' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_support_user_id
+            role:
+              description: Update the 'role' column in the 'support_user' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_support_user_role
+      collections:
+        - name: support_ticket
+          arguments: {}
+          type: support_ticket
+          uniqueness_constraints:
+            support_ticket_pkey:
+              unique_columns:
+                - id
+          foreign_keys:
+            support_ticket_assignee_id_fkey:
+              column_mapping:
+                assignee_id: id
+              foreign_collection: support_user
+            support_ticket_requester_id_fkey:
+              column_mapping:
+                requester_id: id
+              foreign_collection: support_user
+        - name: support_ticket_comment
+          arguments: {}
+          type: support_ticket_comment
+          uniqueness_constraints:
+            support_ticket_comment_pkey:
+              unique_columns:
+                - id
+          foreign_keys:
+            support_ticket_comment_ticket_id_fkey:
+              column_mapping:
+                ticket_id: id
+              foreign_collection: support_ticket
+            support_ticket_comment_user_id_fkey:
+              column_mapping:
+                user_id: id
+              foreign_collection: support_user
+        - name: support_user
+          arguments: {}
+          type: support_user
+          uniqueness_constraints:
+            support_user_pkey:
+              unique_columns:
+                - id
+          foreign_keys: {}
+      functions: []
+      procedures:
+        - name: delete_support_ticket_by_id
+          description: Delete any row on the 'support_ticket' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: int4
+            pre_check:
+              description: Delete permission predicate over the 'support_ticket' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: support_ticket
+          result_type:
+            type: named
+            name: delete_support_ticket_by_id_response
+        - name: delete_support_ticket_comment_by_id
+          description: Delete any row on the 'support_ticket_comment' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: int4
+            pre_check:
+              description: Delete permission predicate over the 'support_ticket_comment' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: support_ticket_comment
+          result_type:
+            type: named
+            name: delete_support_ticket_comment_by_id_response
+        - name: delete_support_user_by_id
+          description: Delete any row on the 'support_user' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: int4
+            pre_check:
+              description: Delete permission predicate over the 'support_user' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: support_user
+          result_type:
+            type: named
+            name: delete_support_user_by_id_response
+        - name: insert_support_ticket
+          description: Insert into the support_ticket table
+          arguments:
+            objects:
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: insert_support_ticket_object
+            post_check:
+              description: Insert permission predicate over the 'support_ticket' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: support_ticket
+          result_type:
+            type: named
+            name: insert_support_ticket_response
+        - name: insert_support_ticket_comment
+          description: Insert into the support_ticket_comment table
+          arguments:
+            objects:
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: insert_support_ticket_comment_object
+            post_check:
+              description: Insert permission predicate over the 'support_ticket_comment' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: support_ticket_comment
+          result_type:
+            type: named
+            name: insert_support_ticket_comment_response
+        - name: insert_support_user
+          description: Insert into the support_user table
+          arguments:
+            objects:
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: insert_support_user_object
+            post_check:
+              description: Insert permission predicate over the 'support_user' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: support_user
+          result_type:
+            type: named
+            name: insert_support_user_response
+        - name: update_support_ticket_by_id
+          description: Update any row on the 'support_ticket' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: int4
+            post_check:
+              description: Update permission post-condition predicate over the 'support_ticket' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: support_ticket
+            pre_check:
+              description: Update permission pre-condition predicate over the 'support_ticket' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: support_ticket
+            update_columns:
+              type:
+                type: named
+                name: update_support_ticket_by_id_update_columns
+          result_type:
+            type: named
+            name: update_support_ticket_by_id_response
+        - name: update_support_ticket_comment_by_id
+          description: Update any row on the 'support_ticket_comment' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: int4
+            post_check:
+              description: Update permission post-condition predicate over the 'support_ticket_comment' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: support_ticket_comment
+            pre_check:
+              description: Update permission pre-condition predicate over the 'support_ticket_comment' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: support_ticket_comment
+            update_columns:
+              type:
+                type: named
+                name: update_support_ticket_comment_by_id_update_columns
+          result_type:
+            type: named
+            name: update_support_ticket_comment_by_id_response
+        - name: update_support_user_by_id
+          description: Update any row on the 'support_user' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: int4
+            post_check:
+              description: Update permission post-condition predicate over the 'support_user' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: support_user
+            pre_check:
+              description: Update permission pre-condition predicate over the 'support_user' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: support_user
+            update_columns:
+              type:
+                type: named
+                name: update_support_user_by_id_update_columns
+          result_type:
+            type: named
+            name: update_support_user_by_id_response
+    capabilities:
+      version: 0.1.6
+      capabilities:
+        query:
+          aggregates: {}
+          variables: {}
+          explain: {}
+          nested_fields:
+            filter_by: {}
+            order_by: {}
+          exists:
+            nested_collections: {}
+        mutation:
+          transactional: {}
+          explain: {}
+        relationships:
+          relation_comparisons: {}
+          order_by_aggregate: {}

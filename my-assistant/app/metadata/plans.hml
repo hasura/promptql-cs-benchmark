@@ -1,0 +1,152 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: plans
+  fields:
+    - name: created_at
+      type: timestamptz!
+    - name: id
+      type: uuid!
+    - name: name
+      type: text!
+      description: Paid plans are 'base' and 'advanced'
+    - name: updated_at
+      type: timestamptz!
+  graphql:
+    typeName: plans
+    inputTypeName: plans_input
+  dataConnectorTypeMapping:
+    - dataConnectorName: control_plane_pg
+      dataConnectorObjectType: plans
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: plans
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - created_at
+          - id
+          - name
+          - updated_at
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: plans_bool_exp
+  operand:
+    object:
+      type: plans
+      comparableFields:
+        - fieldName: created_at
+          booleanExpressionType: timestamptz_bool_exp
+        - fieldName: id
+          booleanExpressionType: uuid_bool_exp
+        - fieldName: name
+          booleanExpressionType: text_bool_exp
+        - fieldName: updated_at
+          booleanExpressionType: timestamptz_bool_exp
+      comparableRelationships:
+        - relationshipName: project_plan_changelogs
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: plans_bool_exp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: plans_agg_exp
+  operand:
+    object:
+      aggregatedType: plans
+      aggregatableFields:
+        - fieldName: created_at
+          aggregateExpression: timestamptz_agg_exp
+        - fieldName: id
+          aggregateExpression: uuid_agg_exp
+        - fieldName: name
+          aggregateExpression: text_agg_exp
+        - fieldName: updated_at
+          aggregateExpression: timestamptz_agg_exp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: plans_agg_exp
+
+---
+kind: Model
+version: v1
+definition:
+  name: plans
+  objectType: plans
+  source:
+    dataConnectorName: control_plane_pg
+    collection: plans
+  filterExpressionType: plans_bool_exp
+  aggregateExpression: plans_agg_exp
+  orderableFields:
+    - fieldName: created_at
+      orderByDirections:
+        enableAll: true
+    - fieldName: id
+      orderByDirections:
+        enableAll: true
+    - fieldName: name
+      orderByDirections:
+        enableAll: true
+    - fieldName: updated_at
+      orderByDirections:
+        enableAll: true
+  graphql:
+    selectMany:
+      queryRootField: plans
+    selectUniques:
+      - queryRootField: plans_by_id
+        uniqueIdentifier:
+          - id
+    orderByExpressionType: plans_order_by
+    filterInputTypeName: plans_filter_input
+    aggregate:
+      queryRootField: plans_aggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: plans
+  permissions:
+    - role: admin
+      select:
+        filter: null
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: project_plan_changelogs
+  sourceType: plans
+  target:
+    model:
+      name: project_plan_changelogs
+      relationshipType: Array
+      aggregate:
+        aggregateExpression: project_plan_changelogs_agg_exp
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: id
+      target:
+        modelField:
+          - fieldName: plan_id
+  graphql:
+    aggregateFieldName: project_plan_changelogs_aggregate
+

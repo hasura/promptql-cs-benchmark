@@ -1,0 +1,246 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: invoice_item
+  fields:
+    - name: amount
+      type: numeric!
+    - name: created_at
+      type: timestamptz!
+    - name: description
+      type: text
+    - name: error
+      type: text
+    - name: has_updated_to_stripe
+      type: bool!
+    - name: id
+      type: uuid!
+    - name: invoice_id
+      type: text!
+    - name: month
+      type: int4!
+    - name: project_id
+      type: uuid!
+    - name: type
+      type: text!
+    - name: updated_at
+      type: timestamptz!
+    - name: year
+      type: int4!
+  graphql:
+    typeName: invoice_item
+    inputTypeName: invoice_item_input
+  dataConnectorTypeMapping:
+    - dataConnectorName: control_plane_pg
+      dataConnectorObjectType: invoice_item
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: invoice_item
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amount
+          - created_at
+          - description
+          - error
+          - has_updated_to_stripe
+          - id
+          - invoice_id
+          - month
+          - project_id
+          - type
+          - updated_at
+          - year
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: invoice_item_bool_exp
+  operand:
+    object:
+      type: invoice_item
+      comparableFields:
+        - fieldName: amount
+          booleanExpressionType: numeric_bool_exp
+        - fieldName: created_at
+          booleanExpressionType: timestamptz_bool_exp
+        - fieldName: description
+          booleanExpressionType: text_bool_exp
+        - fieldName: error
+          booleanExpressionType: text_bool_exp
+        - fieldName: has_updated_to_stripe
+          booleanExpressionType: bool_bool_exp
+        - fieldName: id
+          booleanExpressionType: uuid_bool_exp
+        - fieldName: invoice_id
+          booleanExpressionType: text_bool_exp
+        - fieldName: month
+          booleanExpressionType: int4_bool_exp
+        - fieldName: project_id
+          booleanExpressionType: uuid_bool_exp
+        - fieldName: type
+          booleanExpressionType: text_bool_exp
+        - fieldName: updated_at
+          booleanExpressionType: timestamptz_bool_exp
+        - fieldName: year
+          booleanExpressionType: int4_bool_exp
+      comparableRelationships:
+        - relationshipName: invoice
+        - relationshipName: project
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: invoice_item_bool_exp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: invoice_item_agg_exp
+  operand:
+    object:
+      aggregatedType: invoice_item
+      aggregatableFields:
+        - fieldName: amount
+          aggregateExpression: numeric_agg_exp
+        - fieldName: created_at
+          aggregateExpression: timestamptz_agg_exp
+        - fieldName: description
+          aggregateExpression: text_agg_exp
+        - fieldName: error
+          aggregateExpression: text_agg_exp
+        - fieldName: has_updated_to_stripe
+          aggregateExpression: bool_agg_exp
+        - fieldName: id
+          aggregateExpression: uuid_agg_exp
+        - fieldName: invoice_id
+          aggregateExpression: text_agg_exp
+        - fieldName: month
+          aggregateExpression: int4_agg_exp
+        - fieldName: project_id
+          aggregateExpression: uuid_agg_exp
+        - fieldName: type
+          aggregateExpression: text_agg_exp
+        - fieldName: updated_at
+          aggregateExpression: timestamptz_agg_exp
+        - fieldName: year
+          aggregateExpression: int4_agg_exp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: invoice_item_agg_exp
+
+---
+kind: Model
+version: v1
+definition:
+  name: invoice_item
+  objectType: invoice_item
+  source:
+    dataConnectorName: control_plane_pg
+    collection: invoice_item
+  filterExpressionType: invoice_item_bool_exp
+  aggregateExpression: invoice_item_agg_exp
+  orderableFields:
+    - fieldName: amount
+      orderByDirections:
+        enableAll: true
+    - fieldName: created_at
+      orderByDirections:
+        enableAll: true
+    - fieldName: description
+      orderByDirections:
+        enableAll: true
+    - fieldName: error
+      orderByDirections:
+        enableAll: true
+    - fieldName: has_updated_to_stripe
+      orderByDirections:
+        enableAll: true
+    - fieldName: id
+      orderByDirections:
+        enableAll: true
+    - fieldName: invoice_id
+      orderByDirections:
+        enableAll: true
+    - fieldName: month
+      orderByDirections:
+        enableAll: true
+    - fieldName: project_id
+      orderByDirections:
+        enableAll: true
+    - fieldName: type
+      orderByDirections:
+        enableAll: true
+    - fieldName: updated_at
+      orderByDirections:
+        enableAll: true
+    - fieldName: year
+      orderByDirections:
+        enableAll: true
+  graphql:
+    selectMany:
+      queryRootField: invoice_item
+    selectUniques:
+      - queryRootField: invoice_item_by_id
+        uniqueIdentifier:
+          - id
+    orderByExpressionType: invoice_item_order_by
+    filterInputTypeName: invoice_item_filter_input
+    aggregate:
+      queryRootField: invoice_item_aggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: invoice_item
+  permissions:
+    - role: admin
+      select:
+        filter: null
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: invoice
+  sourceType: invoice_item
+  target:
+    model:
+      name: invoice
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: invoice_id
+      target:
+        modelField:
+          - fieldName: stripe_invoice_id
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: project
+  sourceType: invoice_item
+  target:
+    model:
+      name: projects
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: project_id
+      target:
+        modelField:
+          - fieldName: id
+

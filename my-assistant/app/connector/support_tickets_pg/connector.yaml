@@ -1,0 +1,16 @@
+kind: Connector
+version: v2
+definition:
+  name: support_tickets_pg
+  subgraph: app
+  source: hasura/postgres:v1.2.0
+  context: .
+  envMapping:
+    CONNECTION_URI:
+      fromEnv: APP_SUPPORT_TICKETS_PG_CONNECTION_URI
+    HASURA_SERVICE_TOKEN_SECRET:
+      fromEnv: APP_SUPPORT_TICKETS_PG_HASURA_SERVICE_TOKEN_SECRET
+    OTEL_EXPORTER_OTLP_ENDPOINT:
+      fromEnv: APP_SUPPORT_TICKETS_PG_OTEL_EXPORTER_OTLP_ENDPOINT
+    OTEL_SERVICE_NAME:
+      fromEnv: APP_SUPPORT_TICKETS_PG_OTEL_SERVICE_NAME

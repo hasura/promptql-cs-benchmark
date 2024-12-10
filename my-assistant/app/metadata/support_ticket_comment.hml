@@ -1,0 +1,176 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: support_ticket_comment
+  fields:
+    - name: body
+      type: text_1
+    - name: created_at
+      type: timestamptz_1
+    - name: id
+      type: int4_1!
+    - name: ticket_id
+      type: int4_1
+    - name: user_id
+      type: int4_1
+  graphql:
+    typeName: support_ticket_comment
+    inputTypeName: support_ticket_comment_input
+  dataConnectorTypeMapping:
+    - dataConnectorName: support_tickets_pg
+      dataConnectorObjectType: support_ticket_comment
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: support_ticket_comment
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - body
+          - created_at
+          - id
+          - ticket_id
+          - user_id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: support_ticket_comment_bool_exp
+  operand:
+    object:
+      type: support_ticket_comment
+      comparableFields:
+        - fieldName: body
+          booleanExpressionType: text_bool_exp_1
+        - fieldName: created_at
+          booleanExpressionType: timestamptz_bool_exp_1
+        - fieldName: id
+          booleanExpressionType: int4_bool_exp_1
+        - fieldName: ticket_id
+          booleanExpressionType: int4_bool_exp_1
+        - fieldName: user_id
+          booleanExpressionType: int4_bool_exp_1
+      comparableRelationships:
+        - relationshipName: support_ticket
+        - relationshipName: support_user
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: support_ticket_comment_bool_exp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: support_ticket_comment_agg_exp
+  operand:
+    object:
+      aggregatedType: support_ticket_comment
+      aggregatableFields:
+        - fieldName: body
+          aggregateExpression: text_agg_exp_1
+        - fieldName: created_at
+          aggregateExpression: timestamptz_agg_exp_1
+        - fieldName: id
+          aggregateExpression: int4_agg_exp_1
+        - fieldName: ticket_id
+          aggregateExpression: int4_agg_exp_1
+        - fieldName: user_id
+          aggregateExpression: int4_agg_exp_1
+  count:
+    enable: true
+  graphql:
+    selectTypeName: support_ticket_comment_agg_exp
+
+---
+kind: Model
+version: v1
+definition:
+  name: support_ticket_comment
+  objectType: support_ticket_comment
+  source:
+    dataConnectorName: support_tickets_pg
+    collection: support_ticket_comment
+  filterExpressionType: support_ticket_comment_bool_exp
+  aggregateExpression: support_ticket_comment_agg_exp
+  orderableFields:
+    - fieldName: body
+      orderByDirections:
+        enableAll: true
+    - fieldName: created_at
+      orderByDirections:
+        enableAll: true
+    - fieldName: id
+      orderByDirections:
+        enableAll: true
+    - fieldName: ticket_id
+      orderByDirections:
+        enableAll: true
+    - fieldName: user_id
+      orderByDirections:
+        enableAll: true
+  graphql:
+    selectMany:
+      queryRootField: support_ticket_comment
+    selectUniques:
+      - queryRootField: support_ticket_comment_by_id
+        uniqueIdentifier:
+          - id
+    orderByExpressionType: support_ticket_comment_order_by
+    filterInputTypeName: support_ticket_comment_filter_input
+    aggregate:
+      queryRootField: support_ticket_comment_aggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: support_ticket_comment
+  permissions:
+    - role: admin
+      select:
+        filter: null
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: support_ticket
+  sourceType: support_ticket_comment
+  target:
+    model:
+      name: support_ticket
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: ticket_id
+      target:
+        modelField:
+          - fieldName: id
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: support_user
+  sourceType: support_ticket_comment
+  target:
+    model:
+      name: support_user
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: user_id
+      target:
+        modelField:
+          - fieldName: id
+

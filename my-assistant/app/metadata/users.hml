@@ -1,0 +1,207 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: users
+  fields:
+    - name: created_at
+      type: timestamptz!
+    - name: customer_id
+      type: text!
+    - name: email
+      type: text!
+    - name: first_name
+      type: text
+    - name: id
+      type: uuid!
+    - name: last_name
+      type: text
+    - name: updated_at
+      type: timestamptz!
+  graphql:
+    typeName: users
+    inputTypeName: users_input
+  dataConnectorTypeMapping:
+    - dataConnectorName: control_plane_pg
+      dataConnectorObjectType: users
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: users
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - created_at
+          - customer_id
+          - email
+          - first_name
+          - id
+          - last_name
+          - updated_at
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: users_bool_exp
+  operand:
+    object:
+      type: users
+      comparableFields:
+        - fieldName: created_at
+          booleanExpressionType: timestamptz_bool_exp
+        - fieldName: customer_id
+          booleanExpressionType: text_bool_exp
+        - fieldName: email
+          booleanExpressionType: text_bool_exp
+        - fieldName: first_name
+          booleanExpressionType: text_bool_exp
+        - fieldName: id
+          booleanExpressionType: uuid_bool_exp
+        - fieldName: last_name
+          booleanExpressionType: text_bool_exp
+        - fieldName: updated_at
+          booleanExpressionType: timestamptz_bool_exp
+      comparableRelationships:
+        - relationshipName: invoices
+        - relationshipName: projects
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: users_bool_exp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: users_agg_exp
+  operand:
+    object:
+      aggregatedType: users
+      aggregatableFields:
+        - fieldName: created_at
+          aggregateExpression: timestamptz_agg_exp
+        - fieldName: customer_id
+          aggregateExpression: text_agg_exp
+        - fieldName: email
+          aggregateExpression: text_agg_exp
+        - fieldName: first_name
+          aggregateExpression: text_agg_exp
+        - fieldName: id
+          aggregateExpression: uuid_agg_exp
+        - fieldName: last_name
+          aggregateExpression: text_agg_exp
+        - fieldName: updated_at
+          aggregateExpression: timestamptz_agg_exp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: users_agg_exp
+
+---
+kind: Model
+version: v1
+definition:
+  name: users
+  objectType: users
+  source:
+    dataConnectorName: control_plane_pg
+    collection: users
+  filterExpressionType: users_bool_exp
+  aggregateExpression: users_agg_exp
+  orderableFields:
+    - fieldName: created_at
+      orderByDirections:
+        enableAll: true
+    - fieldName: customer_id
+      orderByDirections:
+        enableAll: true
+    - fieldName: email
+      orderByDirections:
+        enableAll: true
+    - fieldName: first_name
+      orderByDirections:
+        enableAll: true
+    - fieldName: id
+      orderByDirections:
+        enableAll: true
+    - fieldName: last_name
+      orderByDirections:
+        enableAll: true
+    - fieldName: updated_at
+      orderByDirections:
+        enableAll: true
+  graphql:
+    selectMany:
+      queryRootField: users
+    selectUniques:
+      - queryRootField: users_by_customer_id
+        uniqueIdentifier:
+          - customer_id
+      - queryRootField: users_by_id
+        uniqueIdentifier:
+          - id
+    orderByExpressionType: users_order_by
+    filterInputTypeName: users_filter_input
+    aggregate:
+      queryRootField: users_aggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: users
+  permissions:
+    - role: admin
+      select:
+        filter: null
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: invoices
+  sourceType: users
+  target:
+    model:
+      name: invoice
+      relationshipType: Array
+      aggregate:
+        aggregateExpression: invoice_agg_exp
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: customer_id
+      target:
+        modelField:
+          - fieldName: customer_id
+  graphql:
+    aggregateFieldName: invoices_aggregate
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: projects
+  sourceType: users
+  target:
+    model:
+      name: projects
+      relationshipType: Array
+      aggregate:
+        aggregateExpression: projects_agg_exp
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: id
+      target:
+        modelField:
+          - fieldName: owner_id
+  graphql:
+    aggregateFieldName: projects_aggregate
+

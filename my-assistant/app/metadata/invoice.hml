@@ -1,0 +1,240 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: invoice
+  fields:
+    - name: attempt_count
+      type: int4
+    - name: created_at
+      type: timestamptz!
+    - name: customer_id
+      type: text!
+    - name: description
+      type: text
+    - name: invoice_url
+      type: text
+    - name: month
+      type: int4!
+    - name: status
+      type: text!
+    - name: stripe_invoice_id
+      type: text!
+    - name: subscription_id
+      type: text
+    - name: updated_at
+      type: timestamptz!
+    - name: year
+      type: int4!
+  graphql:
+    typeName: invoice
+    inputTypeName: invoice_input
+  dataConnectorTypeMapping:
+    - dataConnectorName: control_plane_pg
+      dataConnectorObjectType: invoice
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: invoice
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - attempt_count
+          - created_at
+          - customer_id
+          - description
+          - invoice_url
+          - month
+          - status
+          - stripe_invoice_id
+          - subscription_id
+          - updated_at
+          - year
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: invoice_bool_exp
+  operand:
+    object:
+      type: invoice
+      comparableFields:
+        - fieldName: attempt_count
+          booleanExpressionType: int4_bool_exp
+        - fieldName: created_at
+          booleanExpressionType: timestamptz_bool_exp
+        - fieldName: customer_id
+          booleanExpressionType: text_bool_exp
+        - fieldName: description
+          booleanExpressionType: text_bool_exp
+        - fieldName: invoice_url
+          booleanExpressionType: text_bool_exp
+        - fieldName: month
+          booleanExpressionType: int4_bool_exp
+        - fieldName: status
+          booleanExpressionType: text_bool_exp
+        - fieldName: stripe_invoice_id
+          booleanExpressionType: text_bool_exp
+        - fieldName: subscription_id
+          booleanExpressionType: text_bool_exp
+        - fieldName: updated_at
+          booleanExpressionType: timestamptz_bool_exp
+        - fieldName: year
+          booleanExpressionType: int4_bool_exp
+      comparableRelationships:
+        - relationshipName: user
+        - relationshipName: invoice_items
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: invoice_bool_exp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: invoice_agg_exp
+  operand:
+    object:
+      aggregatedType: invoice
+      aggregatableFields:
+        - fieldName: attempt_count
+          aggregateExpression: int4_agg_exp
+        - fieldName: created_at
+          aggregateExpression: timestamptz_agg_exp
+        - fieldName: customer_id
+          aggregateExpression: text_agg_exp
+        - fieldName: description
+          aggregateExpression: text_agg_exp
+        - fieldName: invoice_url
+          aggregateExpression: text_agg_exp
+        - fieldName: month
+          aggregateExpression: int4_agg_exp
+        - fieldName: status
+          aggregateExpression: text_agg_exp
+        - fieldName: stripe_invoice_id
+          aggregateExpression: text_agg_exp
+        - fieldName: subscription_id
+          aggregateExpression: text_agg_exp
+        - fieldName: updated_at
+          aggregateExpression: timestamptz_agg_exp
+        - fieldName: year
+          aggregateExpression: int4_agg_exp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: invoice_agg_exp
+
+---
+kind: Model
+version: v1
+definition:
+  name: invoice
+  objectType: invoice
+  source:
+    dataConnectorName: control_plane_pg
+    collection: invoice
+  filterExpressionType: invoice_bool_exp
+  aggregateExpression: invoice_agg_exp
+  orderableFields:
+    - fieldName: attempt_count
+      orderByDirections:
+        enableAll: true
+    - fieldName: created_at
+      orderByDirections:
+        enableAll: true
+    - fieldName: customer_id
+      orderByDirections:
+        enableAll: true
+    - fieldName: description
+      orderByDirections:
+        enableAll: true
+    - fieldName: invoice_url
+      orderByDirections:
+        enableAll: true
+    - fieldName: month
+      orderByDirections:
+        enableAll: true
+    - fieldName: status
+      orderByDirections:
+        enableAll: true
+    - fieldName: stripe_invoice_id
+      orderByDirections:
+        enableAll: true
+    - fieldName: subscription_id
+      orderByDirections:
+        enableAll: true
+    - fieldName: updated_at
+      orderByDirections:
+        enableAll: true
+    - fieldName: year
+      orderByDirections:
+        enableAll: true
+  graphql:
+    selectMany:
+      queryRootField: invoice
+    selectUniques:
+      - queryRootField: invoice_by_stripe_invoice_id
+        uniqueIdentifier:
+          - stripe_invoice_id
+    orderByExpressionType: invoice_order_by
+    filterInputTypeName: invoice_filter_input
+    aggregate:
+      queryRootField: invoice_aggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: invoice
+  permissions:
+    - role: admin
+      select:
+        filter: null
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: user
+  sourceType: invoice
+  target:
+    model:
+      name: users
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: customer_id
+      target:
+        modelField:
+          - fieldName: customer_id
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: invoice_items
+  sourceType: invoice
+  target:
+    model:
+      name: invoice_item
+      relationshipType: Array
+      aggregate:
+        aggregateExpression: invoice_item_agg_exp
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: stripe_invoice_id
+      target:
+        modelField:
+          - fieldName: invoice_id
+  graphql:
+    aggregateFieldName: invoice_items_aggregate
+

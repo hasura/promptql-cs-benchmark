@@ -1,0 +1,27 @@
+kind: Subgraph
+version: v2
+definition:
+  name: app
+  generator:
+    rootPath: .
+    namingConvention: none
+  includePaths:
+    - metadata
+  envMapping:
+    APP_CONTROL_PLANE_PG_AUTHORIZATION_HEADER:
+      fromEnv: APP_CONTROL_PLANE_PG_AUTHORIZATION_HEADER
+    APP_CONTROL_PLANE_PG_READ_URL:
+      fromEnv: APP_CONTROL_PLANE_PG_READ_URL
+    APP_CONTROL_PLANE_PG_WRITE_URL:
+      fromEnv: APP_CONTROL_PLANE_PG_WRITE_URL
+    APP_SUPPORT_TICKETS_PG_AUTHORIZATION_HEADER:
+      fromEnv: APP_SUPPORT_TICKETS_PG_AUTHORIZATION_HEADER
+    APP_SUPPORT_TICKETS_PG_READ_URL:
+      fromEnv: APP_SUPPORT_TICKETS_PG_READ_URL
+    APP_SUPPORT_TICKETS_PG_WRITE_URL:
+      fromEnv: APP_SUPPORT_TICKETS_PG_WRITE_URL
+  connectors:
+    - path: connector/control_plane_pg/connector.yaml
+      connectorLinkName: control_plane_pg
+    - path: connector/support_tickets_pg/connector.yaml
+      connectorLinkName: support_tickets_pg

@@ -1,0 +1,225 @@
+[
+  {
+    "subject": "Schema breakage",
+    "description": "The schema registry is consistently breaking even though there is no change to the backend objects which is creating uncertainty in the business operation and making it unreliable application.",
+    "comments": [
+      {
+        "role": "agent",
+        "text": "Hi smanoharan,\n\nThanks for reaching out to Hasura Support.\n\nI am looking into the urgent issue where schema registry is consistently breaking for your project.\n\nLet me work through this issue with our SRE team to check what is happening here.\n\nI'll keep you posted."
+      },
+      {
+        "role": "agent",
+        "text": "Hi smanoharan,\n\nPer the metadata of your project, looks like you use Snowflake DB and we wonder if you observe any latencies for introspection causing timeouts that may lead to inconsistent metadata ?\n\nCould you check if you connect your Snowflake DB outside of Hasura like using the tool psql, how does it respond ? Please provide screenshots.\nAlso, please provide the collaborator access to user ID: support-engineering@hasura.io for further investigation at our side.\n\nThanks,\nKashish"
+      },
+      {
+        "role": "user",
+        "text": "Hi Kashish,\n\nAs schema introspection queries use snowflake information schema the latency can be varying for various reasons. What's the schema introspection timeout and is it possible to change like increasing it to higher value?\n\nAnd also I noticed that the schema introspection query is being run for entire database, and is there a way to restrict it to specific schema(s)?\n\nAnd when I checked the snowflake query history, the schema introspection query submitted by Hasura takes around 16 seconds , refer the below screenshot"
+      },
+      {
+        "role": "agent",
+        "text": "Hey Siva,\n\nThe timeout for the introspection query is 30 seconds so looking at the time duration here should not be a problem.\n\nOur observation:\nWhen cluster recycle happened lastly, the initial introspection which happened against the snowflake DB had mostly timed out and had resulted in that inconsistent state.\n\nWe have recycled the cluster now.\n\nThe workers looks to be taking up traffic consistently and not showing inconsistent errors.\n\nAlso, we have done the RCA and going to work on the fix.\n\nNote: Setting the priority as 'High' now.\n\nPlease validate and let us know if there are any concerns."
+      },
+      {
+        "role": "user",
+        "text": "Hi Kashish,\n\nI assume the cluster that you mention is on the Hasura end. Please keep us informed on the further progress on the updates.\n\nSiva"
+      },
+      {
+        "role": "agent",
+        "text": "Hi Siva,\n\nThanks for the email.\n\nWe have implemented steps to prevent the issue from arising again in Hasura Cloud Infrastructure and you can monitor for improved performance.\n\nPlease let us know if any questions.\n\nThanks,\nKashish"
+      }
+    ]
+    "status": "closed",
+    "type": "operational"
+
+  },
+  {
+    "subject": "Connecting Hasura to Elasticache Redis",
+    "description": "We are having trouble connecting AWS Hasura to Elasticache Redis.  Following these instructions, https://hasura.io/docs/2.0/caching/enterprise-caching/.  Hasura is running in ECS and we have set\n\nHASURA_GRAPHQL_MAX_CACHE_SIZE=200\nHASURA_GRAPHQL_REDIS_TLS_HOSTNAME=dev-redis-meculpa\nHASURA_GRAPHQL_REDIS_URL=redis://dev-redis-meculpa.serverless.use2.cache.amazonaws.com:6379 (we don't have authentication setup yet)\nHASURA_GRAPHQL_REDIS_USE_TLS=true\n\nThe instance fails to launch.  We get the following\n\nDecember 05, 2024 at 13:26 (UTC-5:00)\terror connecting to caching redis:\nDecember 05, 2024 at 13:26 (UTC-5:00)\tError received from Redis: ConnectTimeout PhaseUnknown\t\nDecember 05, 2024 at 13:26 (UTC-5:00)\tPlease verify your Redis connection parameters are correct\nDecember 05, 2024 at 13:26 (UTC-5:00)\tIf TLS is required to connect to your Redis instance, please ensure that it is enabled and correctly configured",
+    "comments": [
+      {
+        "role": "agent",
+        "text": "Hi Bob,\n\nThanks for reaching out to Hasura Support.\n\nI am reviewing the config details thoroughly for your Redis instance.\n\nI will be back with an update soon.\n\nThanks,\nHasura support"
+      },
+      {
+        "role": "agent",
+        "text": "Hi Bob\n\nPlease add TLS configuration parameters as mentioned in the docs here:  https://hasura.io/docs/2.0/caching/enterprise-caching/configuration. Specifically: \n\nHASURA_GRAPHQL_REDIS_TLS_SHARED_CA_STORE_PATH: path to the shared CA certificate store to use for both the caching and rate-limiting Redis instances. If unspecified, it defaults to the system CA store if available.\n\nYou can find the CA_STORE_PATH in your AWS Elasticache settings.\n\nHope this helps."
+      },
+      {
+        "role": "user",
+        "text": "Thanks, we have set that parameter and it works now. Appreciate the speedy response."
+      }
+    ],
+    "status": "closed",
+    "type": "how-to"
+  },
+  {
+    "subject": "Connector subgraph HML using env variable for argumentPresent",
+    "description": "I have the following defined in HML for an argument preset \n\nkind: CommandPermissions\nversion: v1\ndefinition:\n  commandName: PostProductCheck\n  permissions:\n  - role: member\n    allowExecution: true\n    argumentPresets:\n    - argument: fundProductId\n      value:\n        literal: product-04beab95\n\n\n\nI want the literal value of argument preset \"fundProductId\" to come from an environment variable (not hardcoded in HML and not coming from a session variable).\n\nIs this supported? How can I do this?",
+    "comments": [
+      {
+        "role": "agent",
+        "text": "Hello Brett,\nThanks for reaching out to Hasura support. Let me look into this and get back to you with an update.\n\nRegards,\nHasura support"
+      },
+      {
+        "role": "agent",
+        "text": "Brett,\n\nCurrently, this is not supported. However, this is something we can request."
+      },
+      {
+        "role": "user",
+        "text": "Yes please request it – as these values are environment specific (lower vs upper) values and we don't want to have HML variations between environments."
+      },
+      {
+        "role": "agent",
+        "text": "Hello Brett,\n\nAcknowledging your feature request. We have created an internal ticket for this and will follow-up here when we have an update."
+      }
+    ],
+    "status": "open",
+    "type": "feature-request"
+  },
+  {
+    "subject": "Problem with _in vs _eq",
+    "description": "In our project, this query returns incorrect using _in VS _eq and we can not figure out why. \n\nPlease help us! We are at a loss. We are using MySQL database (attached is the HML file for profileInfos)\n\n\nDoes not work: -> _in\nquery SearchProfiles {\n  profileInfos(where: {profileTypeId: {_in: 1}}) {\n    name\n    profileTypeId\n    profileType {\n      name\n      id\n      definition\n    }\n  }\n}\n\nWorks: -> _eq\n\nquery SearchProfiles {\n  profileInfos(where: {profileTypeId: {_eq: 1}}) {\n    name\n    profileTypeId\n    profileType {\n      name\n      id\n      definition\n    }\n  }\n}",
+    "comments": [
+      {
+        "role": "agent",
+        "text": "Hello,\n\nAre you able to provide more detail as to what is not working? Any error messages or description of behavior would be useful.\n\nBest,\nHasura support"
+      },
+      {
+        "role": "user",
+        "text": "The results are incorrect. You can try it on any table. We are on version: v2.41.0"
+      },
+      {
+        "role": "agent",
+        "text": "Hi Jonathan,\n\nI wanted to thank you for bringing this to our attention as we determined profileInfos(where: {profileTypeId: {_in: 1}}) not returning proper results as a bug.\nThe fix should be available in the next few business days. Please let me know if I can assist further.\n\n\nBest,\nHasura support"
+      },
+      {
+        "role": "agent",
+        "text": "Hi Jonathan.\n\nWe have created a new release for the fix in question.\n\nhasura/mysql:v1.0.6\n\nYou could upgrade the connector to make  _in work correctly."
+      },
+      {
+        "role": "user",
+        "text": "Thank you! We deployed and we will continue to test but initial results looking good!"
+      }
+    ],
+    "status": "pending",
+    "type": "bug"
+  },
+  {
+    "subject": "Configuring Custom OpenTelemetry Endpoint in Self-Hosted Deployment",
+    "description": "Hi Hasura,\n\nI would like to ask about configuring a custom OpenTelemetry endpoint in a self-hosted deployment. \nCould you please provide guidance on how to set this up and the corresponding command for performing the Helm upgrade? \nAdditionally, would it be necessary to enable the otel-collector container as part of the process?",
+    "comments": [
+      {
+        "role": "agent",
+        "text": "Hello Fawzi, \n\nThank you for reaching out! Let me review your request and provide a solution shortly. \nHowever, I'm adjusting the ticket priority to normal since this request pertains to an Otel configuration solution. \nFor reference, you can review our support plans guidelines here: Hasura Support Plans."
+      },
+      {
+        "role": "user",
+        "text": "Hi Harish,\n\nWe understand that a ticket categorized as \"how-to\" particularly regarding OpenTelemetry, may not be considered urgent by the Hasura team. \nHowever, we would like to highlight the urgency of this matter from our perspective.\n\nCurrently, we are developing a GraphQL implementation using Hasura DDN in a private, self-hosted (BYOC) deployment within our Development environment. \nDue to network limitations, we are unable to utilize the DDN console provided by Hasura."
+      },
+      {
+        "role": "agent",
+        "text": "So our recommendation would be this:\n\nCopy out the OTEL config section from v3-engine (https://github.com/hasura/ddn-helm-charts/blob/main/charts/v3-engine/values.yaml#L60-L113) and place it into an v3-engine-overrides.yaml file\nModify this config accordingly to include your additional exporter (And make any other necessary changes as well). Please keep any bits in this config related to Hasura observability in place.  \nYou will just be adding on to this config file\nYou will also need to do the same for your phoenix connector (Copy out this into ndc-phoenix-overrides.yaml and make similar changes)\nFor the helm commands, you will need to add -f v3-engine-overrides.yaml or -f ndc-phoenix-overrides.yaml when you run the helm upgrade commands\n\nPlease let me know if you have any further questions."
+      }
+    ],
+    "status": "pending",
+    "type": "how-to"
+  },
+  {
+    "subject": "{AUTH_PROVIDER} integration not working",
+    "description": "Hi,\n\nWe're having trouble integrating {AUTH_PROVIDER} with Hasura. Configuration:\n\n```yaml\nauth:\n  provider: {AUTH_PROVIDER}\n  jwt:\n    algorithm: {JWT_ALGORITHM}\n    claims_format: json\n```\n\nError received:\n```\nmissing required claims when validating JWT\n```\n\nWhat's the correct setup for {AUTH_PROVIDER}? \n\nVersion: v2.38.0",
+    "comments": [
+        {
+          "role": "agent",
+          "text": "Hi there! Thank you for reaching out to Support. The error message you’re receiving, \"missing required claims when validating JWT,\" typically indicates that the JWT token is not following the correct spec as described here: https://hasura.io/docs/3.0/auth/authentication/jwt/setup. Can you share a sample token?"
+        },
+
+        {
+            "role": "user",
+            "text": "Thanks, here is a sample token: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.7dpI2PqhZJE2eDPAaEaqF6kX4cV-wswuiFuxRYn68gU
+        },
+        {
+            "role": "agent",
+            "text": "Hi there! As I can inspect, this token doesn't have few necessary claims like x-hasura-role. Please refer to the documentation given earlier to add this claim.
+        },
+        {
+            "role": "user",
+            "text": "Ok, thank you"
+        }
+
+    ],
+    "status": "closed"
+    "type": "how-to"
+  },
+  {
+    "subject": "Observing a memory leak",
+    "description": "Recently we have been observing a memory leak on one of the services using the Snowflake connector (see attached screenshots). What is a good way to troubleshoot this?\n\nWe are currently on version v2.43.0",
+    "comments": [
+      {
+        "role": "agent",
+        "text": "Hi Kris,\n\nThanks for reaching out to Hasura Support.\n\nWe see the issue is to how to troubleshoot memory leaks in the service using Postgres connector for your self hosted version of HGE.\n\nWe are reviewing the details internally. We would be back with an update shortly.\n\nNote: We are keeping the priority as 'High\" per support policy\n\nThanks,\nHasura support"
+      },
+      {
+        "role": "agent",
+        "text": "From our past experience, we can say that there might be different factors contributing to such memory increase.\n\nBut before troubleshooting, I would like to collect some inputs from your end:\n\nCan I know if this is your PROD environment on which there is memory usage increasing ?\nHow are memory stats looking on DB side during the same timeframe ?\nWhat is the size of the metadata (JSON) ?\nAre the API consumers of Hasura API using GraphQL subscriptions ?\nHow frequent are metadata updates being performed ? Like, how many times developers at HMH are pushing metadata updates, is it daily, weekly or twice a week ?\nIf this is a new behavior after deploying a new version?\nIf there is a lot of traffic per your observations?\nPlease provide us what you see from curl http://127.0.0.1:8181/dev/rts_stats on a couple of servers, along with the memory usage observed in the graph above.\nDo you have Event triggers configured in your Hasura instance ?\nDo you observe anything in the logs, or metrics ?"
+      }
+    ],
+    "status": "pending",
+    "type": "operational"
+  },
+  {
+    "subject": "Query performance degradation",
+    "description": "Hi Hasura team,\n\nWe're seeing significant performance issues with queries on {TABLE_NAME}:\n\nDetails:\n- Table size: {TABLE_SIZE}\n- Concurrent users: {CONCURRENT_USERS}\n- Response time: > {TIMEOUT}\n\nQuery pattern:\n```graphql\nquery {\n  ${TABLE_NAME}(\n    where: { status: { _eq: \"active\" } }\n    order_by: { created_at: desc }\n  ) {\n    id\n    # nested fields\n  }\n}\n```\n\nCan you look into what's happening? \n Version: v2.12.2, Database: Postgres 15",
+    "comments": [
+      {
+        "role": "agent",
+        "text": "Hi\n\nCan you share a trace of this operation?"
+      },
+      {
+        "role": "user",
+        "text": "Attached is the trace."
+      },
+      {
+        "role": "agent",
+        "text": "I can see that the bottleneck is on the database side. Can you share all the indexes on the {TABLE_NAME}?"
+      },
+      {
+        "role": "user",
+        "text": "Here are the indexes on this table:\n\nindx_user_status\nindx_user_id"
+      },
+      {
+        "role": "agent",
+        "text": "I think adding an index on `created_at` would significantly help since it is referenced in the order by."
+      }
+    ],
+    "status": "pending",
+    "type": "operational"
+  },
+  {
+    "subject": "Move project to different VPC",
+    "description": "Hi\n\nCan you please move the project_id: {UUID} to VPC ID: {UUID} in the same AWS account",
+    "comments": [
+      {
+        "role": "agent",
+        "text": "Hi,\n\nThis has been done and your project is now in the provided VPC."
+      },
+    ],
+    "status": "closed"
+    "type": "other"
+  },
+  {
+    "subject": "Need observability on database connections",
+    "description": "Hi\n\nHow can I see how many connections is Hasura opening on my Postgres database? Is there any feature for this?",
+    "comments": [
+      {
+        "role": "agent",
+        "text": "Hi,\n\nCurrently, this information is currently not available in the product. However, this is something we can consider as a feature request."
+      },
+      {
+        "role": "user",
+        "text": "Yes please request it – as these are important for our observability needs. Let us know when it's available."
+      },
+    ],
+    "status": "open",
+    "type": "feature-request"
+  }
+]

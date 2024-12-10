@@ -1,0 +1,176 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: project_plan_changelogs
+  fields:
+    - name: comment
+      type: text
+    - name: created_at
+      type: timestamptz!
+    - name: id
+      type: uuid!
+    - name: plan_id
+      type: uuid!
+    - name: project_id
+      type: uuid!
+  graphql:
+    typeName: project_plan_changelogs
+    inputTypeName: project_plan_changelogs_input
+  dataConnectorTypeMapping:
+    - dataConnectorName: control_plane_pg
+      dataConnectorObjectType: project_plan_changelogs
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: project_plan_changelogs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - comment
+          - created_at
+          - id
+          - plan_id
+          - project_id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: project_plan_changelogs_bool_exp
+  operand:
+    object:
+      type: project_plan_changelogs
+      comparableFields:
+        - fieldName: comment
+          booleanExpressionType: text_bool_exp
+        - fieldName: created_at
+          booleanExpressionType: timestamptz_bool_exp
+        - fieldName: id
+          booleanExpressionType: uuid_bool_exp
+        - fieldName: plan_id
+          booleanExpressionType: uuid_bool_exp
+        - fieldName: project_id
+          booleanExpressionType: uuid_bool_exp
+      comparableRelationships:
+        - relationshipName: plan
+        - relationshipName: project
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: project_plan_changelogs_bool_exp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: project_plan_changelogs_agg_exp
+  operand:
+    object:
+      aggregatedType: project_plan_changelogs
+      aggregatableFields:
+        - fieldName: comment
+          aggregateExpression: text_agg_exp
+        - fieldName: created_at
+          aggregateExpression: timestamptz_agg_exp
+        - fieldName: id
+          aggregateExpression: uuid_agg_exp
+        - fieldName: plan_id
+          aggregateExpression: uuid_agg_exp
+        - fieldName: project_id
+          aggregateExpression: uuid_agg_exp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: project_plan_changelogs_agg_exp
+
+---
+kind: Model
+version: v1
+definition:
+  name: project_plan_changelogs
+  objectType: project_plan_changelogs
+  source:
+    dataConnectorName: control_plane_pg
+    collection: project_plan_changelogs
+  filterExpressionType: project_plan_changelogs_bool_exp
+  aggregateExpression: project_plan_changelogs_agg_exp
+  orderableFields:
+    - fieldName: comment
+      orderByDirections:
+        enableAll: true
+    - fieldName: created_at
+      orderByDirections:
+        enableAll: true
+    - fieldName: id
+      orderByDirections:
+        enableAll: true
+    - fieldName: plan_id
+      orderByDirections:
+        enableAll: true
+    - fieldName: project_id
+      orderByDirections:
+        enableAll: true
+  graphql:
+    selectMany:
+      queryRootField: project_plan_changelogs
+    selectUniques:
+      - queryRootField: project_plan_changelogs_by_id
+        uniqueIdentifier:
+          - id
+    orderByExpressionType: project_plan_changelogs_order_by
+    filterInputTypeName: project_plan_changelogs_filter_input
+    aggregate:
+      queryRootField: project_plan_changelogs_aggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: project_plan_changelogs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: plan
+  sourceType: project_plan_changelogs
+  target:
+    model:
+      name: plans
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: plan_id
+      target:
+        modelField:
+          - fieldName: id
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: project
+  sourceType: project_plan_changelogs
+  target:
+    model:
+      name: projects
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: project_id
+      target:
+        modelField:
+          - fieldName: id
+
