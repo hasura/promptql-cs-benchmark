@@ -1,6 +1,7 @@
 include:
   - path: app/connector/control_plane_pg/compose.yaml
   - path: app/connector/support_tickets_pg/compose.yaml
+  - path: app/connector/typescript/compose.yaml
 services:
   engine:
     build:

@@ -20,8 +20,16 @@ definition:
       fromEnv: APP_SUPPORT_TICKETS_PG_READ_URL
     APP_SUPPORT_TICKETS_PG_WRITE_URL:
       fromEnv: APP_SUPPORT_TICKETS_PG_WRITE_URL
+    APP_TYPESCRIPT_AUTHORIZATION_HEADER:
+      fromEnv: APP_TYPESCRIPT_AUTHORIZATION_HEADER
+    APP_TYPESCRIPT_READ_URL:
+      fromEnv: APP_TYPESCRIPT_READ_URL
+    APP_TYPESCRIPT_WRITE_URL:
+      fromEnv: APP_TYPESCRIPT_WRITE_URL
   connectors:
     - path: connector/control_plane_pg/connector.yaml
       connectorLinkName: control_plane_pg
     - path: connector/support_tickets_pg/connector.yaml
       connectorLinkName: support_tickets_pg
+    - path: connector/typescript/connector.yaml
+      connectorLinkName: typescript

@@ -1,0 +1,66 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: IssueCreditsResponse
+  fields:
+    - name: status
+      type: String!
+      description: status of credit issue. one of 'success', 'failed', 'pending'
+    - name: stripe_invoice_id
+      type: String
+      description: Invoice id for credit issue
+  graphql:
+    typeName: IssueCreditsResponse
+    inputTypeName: IssueCreditsResponse_input
+  dataConnectorTypeMapping:
+    - dataConnectorName: typescript
+      dataConnectorObjectType: IssueCreditsResponse
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: IssueCreditsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - status
+          - stripe_invoice_id
+
+---
+kind: Command
+version: v1
+definition:
+  name: issueCreditsOrRefund
+  outputType: IssueCreditsResponse!
+  arguments:
+    - name: amount
+      type: Float!
+      description: In US dollar, e.g. 10.5 or 100
+    - name: email
+      type: String!
+      description: email of the project's owner
+    - name: owner_id
+      type: String!
+    - name: project_id
+      type: String!
+  source:
+    dataConnectorName: typescript
+    dataConnectorCommand:
+      procedure: issueCreditsOrRefund
+  graphql:
+    rootFieldName: issueCreditsOrRefund
+    rootFieldKind: Mutation
+  description: Issue credits or refund to project owner.
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: issueCreditsOrRefund
+  permissions:
+    - role: admin
+      allowExecution: true
+

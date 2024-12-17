@@ -1,0 +1,80 @@
+kind: DataConnectorLink
+version: v1
+definition:
+  name: typescript
+  url:
+    readWriteUrls:
+      read:
+        valueFromEnv: APP_TYPESCRIPT_READ_URL
+      write:
+        valueFromEnv: APP_TYPESCRIPT_WRITE_URL
+  headers:
+    Authorization:
+      valueFromEnv: APP_TYPESCRIPT_AUTHORIZATION_HEADER
+  schema:
+    version: v0.1
+    schema:
+      scalar_types:
+        Float:
+          representation:
+            type: float64
+          aggregate_functions: {}
+          comparison_operators:
+            _eq:
+              type: equal
+        String:
+          representation:
+            type: string
+          aggregate_functions: {}
+          comparison_operators:
+            _eq:
+              type: equal
+      object_types:
+        IssueCreditsResponse:
+          fields:
+            status:
+              description: status of credit issue. one of 'success', 'failed', 'pending'
+              type:
+                type: named
+                name: String
+            stripe_invoice_id:
+              description: Invoice id for credit issue
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: String
+      collections: []
+      functions: []
+      procedures:
+        - name: issueCreditsOrRefund
+          description: Issue credits or refund to project owner.
+          arguments:
+            amount:
+              description: In US dollar, e.g. 10.5 or 100
+              type:
+                type: named
+                name: Float
+            email:
+              description: email of the project's owner
+              type:
+                type: named
+                name: String
+            owner_id:
+              type:
+                type: named
+                name: String
+            project_id:
+              type:
+                type: named
+                name: String
+          result_type:
+            type: named
+            name: IssueCreditsResponse
+    capabilities:
+      version: 0.1.6
+      capabilities:
+        query:
+          variables: {}
+          nested_fields: {}
+        mutation: {}
