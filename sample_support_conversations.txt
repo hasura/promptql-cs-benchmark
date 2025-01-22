@@ -1,6 +1,6 @@
 [
   {
-    "subject": "Schema breakage",
+    "subject": "Schema registry breaking",
     "description": "The schema registry is consistently breaking even though there is no change to the backend objects which is creating uncertainty in the business operation and making it unreliable application.",
     "comments": [
       {
@@ -29,7 +29,7 @@
       }
     ]
     "status": "closed",
-    "type": "operational"
+    "type": "production instability"
 
   },
   {
@@ -164,7 +164,7 @@
       }
     ],
     "status": "pending",
-    "type": "operational"
+    "type": "production instability"
   },
   {
     "subject": "Query performance degradation",
@@ -192,7 +192,7 @@
       }
     ],
     "status": "pending",
-    "type": "operational"
+    "type": "performance degradation"
   },
   {
     "subject": "Move project to different VPC",
