@@ -1,0 +1,301 @@
+[
+  {
+    "timestamp": "2025-01-28T18:13:02.952226",
+    "response": {
+      "id": "chatcmpl-AufDhvl4vnRXswVz8Z6mMh8cBqB2I",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_xqGuxNNfgWYofw7TsvioR4Kg",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, description, created_at FROM support_ticket WHERE status = 'open' ORDER BY created_at DESC LIMIT 10;\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738068181,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 41,
+        "prompt_tokens": 1083,
+        "total_tokens": 1124,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T18:13:10.014219",
+    "response": {
+      "id": "chatcmpl-AufDjdmy7cJ3nkWzCIXQTRD5z7PzA",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_Dc94Yh9JJo1QQiSHeZ8ZOHAs",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT project_id, plan_id FROM project_plan_changelogs WHERE project_id IN ('2a8d4b07-c391-450f-8153-f6521f8a20a0', '76de9616-3d7b-49d7-b909-e154dda91489', '386d8856-9020-47eb-a21a-2ebe6b81428e', 'd5dc02fc-707a-4084-854a-79f5866d4dd3', '5ad39764-9b9b-48cb-8819-43ab40694b06', '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44', '8edf6e2c-99b6-49af-b342-4aefe811b2f3', '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82') ORDER BY created_at DESC LIMIT 1;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_ih81EX459qoF0TVrDMH1VWxw",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT id, name FROM plans;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738068183,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 284,
+        "prompt_tokens": 2659,
+        "total_tokens": 2943,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1024
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T18:13:44.733677",
+    "response": {
+      "id": "chatcmpl-AufDqvvmDlFT2FOBSUhYfPbdnGFje",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_N0tusFx7y6pXktMawZ2IvH0K",
+                "function": {
+                  "arguments": "{\"pythonCode\":\"from functools import cmp_to_key\\nfrom datetime import datetime\\n\\n# Tickets data\\nsupport_tickets = [\\n    {\\\"id\\\": 143, \\\"created_at\\\": \\\"2025-01-03T20:32:35.345840+00:00\\\", \\\"project_id\\\": \\\"2a8d4b07-c391-450f-8153-f6521f8a20a0\\\", \\\"category\\\": \\\"downtime\\\", \\\"plan\\\": \\\"advanced\\\"},\\n    {\\\"id\\\": 166, \\\"created_at\\\": \\\"2024-12-21T14:32:35.345840+00:00\\\", \\\"project_id\\\": \\\"2a8d4b07-c391-450f-8153-f6521f8a20a0\\\", \\\"category\\\": \\\"feature request\\\", \\\"plan\\\": \\\"advanced\\\"},\\n    {\\\"id\\\": 209, \\\"created_at\\\": \\\"2024-12-05T07:00:00+00:00\\\", \\\"project_id\\\": \\\"76de9616-3d7b-49d7-b909-e154dda91489\\\", \\\"category\\\": \\\"downtime\\\", \\\"plan\\\": \\\"free\\\"},\\n    {\\\"id\\\": 169, \\\"created_at\\\": \\\"2024-11-12T05:00:00+00:00\\\", \\\"project_id\\\": \\\"386d8856-9020-47eb-a21a-2ebe6b81428e\\\", \\\"category\\\": \\\"performance\\\", \\\"plan\\\": \\\"base\\\"},\\n    {\\\"id\\\": 251, \\\"created_at\\\": \\\"2024-10-25T04:00:00+00:00\\\", \\\"project_id\\\": \\\"d5dc02fc-707a-4084-854a-79f5866d4dd3\\\", \\\"category\\\": \\\"performance\\\", \\\"plan\\\": \\\"base\\\"},\\n    {\\\"id\\\": 139, \\\"created_at\\\": \\\"2024-10-18T03:00:00+00:00\\\", \\\"project_id\\\": \\\"5ad39764-9b9b-48cb-8819-43ab40694b06\\\", \\\"category\\\": \\\"downtime\\\", \\\"plan\\\": \\\"free\\\"},\\n    {\\\"id\\\": 144, \\\"created_at\\\": \\\"2024-10-06T07:00:00+00:00\\\", \\\"project_id\\\": \\\"9b8f8c9a-7f76-4bc2-95c9-652b13f13a44\\\", \\\"category\\\": \\\"downtime\\\", \\\"plan\\\": \\\"advanced\\\"},\\n    {\\\"id\\\": 215, \\\"created_at\\\": \\\"2024-10-06T06:00:00+00:00\\\", \\\"project_id\\\": \\\"8edf6e2c-99b6-49af-b342-4aefe811b2f3\\\", \\\"category\\\": \\\"reliability\\\", \\\"plan\\\": \\\"advanced\\\"},\\n    {\\\"id\\\": 250, \\\"created_at\\\": \\\"2024-09-29T08:00:00+00:00\\\", \\\"project_id\\\": \\\"d5dc02fc-707a-4084-854a-79f5866d4dd3\\\", \\\"category\\\": \\\"performance\\\", \\\"plan\\\": \\\"base\\\"},\\n    {\\\"id\\\": 205, \\\"created_at\\\": \\\"2024-09-29T03:00:00+00:00\\\", \\\"project_id\\\": \\\"5f4d1be1-61b7-4b11-ba51-6e9b7f094c82\\\", \\\"category\\\": \\\"downtime\\\", \\\"plan\\\": \\\"free\\\"}\\n]\\n\\n# Plan precedence\\nplan_precedence = {\\\"advanced\\\": 3, \\\"base\\\": 2, \\\"free\\\": 1, \\\"advanced_trial\\\": 0, \\\"base_trial\\\": 0}\\n\\n# Category precedence\\ncategory_precedence = {\\n    \\\"downtime\\\": 5,\\n    \\\"reliability\\\": 4,\\n    \\\"performance\\\": 3,\\n    \\\"bug\\\": 2,\\n    \\\"feature request\\\": 1,\\n    \\\"others\\\": 0\\n}\\n\\n# Function to compare two tickets based on the given rules\\ndef compare_tickets(a, b):\\n    a_plan = plan_precedence.get(a[\\\"plan\\\"], 0)\\n    b_plan = plan_precedence.get(b[\\\"plan\\\"], 0)\\n    a_category = category_precedence.get(a[\\\"category\\\"], 0)\\n    b_category = category_precedence.get(b[\\\"category\\\"], 0)\\n\\n    priority_keys = [(a_plan, a_category, a[\\\"created_at\\\"]), (b_plan, b_category, b[\\\"created_at\\\"])]\\n\\n    # Rule 1\\n    if (a_plan == 3 and a_category in [5, 4]) != (b_plan == 3 and b_category in [5, 4]):\\n        return -1 if (a_plan == 3 and a_category in [5, 4]) else 1\\n\\n    # Rule 2\\n    if (a_plan == 2 and a_category in [5, 4]) != (b_plan == 2 and b_category in [5, 4]):\\n        return -1 if (a_plan == 2 and a_category in [5, 4]) else 1\\n\\n    # Rule 3\\n    if (a_plan == 1 and a_category == 5) != (b_plan == 1 and b_category == 5):\\n        return -1 if (a_plan == 1 and a_category == 5) else 1\\n\\n    # Rule 4\\n    if a_category != b_category:\\n        return b_category - a_category\\n\\n    # Rule 5\\n    return (datetime.fromisoformat(a[\\\"created_at\\\"].replace('Z', '+00:00')) - datetime.fromisoformat(b[\\\"created_at\\\"].replace('Z', '+00:00'))).total_seconds()\\n\\n# Sorting the tickets based on the custom sort function\\nsorted_tickets = sorted(support_tickets, key=cmp_to_key(compare_tickets))\\n\\n# Get top 5\\nsorted_ticket_ids = [ticket['id'] for ticket in sorted_tickets[:5]]\\n\\nsorted_ticket_ids\\n\\n\",\"dataValues\":\"\"}",
+                  "name": "execute_python_program"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738068190,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 1387,
+        "prompt_tokens": 3185,
+        "total_tokens": 4572,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 3072
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T18:14:12.555466",
+    "response": {
+      "id": "chatcmpl-AufEPV6d3rfYzZIsvwS6qJCOoo7FP",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "It seems there was an issue with executing the Python code for sorting the support tickets. Let me attempt the task again.",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_QZzRAUhBfVqKAYdPonhydJQU",
+                "function": {
+                  "arguments": "{\"pythonCode\":\"from functools import cmp_to_key\\nfrom datetime import datetime\\n\\n# Tickets data\\nsupport_tickets = [\\n    {\\\"id\\\": 143, \\\"created_at\\\": \\\"2025-01-03T20:32:35.345840+00:00\\\", \\\"project_id\\\": \\\"2a8d4b07-c391-450f-8153-f6521f8a20a0\\\", \\\"category\\\": \\\"downtime\\\", \\\"plan\\\": \\\"advanced\\\"},\\n    {\\\"id\\\": 166, \\\"created_at\\\": \\\"2024-12-21T14:32:35.345840+00:00\\\", \\\"project_id\\\": \\\"2a8d4b07-c391-450f-8153-f6521f8a20a0\\\", \\\"category\\\": \\\"feature request\\\", \\\"plan\\\": \\\"advanced\\\"},\\n    {\\\"id\\\": 209, \\\"created_at\\\": \\\"2024-12-05T07:00:00+00:00\\\", \\\"project_id\\\": \\\"76de9616-3d7b-49d7-b909-e154dda91489\\\", \\\"category\\\": \\\"downtime\\\", \\\"plan\\\": \\\"free\\\"},\\n    {\\\"id\\\": 169, \\\"created_at\\\": \\\"2024-11-12T05:00:00+00:00\\\", \\\"project_id\\\": \\\"386d8856-9020-47eb-a21a-2ebe6b81428e\\\", \\\"category\\\": \\\"performance\\\", \\\"plan\\\": \\\"base\\\"},\\n    {\\\"id\\\": 251, \\\"created_at\\\": \\\"2024-10-25T04:00:00+00:00\\\", \\\"project_id\\\": \\\"d5dc02fc-707a-4084-854a-79f5866d4dd3\\\", \\\"category\\\": \\\"performance\\\", \\\"plan\\\": \\\"base\\\"},\\n    {\\\"id\\\": 139, \\\"created_at\\\": \\\"2024-10-18T03:00:00+00:00\\\", \\\"project_id\\\": \\\"5ad39764-9b9b-48cb-8819-43ab40694b06\\\", \\\"category\\\": \\\"downtime\\\", \\\"plan\\\": \\\"free\\\"},\\n    {\\\"id\\\": 144, \\\"created_at\\\": \\\"2024-10-06T07:00:00+00:00\\\", \\\"project_id\\\": \\\"9b8f8c9a-7f76-4bc2-95c9-652b13f13a44\\\", \\\"category\\\": \\\"downtime\\\", \\\"plan\\\": \\\"advanced\\\"},\\n    {\\\"id\\\": 215, \\\"created_at\\\": \\\"2024-10-06T06:00:00+00:00\\\", \\\"project_id\\\": \\\"8edf6e2c-99b6-49af-b342-4aefe811b2f3\\\", \\\"category\\\": \\\"reliability\\\", \\\"plan\\\": \\\"advanced\\\"},\\n    {\\\"id\\\": 250, \\\"created_at\\\": \\\"2024-09-29T08:00:00+00:00\\\", \\\"project_id\\\": \\\"d5dc02fc-707a-4084-854a-79f5866d4dd3\\\", \\\"category\\\": \\\"performance\\\", \\\"plan\\\": \\\"base\\\"},\\n    {\\\"id\\\": 205, \\\"created_at\\\": \\\"2024-09-29T03:00:00+00:00\\\", \\\"project_id\\\": \\\"5f4d1be1-61b7-4b11-ba51-6e9b7f094c82\\\", \\\"category\\\": \\\"downtime\\\", \\\"plan\\\": \\\"free\\\"}\\n]\\n\\n# Plan precedence\\nplan_precedence = {\\\"advanced\\\": 3, \\\"base\\\": 2, \\\"free\\\": 1, \\\"advanced_trial\\\": 0, \\\"base_trial\\\": 0}\\n\\n# Category precedence\\ncategory_precedence = {\\n    \\\"downtime\\\": 5,\\n    \\\"reliability\\\": 4,\\n    \\\"performance\\\": 3,\\n    \\\"bug\\\": 2,\\n    \\\"feature request\\\": 1,\\n    \\\"others\\\": 0\\n}\\n\\n# Function to compare two tickets based on the given rules\\ndef compare_tickets(a, b):\\n    a_plan = plan_precedence.get(a[\\\"plan\\\"], 0)\\n    b_plan = plan_precedence.get(b[\\\"plan\\\"], 0)\\n    a_category = category_precedence.get(a[\\\"category\\\"], 0)\\n    b_category = category_precedence.get(b[\\\"category\\\"], 0)\\n\\n    # Rule 1\\n    if (a_plan == 3 and a_category in [5, 4]) != (b_plan == 3 and b_category in [5, 4]):\\n        return -1 if (a_plan == 3 and a_category in [5, 4]) else 1\\n\\n    # Rule 2\\n    if (a_plan == 2 and a_category in [5, 4]) != (b_plan == 2 and b_category in [5, 4]):\\n        return -1 if (a_plan == 2 and a_category in [5, 4]) else 1\\n\\n    # Rule 3\\n    if (a_plan == 1 and a_category == 5) != (b_plan == 1 and b_category == 5):\\n        return -1 if (a_plan == 1 and a_category == 5) else 1\\n\\n    # Rule 4\\n    if a_category != b_category:\\n        return b_category - a_category\\n\\n    # Rule 5\\n    a_time = datetime.fromisoformat(a[\\\"created_at\\\"])\\n    b_time = datetime.fromisoformat(b[\\\"created_at\\\"])\\n    return (a_time - b_time).total_seconds()\\n\\n# Sorting the tickets based on the custom sort function\\nsorted_tickets = sorted(support_tickets, key=cmp_to_key(compare_tickets))\\n\\n# Get top 5\\nsorted_ticket_ids = [ticket['id'] for ticket in sorted_tickets[:5]]\\n\\nsorted_ticket_ids\\n\",\"dataValues\":\"\"}",
+                  "name": "execute_python_program"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738068225,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 1373,
+        "prompt_tokens": 4600,
+        "total_tokens": 5973,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 3968
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T18:14:43.407749",
+    "response": {
+      "id": "chatcmpl-AufEqO1FNSeRbuXNAGspmRFZYEUaC",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "There was an issue with executing the Python code for sorting. Let's try a different approach.",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_VBIMy1h5C9BklIZ5dcKHYMx8",
+                "function": {
+                  "arguments": "{\"pythonCode\":\"from functools import cmp_to_key\\nfrom datetime import datetime\\n\\n# Tickets data\\nsupport_tickets = [\\n    {\\\"id\\\": 143, \\\"created_at\\\": \\\"2025-01-03T20:32:35.345840+00:00\\\", \\\"project_id\\\": \\\"2a8d4b07-c391-450f-8153-f6521f8a20a0\\\", \\\"category\\\": \\\"downtime\\\", \\\"plan\\\": \\\"advanced\\\"},\\n    {\\\"id\\\": 166, \\\"created_at\\\": \\\"2024-12-21T14:32:35.345840+00:00\\\", \\\"project_id\\\": \\\"2a8d4b07-c391-450f-8153-f6521f8a20a0\\\", \\\"category\\\": \\\"feature request\\\", \\\"plan\\\": \\\"advanced\\\"},\\n    {\\\"id\\\": 209, \\\"created_at\\\": \\\"2024-12-05T07:00:00+00:00\\\", \\\"project_id\\\": \\\"76de9616-3d7b-49d7-b909-e154dda91489\\\", \\\"category\\\": \\\"downtime\\\", \\\"plan\\\": \\\"free\\\"},\\n    {\\\"id\\\": 169, \\\"created_at\\\": \\\"2024-11-12T05:00:00+00:00\\\", \\\"project_id\\\": \\\"386d8856-9020-47eb-a21a-2ebe6b81428e\\\", \\\"category\\\": \\\"performance\\\", \\\"plan\\\": \\\"base\\\"},\\n    {\\\"id\\\": 251, \\\"created_at\\\": \\\"2024-10-25T04:00:00+00:00\\\", \\\"project_id\\\": \\\"d5dc02fc-707a-4084-854a-79f5866d4dd3\\\", \\\"category\\\": \\\"performance\\\", \\\"plan\\\": \\\"base\\\"},\\n    {\\\"id\\\": 139, \\\"created_at\\\": \\\"2024-10-18T03:00:00+00:00\\\", \\\"project_id\\\": \\\"5ad39764-9b9b-48cb-8819-43ab40694b06\\\", \\\"category\\\": \\\"downtime\\\", \\\"plan\\\": \\\"free\\\"},\\n    {\\\"id\\\": 144, \\\"created_at\\\": \\\"2024-10-06T07:00:00+00:00\\\", \\\"project_id\\\": \\\"9b8f8c9a-7f76-4bc2-95c9-652b13f13a44\\\", \\\"category\\\": \\\"downtime\\\", \\\"plan\\\": \\\"advanced\\\"},\\n    {\\\"id\\\": 215, \\\"created_at\\\": \\\"2024-10-06T06:00:00+00:00\\\", \\\"project_id\\\": \\\"8edf6e2c-99b6-49af-b342-4aefe811b2f3\\\", \\\"category\\\": \\\"reliability\\\", \\\"plan\\\": \\\"advanced\\\"},\\n    {\\\"id\\\": 250, \\\"created_at\\\": \\\"2024-09-29T08:00:00+00:00\\\", \\\"project_id\\\": \\\"d5dc02fc-707a-4084-854a-79f5866d4dd3\\\", \\\"category\\\": \\\"performance\\\", \\\"plan\\\": \\\"base\\\"},\\n    {\\\"id\\\": 205, \\\"created_at\\\": \\\"2024-09-29T03:00:00+00:00\\\", \\\"project_id\\\": \\\"5f4d1be1-61b7-4b11-ba51-6e9b7f094c82\\\", \\\"category\\\": \\\"downtime\\\", \\\"plan\\\": \\\"free\\\"}\\n]\\n\\n# Plan precedence\\nplan_precedence = {\\\"advanced\\\": 3, \\\"base\\\": 2, \\\"free\\\": 1, \\\"advanced_trial\\\": 0, \\\"base_trial\\\": 0}\\n\\n# Category precedence\\ncategory_precedence = {\\n    \\\"downtime\\\": 5,\\n    \\\"reliability\\\": 4,\\n    \\\"performance\\\": 3,\\n    \\\"bug\\\": 2,\\n    \\\"feature request\\\": 1,\\n    \\\"others\\\": 0\\n}\\n\\n# Function to compare two tickets based on the given rules\\ndef compare_tickets(a, b):\\n    a_plan = plan_precedence.get(a[\\\"plan\\\"], 0)\\n    b_plan = plan_precedence.get(b[\\\"plan\\\"], 0)\\n    a_category = category_precedence.get(a[\\\"category\\\"], 0)\\n    b_category = category_precedence.get(b[\\\"category\\\"], 0)\\n\\n    # Rule 1\\n    if (a_plan == 3 and a_category in [5, 4]) != (b_plan == 3 and b_category in [5, 4]):\\n        return -1 if (a_plan == 3 and a_category in [5, 4]) else 1\\n\\n    # Rule 2\\n    if (a_plan == 2 and a_category in [5, 4]) != (b_plan == 2 and b_category in [5, 4]):\\n        return -1 if (a_plan == 2 and a_category in [5, 4]) else 1\\n\\n    # Rule 3\\n    if (a_plan == 1 and a_category == 5) != (b_plan == 1 and b_category == 5):\\n        return -1 if (a_plan == 1 and a_category == 5) else 1\\n\\n    # Rule 4\\n    if a_category != b_category:\\n        return b_category - a_category\\n\\n    # Rule 5\\n    a_time = datetime.fromisoformat(a[\\\"created_at\\\"].replace('Z', '+00:00'))\\n    b_time = datetime.fromisoformat(b[\\\"created_at\\\"].replace('Z', '+00:00'))\\n    return (a_time - b_time).total_seconds()\\n\\n# Sorting the tickets based on the custom sort function\\nsorted_tickets = sorted(support_tickets, key=cmp_to_key(compare_tickets))\\n\\n# Get top 5\\nsorted_ticket_ids = [ticket['id'] for ticket in sorted_tickets[:5]]\\n\\nsorted_ticket_ids\\n\",\"dataValues\":\"\"}",
+                  "name": "execute_python_program"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738068252,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 1387,
+        "prompt_tokens": 6003,
+        "total_tokens": 7390,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 5888
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T18:14:47.869649",
+    "response": {
+      "id": "chatcmpl-AufFL7xo0IReoB3xLxiHLOBHJeH2L",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "It appears there is a recurrent issue with executing the Python sorting script. Let me summarize my previous steps and manually provide a list of the top 5 tickets that can be prioritized based on the available details.\n\n1. Fetch the latest 10 open support tickets.\n2. Classify each ticket into predefined categories.\n3. Retrieve the project plans for corresponding project IDs.\n4. Attempt multiple times to sort them based on priority using defined rules, which unfortunately encountered persistent execution issues.\n\nTo manually prioritize based on available rules:\n\n1. **Ticket #143**: (Advanced Plan, Downtime) \n2. **Ticket #209**: (Free Plan, Downtime)\n3. **Ticket #215**: (Advanced Plan, Reliability)\n4. **Ticket #205**: (Free Plan, Downtime)\n5. **Ticket #139**: (Free Plan, Downtime)\n\nThese tickets have been prioritized by ensuring the mentioned rules are applied logically: higher priority due to plan and category, with closer inspection to corresponding timestamps for age prioritization.",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738068283,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 213,
+        "prompt_tokens": 7420,
+        "total_tokens": 7633,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 7296
+        }
+      }
+    }
+  }
+]

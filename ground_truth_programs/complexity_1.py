@@ -39,10 +39,13 @@ def prioritize_tickets(n_last_tickets=5, top_k_tickets=5):
     for ticket in open_tickets:
         # Extract project_id from description using regex
         project_id = None
-        if ticket['description']:
-            project_id_match = re.search(r'project[_\s-]?id[\s:]+([a-zA-Z0-9-]+)', ticket["description"], re.IGNORECASE)
-            project_id = project_id_match.group(1) if project_id_match else None
         
+        # Extract project_ids using regex - get last match if multiple exist
+        project_id_pattern = r'Project ID: ([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})'
+        if ticket['description']:
+            matches = list(re.finditer(project_id_pattern, ticket['description']))
+            project_id = matches[-1].group(1) if matches else None
+ 
         # Calculate time since creation
         created_at = datetime.datetime.strptime(ticket['created_at'].split('.')[0], 
                                               '%Y-%m-%dT%H:%M:%S')

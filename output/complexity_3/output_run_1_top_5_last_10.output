@@ -1,0 +1,151 @@
+[
+  {
+    "timestamp": "2025-01-28T16:36:29.348370",
+    "response": {
+      "id": "chatcmpl-AudiFXGhYlFhzYNjCQks199OkMF2m",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_6SlZCIwGNbSd1SEpapM3YgXB",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, description, created_at FROM support_ticket WHERE status = 'open' ORDER BY created_at DESC LIMIT 10;\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738062387,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 41,
+        "prompt_tokens": 1072,
+        "total_tokens": 1113,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T16:36:37.823408",
+    "response": {
+      "id": "chatcmpl-AudiHEEt0Inv5e5sfEnX6KHkX8Ri7",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_yhWi8rvkbcOFlLnGwF2gxmfX",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT project_id, comment FROM project_plan_changelogs WHERE project_id IN ('2a8d4b07-c391-450f-8153-f6521f8a20a0', '76de9616-3d7b-49d7-b909-e154dda91489', '386d8856-9020-47eb-a21a-2ebe6b81428e', 'd5dc02fc-707a-4084-854a-79f5866d4dd3', '5ad39764-9b9b-48cb-8819-43ab40694b06', '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44', '8edf6e2c-99b6-49af-b342-4aefe811b2f3', '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82') ORDER BY project_id, created_at DESC;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_N7FCarpVacBggiwKFQspJ2re",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT project_id FROM data_generation_seeds WHERE price_per_model_advanced = 1 AND project_id IN ('2a8d4b07-c391-450f-8153-f6521f8a20a0', '76de9616-3d7b-49d7-b909-e154dda91489', '386d8856-9020-47eb-a21a-2ebe6b81428e', 'd5dc02fc-707a-4084-854a-79f5866d4dd3', '5ad39764-9b9b-48cb-8819-43ab40694b06', '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44', '8edf6e2c-99b6-49af-b342-4aefe811b2f3', '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82');\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738062389,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 502,
+        "prompt_tokens": 2648,
+        "total_tokens": 3150,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1024
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T16:36:46.417697",
+    "response": {
+      "id": "chatcmpl-AudiQOeIeUU0DLszHyao8mzx4Od4a",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Based on the queried data, here's a classification for each ticket and their respective priorities:\n\n### Classification\n1. **Ticket ID 143**: \n   - **Description**: Fails to load project dashboard, impacting production environment. \n   - **Category**: Downtime\n\n2. **Ticket ID 166**: \n   - **Description**: Request for custom GraphQL directives.\n   - **Category**: Feature Request\n\n3. **Ticket ID 209**: \n   - **Description**: Complete outage of production environment.\n   - **Category**: Downtime\n\n4. **Ticket ID 169**: \n   - **Description**: Resource exhaustion in Schema Registry.\n   - **Category**: Performance\n\n5. **Ticket ID 251**: \n   - **Description**: Performance degradation in queries involving permissions.\n   - **Category**: Performance\n\n6. **Ticket ID 139**: \n   - **Description**: Unreachable GraphQL endpoint and console, impacting production.\n   - **Category**: Downtime\n\n7. **Ticket ID 144**: \n   - **Description**: GraphQL operations return 500 Internal Server Errors.\n   - **Category**: Downtime\n\n8. **Ticket ID 215**:\n   - **Description**: Intermittent failures in the Actions feature.\n   - **Category**: Reliability\n\n9. **Ticket ID 250**:\n   - **Description**: Severe resource exhaustion and timeout.\n   - **Category**: Performance\n\n10. **Ticket ID 205**:\n   - **Description**: GraphQL operations failing with 500 Internal Server Error.\n   - **Category**: Downtime\n\n### Sorting\n\nNow, I will sort these tickets by applying the prioritization rules considering that all projects are initially on a simple plan (no advanced feature flag set):\n\n1. **Downtime > Reliability > Performance > Bug > Feature Request > Others**\n2. Compare based on creation time.\n\n### Sorted Tickets\n<tickets>\n209\n144\n205\n139\n143\n</tickets>\n\nThese IDs reflect the tickets sorted by their critical nature and creation age, assuming all are on the same plan. The advanced plan check would prioritize further if any had advanced flags, which they don't seem to have from the current data query results.",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738062398,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 476,
+        "prompt_tokens": 3464,
+        "total_tokens": 3940,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 3072
+        }
+      }
+    }
+  }
+]

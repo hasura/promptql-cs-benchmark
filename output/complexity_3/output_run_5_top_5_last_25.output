@@ -1,0 +1,201 @@
+[
+  {
+    "timestamp": "2025-01-28T17:05:42.512729",
+    "response": {
+      "id": "chatcmpl-AueAXXmWO945nJ5oysp0YWgz46Jyg",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_AfkUO8jCd2kryDb5er5G7ULC",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, description, created_at FROM support_ticket WHERE status = 'open' ORDER BY created_at DESC LIMIT 25;\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738064141,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 41,
+        "prompt_tokens": 1072,
+        "total_tokens": 1113,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:05:57.079798",
+    "response": {
+      "id": "chatcmpl-AueAYRC2hyPbFtLxRYz9jWHoGG3eA",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_SJsrd8QT8yxqXW1Ns9nq4Xal",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT project_id, MAX(created_at) AS last_plan_change, plan_id FROM project_plan_changelogs WHERE project_id IN ('2a8d4b07-c391-450f-8153-f6521f8a20a0', '76de9616-3d7b-49d7-b909-e154dda91489', '386d8856-9020-47eb-a21a-2ebe6b81428e', 'd5dc02fc-707a-4084-854a-79f5866d4dd3', '5ad39764-9b9b-48cb-8819-43ab40694b06', '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44', '8edf6e2c-99b6-49af-b342-4aefe811b2f3', '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82', 'e452f72b-66e1-4c56-ada2-3525ab8fb280', 'b750445e-fba4-4644-b306-1550cfefad8b', 'e75d06e3-6ec1-4649-bc83-7d19cd07fd77', '4aeefe6f-7dee-4395-82be-6d8e51aea9fd', '598b3a1b-0166-420f-ac63-fa734cbf5c63', 'c5d9c906-2b61-424e-967b-fa3e27d09d44', '5267a67e-d8ea-4154-b385-6269b033a471', 'fc2590f9-6bdc-43e3-9984-9246fd96f2dd', '4e291cdc-0aab-4573-86a4-c82490831964', '4d76af73-0ea4-4d9f-9247-78ab43a23704', '4fbe297d-f58e-477e-a6c9-f5c98cb92555', 'eabbc719-c5cb-461c-9144-e531de1b0617', '9aed3be2-245d-4e1e-9040-5317a8a8daf1') GROUP BY project_id, plan_id;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_CWCyZkJeqXFvnrwvUNaZN5xx",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT id, name FROM plans;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738064142,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 608,
+        "prompt_tokens": 4936,
+        "total_tokens": 5544,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 4864
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:06:59.726317",
+    "response": {
+      "id": "chatcmpl-AueAnITF7wLxSTd5GQJGhwzOkH0fK",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_LAKbhSnvddiieG0VSDvpbGWZ",
+                "function": {
+                  "arguments": "{\"pythonCode\":\"from functools import cmp_to_key\\n\\n# Ticket data with extracted project ID, associated plan name and their creation time\\n\\ntickets = [\\n    {'id': 143, 'project_id': '2a8d4b07-c391-450f-8153-f6521f8a20a0', 'plan': 'base', 'created_at': '2025-01-03T20:32:35.345840+00:00', 'description': \\\"I am unable to access my project on Hasura Cloud. When I try to open the project dashboard, it fails...\\\"},\\n    {'id': 166, 'project_id': '2a8d4b07-c391-450f-8153-f6521f8a20a0', 'plan': 'base', 'created_at': '2024-12-21T14:32:35.345840+00:00', 'description': \\\"We are using your platform and would like to request support for custom GraphQL directives...\\\"},\\n    {'id': 209, 'project_id': '76de9616-3d7b-49d7-b909-e154dda91489', 'plan': 'free', 'created_at': '2024-12-05T07:00:00+00:00', 'description': 'We are experiencing a complete outage of our production environment. All our services are down and...'},\\n    {'id': 169, 'project_id': '386d8856-9020-47eb-a21a-2ebe6b81428e', 'plan': 'advanced', 'created_at': '2024-11-12T05:00:00+00:00', 'description': \\\"We are experiencing resource exhaustion issues while using the Schema Registry feature in our production...\\\"},\\n    {'id': 251, 'project_id': 'd5dc02fc-707a-4084-854a-79f5866d4dd3', 'plan': 'base', 'created_at': '2024-10-25T04:00:00+00:00', 'description': \\\"We are experiencing significant performance degradation when performing operations that involve...\\\"},\\n    {'id': 139, 'project_id': '5ad39764-9b9b-48cb-8819-43ab40694b06', 'plan': 'base', 'created_at': '2024-10-18T03:00:00+00:00', 'description': \\\"We are experiencing a critical issue where we cannot access our Hasura project. The GraphQL endpoint...\\\"},\\n    {'id': 144, 'project_id': '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44', 'plan': 'base', 'created_at': '2024-10-06T07:00:00+00:00', 'description': 'We are experiencing a service disruption as all our GraphQL operations are returning 500 Internal...'},\\n    {'id': 215, 'project_id': '8edf6e2c-99b6-49af-b342-4aefe811b2f3', 'plan': 'advanced', 'created_at': '2024-10-06T06:00:00+00:00', 'description': \\\"We are experiencing intermittent failures with the Actions feature in our production environment...\\\"},\\n    {'id': 250, 'project_id': 'd5dc02fc-707a-4084-854a-79f5866d4dd3', 'plan': 'base', 'created_at': '2024-09-29T08:00:00+00:00', 'description': \\\"We are facing severe resource exhaustion and slow response times when using Actions in our...\\\"},\\n    {'id': 205, 'project_id': '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82', 'plan': 'advanced', 'created_at': '2024-09-29T03:00:00+00:00', 'description': 'We are experiencing a critical production issue where all our GraphQL operations are failing...'},\\n    {'id': 261, 'project_id': 'e452f72b-66e1-4c56-ada2-3525ab8fb280', 'plan': 'advanced', 'created_at': '2024-09-26T06:00:00+00:00', 'description': \\\"We are experiencing significant performance degradation in our application's permissions...\\\"},\\n    {'id': 237, 'project_id': 'b750445e-fba4-4644-b306-1550cfefad8b', 'plan': 'base', 'created_at': '2024-09-13T01:00:00+00:00', 'description': 'We are unable to access our project through the API service. All our API endpoints are...'},\\n    {'id': 265, 'project_id': 'e75d06e3-6ec1-4649-bc83-7d19cd07fd77', 'plan': 'advanced', 'created_at': '2024-08-27T01:00:00+00:00', 'description': \\\"We've been experiencing significant performance degradation with our Actions over the past days...\\\"},\\n    {'id': 178, 'project_id': '4aeefe6f-7dee-4395-82be-6d8e51aea9fd', 'plan': 'advanced', 'created_at': '2024-08-25T08:00:00+00:00', 'description': 'Since this morning, all our GraphQL queries and mutations are returning 500 Internal Server Error...'},\\n    {'id': 203, 'project_id': '5ad39764-9b9b-48cb-8819-43ab40694b06', 'plan': 'base', 'created_at': '2024-08-20T02:00:00+00:00', 'description': \\\"We're experiencing resource exhaustion and slow response times when using Remote Schemas in...\\\"},\\n    {'id': 201, 'project_id': '598b3a1b-0166-420f-ac63-fa734cbf5c63', 'plan': 'base', 'created_at': '2024-08-07T08:00:00+00:00', 'description': 'Our Hasura GraphQL API service is currently down in production. All API requests are failing and...'},\\n    {'id': 246, 'project_id': 'c5d9c906-2b61-424e-967b-fa3e27d09d44', 'plan': 'advanced', 'created_at': '2024-07-27T08:00:00+00:00', 'description': 'Our production Hasura service is currently down, and all API requests to our GraphQL endpoints are...'},\\n    {'id': 193, 'project_id': '5267a67e-d8ea-4154-b385-6269b033a471', 'plan': 'advanced', 'created_at': '2024-07-13T06:00:00+00:00', 'description': 'All of our GraphQL operations are returning HTTP 500 Internal Server Error responses in...'},\\n    {'id': 277, 'project_id': 'fc2590f9-6bdc-43e3-9984-9246fd96f2dd', 'plan': 'base', 'created_at': '2024-06-18T04:00:00+00:00', 'description': 'Our production environment is experiencing intermittent failures with the Schema Registry feature...'},\\n    {'id': 186, 'project_id': '4e291cdc-0aab-4573-86a4-c82490831964', 'plan': 'free', 'created_at': '2024-05-29T03:00:00+00:00', 'description': \\\"We are experiencing random failures with the Actions feature in our production environment...\\\"},\\n    {'id': 180, 'project_id': '4d76af73-0ea4-4d9f-9247-78ab43a23704', 'plan': 'base', 'created_at': '2024-05-10T12:09:49.874596+00:00', 'description': \\\"We are currently unable to access our Hasura project. Attempts to connect to the project dashboard...\\\"},\\n    {'id': 187, 'project_id': '4fbe297d-f58e-477e-a6c9-f5c98cb92555', 'plan': 'free', 'created_at': '2024-05-10T02:00:00+00:00', 'description': \\\"We are experiencing random failures with the Actions feature in our production environment...\\\"},\\n    {'id': 264, 'project_id': 'e75d06e3-6ec1-4649-bc83-7d19cd07fd77', 'plan': 'advanced', 'created_at': '2024-04-30T01:00:00+00:00', 'description': 'All our GraphQL operations are returning 500 Internal Server Errors affecting our production environment...'},\\n    {'id': 267, 'project_id': 'eabbc719-c5cb-461c-9144-e531de1b0617', 'plan': 'advanced', 'created_at': '2024-04-26T02:00:00+00:00', 'description': \\\"We're experiencing intermittent issues with Remote Schemas in our...\\\"},\\n    {'id': 224, 'project_id': '9aed3be2-245d-4e1e-9040-5317a8a8daf1', 'plan': 'advanced', 'created_at': '2024-04-09T04:00:00+00:00', 'description': \\\"Our team is unable to reach our Hasura project, and this is causing a major disruption...\\\"}\\n]\\n\\ncategories = {\\n    \\\"downtime\\\": 0,\\n    \\\"reliability\\\": 1,\\n    \\\"performance\\\": 2,\\n    \\\"bug\\\": 3,\\n    \\\"feature request\\\": 4,\\n    \\\"others\\\": 5\\n}\\n\\n# Classify ticket based on its description\\n\\ndef classify(description):\\n    if \\\"downtime\\\" in description or \\\"outage\\\" in description or \\\"production environment\\\" in description and \\\"All our services are down\\\" in description:\\n        return \\\"downtime\\\"\\n    if \\\"intermittent\\\" in description or \\\"random failures\\\" in description:\\n        return \\\"reliability\\\"\\n    if \\\"performance\\\" in description or \\\"slow response times\\\" in description or \\\"resource exhaustion\\\" in description:\\n        return \\\"performance\\\"\\n    if \\\"bug\\\" in description:\\n        return \\\"bug\\\"\\n    if \\\"feature\\\" in description:\\n        return \\\"feature request\\\"\\n    return \\\"others\\\"\\n\\n\\ndef compare_tickets(t1, t2):\\n    # Advanced plan with downtime or reliability has priority\\n    t1_category = classify(t1['description'])\\n    t2_category = classify(t2['description'])\\n    if t1['plan'] == 'advanced' and t1_category in ['downtime', 'reliability']:\\n        if not (t2['plan'] == 'advanced' and t2_category in ['downtime', 'reliability']):\\n            return -1\\n    if t2['plan'] == 'advanced' and t2_category in ['downtime', 'reliability']:\\n        if not (t1['plan'] == 'advanced' and t1_category in ['downtime', 'reliability']):\\n            return 1\\n\\n    # Category comparison\\n    if categories[t1_category] < categories[t2_category]:\\n        return -1\\n    if categories[t1_category] > categories[t2_category]:\\n        return 1\\n\\n    # Older tickets first\\n    if t1['created_at'] < t2['created_at']:\\n        return -1\\n    if t1['created_at'] > t2['created_at']:\\n        return 1\\n\\n    return 0\\n\\n# Sort tickets\\nsorted_tickets = sorted(tickets, key=cmp_to_key(compare_tickets))\\n\\n# Output top 5 tickets\\noutput_tickets = [ticket['id'] for ticket in sorted_tickets[:5]]\\n\\n# Print the result in the required format\\nprint('<tickets>\\\\n' + '\\\\n'.join(map(str, output_tickets)) + '\\\\n</tickets>')\\n\"}",
+                  "name": "execute_python_program"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738064157,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 2833,
+        "prompt_tokens": 7804,
+        "total_tokens": 10637,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 5376
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:07:01.180013",
+    "response": {
+      "id": "chatcmpl-AueBoGBR7hdADZFEbZ3EzWTQEVj5O",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Here is the sorted list of top 5 support tickets based on priority:\n\n<tickets>\n267\n215\n209\n187\n186\n</tickets>",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738064220,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 33,
+        "prompt_tokens": 10681,
+        "total_tokens": 10714,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 10496
+        }
+      }
+    }
+  }
+]

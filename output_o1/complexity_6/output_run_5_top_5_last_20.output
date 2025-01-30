@@ -1,0 +1,243 @@
+[
+  {
+    "timestamp": "2025-01-30T13:26:57.493447",
+    "response": {
+      "id": "chatcmpl-AvJhGJa08JJxP8rKAyoH2fF3SM9dE",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_OatYMID4ZeXPDlT82MC3VRZv",
+                "function": {
+                  "arguments": "{\"sql\":\"WITH open_20 AS (\\n    SELECT st.*,\\n           SUBSTRING(st.description FROM '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}') AS extracted_project_id\\n    FROM support_ticket st\\n    WHERE st.status = 'open'\\n    ORDER BY st.created_at DESC\\n    LIMIT 20\\n),\\nplan_data AS (\\n    SELECT DISTINCT ON (ppc.project_id)\\n           ppc.project_id,\\n           pl.name AS plan_name\\n    FROM project_plan_changelogs ppc\\n    JOIN plans pl ON pl.id = ppc.plan_id\\n    ORDER BY ppc.project_id, ppc.created_at DESC\\n),\\nrevenue_data AS (\\n    SELECT ii.project_id,\\n           COALESCE(SUM(ii.amount), 0) AS net_revenue\\n    FROM invoice_item ii\\n    WHERE ii.created_at >= '2024-01-16'\\n    GROUP BY ii.project_id\\n),\\ncombined AS (\\n    SELECT\\n        o.id,\\n        o.created_at,\\n        o.subject,\\n        o.description,\\n        plan_data.plan_name,\\n        revenue_data.net_revenue,\\n        CASE\\n            WHEN (\\n                o.subject ILIKE '%outage%' OR o.description ILIKE '%outage%' OR\\n                o.subject ILIKE '%downtime%' OR o.description ILIKE '%downtime%' OR\\n                o.subject ILIKE '%500%' OR o.description ILIKE '%500%' OR\\n                o.description ILIKE '%production environment outages%' OR\\n                o.description ILIKE '%API failures%' OR\\n                o.description ILIKE '%time out%' OR\\n                o.description ILIKE '%503%'\\n            ) THEN 'downtime'\\n            WHEN (\\n                o.subject ILIKE '%reliability%' OR o.description ILIKE '%reliability%' OR\\n                o.subject ILIKE '%intermittent%' OR o.description ILIKE '%intermittent%' OR\\n                o.description ILIKE '%random request failures%' OR\\n                o.description ILIKE '%service instability%'\\n            ) THEN 'reliability'\\n            WHEN (\\n                o.subject ILIKE '%performance%' OR o.description ILIKE '%performance%' OR\\n                o.description ILIKE '%latency%' OR\\n                o.description ILIKE '%long response times%' OR o.description ILIKE '%slow%'\\n            ) THEN 'performance'\\n            WHEN (\\n                o.subject ILIKE '%bug%' OR o.description ILIKE '%bug%' OR\\n                o.description ILIKE '%_in operator%' OR\\n                o.description ILIKE '%wrong results%' OR\\n                o.description ILIKE '%unauthorized%'\\n            ) THEN 'bug'\\n            WHEN (\\n                o.subject ILIKE '%feature request%' OR o.description ILIKE '%feature request%' OR\\n                o.description ILIKE '%request%' OR\\n                o.description ILIKE '%enhanced functionality%' OR\\n                o.description ILIKE '%batch operations%' OR\\n                o.description ILIKE '%flexible config%'\\n            ) THEN 'feature request'\\n            ELSE 'others'\\n        END AS category\\n    FROM open_20 o\\n    LEFT JOIN plan_data ON plan_data.project_id = o.extracted_project_id::uuid\\n    LEFT JOIN revenue_data ON revenue_data.project_id = o.extracted_project_id::uuid\\n)\\nSELECT c.id\\nFROM combined c\\nORDER BY\\n    CASE WHEN (\\n        (c.plan_name ILIKE '%advanced%') AND (c.category IN ('downtime', 'reliability'))\\n    ) THEN 1 ELSE 0 END DESC,\\n    CASE WHEN (\\n        (c.plan_name ILIKE '%base%' OR c.plan_name ILIKE '%free%') AND (c.category = 'downtime')\\n    ) THEN 1 ELSE 0 END DESC,\\n    c.net_revenue DESC,\\n    c.created_at ASC\\nLIMIT 5;\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738223774,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 4535,
+        "prompt_tokens": 1059,
+        "total_tokens": 5594,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 3648,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-30T13:27:05.376648",
+    "response": {
+      "id": "chatcmpl-AvJhxBwph9VZLgL2MEGsR0sKUzlkr",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_8m26oB0gOK9Lhfqr884mqgLG",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, is_public, priority, status, subject, description, type, assignee_id, requester_id, created_at, url\\nFROM support_ticket\\nWHERE status = 'open'\\nORDER BY created_at DESC\\nLIMIT 20;\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738223817,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 650,
+        "prompt_tokens": 1989,
+        "total_tokens": 2639,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 576,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-30T13:27:50.618868",
+    "response": {
+      "id": "chatcmpl-AvJi5cEMJpHD3IshsE8AhCuaKNUSy",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_z6mn3IrqtXgyUGr3SJ632AVw",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT project_id, price_per_model_advanced FROM data_generation_seeds\\nWHERE project_id IN (\\n  '2a8d4b07-c391-450f-8153-f6521f8a20a0',\\n  '76de9616-3d7b-49d7-b909-e154dda91489',\\n  '386d8856-9020-47eb-a21a-2ebe6b81428e',\\n  'd5dc02fc-707a-4084-854a-79f5866d4dd3',\\n  '5ad39764-9b9b-48cb-8819-43ab40694b06',\\n  '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44',\\n  '8edf6e2c-99b6-49af-b342-4aefe811b2f3',\\n  '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82',\\n  'e452f72b-66e1-4c56-ada2-3525ab8fb280',\\n  'b750445e-fba4-4644-b306-1550cfefad8b',\\n  'e75d06e3-6ec1-4649-bc83-7d19cd07fd77',\\n  '4aeefe6f-7dee-4395-82be-6d8e51aea9fd',\\n  '598b3a1b-0166-420f-ac63-fa734cbf5c63',\\n  'c5d9c906-2b61-424e-967b-fa3e27d09d44',\\n  '5267a67e-d8ea-4154-b385-6269b033a471',\\n  'fc2590f9-6bdc-43e3-9984-9246fd96f2dd',\\n  '4e291cdc-0aab-4573-86a4-c82490831964'\\n);\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738223825,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 4807,
+        "prompt_tokens": 6665,
+        "total_tokens": 11472,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 4288,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1920
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-30T13:28:24.654094",
+    "response": {
+      "id": "chatcmpl-AvJipF7x8n00YFcvbSFbsoeaTHNk2",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_pqCGNXj2536wx4sk0doX0cya",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT project_id, COALESCE(SUM(amount),0) as net_revenue\\nFROM invoice_item\\nWHERE created_at >= '2024-01-16' \\n  AND project_id IN (\\n    '2a8d4b07-c391-450f-8153-f6521f8a20a0',\\n    '76de9616-3d7b-49d7-b909-e154dda91489',\\n    '386d8856-9020-47eb-a21a-2ebe6b81428e',\\n    'd5dc02fc-707a-4084-854a-79f5866d4dd3',\\n    '5ad39764-9b9b-48cb-8819-43ab40694b06',\\n    '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44',\\n    '8edf6e2c-99b6-49af-b342-4aefe811b2f3',\\n    '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82',\\n    'e452f72b-66e1-4c56-ada2-3525ab8fb280',\\n    'b750445e-fba4-4644-b306-1550cfefad8b',\\n    'e75d06e3-6ec1-4649-bc83-7d19cd07fd77',\\n    '4aeefe6f-7dee-4395-82be-6d8e51aea9fd',\\n    '598b3a1b-0166-420f-ac63-fa734cbf5c63',\\n    'c5d9c906-2b61-424e-967b-fa3e27d09d44',\\n    '5267a67e-d8ea-4154-b385-6269b033a471',\\n    'fc2590f9-6bdc-43e3-9984-9246fd96f2dd',\\n    '4e291cdc-0aab-4573-86a4-c82490831964'\\n  )\\nGROUP BY project_id;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738223871,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 4069,
+        "prompt_tokens": 7948,
+        "total_tokens": 12017,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 3520,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 6528
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-30T13:29:27.501831",
+    "response": {
+      "id": "chatcmpl-AvJjN2b40JqCEZu2A3V7I9yamCm0S",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "<tickets>\n246\n205\n178\n215\n277\n</tickets>",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738223905,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 6491,
+        "prompt_tokens": 9135,
+        "total_tokens": 15626,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 6464,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 7808
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,122 @@
+[
+  {
+    "timestamp": "2025-01-29T17:46:45.383259",
+    "response": {
+      "id": "msg_014xgT4QLcjw9n1DLZmPYX5C",
+      "content": [
+        {
+          "citations": null,
+          "text": "I'll help create a comprehensive analysis and sorting of the support tickets. This will require multiple steps:\n\n1. First, let's get the last 5 open tickets with their details\n2. Extract project IDs and get their plan information\n3. Classify the tickets\n4. Sort them according to the given rules\n\nLet's start by getting the ticket information:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01KbPS3RevuYmn6DczMKrDzV",
+          "input": {
+            "sql": "SELECT \n    t.id,\n    t.subject,\n    t.description,\n    t.created_at,\n    t.priority\nFROM support_ticket t\nWHERE t.status = 'open'\nORDER BY t.created_at DESC\nLIMIT 5;"
+          },
+          "name": "query_support_tickets",
+          "type": "tool_use"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "tool_use",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 1680,
+        "output_tokens": 198
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T17:46:51.059364",
+    "response": {
+      "id": "msg_01G3m5UbEPryXm6P2z9ieFA7",
+      "content": [
+        {
+          "citations": null,
+          "text": "Now, let's get the plan information for these projects:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_017N69VB82ZzJbwCNG2pvDd4",
+          "input": {
+            "sql": "WITH latest_plan_changes AS (\n    SELECT \n        pc.project_id,\n        p.name as plan_name,\n        pc.created_at,\n        ROW_NUMBER() OVER (PARTITION BY pc.project_id ORDER BY pc.created_at DESC) as rn\n    FROM project_plan_changelogs pc\n    JOIN plans p ON p.id = pc.plan_id\n    WHERE pc.project_id IN (\n        '2a8d4b07-c391-450f-8153-f6521f8a20a0',\n        '76de9616-3d7b-49d7-b909-e154dda91489',\n        '386d8856-9020-47eb-a21a-2ebe6b81428e',\n        'd5dc02fc-707a-4084-854a-79f5866d4dd3'\n    )\n)\nSELECT project_id, plan_name\nFROM latest_plan_changes\nWHERE rn = 1;"
+          },
+          "name": "query_control_plane_data",
+          "type": "tool_use"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "tool_use",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 2811,
+        "output_tokens": 312
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T17:47:08.936243",
+    "response": {
+      "id": "msg_014JswzkS5gYp7J4vvwrwJBR",
+      "content": [
+        {
+          "citations": null,
+          "text": "Now, let's use Python to classify and sort the tickets according to the given rules:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_015hkSNSrKs83qGKSULVTiSC",
+          "input": {
+            "pythonCode": "import json\nfrom datetime import datetime\nfrom functools import cmp_to_key\n\n# Ticket data\ntickets = [\n    {\n        \"id\": 143,\n        \"project_id\": \"2a8d4b07-c391-450f-8153-f6521f8a20a0\",\n        \"subject\": \"URGENT: Cannot Access Project\",\n        \"description\": \"I am unable to access my project on Hasura Cloud...\",\n        \"created_at\": \"2025-01-03T20:32:35.345840+00:00\",\n        \"category\": \"downtime\"  # Cannot access project dashboard indicates downtime\n    },\n    {\n        \"id\": 166,\n        \"project_id\": \"2a8d4b07-c391-450f-8153-f6521f8a20a0\",\n        \"subject\": \"Feature Request: Support for Custom GraphQL Directives\",\n        \"description\": \"Request for custom GraphQL directives...\",\n        \"created_at\": \"2024-12-21T14:32:35.345840+00:00\",\n        \"category\": \"feature request\"\n    },\n    {\n        \"id\": 209,\n        \"project_id\": \"76de9616-3d7b-49d7-b909-e154dda91489\",\n        \"subject\": \"Urgent: Production Environment Down\",\n        \"description\": \"Complete outage of production environment...\",\n        \"created_at\": \"2024-12-05T07:00:00+00:00\",\n        \"category\": \"downtime\"\n    },\n    {\n        \"id\": 169,\n        \"project_id\": \"386d8856-9020-47eb-a21a-2ebe6b81428e\",\n        \"subject\": \"Schema Registry causing high resource usage\",\n        \"description\": \"Resource exhaustion issues...\",\n        \"created_at\": \"2024-11-12T05:00:00+00:00\",\n        \"category\": \"performance\"\n    },\n    {\n        \"id\": 251,\n        \"project_id\": \"d5dc02fc-707a-4084-854a-79f5866d4dd3\",\n        \"subject\": \"Performance degradation in permission-related operations\",\n        \"description\": \"Performance degradation in permissions...\",\n        \"created_at\": \"2024-10-25T04:00:00+00:00\",\n        \"category\": \"performance\"\n    }\n]\n\n# Plan data\nproject_plans = {\n    \"2a8d4b07-c391-450f-8153-f6521f8a20a0\": \"base\",\n    \"386d8856-9020-47eb-a21a-2ebe6b81428e\": \"advanced\",\n    \"76de9616-3d7b-49d7-b909-e154dda91489\": \"free\",\n    \"d5dc02fc-707a-4084-854a-79f5866d4dd3\": \"base\"\n}\n\n# Category priority order\ncategory_priority = {\n    \"downtime\": 0,\n    \"reliability\": 1,\n    \"performance\": 2,\n    \"bug\": 3,\n    \"feature request\": 4,\n    \"others\": 5\n}\n\ndef compare_tickets(t1, t2):\n    # Rule 1: Advanced plan with downtime/reliability\n    t1_advanced_critical = (project_plans.get(t1[\"project_id\"]) == \"advanced\" and \n                          t1[\"category\"] in [\"downtime\", \"reliability\"])\n    t2_advanced_critical = (project_plans.get(t2[\"project_id\"]) == \"advanced\" and \n                          t2[\"category\"] in [\"downtime\", \"reliability\"])\n    if t1_advanced_critical != t2_advanced_critical:\n        return -1 if t1_advanced_critical else 1\n\n    # Rule 2: Base plan with downtime/reliability\n    t1_base_critical = (project_plans.get(t1[\"project_id\"]) == \"base\" and \n                       t1[\"category\"] in [\"downtime\", \"reliability\"])\n    t2_base_critical = (project_plans.get(t2[\"project_id\"]) == \"base\" and \n                       t2[\"category\"] in [\"downtime\", \"reliability\"])\n    if t1_base_critical != t2_base_critical:\n        return -1 if t1_base_critical else 1\n\n    # Rule 3: Free plan with downtime\n    t1_free_downtime = (project_plans.get(t1[\"project_id\"]) == \"free\" and \n                       t1[\"category\"] == \"downtime\")\n    t2_free_downtime = (project_plans.get(t2[\"project_id\"]) == \"free\" and \n                       t2[\"category\"] == \"downtime\")\n    if t1_free_downtime != t2_free_downtime:\n        return -1 if t1_free_downtime else 1\n\n    # Rule 4: Category priority\n    if t1[\"category\"] != t2[\"category\"]:\n        return category_priority[t1[\"category\"]] - category_priority[t2[\"category\"]]\n\n    # Rule 5: Creation time (older first)\n    t1_time = datetime.fromisoformat(t1[\"created_at\"].replace('Z', '+00:00'))\n    t2_time = datetime.fromisoformat(t2[\"created_at\"].replace('Z', '+00:00'))\n    return (t1_time - t2_time).total_seconds()\n\n# Sort tickets\nsorted_tickets = sorted(tickets, key=cmp_to_key(compare_tickets))\n\nprint(\"<tickets>\")\nfor ticket in sorted_tickets[:5]:\n    print(ticket[\"id\"])\nprint(\"</tickets>\")"
+          },
+          "name": "execute_python_program",
+          "type": "tool_use"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "tool_use",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 3293,
+        "output_tokens": 1491
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T17:47:14.073142",
+    "response": {
+      "id": "msg_01MtjJKVg8sEhZAa2byNzhqj",
+      "content": [
+        {
+          "citations": null,
+          "text": "Let me explain the prioritized order:\n\n1. Ticket 143: Downtime issue on Base plan (high priority due to base plan + downtime)\n2. Ticket 209: Downtime issue on Free plan (high priority due to free plan + downtime)\n3. Ticket 251: Performance issue on Base plan\n4. Ticket 169: Performance issue on Advanced plan\n5. Ticket 166: Feature request on Base plan\n\nThe sorting follows the rules exactly as specified:\n- Tickets with downtime on base plan (143) came first\n- Followed by downtime on free plan (209)\n- Then performance issues (251, 169) sorted by creation time\n- Finally, feature request (166)\n\nThe categorization was done based on the ticket content:\n- Tickets mentioning inability to access/complete outage were classified as \"downtime\"\n- Tickets mentioning slow responses/performance degradation were classified as \"performance\"\n- Tickets explicitly mentioning new feature requests were classified as \"feature request\"",
+          "type": "text"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 4829,
+        "output_tokens": 232
+      }
+    }
+  }
+]

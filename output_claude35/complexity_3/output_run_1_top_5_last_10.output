@@ -1,0 +1,179 @@
+[
+  {
+    "timestamp": "2025-01-29T15:53:55.787791",
+    "response": {
+      "id": "msg_01CEUqerWdMvaZsg4eGXLtEQ",
+      "content": [
+        {
+          "citations": null,
+          "text": "I'll help create a comprehensive analysis of the support tickets according to your requirements. This will require multiple steps:\n\n1. First, let's get the last 10 open tickets with their details\n2. Extract project IDs and categorize the tickets\n3. Get plan information for each project\n4. Sort them according to the given rules\n\nHere's how we'll do this:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01TxQ7ZbF2QJfMx5FgBpDw6k",
+          "input": {
+            "sql": "SELECT t.id, t.subject, t.description, t.created_at \nFROM support_ticket t\nWHERE t.status = 'open'\nORDER BY t.created_at DESC\nLIMIT 10;"
+          },
+          "name": "query_support_tickets",
+          "type": "tool_use"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "tool_use",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 1627,
+        "output_tokens": 187
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T15:54:00.861251",
+    "response": {
+      "id": "msg_012LRunuiWvJ5Zuj3NXyAGr4",
+      "content": [
+        {
+          "citations": null,
+          "text": "Now, let's get the plan information for all these projects:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01FK2DX7hMUYzUS75xquHYPQ",
+          "input": {
+            "sql": "WITH latest_plans AS (\n    SELECT DISTINCT ON (ppc.project_id) \n        ppc.project_id,\n        p.name as plan_name\n    FROM project_plan_changelogs ppc\n    JOIN plans p ON p.id = ppc.plan_id\n    ORDER BY ppc.project_id, ppc.created_at DESC\n)\nSELECT project_id, plan_name \nFROM latest_plans;"
+          },
+          "name": "query_control_plane_data",
+          "type": "tool_use"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "tool_use",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 3582,
+        "output_tokens": 176
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T15:55:28.299606",
+    "response": {
+      "id": "msg_01TiAKvFvZ4mTXex8vyr2DFc",
+      "content": [
+        {
+          "citations": null,
+          "text": "Now I'll write a Python program to analyze and sort the tickets according to the given rules:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01K6QyeqJuKVqwr34BfBd2gp",
+          "input": {},
+          "name": "execute_python_program",
+          "type": "tool_use"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "max_tokens",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 12126,
+        "output_tokens": 4096
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T15:57:08.393078",
+    "response": {
+      "id": "msg_017dodBLGL9amYxNn4USDQtW",
+      "content": [
+        {
+          "id": "toolu_01VUFC2nnj4i1RtGunNTRpHQ",
+          "input": {
+            "pythonCode": "import json\nfrom functools import cmp_to_key\nimport re\n\ndef classify_ticket(subject, description):\n    # Combine subject and description for better classification\n    text = (subject + \" \" + description).lower()\n    \n    # Downtime indicators\n    if any(phrase in text for phrase in [\n        \"cannot access\", \"unreachable\", \"down\", \"outage\", \"500 error\", \n        \"internal server error\", \"service disruption\", \"unable to access\"\n    ]) and (\"production\" in text or \"prod\" in text):\n        return \"downtime\"\n    \n    # Reliability indicators\n    elif any(phrase in text for phrase in [\n        \"intermittent\", \"random failure\", \"unstable\", \"breaking\", \n        \"randomly breaking\", \"service instability\"\n    ]):\n        return \"reliability\"\n    \n    # Performance indicators\n    elif any(phrase in text for phrase in [\n        \"slow\", \"performance\", \"latency\", \"response time\", \n        \"resource exhaustion\", \"high resource usage\"\n    ]):\n        return \"performance\"\n    \n    # Bug indicators\n    elif any(phrase in text for phrase in [\n        \"bug\", \"incorrect\", \"wrong result\", \"not working as expected\",\n        \"unexpected behavior\"\n    ]):\n        return \"bug\"\n    \n    # Feature request indicators\n    elif any(phrase in text for phrase in [\n        \"feature request\", \"new feature\", \"enhancement\", \"could you add\",\n        \"would like to request\"\n    ]):\n        return \"feature request\"\n    \n    return \"others\"\n\ndef extract_project_id(text):\n    # Look for UUID pattern after \"Project ID:\" or similar\n    uuid_pattern = r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'\n    matches = re.findall(uuid_pattern, text)\n    return matches[-1] if matches else None\n\ndef compare_tickets(a, b):\n    # Rule 1: Advanced plan with downtime/reliability\n    a_priority = (a['plan'] == 'advanced' and a['category'] in ['downtime', 'reliability'])\n    b_priority = (b['plan'] == 'advanced' and b['category'] in ['downtime', 'reliability'])\n    if a_priority != b_priority:\n        return -1 if a_priority else 1\n    \n    # Rule 2: Category priority\n    category_order = {\n        'downtime': 0,\n        'reliability': 1,\n        'performance': 2,\n        'bug': 3,\n        'feature request': 4,\n        'others': 5\n    }\n    if category_order[a['category']] != category_order[b['category']]:\n        return category_order[a['category']] - category_order[b['category']]\n    \n    # Rule 3: Creation time (older first)\n    return -1 if a['created_at'] < b['created_at'] else 1\n\n# Process tickets\ntickets = []\nfor ticket in ticket_data:\n    project_id = extract_project_id(ticket['description'])\n    category = classify_ticket(ticket['subject'], ticket['description'])\n    \n    # Find plan for the project\n    plan = 'free'  # default\n    for plan_data in plan_data:\n        if plan_data['project_id'] == project_id:\n            plan = plan_data['plan_name']\n            break\n    \n    tickets.append({\n        'id': ticket['id'],\n        'project_id': project_id,\n        'category': category,\n        'plan': plan,\n        'created_at': ticket['created_at']\n    })\n\n# Sort tickets\nsorted_tickets = sorted(tickets, key=cmp_to_key(compare_tickets))\n\n# Print results\nprint(\"<tickets>\")\nfor ticket in sorted_tickets[:5]:\n    print(ticket['id'])\nprint(\"</tickets>\")"
+          },
+          "name": "execute_python_program",
+          "type": "tool_use"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "max_tokens",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 12210,
+        "output_tokens": 4096
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T15:58:05.636564",
+    "response": {
+      "id": "msg_01GoF4RLje786BR5q5ZqsRkn",
+      "content": [
+        {
+          "citations": null,
+          "text": "I apologize for the error. Let me modify the program to include the data:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01M55Jkj6VSHpyuhfo9YP7sj",
+          "input": {
+            "pythonCode": "import json\nfrom functools import cmp_to_key\nimport re\n\n# Sample data\nticket_data = [\n    {\"id\": 143, \"subject\": \"URGENT: Cannot Access Project\", \"description\": \"I am unable to access my project on Hasura Cloud. When I try to open the project dashboard, it fails to load and shows an error message. This is critically impacting our production environment and needs immediate attention.\\n\\nProject ID: abc123\\n\\nWe are using PostgreSQL as our database.\\n\\nVersion: v2.41.0\\n\\nPlease assist as soon as possible.\\n\\nThank you.\\n\\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\\n\", \"created_at\": \"2025-01-03T20:32:35.345840+00:00\"},\n    {\"id\": 166, \"subject\": \"Feature Request: Support for Custom GraphQL Directives\", \"description\": \"Hello,\\n\\nWe are using your platform with a PostgreSQL database and would like to request support for custom GraphQL directives in queries and mutations. This feature would greatly help us implement advanced query logic and improve our application's flexibility.\\n\\nIs this something that could be supported in future releases?\\n\\nThank you for your assistance.\\n\\n\\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\\n\", \"created_at\": \"2024-12-21T14:32:35.345840+00:00\"},\n    {\"id\": 209, \"subject\": \"Urgent: Production Environment Down - Immediate Assistance Required\", \"description\": \"Hello,\\n\\nWe are experiencing a complete outage of our production environment. All our services are down, and users are unable to access the application, leading to a major disruption in our operations.\\n\\nOur application uses PostgreSQL as the database, and we are currently running version v2.48.5. We have not made any recent changes or deployments that could have caused this issue.\\n\\nWe urgently need assistance to resolve this problem.\\n\\nThank you,\\n[Your Name]\\n\\nProject ID: 76de9616-3d7b-49d7-b909-e154dda91489\\n\", \"created_at\": \"2024-12-05T07:00:00+00:00\"},\n    {\"id\": 169, \"subject\": \"Schema Registry causing high resource usage and slow responses in production\", \"description\": \"Hi,\\n\\nWe are experiencing resource exhaustion issues while using the Schema Registry feature in our production environment. The Schema Registry seems to consume a lot of CPU and memory resources, leading to slow responses from our application.\\n\\nWe are using PostgreSQL as our database.\\n\\nVersion: v2.46.0\\n\\nCould you please help us resolve this issue?\\n\\nThanks.\\n\\nProject ID: 386d8856-9020-47eb-a21a-2ebe6b81428e\\n\", \"created_at\": \"2024-11-12T05:00:00+00:00\"},\n    {\"id\": 251, \"subject\": \"Performance degradation in permission-related operations\", \"description\": \"Hi Support,\\n\\nWe are experiencing significant performance degradation when performing operations that involve permissions in our Hasura setup. Queries that used to execute in milliseconds are now taking several seconds to complete, especially those with complex permission rules.\\n\\nWe are using PostgreSQL as our database. Current Hasura version: v2.44.0.\\n\\nCould you please help us troubleshoot this issue and suggest any optimizations?\\n\\nThanks.\\n\\nProject ID: d5dc02fc-707a-4084-854a-79f5866d4dd3\\n\", \"created_at\": \"2024-10-25T04:00:00+00:00\"},\n    {\"id\": 139, \"subject\": \"Cannot access my project - urgent assistance needed\", \"description\": \"Hi support team,\\n\\nWe are experiencing a critical issue where we cannot access our Hasura project. The GraphQL endpoint and the console are both unreachable, and our application is down as a result. This is impacting our production environment.\\n\\nWe are using Postgres as our database backend. Our Hasura version is v2.47.1.\\n\\nThis issue is urgent and requires immediate attention. Please help us resolve this as soon as possible.\\n\\nThank you,\\n[User Name]\\n\\nProject ID: 5ad39764-9b9b-48cb-8819-43ab40694b06\\n\", \"created_at\": \"2024-10-18T03:00:00+00:00\"},\n    {\"id\": 144, \"subject\": \"All GraphQL operations returning 500 errors\", \"description\": \"We are experiencing a service disruption as all our GraphQL operations are returning 500 Internal Server Errors. We are using Postgres as our database and are on version v2.47.0. This is affecting our production environment. Please assist urgently.\\n\\nProject ID: 9b8f8c9a-7f76-4bc2-95c9-652b13f13a44\\n\", \"created_at\": \"2024-10-06T07:00:00+00:00\"},\n    {\"id\": 215, \"subject\": \"Actions feature randomly breaking in production\", \"description\": \"We are experiencing intermittent failures with the Actions feature in our production environment. The issue occurs randomly, and we cannot determine the cause. We are using PostgreSQL as our database. The problem started after upgrading to version v2.46.2. This is impacting our users, and we need assistance to resolve it as soon as possible.\\n\\nProject ID: 8edf6e2c-99b6-49af-b342-4aefe811b2f3\\n\", \"created_at\": \"2024-10-06T06:00:00+00:00\"},\n    {\"id\": 250, \"subject\": \"Experiencing resource exhaustion and slow response times with Actions in production\", \"description\": \"We are facing severe resource exhaustion and slow response times when using Actions in our production environment. The system becomes unresponsive under load, and API requests are timing out. We suspect this may be related to the recent upgrade to version v2.47.2.\\n\\nOur application uses Postgres as the database.\\n\\nPlease look into this issue as soon as possible as it is impacting our users.\\n\\nProject ID: d5dc02fc-707a-4084-854a-79f5866d4dd3\\n\", \"created_at\": \"2024-09-29T08:00:00+00:00\"},\n    {\"id\": 205, \"subject\": \"URGENT: All GraphQL operations returning 500 errors\", \"description\": \"Hello,\\n\\nWe are experiencing a critical production issue where all our GraphQL operations are failing with 500 Internal Server Error responses. This is affecting all our users and needs immediate attention.\\n\\nOur backend uses PostgreSQL as the database, and we're running Hasura version v2.47.3.\\n\\nWe haven't made any recent changes to our setup. Could you please investigate and help resolve this issue as soon as possible?\\n\\nThank you.\\n\\nProject ID: 5f4d1be1-61b7-4b11-ba51-6e9b7f094c82\\n\", \"created_at\": \"2024-09-29T03:00:00+00:00\"}\n]\n\nplan_data = [\n    {\"project_id\": \"2a8d4b07-c391-450f-8153-f6521f8a20a0\", \"plan_name\": \"base\"},\n    {\"project_id\": \"76de9616-3d7b-49d7-b909-e154dda91489\", \"plan_name\": \"free\"},\n    {\"project_id\": \"386d8856-9020-47eb-a21a-2ebe6b81428e\", \"plan_name\": \"advanced\"},\n    {\"project_id\": \"d5dc02fc-707a-4084-854a-79f5866d4dd3\", \"plan_name\": \"base\"},\n    {\"project_id\": \"5ad39764-9b9b-48cb-8819-43ab40694b06\", \"plan_name\": \"base\"},\n    {\"project_id\": \"9b8f8c9a-7f76-4bc2-95c9-652b13f13a44\", \"plan_name\": \"free\"},\n    {\"project_id\": \"8edf6e2c-99b6-49af-b342-4aefe811b2f3\", \"plan_name\": \"base\"},\n    {\"project_id\": \"5f4d1be1-61b7-4b11-ba51-6e9b7f094c82\", \"plan_name\": \"advanced\"}\n]\n\ndef classify_ticket(subject, description):\n    # Combine subject and description for better classification\n    text = (subject + \" \" + description).lower()\n    \n    # Downtime indicators\n    if any(phrase in text for phrase in [\n        \"cannot access\", \"unreachable\", \"down\", \"outage\", \"500 error\", \n        \"internal server error\", \"service disruption\", \"unable to access\"\n    ]) and (\"production\" in text or \"prod\" in text):\n        return \"downtime\"\n    \n    # Reliability indicators\n    elif any(phrase in text for phrase in [\n        \"intermittent\", \"random failure\", \"unstable\", \"breaking\", \n        \"randomly breaking\", \"service instability\"\n    ]):\n        return \"reliability\"\n    \n    # Performance indicators\n    elif any(phrase in text for phrase in [\n        \"slow\", \"performance\", \"latency\", \"response time\", \n        \"resource exhaustion\", \"high resource usage\"\n    ]):\n        return \"performance\"\n    \n    # Bug indicators\n    elif any(phrase in text for phrase in [\n        \"bug\", \"incorrect\", \"wrong result\", \"not working as expected\",\n        \"unexpected behavior\"\n    ]):\n        return \"bug\"\n    \n    # Feature request indicators\n    elif any(phrase in text for phrase in [\n        \"feature request\", \"new feature\", \"enhancement\", \"could you add\",\n        \"would like to request\"\n    ]):\n        return \"feature request\"\n    \n    return \"others\"\n\ndef extract_project_id(text):\n    # Look for UUID pattern after \"Project ID:\" or similar\n    uuid_pattern = r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'\n    matches = re.findall(uuid_pattern, text)\n    return matches[-1] if matches else None\n\ndef compare_tickets(a, b):\n    # Rule 1: Advanced plan with downtime/reliability\n    a_priority = (a['plan'] == 'advanced' and a['category'] in ['downtime', 'reliability'])\n    b_priority = (b['plan'] == 'advanced' and b['category'] in ['downtime', 'reliability'])\n    if a_priority != b_priority:\n        return -1 if a_priority else 1\n    \n    # Rule 2: Category priority\n    category_order = {\n        'downtime': 0,\n        'reliability': 1,\n        'performance': 2,\n        'bug': 3,\n        'feature request': 4,\n        'others': 5\n    }\n    if category_order[a['category']] != category_order[b['category']]:\n        return category_order[a['category']] - category_order[b['category']]\n    \n    # Rule 3: Creation time (older first)\n    return -1 if a['created_at'] < b['created_at'] else 1\n\n# Process tickets\ntickets = []\nfor ticket in ticket_data:\n    project_id = extract_project_id(ticket['description'])\n    category = classify_ticket(ticket['subject'], ticket['description'])\n    \n    # Find plan for the project\n    plan = 'free'  # default\n    for plan_data_item in plan_data:\n        if plan_data_item['project_id'] == project_id:\n            plan = plan_data_item['plan_name']\n            break\n    \n    tickets.append({\n        'id': ticket['id'],\n        'project_id': project_id,\n        'category': category,\n        'plan': plan,\n        'created_at': ticket['created_at']\n    })\n\n# Sort tickets\nsorted_tickets = sorted(tickets, key=cmp_to_key(compare_tickets))\n\n# Print results\nprint(\"<tickets>\")\nfor ticket in sorted_tickets[:5]:\n    print(ticket['id'])\nprint(\"</tickets>\")"
+          },
+          "name": "execute_python_program",
+          "type": "tool_use"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "tool_use",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 13359,
+        "output_tokens": 3176
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T15:58:11.469463",
+    "response": {
+      "id": "msg_01JsrftzQULaZdjva52wmj1j",
+      "content": [
+        {
+          "citations": null,
+          "text": "Let me explain the prioritization of the top 5 tickets:\n\n1. Ticket 205: Downtime issue (500 errors) on an advanced plan project\n2. Ticket 144: Downtime issue (500 errors) on a free plan project\n3. Ticket 139: Downtime issue (cannot access) on a base plan project\n4. Ticket 209: Downtime issue (production down) on a free plan project\n5. Ticket 143: Downtime issue (cannot access) on a base plan project\n\nThe tickets are primarily sorted based on:\n1. Advanced plan tickets with downtime/reliability issues get top priority\n2. Then by category (all these are \"downtime\" category tickets)\n3. Finally by creation time (older tickets first)\n\nAll of these top 5 tickets are classified as \"downtime\" because they involve complete service disruption in production environments. The main differentiating factors came down to the plan type (advanced plan getting priority) and the creation time of the tickets.",
+          "type": "text"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 16583,
+        "output_tokens": 231
+      }
+    }
+  }
+]

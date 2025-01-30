@@ -1,0 +1,293 @@
+[
+  {
+    "timestamp": "2025-01-29T15:36:49.604068",
+    "response": {
+      "id": "chatcmpl-AuzFhnFYpOVpU0StpNBnUPHZLktTO",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_uYg0bK9uki5qjTyHE0j2MgzC",
+                "function": {
+                  "arguments": "{\"pythonCode\":\"import re\\nimport sys\\nimport json\\nimport datetime\\n\\n# We'll read the data we have from an external dataValues argument.\\n# This data will contain the results from the queries.\\n\\ndata_values = json.loads(sys.argv[1])\\n\\nsupport_tickets = data_values.get(\\\"support_tickets\\\", [])\\nplan_changelogs = data_values.get(\\\"plan_changelogs\\\", [])\\nplans = data_values.get(\\\"plans\\\", [])\\n\\n###############################\\n# Step 1: We have 10 open tickets from the query.\\n# We already have them as 'support_tickets'.\\n###############################\\n\\n# Convert plan list to a dictionary for easy lookup\\nplan_dict = { str(p[0]): p[1] for p in plans }  # p[0] = id (uuid of plan), p[1] = name\\n\\n# We'll build a dictionary mapping project_id -> most recent plan_name\\n# We'll go from plan_changelogs sorted by created_at desc.\\n# plan_changelogs row: (id, plan_id, project_id, comment, created_at)\\n# We want the first (most recent) for each project.\\n\\nfrom collections import defaultdict\\nppc_map = defaultdict(list)\\nfor row in plan_changelogs:\\n    # row => (id uuid, plan_id uuid, project_id uuid, comment text, created_at timestamp)\\n    ppc_map[row[2]].append(row)\\n\\n# Now we pick the most recent for each project\\nmost_recent_plan_for_project = {}\\nfor project_id, logs in ppc_map.items():\\n    # sort by created_at desc\\n    logs_sorted = sorted(logs, key=lambda x: x[4], reverse=True)\\n    # get plan_id for the first\\n    plan_id = logs_sorted[0][1]\\n    plan_name = plan_dict.get(str(plan_id), \\\"unknown\\\")\\n    most_recent_plan_for_project[project_id] = plan_name\\n\\n###############################\\n# Step 2: For each support ticket, parse project ID from the description.\\n# We'll do a naive approach: search for a valid UUID pattern.\\n###############################\\n\\nuuid_regex = re.compile(r\\\"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\\\")\\n\\ndef extract_project_id(description):\\n    match = uuid_regex.search(description)\\n    if match:\\n        return match.group(0)\\n    return None\\n\\n###############################\\n# Step 3: Classify the tickets using the provided categories.\\n###############################\\n\\ndef classify_ticket(description):\\n    desc_lower = description.lower()\\n\\n    # Downtime\\n    downtime_keywords = [\\\"service disruption\\\", \\\"outage\\\", \\\"unable to access\\\", \\\"timeouts\\\", \\\"500 error\\\"]\\n    # Reliability\\n    reliability_keywords = [\\\"intermittent\\\", \\\"random request failures\\\", \\\"service instability\\\"]\\n    # Performance\\n    performance_keywords = [\\\"performance\\\", \\\"latency\\\", \\\"slowness\\\", \\\"slow\\\"]\\n    # Bug\\n    bug_keywords = [\\\"bug\\\", \\\"fix\\\", \\\"incorrect\\\", \\\"wrong results\\\"]\\n    # Feature request\\n    feature_keywords = [\\\"feature\\\", \\\"request\\\", \\\"enhancement\\\"]\\n\\n    # For clarity we'll check for each.\\n\\n    # But let's use the definitions from the instructions:\\n    # 1. downtime if the user mentions widespread service disruptions, inability to access console, 5xx, timeouts\\n    # 2. reliability if the user mentions intermittent connectivity or random request failures\\n    # 3. performance if the user mentions performance issues, increased response times\\n    # 4. bug if the user mentions a bug or software error\\n    # 5. feature request if the user specifically requests a new feature\\n    # 6. others otherwise\\n\\n    # We'll do a naive approach: search for keywords.\\n\\n    # downtime\\n    if any(k in desc_lower for k in [\\\"outage\\\", \\\"disruption\\\", \\\"500 error\\\", \\\"time out\\\", \\\"production environment outage\\\"]):\\n        return \\\"downtime\\\"\\n\\n    # reliability\\n    if any(k in desc_lower for k in [\\\"intermittent\\\", \\\"random\\\", \\\"service instability\\\", \\\"random request failures\\\"]):\\n        return \\\"reliability\\\"\\n\\n    # performance\\n    if any(k in desc_lower for k in [\\\"performance\\\", \\\"latency\\\", \\\"slow\\\", \\\"seconds longer\\\"]):\\n        return \\\"performance\\\"\\n\\n    # bug\\n    if \\\"bug\\\" in desc_lower or \\\"issue\\\" in desc_lower or \\\"fix\\\" in desc_lower or \\\"wrong results\\\" in desc_lower:\\n        return \\\"bug\\\"\\n\\n    # feature request\\n    if \\\"feature request\\\" in desc_lower or \\\"request for\\\" in desc_lower or \\\"enhancement\\\" in desc_lower:\\n        return \\\"feature request\\\"\\n\\n    # default\\n    return \\\"others\\\"\\n\\n###############################\\n# Step 4: We'll build a structure containing what we need: ticket_id, project_id, created_at, plan_name, category.\\n###############################\\n\\n\\nprocessed_tickets = []\\n\\nfor t in support_tickets:\\n    # t => (id, is_public, priority, status, subject, description, type, assignee_id, requester_id, created_at, url)\\n    ticket_id = t[0]\\n    description = t[5]\\n    created_at = t[9]\\n\\n    # parse project ID\\n    project_id = extract_project_id(description or \\\"\\\")\\n    plan_name = \\\"unknown\\\"\\n    if project_id and project_id in most_recent_plan_for_project:\\n        plan_name = most_recent_plan_for_project[project_id]\\n\\n    category = classify_ticket(description or \\\"\\\")\\n\\n    processed_tickets.append({\\n        \\\"ticket_id\\\": ticket_id,\\n        \\\"project_id\\\": project_id,\\n        \\\"created_at\\\": created_at,\\n        \\\"plan_name\\\": plan_name,\\n        \\\"category\\\": category\\n    })\\n\\n###############################\\n# Step 5: Sort the tickets using our custom comparator.\\n# 1) if ticket is advanced plan + category in (downtime, reliability) => top priority\\n# 2) then categories by (downtime > reliability > performance > bug > feature request > others)\\n# 3) then older ticket first\\n###############################\\n\\ncategory_priority = {\\n    \\\"downtime\\\": 1,\\n    \\\"reliability\\\": 2,\\n    \\\"performance\\\": 3,\\n    \\\"bug\\\": 4,\\n    \\\"feature request\\\": 5,\\n    \\\"others\\\": 6\\n}\\n\\ndef ticket_priority_key(ticket):\\n    # ticket => {ticket_id, plan_name, category, created_at}\\n    plan_name = ticket[\\\"plan_name\\\"].lower() if ticket[\\\"plan_name\\\"] else \\\"unknown\\\"\\n    cat = ticket[\\\"category\\\"]\\n    created_at = ticket[\\\"created_at\\\"]\\n\\n    # Step 1: advanced + downtime or reliability => highest priority\\n    # We'll define a sort key in multiple parts\\n\\n    # advanced_downtime_reliability flag\\n    # If advanced plan and (downtime or reliability)\\n    is_advanced_downtime_reliability = 0\\n    if plan_name == \\\"advanced\\\" and cat in [\\\"downtime\\\", \\\"reliability\\\"]:\\n        is_advanced_downtime_reliability = 1\\n\\n    # for sorting, we want the highest priority to come first in a pythonic ascending order.\\n    # We'll invert logic: we want to sort by is_advanced_downtime_reliability descending first.\\n    # If 1 => first, if 0 => second. So we can store negative or we can store is_advanced_downtime_reliability with reversed.\\n    # Actually we can store -(is_advanced_downtime_reliability) or we can do (1 - is_advanced_downtime_reliability)\\n    # Let's do negative.\\n\\n    # Step 2: category priority => smaller is higher\\n    cat_prio = category_priority.get(cat, 999)\\n\\n    # Step 3: older ticket => means earlier created_at is higher priority => so we want ascending by created_at\\n\\n    # We'll define the key as ( -is_advanced_downtime_reliability, cat_prio, created_at )\\n\\n    return (\\n        -is_advanced_downtime_reliability,\\n        cat_prio,\\n        created_at\\n    )\\n\\nsorted_tickets = sorted(processed_tickets, key=ticket_priority_key)\\n\\n###############################\\n# Step 6: Return top 5 ticket IDs in the requested format.\\n###############################\\n\\ntop_5 = sorted_tickets[:5]\\n\\nprint(\\\"<tickets>\\\")\\nfor t in top_5:\\n    print(t[\\\"ticket_id\\\"])\\nprint(\\\"</tickets>\\\")\",\"dataValues\":\"{}\"}",
+                  "name": "execute_python_program"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738145185,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 2978,
+        "prompt_tokens": 1095,
+        "total_tokens": 4073,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 960,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T15:36:54.179194",
+    "response": {
+      "id": "chatcmpl-AuzG63JcDOgkiuQ0A0yB1ecycAmZe",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_SRHmggDWTfaePKtgNJoZkKgh",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, is_public, priority, status, subject, description, type, assignee_id, requester_id, created_at, url\\nFROM support_ticket\\nWHERE status = 'open'\\nORDER BY created_at DESC\\nLIMIT 10\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738145210,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 393,
+        "prompt_tokens": 3141,
+        "total_tokens": 3534,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 320,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T15:37:05.649459",
+    "response": {
+      "id": "chatcmpl-AuzGAjeEdrDBZWcr0P4rhjmWFT7uv",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_O9zrT1A0eKCmmKKXtjeYA6O8",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, name FROM plans\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738145214,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 1247,
+        "prompt_tokens": 5510,
+        "total_tokens": 6757,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 1216,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T15:37:18.180965",
+    "response": {
+      "id": "chatcmpl-AuzGMuovOyz8HjOWrZIAp7xMFc8eC",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_U7HRLSRHVKz0mIuwBqBTryjb",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, plan_id, project_id, comment, created_at\\nFROM project_plan_changelogs\\nWHERE project_id IN (\\n  '2a8d4b07-c391-450f-8153-f6521f8a20a0',\\n  '76de9616-3d7b-49d7-b909-e154dda91489',\\n  '386d8856-9020-47eb-a21a-2ebe6b81428e',\\n  'd5dc02fc-707a-4084-854a-79f5866d4dd3',\\n  '5ad39764-9b9b-48cb-8819-43ab40694b06',\\n  '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44',\\n  '8edf6e2c-99b6-49af-b342-4aefe811b2f3',\\n  '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82'\\n)\\nORDER BY created_at ASC\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738145226,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 1441,
+        "prompt_tokens": 5748,
+        "total_tokens": 7189,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 1152,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 5376
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T15:38:17.090348",
+    "response": {
+      "id": "chatcmpl-AuzGYIfjiuJUTQ3U8bK8dLxfEj8hn",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_nd4F3opAPXKcVQmWozP6TDAq",
+                "function": {
+                  "arguments": "{\"pythonCode\":\"import re\\nimport sys\\nimport json\\nimport datetime\\n\\n# We'll incorporate the data from the queries:\\n\\ndata_values = {\\n    \\\"support_tickets\\\": [\\n        (143, True, None, \\\"open\\\", \\\"URGENT: Cannot Access Project\\\", \\\"I am unable to access my project on Hasura Cloud. When I try to open the project dashboard, it fails to load and shows an error message. This is critically impacting our production environment and needs immediate attention.\\\\n\\\\nProject ID: abc123\\\\n\\\\nWe are using PostgreSQL as our database.\\\\n\\\\nVersion: v2.41.0\\\\n\\\\nPlease assist as soon as possible.\\\\n\\\\nThank you.\\\\n\\\\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\\\\n\\\", None, 2024, 205, \\\"2025-01-03T20:32:35.345840+00:00\\\", \\\"https://support.hasura.io/tickets/143\\\"),\\n        (166, True, None, \\\"open\\\", \\\"Feature Request: Support for Custom GraphQL Directives\\\", \\\"Hello,\\\\n\\\\nWe are using your platform with a PostgreSQL database and would like to request support for custom GraphQL directives in queries and mutations. This feature would greatly help us implement advanced query logic and improve our application's flexibility.\\\\n\\\\nIs this something that could be supported in future releases?\\\\n\\\\nThank you for your assistance.\\\\n\\\\n\\\\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\\\\n\\\", \\\"TicketCategories.FeatureRequest\\\", 3072, 205, \\\"2024-12-21T14:32:35.345840+00:00\\\", \\\"https://support.hasura.io/tickets/166\\\"),\\n        (209, True, None, \\\"open\\\", \\\"Urgent: Production Environment Down - Immediate Assistance Required\\\", \\\"Hello,\\\\n\\\\nWe are experiencing a complete outage of our production environment. All our services are down, and users are unable to access the application, leading to a major disruption in our operations.\\\\n\\\\nOur application uses PostgreSQL as the database, and we are currently running version v2.48.5. We have not made any recent changes or deployments that could have caused this issue.\\\\n\\\\nWe urgently need assistance to resolve this problem.\\\\n\\\\nThank you,\\\\n[Your Name]\\\\n\\\\nProject ID: 76de9616-3d7b-49d7-b909-e154dda91489\\\\n\\\", None, 3280, 42, \\\"2024-12-05T07:00:00+00:00\\\", \\\"https://support.hasura.io/tickets/209\\\"),\\n        (169, True, None, \\\"open\\\", \\\"Schema Registry causing high resource usage and slow responses in production\\\", \\\"Hi,\\\\n\\\\nWe are experiencing resource exhaustion issues while using the Schema Registry feature in our production environment. The Schema Registry seems to consume a lot of CPU and memory resources, leading to slow responses from our application.\\\\n\\\\nWe are using PostgreSQL as our database.\\\\n\\\\nVersion: v2.46.0\\\\n\\\\nCould you please help us resolve this issue?\\\\n\\\\nThanks.\\\\n\\\\nProject ID: 386d8856-9020-47eb-a21a-2ebe6b81428e\\\\n\\\", None, 2678, 157, \\\"2024-11-12T05:00:00+00:00\\\", \\\"https://support.hasura.io/tickets/169\\\"),\\n        (251, True, None, \\\"open\\\", \\\"Performance degradation in permission-related operations\\\", \\\"Hi Support,\\\\n\\\\nWe are experiencing significant performance degradation when performing operations that involve permissions in our Hasura setup. Queries that used to execute in milliseconds are now taking several seconds to complete, especially those with complex permission rules.\\\\n\\\\nWe are using PostgreSQL as our database. Current Hasura version: v2.44.0.\\\\n\\\\nCould you please help us troubleshoot this issue and suggest any optimizations?\\\\n\\\\nThanks.\\\\n\\\\nProject ID: d5dc02fc-707a-4084-854a-79f5866d4dd3\\\\n\\\", None, 2024, 176, \\\"2024-10-25T04:00:00+00:00\\\", \\\"https://support.hasura.io/tickets/251\\\"),\\n        (139, True, None, \\\"open\\\", \\\"Cannot access my project - urgent assistance needed\\\", \\\"Hi support team,\\\\n\\\\nWe are experiencing a critical issue where we cannot access our Hasura project. The GraphQL endpoint and the console are both unreachable, and our application is down as a result. This is impacting our production environment.\\\\n\\\\nWe are using Postgres as our database backend. Our Hasura version is v2.47.1.\\\\n\\\\nThis issue is urgent and requires immediate attention. Please help us resolve this as soon as possible.\\\\n\\\\nThank you,\\\\n[User Name]\\\\n\\\\nProject ID: 5ad39764-9b9b-48cb-8819-43ab40694b06\\\\n\\\", None, 2678, 1, \\\"2024-10-18T03:00:00+00:00\\\", \\\"https://support.hasura.io/tickets/139\\\"),\\n        (144, True, None, \\\"open\\\", \\\"All GraphQL operations returning 500 errors\\\", \\\"We are experiencing a service disruption as all our GraphQL operations are returning 500 Internal Server Errors. We are using Postgres as our database and are on version v2.47.0. This is affecting our production environment. Please assist urgently.\\\\n\\\\nProject ID: 9b8f8c9a-7f76-4bc2-95c9-652b13f13a44\\\\n\\\", None, 2024, 3, \\\"2024-10-06T07:00:00+00:00\\\", \\\"https://support.hasura.io/tickets/144\\\"),\\n        (215, True, None, \\\"open\\\", \\\"Actions feature randomly breaking in production\\\", \\\"We are experiencing intermittent failures with the Actions feature in our production environment. The issue occurs randomly, and we cannot determine the cause. We are using PostgreSQL as our database. The problem started after upgrading to version v2.46.2. This is impacting our users, and we need assistance to resolve it as soon as possible.\\\\n\\\\nProject ID: 8edf6e2c-99b6-49af-b342-4aefe811b2f3\\\\n\\\", None, 3072, 45, \\\"2024-10-06T06:00:00+00:00\\\", \\\"https://support.hasura.io/tickets/215\\\"),\\n        (250, True, None, \\\"open\\\", \\\"Experiencing resource exhaustion and slow response times with Actions in production\\\", \\\"We are facing severe resource exhaustion and slow response times when using Actions in our production environment. The system becomes unresponsive under load, and API requests are timing out. We suspect this may be related to the recent upgrade to version v2.47.2.\\\\n\\\\nOur application uses Postgres as the database.\\\\n\\\\nPlease look into this issue as soon as possible as it is impacting our users.\\\\n\\\\nProject ID: d5dc02fc-707a-4084-854a-79f5866d4dd3\\\\n\\\", \\\"TicketCategories.ProductionPerformanceDegradation\\\", 3072, 176, \\\"2024-09-29T08:00:00+00:00\\\", \\\"https://support.hasura.io/tickets/250\\\"),\\n        (205, True, None, \\\"open\\\", \\\"URGENT: All GraphQL operations returning 500 errors\\\", \\\"Hello,\\\\n\\\\nWe are experiencing a critical production issue where all our GraphQL operations are failing with 500 Internal Server Error responses. This is affecting all our users and needs immediate attention.\\\\n\\\\nOur backend uses PostgreSQL as the database, and we're running Hasura version v2.47.3.\\\\n\\\\nWe haven't made any recent changes to our setup. Could you please investigate and help resolve this issue as soon as possible?\\\\n\\\\nThank you.\\\\n\\\\nProject ID: 5f4d1be1-61b7-4b11-ba51-6e9b7f094c82\\\\n\\\", None, 3072, 79, \\\"2024-09-29T03:00:00+00:00\\\", \\\"https://support.hasura.io/tickets/205\\\"),\\n    ],\\n    \\\"plans\\\": [\\n        (\\\"2d41d1de-51fa-41ed-8acd-6ee63bcd316e\\\", \\\"free\\\"),\\n        (\\\"307a87a8-9185-4711-8470-38cdb9b6b42a\\\", \\\"base\\\"),\\n        (\\\"34a91812-c6ab-4e35-b011-7433bf68299d\\\", \\\"advanced\\\"),\\n        (\\\"ef8e3ee9-ee6c-41d0-b1a0-d01e39d49d4d\\\", \\\"base_trial\\\"),\\n        (\\\"28058da3-610f-4d2f-94d8-10bf0a340d6b\\\", \\\"advanced_trial\\\")\\n    ],\\n    \\\"plan_changelogs\\\": [\\n        (\\\"d37842e2-44d4-434f-beb0-288859401ed0\\\", \\\"307a87a8-9185-4711-8470-38cdb9b6b42a\\\", \\\"5ad39764-9b9b-48cb-8819-43ab40694b06\\\", \\\"Initial plan assignment\\\", \\\"2023-12-28T06:34:47.366341+00:00\\\"),\\n        (\\\"1f8cf3cb-98ad-4629-a069-49cb6926f2fe\\\", \\\"34a91812-c6ab-4e35-b011-7433bf68299d\\\", \\\"5f4d1be1-61b7-4b11-ba51-6e9b7f094c82\\\", \\\"Initial plan assignment\\\", \\\"2024-02-01T19:24:54.450220+00:00\\\"),\\n        (\\\"305bfb99-9ba0-43bd-bf1f-0eb9f2838d25\\\", \\\"307a87a8-9185-4711-8470-38cdb9b6b42a\\\", \\\"8edf6e2c-99b6-49af-b342-4aefe811b2f3\\\", \\\"Initial plan assignment\\\", \\\"2024-02-18T11:25:02.070271+00:00\\\"),\\n        (\\\"fe7777c7-4d77-4040-9050-df9cfb8a1bac\\\", \\\"307a87a8-9185-4711-8470-38cdb9b6b42a\\\", \\\"d5dc02fc-707a-4084-854a-79f5866d4dd3\\\", \\\"Initial plan assignment\\\", \\\"2024-04-24T07:01:45.864975+00:00\\\"),\\n        (\\\"f1f462ff-8968-4e45-8396-620d64216746\\\", \\\"307a87a8-9185-4711-8470-38cdb9b6b42a\\\", \\\"2a8d4b07-c391-450f-8153-f6521f8a20a0\\\", \\\"Initial plan assignment\\\", \\\"2024-05-23T13:32:35.345840+00:00\\\"),\\n        (\\\"f56ac7f1-5670-4840-9aa8-37f0fb9f9f11\\\", \\\"2d41d1de-51fa-41ed-8acd-6ee63bcd316e\\\", \\\"9b8f8c9a-7f76-4bc2-95c9-652b13f13a44\\\", \\\"Initial plan assignment\\\", \\\"2024-09-29T03:24:32.719010+00:00\\\"),\\n        (\\\"714d24ad-50c6-41d3-b1fd-ed0c81f373aa\\\", \\\"34a91812-c6ab-4e35-b011-7433bf68299d\\\", \\\"386d8856-9020-47eb-a21a-2ebe6b81428e\\\", \\\"Initial plan assignment\\\", \\\"2024-10-30T14:49:18.189080+00:00\\\"),\\n        (\\\"e2a8aa47-7919-4ced-a112-ce7a5ebae336\\\", \\\"2d41d1de-51fa-41ed-8acd-6ee63bcd316e\\\", \\\"76de9616-3d7b-49d7-b909-e154dda91489\\\", \\\"Initial plan assignment\\\", \\\"2024-12-04T08:56:30.935256+00:00\\\")\\n    ]\\n}\\n\\n\\n# Let's define a function that does the sorting using the instructions, same as previously.\\n\\nuuid_regex = re.compile(r\\\"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\\\")\\n\\ndef extract_project_id(description):\\n    if not description:\\n        return None\\n    match = uuid_regex.search(description)\\n    if match:\\n        return match.group(0)\\n    return None\\n\\nplans_data = data_values[\\\"plans\\\"]\\nplans_dict = { p[0]: p[1] for p in plans_data }\\n\\nppc_data = data_values[\\\"plan_changelogs\\\"]\\n# We'll group by project_id\\nfrom collections import defaultdict\\nppc_map = defaultdict(list)\\nfor row in ppc_data:\\n    # row => (id, plan_id, project_id, comment, created_at)\\n    plan_id = row[1]\\n    project_id = row[2]\\n    created_at = row[4]\\n    ppc_map[project_id].append(row)\\n\\n# find the most recent plan\\nmost_recent_plan_for_project = {}\\n\\nfor project_id, logs in ppc_map.items():\\n    logs_sorted = sorted(logs, key=lambda x: x[4], reverse=True)\\n    plan_id = logs_sorted[0][1]\\n    plan_name = plans_dict.get(plan_id, \\\"unknown\\\")\\n    most_recent_plan_for_project[project_id] = plan_name\\n\\n# Classification\\n\\ndef classify_ticket(description):\\n    desc_lower = description.lower() if description else \\\"\\\"\\n\\n    # Checking for downtime\\n    # The instructions say: downtime is widespread inability to access project console, 500 errors, timeouts, production environment outage.\\n    if any(k in desc_lower for k in [\\\"outage\\\", \\\"disruption\\\", \\\"500 error\\\", \\\"time out\\\", \\\"unable to access\\\", \\\"cannot access\\\", \\\"production environment down\\\"]):\\n        return \\\"downtime\\\"\\n\\n    # reliability: intermittent connectivity, random request failures, service instability\\n    if any(k in desc_lower for k in [\\\"intermittent\\\", \\\"random\\\", \\\"service instability\\\", \\\"random request failures\\\"]):\\n        return \\\"reliability\\\"\\n\\n    # performance: slower, resource usage, slow responses, etc.\\n    if any(k in desc_lower for k in [\\\"performance\\\", \\\"latency\\\", \\\"slow\\\", \\\"seconds longer\\\", \\\"resource exhaustion\\\"]):\\n        return \\\"performance\\\"\\n\\n    # bug: bug, fix, issue, wrong results, unauthorized access\\n    # We'll do a naive approach for anything that says 'bug' or 'issue' or 'fix'\\n    if \\\"bug\\\" in desc_lower or \\\"issue\\\" in desc_lower or \\\"fix\\\" in desc_lower:\\n        return \\\"bug\\\"\\n\\n    # feature request\\n    if \\\"feature request\\\" in desc_lower or \\\"request for\\\" in desc_lower or \\\"enhancement\\\" in desc_lower:\\n        return \\\"feature request\\\"\\n\\n    return \\\"others\\\"\\n\\nsupport_tickets = data_values[\\\"support_tickets\\\"]\\nprocessed = []\\nfor t in support_tickets:\\n    (tid, is_public, priority, status, subject, description, type_, assignee_id, requester_id, created_at_str, url) = t\\n    project_id = extract_project_id(description)\\n    plan_name = \\\"unknown\\\"\\n    if project_id and project_id in most_recent_plan_for_project:\\n        plan_name = most_recent_plan_for_project[project_id]\\n\\n    category = classify_ticket(description)\\n\\n    # parse created_at\\n    created_at = datetime.datetime.fromisoformat(created_at_str.replace(\\\"Z\\\", \\\"+00:00\\\"))\\n\\n    processed.append({\\n        \\\"ticket_id\\\": tid,\\n        \\\"project_id\\\": project_id,\\n        \\\"plan_name\\\": plan_name.lower(),\\n        \\\"category\\\": category,\\n        \\\"created_at\\\": created_at\\n    })\\n\\n\\n# Sorting logic\\n# custom comparator or key:\\n# 1. advanced + (downtime or reliability) => highest\\n# 2. category order: downtime(1), reliability(2), performance(3), bug(4), feature request(5), others(6)\\n# 3. older => bigger priority => i.e. ascending by date\\n\\ncat_order = {\\n    \\\"downtime\\\": 1,\\n    \\\"reliability\\\": 2,\\n    \\\"performance\\\": 3,\\n    \\\"bug\\\": 4,\\n    \\\"feature request\\\": 5,\\n    \\\"others\\\": 6\\n}\\n\\ndef priority_key(item):\\n    adv_bonus = 0\\n    if item[\\\"plan_name\\\"] == \\\"advanced\\\" and item[\\\"category\\\"] in [\\\"downtime\\\", \\\"reliability\\\"]:\\n        adv_bonus = 1\\n    cat = item[\\\"category\\\"]\\n    cat_rank = cat_order.get(cat, 999)\\n    # created_at ascending\\n    return (-adv_bonus, cat_rank, item[\\\"created_at\\\"])\\n\\nsorted_tickets = sorted(processed, key=priority_key)\\n\\ntop_5 = sorted_tickets[:5]\\n\\nprint(\\\"<tickets>\\\")\\nfor x in top_5:\\n    print(x[\\\"ticket_id\\\"])\\nprint(\\\"</tickets>\\\")\",\"dataValues\":\"\"}",
+                  "name": "execute_python_program"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738145238,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 6623,
+        "prompt_tokens": 7061,
+        "total_tokens": 13684,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 2432,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 5632
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T15:38:42.677745",
+    "response": {
+      "id": "chatcmpl-AuzHVLpC1tELF0U2mzqb6nWUxVlSW",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "<tickets>\n144\n139\n209\n143\n215\n</tickets>",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738145297,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 2908,
+        "prompt_tokens": 11289,
+        "total_tokens": 14197,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 2880,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 6912
+        }
+      }
+    }
+  }
+]

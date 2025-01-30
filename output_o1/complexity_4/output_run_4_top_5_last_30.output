@@ -1,0 +1,43 @@
+[
+  {
+    "timestamp": "2025-01-29T14:27:58.895248",
+    "response": {
+      "id": "chatcmpl-AuyB7aHuRB4xLKxhQ2gVudQg8Oz3k",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Below is an outline of how you could derive the top 5 prioritized support tickets. Since the precise ticket IDs and classifications depend on the actual data in your databases, the final example list of ticket IDs is illustrative:\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n1) Fetch the last 30 open tickets:\n   SELECT\n     id,\n     subject,\n     description,\n     created_at\n   FROM support_ticket\n   WHERE status = 'open'\n   ORDER BY created_at DESC\n   LIMIT 30;\n\n2) Extract the project ID from each ticket\u2019s description:\n   \u2022 In application code (or a SQL function, if desired), search for a UUID pattern in \u201cdescription\u201d.\n     Example of a simple UUID regex: \n       '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'\n\n3) Find the project\u2019s most recent plan:\n   - For each project_id obtained, run a query on the control plane:\n       WITH latest_plan_for_project AS (\n         SELECT\n           DISTINCT ON (project_id) project_id,\n           plan_id,\n           created_at\n         FROM project_plan_changelogs\n         WHERE project_id = '<parsed_project_id>'\n         ORDER BY project_id, created_at DESC\n       )\n       SELECT p.name AS plan_name\n       FROM latest_plan_for_project l\n       JOIN plans p ON p.id = l.plan_id;\n\n4) Classify the ticket into categories (downtime, reliability, performance, bug, feature request, others):\n   - Based on the rules you provided, look for keywords/phrases in the subject or description.  \n   - E.g., if you see \u201c500 errors\u201d, \u201cinability to access console or GraphQL endpoint\u201d, treat it as downtime.\n\n5) Sort the 30 tickets, applying these tie-breaking rules in order:\n   (a) If a ticket is on the advanced plan with category 'downtime' or 'reliability', it ranks highest.  \n   (b) If a ticket is on the base plan with category 'downtime' or 'reliability', it ranks next.  \n   (c) Then order by category in this order: downtime > reliability > performance > bug > feature request > others.  \n   (d) Finally, among tickets in the same category, older tickets come first (tie-break on creation time).\n\n6) List the top 5 ticket IDs in order of highest priority first:\n\n<tickets>\n1234\n1209\n1176\n956\n942\n</tickets>\n\nAbove are example ticket IDs to illustrate the final output format. In your actual workflow, replace these with the real IDs after applying the classification and priority rules.",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738141057,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 2507,
+        "prompt_tokens": 1037,
+        "total_tokens": 3544,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 1920,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,54 @@
+Query:
+Give me a sorted list of top 5 support tickets which I should prioritize amongst the last 10 open tickets (i.e., status = 'open').
+
+For each ticket do the following:
+- intelligently extract the project ID from the ticket description. project IDs are UUIDs
+- get the plan the project is most recently on
+- get the time the ticket was created at
+- classify the ticket into one of these categories: downtime, reliability, performance, bug, feature request, others.
+
+Classification instructions:
+
+1. Downtime: Users are experiencing widespread service disruptions with their Hasura projects, primarily manifesting as inability to access project consoles and GraphQL endpoints. These issues are causing production environment outages and API failures, with reports of 500 errors and timeouts when attempting to connect to services.
+
+2. Reliability: Users are experiencing intermittent connectivity and service disruptions in their production environment. The issues manifest as random request failures and service instability, affecting system reliability and user experience. 
+
+3. Performance: Performance issues across GraphQL queries, permission evaluations, or event trigger processing. Users are experiencing significantly increased response times and latency, with operations taking several seconds longer than usual to complete. 
+
+4. Bug: Users are reporting bugs in the behaviour of software e.g. bug in Schema Registry allowed unauthorized users to access and modify schemas beyond their permission levels or graphql api returning wrong results when using _in operator  
+
+5. Feature request: Users are requesting enhanced functionality in the product e.g. batch operations in Actions feature and more flexible configuration in event triggers. 
+
+6. Others: Any other type of ticket which does not fit the above categories
+
+Now sort the tickets in the order of priority, by comparing them pairwise using these rules one by one in order (moving to the next rule if the previous rule is a tie).
+- If a ticket is on the advanced plan with category 'downtime' or 'reliability', it should be prioritized higher.
+- If a ticket is on the base plan with category 'downtime' or 'reliability', it should be prioritized higher.
+- If a ticket is on the free plan with category 'downtime', it should be prioritized higher.
+- Prioritize the ticket based on categories using this order: downtime > reliability > performance > bug > feature request > others
+- Compare ticket creation times to prioritize the older ticket.
+
+Response:
+It seems I am unable to execute the Python code to sort the tickets. However, I will manually outline how the prioritization and sorting could be done:
+
+1. **Rules Application:**
+   - **Advanced Plan with Downtime or Reliability:** Prioritize first. No tickets with `advanced`.
+   - **Base Plan with Downtime or Reliability:** Prioritize next. No tickets with `base`.
+   - **Free Plan with Downtime:** Prioritize followed by above categories.
+   - **By Categories Priority:** Downtime > Reliability > Performance > Bug > Feature Request > Others.
+   - **Creation Time:** Older tickets are prioritized.
+
+2. **Manual Sorting:**
+   - **Free Plan Downtime Ticket:** Ticket ID 209 (December 5th, 2024)
+   - **Downtime Regardless of Plans:** Ticket IDs: 205 (September 29th, 2024), 139 (October 18th, 2024), 144 (October 6th, 2024), 143 (January 3rd, 2025)
+
+**Top 5 Tickets to Prioritize (by manual sorting, for illustration, excluding incomplete plan data):**
+1. Ticket ID 209 (Free Plan, Downtime)
+2. Ticket ID 205 (Downtime)
+3. Ticket ID 139 (Downtime)
+4. Ticket ID 144 (Downtime)
+5. Ticket ID 143 (Downtime) 
+
+These would be the top tickets based on the given rules, assuming standard plans had been resolved.
+
+For precise implementation, the system execution should be fixed, or further data retrieval from databases should be augmented with correct logic.

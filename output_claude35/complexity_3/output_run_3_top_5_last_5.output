@@ -1,0 +1,218 @@
+[
+  {
+    "timestamp": "2025-01-29T16:13:28.592951",
+    "response": {
+      "id": "msg_01PnfGohLdEkmV8uMZgGpxXz",
+      "content": [
+        {
+          "citations": null,
+          "text": "I'll help you analyze and prioritize the support tickets. Let me break this down into steps:\n\n1. First, let's get the last 5 open tickets with their details\n2. Extract project IDs and get their plan information\n3. Classify the tickets\n4. Sort them according to the given rules\n\nHere's how we'll do this:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01GyqQmnv6bPe7qT3MnwoNh3",
+          "input": {
+            "pythonCode": "from datetime import datetime\nfrom functools import cmp_to_key\nimport re\nimport json\n\ndef get_project_id(description):\n    # Look for UUID pattern in the description\n    uuid_pattern = r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'\n    matches = re.findall(uuid_pattern, description.lower())\n    return matches[0] if matches else None\n\ndef classify_ticket(subject, description):\n    text = (subject + \" \" + description).lower()\n    \n    # Downtime indicators\n    if any(word in text for word in ['outage', 'down', '500 error', 'service disruption', \n                                   'unable to access', 'not accessible', 'timeouts']):\n        return 'downtime'\n    \n    # Reliability indicators\n    elif any(word in text for word in ['intermittent', 'unstable', 'random failure', \n                                      'connection drops', 'reliability']):\n        return 'reliability'\n    \n    # Performance indicators\n    elif any(word in text for word in ['slow', 'performance', 'latency', 'response time',\n                                      'taking longer']):\n        return 'performance'\n    \n    # Bug indicators\n    elif any(word in text for word in ['bug', 'incorrect', 'wrong result', 'not working',\n                                      'error in', 'unexpected behavior']):\n        return 'bug'\n    \n    # Feature request indicators\n    elif any(word in text for word in ['feature request', 'enhancement', 'new feature',\n                                      'please add', 'would like to have']):\n        return 'feature_request'\n    \n    return 'others'\n\ndef compare_tickets(a, b):\n    # Rule 1: Advanced plan with downtime/reliability\n    a_priority = (a['plan_name'] == 'Advanced' and \n                 a['category'] in ['downtime', 'reliability'])\n    b_priority = (b['plan_name'] == 'Advanced' and \n                 b['category'] in ['downtime', 'reliability'])\n    \n    if a_priority != b_priority:\n        return -1 if a_priority else 1\n    \n    # Rule 2: Category priority\n    category_order = {\n        'downtime': 0,\n        'reliability': 1,\n        'performance': 2,\n        'bug': 3,\n        'feature_request': 4,\n        'others': 5\n    }\n    \n    if category_order[a['category']] != category_order[b['category']]:\n        return category_order[a['category']] - category_order[b['category']]\n    \n    # Rule 3: Creation time\n    return -1 if a['created_at'] < b['created_at'] else 1\n\n# Main execution\ntickets_data = []\n\nprint(\"<tickets>\")\n# The actual ticket processing and sorting will happen when we get the data\nprint(\"</tickets>\")"
+          },
+          "name": "execute_python_program",
+          "type": "tool_use"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "tool_use",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 1627,
+        "output_tokens": 893
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T16:13:33.750495",
+    "response": {
+      "id": "msg_011yAcVMWgfoStfryj3wcGHu",
+      "content": [
+        {
+          "citations": null,
+          "text": "Now, let's get the open tickets and their details:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01MgfiPrTKh8m8emdRPD4Mu8",
+          "input": {
+            "sql": "SELECT \n    t.id,\n    t.subject,\n    t.description,\n    t.created_at\nFROM support_ticket t\nWHERE t.status = 'open'\nORDER BY t.created_at DESC\nLIMIT 5;"
+          },
+          "name": "query_support_tickets",
+          "type": "tool_use"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "tool_use",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 2550,
+        "output_tokens": 128
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T16:13:37.279529",
+    "response": {
+      "id": "msg_01VdFJcWJvS3EJwUHFjConu8",
+      "content": [
+        {
+          "citations": null,
+          "text": "Now let's get the plan information for these projects:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_013tSKJ5ga8x2ajVBCjRa6Uv",
+          "input": {
+            "sql": "WITH latest_plans AS (\n    SELECT \n        ppc.project_id,\n        p.name as plan_name,\n        ROW_NUMBER() OVER (PARTITION BY ppc.project_id ORDER BY ppc.created_at DESC) as rn\n    FROM project_plan_changelogs ppc\n    JOIN plans p ON p.id = ppc.plan_id\n)\nSELECT project_id, plan_name\nFROM latest_plans\nWHERE rn = 1;"
+          },
+          "name": "query_control_plane_data",
+          "type": "tool_use"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "tool_use",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 3590,
+        "output_tokens": 181
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T16:14:11.940970",
+    "response": {
+      "id": "msg_011LAzu2qJxzPrzKmD4hNofg",
+      "content": [
+        {
+          "citations": null,
+          "text": "Now let's process all this information and sort the tickets:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01Nbsi7294aRNtHCY1r4R4EL",
+          "input": {
+            "pythonCode": "from datetime import datetime\nfrom functools import cmp_to_key\nimport json\n\ndef get_project_id(description):\n    # Look for UUID pattern in the description\n    uuid_pattern = r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'\n    matches = re.findall(uuid_pattern, description.lower())\n    return matches[0] if matches else None\n\ndef classify_ticket(subject, description):\n    text = (subject + \" \" + description).lower()\n    \n    # Downtime indicators\n    if any(word in text for word in ['outage', 'down', '500 error', 'service disruption', \n                                   'unable to access', 'not accessible', 'timeouts']):\n        return 'downtime'\n    \n    # Reliability indicators\n    elif any(word in text for word in ['intermittent', 'unstable', 'random failure', \n                                      'connection drops', 'reliability']):\n        return 'reliability'\n    \n    # Performance indicators\n    elif any(word in text for word in ['slow', 'performance', 'latency', 'response time',\n                                      'taking longer', 'resource usage']):\n        return 'performance'\n    \n    # Bug indicators\n    elif any(word in text for word in ['bug', 'incorrect', 'wrong result', 'not working',\n                                      'error in', 'unexpected behavior']):\n        return 'bug'\n    \n    # Feature request indicators\n    elif any(word in text for word in ['feature request', 'enhancement', 'new feature',\n                                      'please add', 'would like to have', 'support for']):\n        return 'feature_request'\n    \n    return 'others'\n\ndef compare_tickets(a, b):\n    # Rule 1: Advanced plan with downtime/reliability\n    a_priority = (a['plan_name'] == 'advanced' and \n                 a['category'] in ['downtime', 'reliability'])\n    b_priority = (b['plan_name'] == 'advanced' and \n                 b['category'] in ['downtime', 'reliability'])\n    \n    if a_priority != b_priority:\n        return -1 if a_priority else 1\n    \n    # Rule 2: Category priority\n    category_order = {\n        'downtime': 0,\n        'reliability': 1,\n        'performance': 2,\n        'bug': 3,\n        'feature_request': 4,\n        'others': 5\n    }\n    \n    if category_order[a['category']] != category_order[b['category']]:\n        return category_order[a['category']] - category_order[b['category']]\n    \n    # Rule 3: Creation time\n    return -1 if a['created_at'] < b['created_at'] else 1\n\n# Process tickets\ntickets = [\n    {\n        'id': 143,\n        'subject': \"URGENT: Cannot Access Project\",\n        'description': \"I am unable to access my project on Hasura Cloud. When I try to open the project dashboard, it fails to load and shows an error message. This is critically impacting our production environment and needs immediate attention.\\n\\nProject ID: abc123\\n\\nWe are using PostgreSQL as our database.\\n\\nVersion: v2.41.0\\n\\nPlease assist as soon as possible.\\n\\nThank you.\\n\\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\\n\",\n        'created_at': \"2025-01-03T20:32:35.345840+00:00\"\n    },\n    {\n        'id': 166,\n        'subject': \"Feature Request: Support for Custom GraphQL Directives\",\n        'description': \"Hello,\\n\\nWe are using your platform with a PostgreSQL database and would like to request support for custom GraphQL directives in queries and mutations. This feature would greatly help us implement advanced query logic and improve our application's flexibility.\\n\\nIs this something that could be supported in future releases?\\n\\nThank you for your assistance.\\n\\n\\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\\n\",\n        'created_at': \"2024-12-21T14:32:35.345840+00:00\"\n    },\n    {\n        'id': 209,\n        'subject': \"Urgent: Production Environment Down - Immediate Assistance Required\",\n        'description': \"Hello,\\n\\nWe are experiencing a complete outage of our production environment. All our services are down, and users are unable to access the application, leading to a major disruption in our operations.\\n\\nOur application uses PostgreSQL as the database, and we are currently running version v2.48.5. We have not made any recent changes or deployments that could have caused this issue.\\n\\nWe urgently need assistance to resolve this problem.\\n\\nThank you,\\n[Your Name]\\n\\nProject ID: 76de9616-3d7b-49d7-b909-e154dda91489\\n\",\n        'created_at': \"2024-12-05T07:00:00+00:00\"\n    },\n    {\n        'id': 169,\n        'subject': \"Schema Registry causing high resource usage and slow responses in production\",\n        'description': \"Hi,\\n\\nWe are experiencing resource exhaustion issues while using the Schema Registry feature in our production environment. The Schema Registry seems to consume a lot of CPU and memory resources, leading to slow responses from our application.\\n\\nWe are using PostgreSQL as our database.\\n\\nVersion: v2.46.0\\n\\nCould you please help us resolve this issue?\\n\\nThanks.\\n\\nProject ID: 386d8856-9020-47eb-a21a-2ebe6b81428e\\n\",\n        'created_at': \"2024-11-12T05:00:00+00:00\"\n    },\n    {\n        'id': 251,\n        'subject': \"Performance degradation in permission-related operations\",\n        'description': \"Hi Support,\\n\\nWe are experiencing significant performance degradation when performing operations that involve permissions in our Hasura setup. Queries that used to execute in milliseconds are now taking several seconds to complete, especially those with complex permission rules.\\n\\nWe are using PostgreSQL as our database. Current Hasura version: v2.44.0.\\n\\nCould you please help us troubleshoot this issue and suggest any optimizations?\\n\\nThanks.\\n\\nProject ID: d5dc02fc-707a-4084-854a-79f5866d4dd3\\n\",\n        'created_at': \"2024-10-25T04:00:00+00:00\"\n    }\n]\n\n# Get plan information\nplans = {\n    \"2a8d4b07-c391-450f-8153-f6521f8a20a0\": \"base\",\n    \"76de9616-3d7b-49d7-b909-e154dda91489\": \"free\",\n    \"386d8856-9020-47eb-a21a-2ebe6b81428e\": \"advanced\",\n    \"d5dc02fc-707a-4084-854a-79f5866d4dd3\": \"base\"\n}\n\n# Process each ticket\nprocessed_tickets = []\nfor ticket in tickets:\n    project_id = get_project_id(ticket['description'])\n    category = classify_ticket(ticket['subject'], ticket['description'])\n    \n    processed_tickets.append({\n        'id': ticket['id'],\n        'project_id': project_id,\n        'plan_name': plans.get(project_id, 'free'),\n        'category': category,\n        'created_at': ticket['created_at']\n    })\n\n# Sort tickets\nsorted_tickets = sorted(processed_tickets, key=cmp_to_key(compare_tickets))\n\n# Print result\nprint(\"<tickets>\")\nfor ticket in sorted_tickets:\n    print(ticket['id'])\nprint(\"</tickets>\")"
+          },
+          "name": "execute_python_program",
+          "type": "tool_use"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "tool_use",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 12142,
+        "output_tokens": 2093
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T16:14:42.630602",
+    "response": {
+      "id": "msg_01Xe4pa7GwMFrj1QeS7s6VCk",
+      "content": [
+        {
+          "citations": null,
+          "text": "I apologize for the oversight. Let me fix the code by adding the missing import:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01D6H79VbzvfcxvcnSs5rDgR",
+          "input": {
+            "pythonCode": "import re\nfrom datetime import datetime\nfrom functools import cmp_to_key\nimport json\n\ndef get_project_id(description):\n    # Look for UUID pattern in the description\n    uuid_pattern = r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'\n    matches = re.findall(uuid_pattern, description.lower())\n    return matches[0] if matches else None\n\ndef classify_ticket(subject, description):\n    text = (subject + \" \" + description).lower()\n    \n    # Downtime indicators\n    if any(word in text for word in ['outage', 'down', '500 error', 'service disruption', \n                                   'unable to access', 'not accessible', 'timeouts']):\n        return 'downtime'\n    \n    # Reliability indicators\n    elif any(word in text for word in ['intermittent', 'unstable', 'random failure', \n                                      'connection drops', 'reliability']):\n        return 'reliability'\n    \n    # Performance indicators\n    elif any(word in text for word in ['slow', 'performance', 'latency', 'response time',\n                                      'taking longer', 'resource usage']):\n        return 'performance'\n    \n    # Bug indicators\n    elif any(word in text for word in ['bug', 'incorrect', 'wrong result', 'not working',\n                                      'error in', 'unexpected behavior']):\n        return 'bug'\n    \n    # Feature request indicators\n    elif any(word in text for word in ['feature request', 'enhancement', 'new feature',\n                                      'please add', 'would like to have', 'support for']):\n        return 'feature_request'\n    \n    return 'others'\n\ndef compare_tickets(a, b):\n    # Rule 1: Advanced plan with downtime/reliability\n    a_priority = (a['plan_name'] == 'advanced' and \n                 a['category'] in ['downtime', 'reliability'])\n    b_priority = (b['plan_name'] == 'advanced' and \n                 b['category'] in ['downtime', 'reliability'])\n    \n    if a_priority != b_priority:\n        return -1 if a_priority else 1\n    \n    # Rule 2: Category priority\n    category_order = {\n        'downtime': 0,\n        'reliability': 1,\n        'performance': 2,\n        'bug': 3,\n        'feature_request': 4,\n        'others': 5\n    }\n    \n    if category_order[a['category']] != category_order[b['category']]:\n        return category_order[a['category']] - category_order[b['category']]\n    \n    # Rule 3: Creation time\n    return -1 if a['created_at'] < b['created_at'] else 1\n\n# Process tickets\ntickets = [\n    {\n        'id': 143,\n        'subject': \"URGENT: Cannot Access Project\",\n        'description': \"I am unable to access my project on Hasura Cloud. When I try to open the project dashboard, it fails to load and shows an error message. This is critically impacting our production environment and needs immediate attention.\\n\\nProject ID: abc123\\n\\nWe are using PostgreSQL as our database.\\n\\nVersion: v2.41.0\\n\\nPlease assist as soon as possible.\\n\\nThank you.\\n\\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\\n\",\n        'created_at': \"2025-01-03T20:32:35.345840+00:00\"\n    },\n    {\n        'id': 166,\n        'subject': \"Feature Request: Support for Custom GraphQL Directives\",\n        'description': \"Hello,\\n\\nWe are using your platform with a PostgreSQL database and would like to request support for custom GraphQL directives in queries and mutations. This feature would greatly help us implement advanced query logic and improve our application's flexibility.\\n\\nIs this something that could be supported in future releases?\\n\\nThank you for your assistance.\\n\\n\\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\\n\",\n        'created_at': \"2024-12-21T14:32:35.345840+00:00\"\n    },\n    {\n        'id': 209,\n        'subject': \"Urgent: Production Environment Down - Immediate Assistance Required\",\n        'description': \"Hello,\\n\\nWe are experiencing a complete outage of our production environment. All our services are down, and users are unable to access the application, leading to a major disruption in our operations.\\n\\nOur application uses PostgreSQL as the database, and we are currently running version v2.48.5. We have not made any recent changes or deployments that could have caused this issue.\\n\\nWe urgently need assistance to resolve this problem.\\n\\nThank you,\\n[Your Name]\\n\\nProject ID: 76de9616-3d7b-49d7-b909-e154dda91489\\n\",\n        'created_at': \"2024-12-05T07:00:00+00:00\"\n    },\n    {\n        'id': 169,\n        'subject': \"Schema Registry causing high resource usage and slow responses in production\",\n        'description': \"Hi,\\n\\nWe are experiencing resource exhaustion issues while using the Schema Registry feature in our production environment. The Schema Registry seems to consume a lot of CPU and memory resources, leading to slow responses from our application.\\n\\nWe are using PostgreSQL as our database.\\n\\nVersion: v2.46.0\\n\\nCould you please help us resolve this issue?\\n\\nThanks.\\n\\nProject ID: 386d8856-9020-47eb-a21a-2ebe6b81428e\\n\",\n        'created_at': \"2024-11-12T05:00:00+00:00\"\n    },\n    {\n        'id': 251,\n        'subject': \"Performance degradation in permission-related operations\",\n        'description': \"Hi Support,\\n\\nWe are experiencing significant performance degradation when performing operations that involve permissions in our Hasura setup. Queries that used to execute in milliseconds are now taking several seconds to complete, especially those with complex permission rules.\\n\\nWe are using PostgreSQL as our database. Current Hasura version: v2.44.0.\\n\\nCould you please help us troubleshoot this issue and suggest any optimizations?\\n\\nThanks.\\n\\nProject ID: d5dc02fc-707a-4084-854a-79f5866d4dd3\\n\",\n        'created_at': \"2024-10-25T04:00:00+00:00\"\n    }\n]\n\n# Process each ticket\nprocessed_tickets = []\nfor ticket in tickets:\n    project_id = get_project_id(ticket['description'])\n    category = classify_ticket(ticket['subject'], ticket['description'])\n    \n    processed_tickets.append({\n        'id': ticket['id'],\n        'project_id': project_id,\n        'plan_name': plans.get(project_id, 'free'),\n        'category': category,\n        'created_at': ticket['created_at']\n    })\n\n# Sort tickets\nsorted_tickets = sorted(processed_tickets, key=cmp_to_key(compare_tickets))\n\n# Print result\nprint(\"<tickets>\")\nfor ticket in sorted_tickets:\n    print(ticket['id'])\nprint(\"</tickets>\")"
+          },
+          "name": "execute_python_program",
+          "type": "tool_use"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "tool_use",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 14451,
+        "output_tokens": 1966
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T16:15:13.754150",
+    "response": {
+      "id": "msg_01PNCH3tK5PDWMuo85DYMCnW",
+      "content": [
+        {
+          "citations": null,
+          "text": "I apologize for another oversight. Let me include the plan data from the database results:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01QVfqVDeuNqgiJz37WnXB4M",
+          "input": {
+            "pythonCode": "import re\nfrom datetime import datetime\nfrom functools import cmp_to_key\nimport json\n\ndef get_project_id(description):\n    # Look for UUID pattern in the description\n    uuid_pattern = r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'\n    matches = re.findall(uuid_pattern, description.lower())\n    return matches[0] if matches else None\n\ndef classify_ticket(subject, description):\n    text = (subject + \" \" + description).lower()\n    \n    # Downtime indicators\n    if any(word in text for word in ['outage', 'down', '500 error', 'service disruption', \n                                   'unable to access', 'not accessible', 'timeouts']):\n        return 'downtime'\n    \n    # Reliability indicators\n    elif any(word in text for word in ['intermittent', 'unstable', 'random failure', \n                                      'connection drops', 'reliability']):\n        return 'reliability'\n    \n    # Performance indicators\n    elif any(word in text for word in ['slow', 'performance', 'latency', 'response time',\n                                      'taking longer', 'resource usage']):\n        return 'performance'\n    \n    # Bug indicators\n    elif any(word in text for word in ['bug', 'incorrect', 'wrong result', 'not working',\n                                      'error in', 'unexpected behavior']):\n        return 'bug'\n    \n    # Feature request indicators\n    elif any(word in text for word in ['feature request', 'enhancement', 'new feature',\n                                      'please add', 'would like to have', 'support for']):\n        return 'feature_request'\n    \n    return 'others'\n\ndef compare_tickets(a, b):\n    # Rule 1: Advanced plan with downtime/reliability\n    a_priority = (a['plan_name'] == 'advanced' and \n                 a['category'] in ['downtime', 'reliability'])\n    b_priority = (b['plan_name'] == 'advanced' and \n                 b['category'] in ['downtime', 'reliability'])\n    \n    if a_priority != b_priority:\n        return -1 if a_priority else 1\n    \n    # Rule 2: Category priority\n    category_order = {\n        'downtime': 0,\n        'reliability': 1,\n        'performance': 2,\n        'bug': 3,\n        'feature_request': 4,\n        'others': 5\n    }\n    \n    if category_order[a['category']] != category_order[b['category']]:\n        return category_order[a['category']] - category_order[b['category']]\n    \n    # Rule 3: Creation time\n    return -1 if a['created_at'] < b['created_at'] else 1\n\n# Process tickets\ntickets = [\n    {\n        'id': 143,\n        'subject': \"URGENT: Cannot Access Project\",\n        'description': \"I am unable to access my project on Hasura Cloud. When I try to open the project dashboard, it fails to load and shows an error message. This is critically impacting our production environment and needs immediate attention.\\n\\nProject ID: abc123\\n\\nWe are using PostgreSQL as our database.\\n\\nVersion: v2.41.0\\n\\nPlease assist as soon as possible.\\n\\nThank you.\\n\\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\\n\",\n        'created_at': \"2025-01-03T20:32:35.345840+00:00\"\n    },\n    {\n        'id': 166,\n        'subject': \"Feature Request: Support for Custom GraphQL Directives\",\n        'description': \"Hello,\\n\\nWe are using your platform with a PostgreSQL database and would like to request support for custom GraphQL directives in queries and mutations. This feature would greatly help us implement advanced query logic and improve our application's flexibility.\\n\\nIs this something that could be supported in future releases?\\n\\nThank you for your assistance.\\n\\n\\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\\n\",\n        'created_at': \"2024-12-21T14:32:35.345840+00:00\"\n    },\n    {\n        'id': 209,\n        'subject': \"Urgent: Production Environment Down - Immediate Assistance Required\",\n        'description': \"Hello,\\n\\nWe are experiencing a complete outage of our production environment. All our services are down, and users are unable to access the application, leading to a major disruption in our operations.\\n\\nOur application uses PostgreSQL as the database, and we are currently running version v2.48.5. We have not made any recent changes or deployments that could have caused this issue.\\n\\nWe urgently need assistance to resolve this problem.\\n\\nThank you,\\n[Your Name]\\n\\nProject ID: 76de9616-3d7b-49d7-b909-e154dda91489\\n\",\n        'created_at': \"2024-12-05T07:00:00+00:00\"\n    },\n    {\n        'id': 169,\n        'subject': \"Schema Registry causing high resource usage and slow responses in production\",\n        'description': \"Hi,\\n\\nWe are experiencing resource exhaustion issues while using the Schema Registry feature in our production environment. The Schema Registry seems to consume a lot of CPU and memory resources, leading to slow responses from our application.\\n\\nWe are using PostgreSQL as our database.\\n\\nVersion: v2.46.0\\n\\nCould you please help us resolve this issue?\\n\\nThanks.\\n\\nProject ID: 386d8856-9020-47eb-a21a-2ebe6b81428e\\n\",\n        'created_at': \"2024-11-12T05:00:00+00:00\"\n    },\n    {\n        'id': 251,\n        'subject': \"Performance degradation in permission-related operations\",\n        'description': \"Hi Support,\\n\\nWe are experiencing significant performance degradation when performing operations that involve permissions in our Hasura setup. Queries that used to execute in milliseconds are now taking several seconds to complete, especially those with complex permission rules.\\n\\nWe are using PostgreSQL as our database. Current Hasura version: v2.44.0.\\n\\nCould you please help us troubleshoot this issue and suggest any optimizations?\\n\\nThanks.\\n\\nProject ID: d5dc02fc-707a-4084-854a-79f5866d4dd3\\n\",\n        'created_at': \"2024-10-25T04:00:00+00:00\"\n    }\n]\n\n# Project plans from database\nproject_plans = {\n    \"2a8d4b07-c391-450f-8153-f6521f8a20a0\": \"base\",\n    \"76de9616-3d7b-49d7-b909-e154dda91489\": \"free\",\n    \"386d8856-9020-47eb-a21a-2ebe6b81428e\": \"advanced\",\n    \"d5dc02fc-707a-4084-854a-79f5866d4dd3\": \"base\"\n}\n\n# Process each ticket\nprocessed_tickets = []\nfor ticket in tickets:\n    project_id = get_project_id(ticket['description'])\n    category = classify_ticket(ticket['subject'], ticket['description'])\n    \n    processed_tickets.append({\n        'id': ticket['id'],\n        'project_id': project_id,\n        'plan_name': project_plans.get(project_id, 'free'),\n        'category': category,\n        'created_at': ticket['created_at']\n    })\n\n# Sort tickets\nsorted_tickets = sorted(processed_tickets, key=cmp_to_key(compare_tickets))\n\n# Print result\nprint(\"<tickets>\")\nfor ticket in sorted_tickets:\n    print(ticket['id'])\nprint(\"</tickets>\")"
+          },
+          "name": "execute_python_program",
+          "type": "tool_use"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "tool_use",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 16548,
+        "output_tokens": 2105
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T16:15:21.871390",
+    "response": {
+      "id": "msg_01Croxpai4wXGnPQUoanxmQX",
+      "content": [
+        {
+          "citations": null,
+          "text": "Let me explain the sorting result:\n\n1. Ticket ID: 209\n   - Category: downtime\n   - Project Plan: free\n   - Created: 2024-12-05\n   \n2. Ticket ID: 143\n   - Category: downtime\n   - Project Plan: base\n   - Created: 2025-01-03\n\n3. Ticket ID: 251\n   - Category: performance\n   - Project Plan: base\n   - Created: 2024-10-25\n\n4. Ticket ID: 169\n   - Category: performance\n   - Project Plan: advanced\n   - Created: 2024-11-12\n\n5. Ticket ID: 166\n   - Category: feature_request\n   - Project Plan: base\n   - Created: 2024-12-21\n\nThe sorting followed these rules:\n1. First, we checked for advanced plan tickets with downtime/reliability issues (none in this case)\n2. Then we sorted by category priority: downtime > reliability > performance > bug > feature request > others\n3. For tickets with the same category, we sorted by creation time (older first)\n\nThe tickets 209 and 143 came first because they are downtime issues. Then came the performance-related tickets (251 and 169), and finally the feature request (166). Within each category, older tickets were prioritized over newer ones.",
+          "type": "text"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 18701,
+        "output_tokens": 313
+      }
+    }
+  }
+]

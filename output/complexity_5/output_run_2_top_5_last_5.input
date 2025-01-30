@@ -1,0 +1,108 @@
+[
+  {
+    "role": "system",
+    "content": "You are an assistant with access to two databases with the following schemas:\n\n1. Control Plane Database Schema:\ntable data_generation_seeds columns ( project_id uuid, initial_request_pattern_type text, price_per_model_advanced integer, support_request_pattern_type text, ticket_frequency text,)\ntable error_rate_daily columns ( project_id uuid, date date, success_count integer, error_count integer, error_rate double precision,)\ntable invoice columns ( stripe_invoice_id text, customer_id text, subscription_id text, month integer, year integer, description text, status text, invoice_url text, attempt_count integer, created_at timestamp with time zone, updated_at timestamp with time zone,)\ntable invoice_item columns ( id uuid, invoice_id text, amount numeric, description text, project_id uuid, type text, month integer, year integer, has_updated_to_stripe boolean, error text, created_at timestamp with time zone, updated_at timestamp with time zone,)\ntable plans columns ( id uuid, name text, created_at timestamp with time zone, updated_at timestamp with time zone,)\ntable project_plan_changelogs columns ( id uuid, plan_id uuid, project_id uuid, comment text, created_at timestamp with time zone,)\ntable projects columns ( id uuid, name text, owner_id uuid, created_at timestamp with time zone, updated_at timestamp with time zone, deleted_at timestamp with time zone, active_models integer,)\ntable requests_daily_count columns ( project_id uuid, date date, request_count integer,)\ntable users columns ( id uuid, email text, customer_id text, created_at timestamp with time zone, updated_at timestamp with time zone, first_name text, last_name text,)\n\n2. Support Tickets Database Schema:\ntable support_ticket columns ( id integer, is_public boolean, priority text, status text, subject text, description text, type text, assignee_id integer, requester_id integer, created_at timestamp with time zone, url text,)\ntable support_ticket_comment columns ( id integer, ticket_id integer, body text, created_at timestamp with time zone, user_id integer,)\ntable support_user columns ( id integer, email text, role text,)\n\nAdditional Instructions:\n\n- Always write queries that are compatible with PostgreSQL\n- Use cmp_to_key if writing a sorting algorithm focused on pairwise comparison.\n"
+  },
+  {
+    "role": "user",
+    "content": "Give me a sorted list of top 5 support tickets which I should prioritize amongst the last 5 open tickets (i.e., status = 'open').\n\nFor each ticket do the following:\n- intelligently extract the project ID from the ticket description. project IDs are UUIDs\n- get the plan the project is most recently on\n- get the time the ticket was created at\n- classify the ticket into one of these categories: downtime, reliability, performance, bug, feature request, others.\n\nClassification instructions:\n\n1. Downtime: Users are experiencing widespread service disruptions with their Hasura projects, primarily manifesting as inability to access project consoles and GraphQL endpoints. These issues are causing production environment outages and API failures, with reports of 500 errors and timeouts when attempting to connect to services.\n\n2. Reliability: Users are experiencing intermittent connectivity and service disruptions in their production environment. The issues manifest as random request failures and service instability, affecting system reliability and user experience. \n\n3. Performance: Performance issues across GraphQL queries, permission evaluations, or event trigger processing. Users are experiencing significantly increased response times and latency, with operations taking several seconds longer than usual to complete. \n\n4. Bug: Users are reporting bugs in the behaviour of software e.g. bug in Schema Registry allowed unauthorized users to access and modify schemas beyond their permission levels or graphql api returning wrong results when using _in operator  \n\n5. Feature request: Users are requesting enhanced functionality in the product e.g. batch operations in Actions feature and more flexible configuration in event triggers. \n\n6. Others: Any other type of ticket which does not fit the above categories\n\nNow sort the tickets in the order of priority, by comparing them pairwise using these rules one by one in order (moving to the next rule if the previous rule is a tie).\n- If a ticket is on the advanced plan with category 'downtime' or 'reliability', it should be prioritized higher.\n- If a ticket is on the base plan with category 'downtime' or 'reliability', it should be prioritized higher.\n- If a ticket is on the free plan with category 'downtime', it should be prioritized higher.\n- Prioritize the ticket based on categories using this order: downtime > reliability > performance > bug > feature request > others\n- Compare ticket creation times to prioritize the older ticket."
+  },
+  {
+    "role": "assistant",
+    "content": "",
+    "tool_calls": [
+      "ChatCompletionMessageToolCall(id='call_KIUfXpl8oUFbzFY1dYElIO8o', function=Function(arguments='{\"sql\":\"SELECT id, description, created_at FROM support_ticket WHERE status=\\'open\\' ORDER BY created_at DESC LIMIT 5;\"}', name='query_support_tickets'), type='function')"
+    ]
+  },
+  {
+    "role": "tool",
+    "tool_call_id": "call_KIUfXpl8oUFbzFY1dYElIO8o",
+    "name": "query_support_tickets",
+    "content": "[\n  {\n    \"id\": 143,\n    \"description\": \"I am unable to access my project on Hasura Cloud. When I try to open the project dashboard, it fails to load and shows an error message. This is critically impacting our production environment and needs immediate attention.\\n\\nProject ID: abc123\\n\\nWe are using PostgreSQL as our database.\\n\\nVersion: v2.41.0\\n\\nPlease assist as soon as possible.\\n\\nThank you.\\n\\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\\n\",\n    \"created_at\": \"2025-01-03T20:32:35.345840+00:00\"\n  },\n  {\n    \"id\": 166,\n    \"description\": \"Hello,\\n\\nWe are using your platform with a PostgreSQL database and would like to request support for custom GraphQL directives in queries and mutations. This feature would greatly help us implement advanced query logic and improve our application's flexibility.\\n\\nIs this something that could be supported in future releases?\\n\\nThank you for your assistance.\\n\\n\\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\\n\",\n    \"created_at\": \"2024-12-21T14:32:35.345840+00:00\"\n  },\n  {\n    \"id\": 209,\n    \"description\": \"Hello,\\n\\nWe are experiencing a complete outage of our production environment. All our services are down, and users are unable to access the application, leading to a major disruption in our operations.\\n\\nOur application uses PostgreSQL as the database, and we are currently running version v2.48.5. We have not made any recent changes or deployments that could have caused this issue.\\n\\nWe urgently need assistance to resolve this problem.\\n\\nThank you,\\n[Your Name]\\n\\nProject ID: 76de9616-3d7b-49d7-b909-e154dda91489\\n\",\n    \"created_at\": \"2024-12-05T07:00:00+00:00\"\n  },\n  {\n    \"id\": 169,\n    \"description\": \"Hi,\\n\\nWe are experiencing resource exhaustion issues while using the Schema Registry feature in our production environment. The Schema Registry seems to consume a lot of CPU and memory resources, leading to slow responses from our application.\\n\\nWe are using PostgreSQL as our database.\\n\\nVersion: v2.46.0\\n\\nCould you please help us resolve this issue?\\n\\nThanks.\\n\\nProject ID: 386d8856-9020-47eb-a21a-2ebe6b81428e\\n\",\n    \"created_at\": \"2024-11-12T05:00:00+00:00\"\n  },\n  {\n    \"id\": 251,\n    \"description\": \"Hi Support,\\n\\nWe are experiencing significant performance degradation when performing operations that involve permissions in our Hasura setup. Queries that used to execute in milliseconds are now taking several seconds to complete, especially those with complex permission rules.\\n\\nWe are using PostgreSQL as our database. Current Hasura version: v2.44.0.\\n\\nCould you please help us troubleshoot this issue and suggest any optimizations?\\n\\nThanks.\\n\\nProject ID: d5dc02fc-707a-4084-854a-79f5866d4dd3\\n\",\n    \"created_at\": \"2024-10-25T04:00:00+00:00\"\n  }\n]"
+  },
+  {
+    "role": "assistant",
+    "content": "",
+    "tool_calls": [
+      "ChatCompletionMessageToolCall(id='call_EQdtK3bhvBNz2MmfZWLKoM9w', function=Function(arguments='{\"sql\": \"SELECT plan_id FROM project_plan_changelogs WHERE project_id = \\'2a8d4b07-c391-450f-8153-f6521f8a20a0\\' ORDER BY created_at DESC LIMIT 1;\"}', name='query_control_plane_data'), type='function')",
+      "ChatCompletionMessageToolCall(id='call_rvrMzRP2luj89fxRSZkyV7BG', function=Function(arguments='{\"sql\": \"SELECT plan_id FROM project_plan_changelogs WHERE project_id = \\'76de9616-3d7b-49d7-b909-e154dda91489\\' ORDER BY created_at DESC LIMIT 1;\"}', name='query_control_plane_data'), type='function')",
+      "ChatCompletionMessageToolCall(id='call_pLwPBuA6bdxBG4A8RV6GXaVH', function=Function(arguments='{\"sql\": \"SELECT plan_id FROM project_plan_changelogs WHERE project_id = \\'386d8856-9020-47eb-a21a-2ebe6b81428e\\' ORDER BY created_at DESC LIMIT 1;\"}', name='query_control_plane_data'), type='function')",
+      "ChatCompletionMessageToolCall(id='call_YI2E4gwbTcTaMOAvisYHDpLi', function=Function(arguments='{\"sql\": \"SELECT plan_id FROM project_plan_changelogs WHERE project_id = \\'d5dc02fc-707a-4084-854a-79f5866d4dd3\\' ORDER BY created_at DESC LIMIT 1;\"}', name='query_control_plane_data'), type='function')",
+      "ChatCompletionMessageToolCall(id='call_OiweqN6Ew4F7Syg5rCZKcqvn', function=Function(arguments='{\"sql\": \"SELECT name FROM plans WHERE id = (SELECT plan_id FROM project_plan_changelogs WHERE project_id = \\'2a8d4b07-c391-450f-8153-f6521f8a20a0\\' ORDER BY created_at DESC LIMIT 1);\"}', name='query_control_plane_data'), type='function')"
+    ]
+  },
+  {
+    "role": "tool",
+    "tool_call_id": "call_EQdtK3bhvBNz2MmfZWLKoM9w",
+    "name": "query_control_plane_data",
+    "content": "[\n  {\n    \"plan_id\": \"307a87a8-9185-4711-8470-38cdb9b6b42a\"\n  }\n]"
+  },
+  {
+    "role": "tool",
+    "tool_call_id": "call_rvrMzRP2luj89fxRSZkyV7BG",
+    "name": "query_control_plane_data",
+    "content": "[\n  {\n    \"plan_id\": \"2d41d1de-51fa-41ed-8acd-6ee63bcd316e\"\n  }\n]"
+  },
+  {
+    "role": "tool",
+    "tool_call_id": "call_pLwPBuA6bdxBG4A8RV6GXaVH",
+    "name": "query_control_plane_data",
+    "content": "[\n  {\n    \"plan_id\": \"34a91812-c6ab-4e35-b011-7433bf68299d\"\n  }\n]"
+  },
+  {
+    "role": "tool",
+    "tool_call_id": "call_YI2E4gwbTcTaMOAvisYHDpLi",
+    "name": "query_control_plane_data",
+    "content": "[\n  {\n    \"plan_id\": \"307a87a8-9185-4711-8470-38cdb9b6b42a\"\n  }\n]"
+  },
+  {
+    "role": "tool",
+    "tool_call_id": "call_OiweqN6Ew4F7Syg5rCZKcqvn",
+    "name": "query_control_plane_data",
+    "content": "[\n  {\n    \"name\": \"base\"\n  }\n]"
+  },
+  {
+    "role": "assistant",
+    "content": "",
+    "tool_calls": [
+      "ChatCompletionMessageToolCall(id='call_UgK27lzKxWEZjVs0KsON6iLh', function=Function(arguments='{\"sql\": \"SELECT name FROM plans WHERE id=\\'307a87a8-9185-4711-8470-38cdb9b6b42a\\';\"}', name='query_control_plane_data'), type='function')",
+      "ChatCompletionMessageToolCall(id='call_ApNl0T26Eykt5pchJ58MwwDF', function=Function(arguments='{\"sql\": \"SELECT name FROM plans WHERE id=\\'2d41d1de-51fa-41ed-8acd-6ee63bcd316e\\';\"}', name='query_control_plane_data'), type='function')",
+      "ChatCompletionMessageToolCall(id='call_AHcIAcNkaFSGHYE8F8hoWaUg', function=Function(arguments='{\"sql\": \"SELECT name FROM plans WHERE id=\\'34a91812-c6ab-4e35-b011-7433bf68299d\\';\"}', name='query_control_plane_data'), type='function')"
+    ]
+  },
+  {
+    "role": "tool",
+    "tool_call_id": "call_UgK27lzKxWEZjVs0KsON6iLh",
+    "name": "query_control_plane_data",
+    "content": "[\n  {\n    \"name\": \"base\"\n  }\n]"
+  },
+  {
+    "role": "tool",
+    "tool_call_id": "call_ApNl0T26Eykt5pchJ58MwwDF",
+    "name": "query_control_plane_data",
+    "content": "[\n  {\n    \"name\": \"free\"\n  }\n]"
+  },
+  {
+    "role": "tool",
+    "tool_call_id": "call_AHcIAcNkaFSGHYE8F8hoWaUg",
+    "name": "query_control_plane_data",
+    "content": "[\n  {\n    \"name\": \"advanced\"\n  }\n]"
+  },
+  {
+    "role": "assistant",
+    "content": "Here are the last 5 open tickets with their respective details and classifications:\n\n1. **Ticket ID:** 143\n   - **Project ID:** 2a8d4b07-c391-450f-8153-f6521f8a20a0\n   - **Created At:** 2025-01-03\n   - **Project Plan:** Base\n   - **Description:** \"I am unable to access my project on Hasura Cloud... Project ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\"\n   - **Category:** Downtime\n\n2. **Ticket ID:** 166\n   - **Project ID:** 2a8d4b07-c391-450f-8153-f6521f8a20a0\n   - **Created At:** 2024-12-21\n   - **Project Plan:** Base\n   - **Description:** \"request support for custom GraphQL directives... Project ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\"\n   - **Category:** Feature Request\n\n3. **Ticket ID:** 209\n   - **Project ID:** 76de9616-3d7b-49d7-b909-e154dda91489\n   - **Created At:** 2024-12-05\n   - **Project Plan:** Free\n   - **Description:** \"experiencing a complete outage of our production environment... Project ID: 76de9616-3d7b-49d7-b909-e154dda91489\"\n   - **Category:** Downtime\n\n4. **Ticket ID:** 169\n   - **Project ID:** 386d8856-9020-47eb-a21a-2ebe6b81428e\n   - **Created At:** 2024-11-12\n   - **Project Plan:** Advanced\n   - **Description:** \"resource exhaustion issues while using the Schema Registry... Project ID: 386d8856-9020-47eb-a21a-2ebe6b81428e\"\n   - **Category:** Performance\n\n5. **Ticket ID:** 251\n   - **Project ID:** d5dc02fc-707a-4084-854a-79f5866d4dd3\n   - **Created At:** 2024-10-25\n   - **Project Plan:** Base\n   - **Description:** \"significant performance degradation... Project ID: d5dc02fc-707a-4084-854a-79f5866d4dd3\"\n   - **Category:** Performance\n\nNext, I'll sort the tickets based on the specified prioritization rules.",
+    "tool_calls": [
+      "ChatCompletionMessageToolCall(id='call_qt9U6AUqCq4S1AZVUWTkwnNi', function=Function(arguments='{\"pythonCode\":\"from functools import cmp_to_key\\\\nimport datetime\\\\n\\\\ntickets = [\\\\n    {\\'ticket_id\\': 143, \\'plan\\': \\'base\\', \\'category\\': \\'downtime\\', \\'created_at\\': datetime.datetime(2025, 1, 3)},\\\\n    {\\'ticket_id\\': 166, \\'plan\\': \\'base\\', \\'category\\': \\'feature request\\', \\'created_at\\': datetime.datetime(2024, 12, 21)},\\\\n    {\\'ticket_id\\': 209, \\'plan\\': \\'free\\', \\'category\\': \\'downtime\\', \\'created_at\\': datetime.datetime(2024, 12, 5)},\\\\n    {\\'ticket_id\\': 169, \\'plan\\': \\'advanced\\', \\'category\\': \\'performance\\', \\'created_at\\': datetime.datetime(2024, 11, 12)},\\\\n    {\\'ticket_id\\': 251, \\'plan\\': \\'base\\', \\'category\\': \\'performance\\', \\'created_at\\': datetime.datetime(2024, 10, 25)}\\\\n]\\\\n\\\\ncategory_priority = {\\\\n    \\'downtime\\': 1,\\\\n    \\'reliability\\': 2,\\\\n    \\'performance\\': 3,\\\\n    \\'bug\\': 4,\\\\n    \\'feature request\\': 5,\\\\n    \\'others\\': 6\\\\n}\\\\n\\\\nplan_priority = {\\'advanced\\': 1, \\'base\\': 2, \\'free\\': 3}\\\\n\\\\n\\\\ndef compare_tickets(ticket1, ticket2):\\\\n    # If a ticket is on the advanced plan with category \\'downtime\\' or \\'reliability\\', it should be prioritized higher\\\\n    if (ticket1[\\'plan\\'] == \\'advanced\\' and ticket1[\\'category\\'] in [\\'downtime\\', \\'reliability\\']) != \\\\\\\\\\\\n            (ticket2[\\'plan\\'] == \\'advanced\\' and ticket2[\\'category\\'] in [\\'downtime\\', \\'reliability\\']):\\\\n        return -1 if ticket1[\\'plan\\'] == \\'advanced\\' and ticket1[\\'category\\'] in [\\'downtime\\', \\'reliability\\'] else 1\\\\n    \\\\n    # If a ticket is on the base plan with category \\'downtime\\' or \\'reliability\\', it should be prioritized higher\\\\n    if (ticket1[\\'plan\\'] == \\'base\\' and ticket1[\\'category\\'] in [\\'downtime\\', \\'reliability\\']) != \\\\\\\\\\\\n            (ticket2[\\'plan\\'] == \\'base\\' and ticket2[\\'category\\'] in [\\'downtime\\', \\'reliability\\']):\\\\n        return -1 if ticket1[\\'plan\\'] == \\'base\\' and ticket1[\\'category\\'] in [\\'downtime\\', \\'reliability\\'] else 1\\\\n    \\\\n    # If a ticket is on the free plan with category \\'downtime\\', it should be prioritized higher\\\\n    if (ticket1[\\'plan\\'] == \\'free\\' and ticket1[\\'category\\'] == \\'downtime\\') != \\\\\\\\\\\\n            (ticket2[\\'plan\\'] == \\'free\\' and ticket2[\\'category\\'] == \\'downtime\\'):\\\\n        return -1 if ticket1[\\'plan\\'] == \\'free\\' and ticket1[\\'category\\'] == \\'downtime\\' else 1\\\\n\\\\n    # Prioritize the ticket based on categories using the predefined priority order\\\\n    if category_priority[ticket1[\\'category\\']] != category_priority[ticket2[\\'category\\']]:\\\\n        return -1 if category_priority[ticket1[\\'category\\']] < category_priority[ticket2[\\'category\\']] else 1\\\\n\\\\n    # Compare ticket creation times to prioritize the older ticket\\\\n    if ticket1[\\'created_at\\'] != ticket2[\\'created_at\\']:\\\\n        return -1 if ticket1[\\'created_at\\'] < ticket2[\\'created_at\\'] else 1\\\\n\\\\n    return 0\\\\n\\\\nsorted_tickets = sorted(tickets, key=cmp_to_key(compare_tickets))\\\\n\\\\nsorted_ticket_ids = [ticket[\\'ticket_id\\'] for ticket in sorted_tickets]\\\\n\\\\nprint(sorted_ticket_ids)\"}', name='execute_python_program'), type='function')"
+    ]
+  },
+  {
+    "role": "tool",
+    "tool_call_id": "call_qt9U6AUqCq4S1AZVUWTkwnNi",
+    "name": "execute_python_program",
+    "content": "{\n  \"stdout\": \"[143, 209, 251, 169, 166]\",\n  \"stderr\": \"\",\n  \"exitCode\": 0\n}"
+  },
+  {
+    "role": "assistant",
+    "content": "Here is the sorted list of the top 5 support tickets to prioritize:\n\n1. **Ticket ID:** 143 - (Base plan, Downtime)\n2. **Ticket ID:** 209 - (Free plan, Downtime)\n3. **Ticket ID:** 251 - (Base plan, Performance)\n4. **Ticket ID:** 169 - (Advanced plan, Performance)\n5. **Ticket ID:** 166 - (Base plan, Feature Request)\n\nPlease prioritize these tickets according to the above order."
+  }
+]

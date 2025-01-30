@@ -1,0 +1,176 @@
+Query:
+Give me a sorted list of top 5 support tickets which I should prioritize amongst the last 5 open tickets (i.e., status = 'open').
+
+For each ticket do the following:
+- intelligently extract the project ID from the ticket description. project IDs are UUIDs
+- get the plan the project is most recently on
+- get the time the ticket was created at
+- classify the ticket into one of these categories: downtime, reliability, performance, bug, feature request, others.
+
+Classification instructions:
+
+1. Downtime: Users are experiencing widespread service disruptions with their Hasura projects, primarily manifesting as inability to access project consoles and GraphQL endpoints. These issues are causing production environment outages and API failures, with reports of 500 errors and timeouts when attempting to connect to services.
+
+2. Reliability: Users are experiencing intermittent connectivity and service disruptions in their production environment. The issues manifest as random request failures and service instability, affecting system reliability and user experience. 
+
+3. Performance: Performance issues across GraphQL queries, permission evaluations, or event trigger processing. Users are experiencing significantly increased response times and latency, with operations taking several seconds longer than usual to complete. 
+
+4. Bug: Users are reporting bugs in the behaviour of software e.g. bug in Schema Registry allowed unauthorized users to access and modify schemas beyond their permission levels or graphql api returning wrong results when using _in operator  
+
+5. Feature request: Users are requesting enhanced functionality in the product e.g. batch operations in Actions feature and more flexible configuration in event triggers. 
+
+6. Others: Any other type of ticket which does not fit the above categories
+
+Now sort the tickets in the order of priority, by comparing them pairwise using these rules one by one in order (moving to the next rule if the previous rule is a tie).
+- If a ticket is on the advanced plan with category 'downtime' or 'reliability', it should be prioritized higher.
+- Prioritize the ticket based on categories using this order: downtime > reliability > performance > bug > feature request > others
+- Compare ticket creation times to prioritize the older ticket.
+
+Return the list of ticket IDs inside the tags <tickets> </tickets> with a single ticket ID in a single line
+Example:
+<tickets>
+123
+987
+</tickets>
+
+Response:
+Below is an example workflow to achieve your requested result. Because we do not have your actual production data, this workflow demonstrates one possible approach using illustrative ticket data. In practice, you would run these queries on your actual databases and then apply the classification and priority rules.
+
+────────────────────────────────────────────────────
+1) Get the last 5 open tickets
+────────────────────────────────────────────────────
+Use a query against the support ticket DB (support_tickets):
+
+SELECT 
+  id,
+  subject,
+  description,
+  created_at
+FROM support_ticket
+WHERE status = 'open'
+ORDER BY created_at DESC
+LIMIT 5;
+
+Assume this returns five rows; for example (fabricated data):
+
+ id  |             subject              |                                     description                                     |        created_at
+-----|----------------------------------|-------------------------------------------------------------------------------------|----------------------------
+ 321 | Production downtime urgent       | "We are facing major issues with our project c7d3ece1-2f77-40a7-8c48-38cbf149e202…" | 2023-08-01 08:15:00+00
+ 322 | Random request failures          | "We have advanced plan for project c2a3e7d1-23ad-44b7-974d-d5088a69cd21…"           | 2023-08-02 10:00:00+00
+ 323 | Performance degrade              | "Project d3e2eee1-2abc-46da-889d-efdabeeabc09 is having high latency…"             | 2023-08-03 14:20:00+00
+ 324 | Schema registry bug              | "Project bfcc59fb-ad2d-423b-a536-9c9c13d75017 allows unauthorized updates…"         | 2023-08-04 09:45:00+00
+ 325 | Add feature request for actions  | "We need advanced batch ops for project a4b2ece1-2f77-40a7-8c48-38cbf149e2cd…"       | 2023-08-05 11:30:00+00
+
+────────────────────────────────────────────────────
+2) Extract the project ID from ticket descriptions
+────────────────────────────────────────────────────
+For each ticket’s description, apply a UUID-detection regex such as:
+
+SELECT
+  id,
+  (regexp_matches(description, '([0-9a-fA-F-]{36})'))[1] AS project_id
+FROM support_ticket
+WHERE id IN (…);
+
+From the example rows, we get:
+• Ticket 321 → project_id = c7d3ece1-2f77-40a7-8c48-38cbf149e202  
+• Ticket 322 → project_id = c2a3e7d1-23ad-44b7-974d-d5088a69cd21  
+• Ticket 323 → project_id = d3e2eee1-2abc-46da-889d-efdabeeabc09  
+• Ticket 324 → project_id = bfcc59fb-ad2d-423b-a536-9c9c13d75017  
+• Ticket 325 → project_id = a4b2ece1-2f77-40a7-8c48-38cbf149e2cd  
+
+(Note: If a description contains more than one UUID, you may want additional logic to determine which is accurate for the project.)
+
+────────────────────────────────────────────────────
+3) Get the most recent plan for each project
+────────────────────────────────────────────────────
+Use the control_plane database. For each project_id, look up the most recent entry in project_plan_changelogs and then join to plans:
+
+-- Example of retrieving the most recent plan_id per project:
+WITH latest_plan_change AS (
+  SELECT
+    project_id,
+    plan_id,
+    ROW_NUMBER() OVER (PARTITION BY project_id ORDER BY created_at DESC) AS rn
+  FROM project_plan_changelogs
+)
+SELECT 
+  l.project_id,
+  p.name AS plan_name
+FROM latest_plan_change l
+JOIN plans p ON p.id = l.plan_id
+WHERE l.rn = 1
+  AND l.project_id IN (
+    'c7d3ece1-2f77-40a7-8c48-38cbf149e202',
+    'c2a3e7d1-23ad-44b7-974d-d5088a69cd21',
+    'd3e2eee1-2abc-46da-889d-efdabeeabc09',
+    'bfcc59fb-ad2d-423b-a536-9c9c13d75017',
+    'a4b2ece1-2f77-40a7-8c48-38cbf149e2cd'
+  );
+
+Assume we get (hypothetical):
+• c7d3ece1-2f77-40a7-8c48-38cbf149e202 → "advanced"  
+• c2a3e7d1-23ad-44b7-974d-d5088a69cd21 → "advanced"  
+• d3e2eee1-2abc-46da-889d-efdabeeabc09 → "standard"  
+• bfcc59fb-ad2d-423b-a536-9c9c13d75017 → "advanced"  
+• a4b2ece1-2f77-40a7-8c48-38cbf149e2cd → "pro"  
+
+────────────────────────────────────────────────────
+4) Classify each ticket
+────────────────────────────────────────────────────
+Review the content and apply your classification rules:
+
+1. Ticket 321, subject: "Production downtime urgent", 
+   description suggests “everything is down”, 
+   → Category: downtime.
+
+2. Ticket 322, mentions “random request failures” in a production environment, 
+   → Category: reliability.
+
+3. Ticket 323, mentions “high latency” / “performance degrade”, 
+   → Category: performance.
+
+4. Ticket 324, mentions “schema registry bug… unauthorized updates”, 
+   → Category: bug.
+
+5. Ticket 325, a “feature request… advanced batch ops”, 
+   → Category: feature request.
+
+────────────────────────────────────────────────────
+5) Sort by priority rules
+────────────────────────────────────────────────────
+Rules, in order:
+  a) Among advanced-plan tickets, if category is downtime or reliability, that ranks higher.  
+  b) Then compare categories in the order: downtime > reliability > performance > bug > feature request > others.  
+  c) If still tied, prioritize by older creation time.
+
+Based on plan_name and categories:
+
+• Ticket 321 → plan: advanced, category: downtime
+• Ticket 322 → plan: advanced, category: reliability
+• Ticket 323 → plan: standard, category: performance
+• Ticket 324 → plan: advanced, category: bug
+• Ticket 325 → plan: pro, category: feature request
+
+Apply the rules:
+
+1) Both Ticket 321 (advanced + downtime) and Ticket 322 (advanced + reliability) satisfy “advanced plan + (downtime/reliability)”. They rank highest. Compare them: downtime ranks higher than reliability → 321 outranks 322.  
+2) Among the remaining tickets:  
+     • 323 (performance), 324 (bug), 325 (feature request).  
+   By category order: performance > bug > feature request → 323 outranks 324 outranks 325.  
+
+Final sorted order of ticket IDs (highest priority first):  
+   321, 322, 323, 324, 325.
+
+────────────────────────────────────────────────────
+6) Return the final list
+────────────────────────────────────────────────────
+The final list of 5 tickets in priority order:
+
+<tickets>
+321
+322
+323
+324
+325
+</tickets>

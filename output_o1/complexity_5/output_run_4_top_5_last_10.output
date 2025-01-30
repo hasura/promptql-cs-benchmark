@@ -1,0 +1,143 @@
+[
+  {
+    "timestamp": "2025-01-29T14:55:01.887315",
+    "response": {
+      "id": "chatcmpl-AuybDjGtWKqPn7n2LERssJJTrMn18",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_5OzGhq24Mn3OdDctYVxOtFg4",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, subject, description, created_at,\\n       (regexp_matches(description, '[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}'))[1] as project_id\\nFROM support_ticket\\nWHERE status = 'open'\\nORDER BY created_at DESC\\nLIMIT 10;\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738142675,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 2869,
+        "prompt_tokens": 1058,
+        "total_tokens": 3927,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 2752,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T14:55:18.856797",
+    "response": {
+      "id": "chatcmpl-AuybeC4jPgh6VPWswyxFN61K0QmCU",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_J2eTYYNEqbSoIA6s8PhAKKHE",
+                "function": {
+                  "arguments": "{\"sql\":\"WITH latest_plan AS (\\n    SELECT DISTINCT ON (ppc.project_id) ppc.project_id, p.name as plan_name, ppc.created_at\\n    FROM project_plan_changelogs ppc\\n    JOIN plans p ON p.id = ppc.plan_id\\n    WHERE ppc.project_id IN (\\n        '2a8d4b07-c391-450f-8153-f6521f8a20a0',\\n        '76de9616-3d7b-49d7-b909-e154dda91489',\\n        '386d8856-9020-47eb-a21a-2ebe6b81428e',\\n        'd5dc02fc-707a-4084-854a-79f5866d4dd3',\\n        '5ad39764-9b9b-48cb-8819-43ab40694b06',\\n        '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44',\\n        '8edf6e2c-99b6-49af-b342-4aefe811b2f3',\\n        '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82'\\n    )\\n    ORDER BY ppc.project_id, ppc.created_at DESC\\n)\\nSELECT project_id, plan_name\\nFROM latest_plan;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738142702,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 2140,
+        "prompt_tokens": 3155,
+        "total_tokens": 5295,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 1792,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T14:55:45.115564",
+    "response": {
+      "id": "chatcmpl-AuybvZRhsq1OCm28tb6Fjuq2Y0ZAp",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "<tickets>\n205\n139\n143\n215\n144\n</tickets>",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738142719,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 2971,
+        "prompt_tokens": 3846,
+        "total_tokens": 6817,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 2944,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 3072
+        }
+      }
+    }
+  }
+]

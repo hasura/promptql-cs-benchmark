@@ -129,7 +129,7 @@ class DatabaseTool:
                 "type": "function",
                 "function": {
                     "name": "execute_python_program",
-                    "description": "Run a Python program with optional data values passed as command line argument",
+                    "description": "Run a Python program with optional data values passed as command line argument. The results should be printed in stdout or stderr",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -153,7 +153,7 @@ class DatabaseTool:
         self.control_plane_conn.close()
         self.support_tickets_conn.close()
 
-class RAGAssistant:
+class AIAssistant:
     def __init__(self):
         self.db_tool = DatabaseTool()
         self.client = AsyncOpenAI(
@@ -169,9 +169,9 @@ class RAGAssistant:
             "table_name LIKE 'support%'"
         )
         # Initialize conversation history with system message
-        self.messages = [{
+        self.init_messages = [{
             "role": "system",
-            "content": f"""You are a database assistant with access to two databases:
+            "content": f"""You are an assistant with access to two databases with the following schemas:
 
 1. Control Plane Database Schema:
 {self.control_plane_schema}
@@ -179,26 +179,42 @@ class RAGAssistant:
 2. Support Tickets Database Schema:
 {self.support_tickets_schema}
 
-Use these schemas to help formulate your SQL queries. Always write queries that are compatible with PostgreSQL."""
+Additional Instructions:
+
+- Always write queries that are compatible with PostgreSQL
+- Use cmp_to_key if writing a sorting algorithm focused on pairwise comparison.
+"""
         }]
+        self.messages = self.init_messages.copy() 
+        self.api_responses = []
+
+    def clear_history(self):
+        self.messages = self.init_messages.copy()
+        self.api_responses = []
 
     async def process_query(self, query: str) -> str:
         """Process a query using available tools and GPT-4 while maintaining conversation history"""
         # Add the new user query to the conversation history
         self.messages.append({"role": "user", "content": query})
         
-        tool_use_count = 0
-        MAX_TOOL_USES = 10
+        tool_loop_count = 0
+        MAX_TOOL_LOOPS = 10
 
         try:
-            while tool_use_count < MAX_TOOL_USES:
+            while tool_loop_count < MAX_TOOL_LOOPS:
                 completion = await self.client.chat.completions.create(
                     model="gpt-4o",
                     messages=self.messages,
                     tools=self.db_tool.tool_schemas,
                     tool_choice="auto"
                 )
-                
+
+                # Store the API response
+                self.api_responses.append({
+                    "timestamp": datetime.now().isoformat(),
+                    "response": completion.model_dump()
+                })
+                                
                 assistant_message = completion.choices[0].message
 
                 if not assistant_message.tool_calls:
@@ -216,9 +232,9 @@ Use these schemas to help formulate your SQL queries. Always write queries that 
                     "tool_calls": assistant_message.tool_calls
                 })
 
+                if len(assistant_message.tool_calls) > 0:
+                    tool_loop_count += 1
                 for tool_call in assistant_message.tool_calls:
-                    tool_use_count += 1
-                    
                     function_name = tool_call.function.name
                     function_args = json.loads(tool_call.function.arguments)
                     
@@ -254,7 +270,7 @@ Use these schemas to help formulate your SQL queries. Always write queries that 
                         "content": json.dumps(result, indent=2, cls=DateTimeEncoder)
                     })
 
-                if tool_use_count >= MAX_TOOL_USES:
+                if tool_loop_count >= MAX_TOOL_LOOPS:
                     # Add max tool use warning to conversation history
                     self.messages.append({
                         "role": "user",
@@ -265,6 +281,13 @@ Use these schemas to help formulate your SQL queries. Always write queries that 
                 model="gpt-4o",
                 messages=self.messages
             )
+            
+            # Store the final API response
+            self.api_responses.append({
+                "timestamp": datetime.now().isoformat(),
+                "response": final_completion.model_dump()
+            })
+                                        
             final_response = final_completion.choices[0].message.content or ""
             # Add final response to conversation history
             self.messages.append({
@@ -287,34 +310,54 @@ Use these schemas to help formulate your SQL queries. Always write queries that 
         """Close all connections"""
         self.db_tool.close()
 
-def execute_python_code(python_code: str, data_values: str = "[]") -> Dict[str, str]:
-    """Execute Python code and return the results"""
+def execute_python_code(python_code: str, data_values: str = "[]") -> Dict[str, str | int]:
+    """Execute Python code and return the results."""
     
-    logger.info("Executing Python: \n %s", python_code)
-    
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.py', delete=False) as tmp:
-        tmp.write(python_code)
-        tmp_path = tmp.name
+    logger.info("Executing Python code:\n%s", python_code)
 
+    # Ensure we clean up the temporary file in all cases
+    tmp_file = None
     try:
+        # Create a temporary file to store the Python code
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.py', delete=False, encoding='utf-8') as tmp:
+            tmp.write(python_code)
+            tmp_file = tmp.name  # Save the file path for later use
+
+        # Execute the Python code in a subprocess
         process = subprocess.Popen(
-            ['python3', tmp_path, data_values],
+            ['python3', tmp_file, data_values],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True
         )
         stdout, stderr = process.communicate()
+
+        # Return the output and error streams along with the exit code
         return {
-            "stdout": stdout,
-            "stderr": stderr,
+            "stdout": stdout.strip(),
+            "stderr": stderr.strip(),
             "exitCode": process.returncode
         }
+
+    except Exception as e:
+        logger.error("Error while executing Python code: %s", str(e))
+        return {
+            "stdout": "",
+            "stderr": str(e),
+            "exitCode": 1
+        }
+
     finally:
-        os.unlink(tmp_path)
+        # Clean up the temporary file
+        if tmp_file and os.path.exists(tmp_file):
+            try:
+                os.unlink(tmp_file)
+            except Exception as e:
+                logger.warning("Failed to delete temporary file: %s", str(e))
         
 
 async def main():
-    assistant = RAGAssistant()
+    assistant = AIAssistant()
     
     try:
         while True:

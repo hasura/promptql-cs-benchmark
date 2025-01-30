@@ -1,0 +1,132 @@
+Query:
+Give me a sorted list of top 5 support tickets which I should prioritize amongst the last 10 open tickets (i.e., status = 'open').
+
+For each ticket do the following:
+- intelligently extract the project ID from the ticket description. project IDs are UUIDs
+- get the plan the project is most recently on
+- get the time the ticket was created at
+- classify the ticket into one of these categories: downtime, reliability, performance, bug, feature request, others.
+
+Classification instructions:
+
+1. Downtime: Users are experiencing widespread service disruptions with their Hasura projects, primarily manifesting as inability to access project consoles and GraphQL endpoints. These issues are causing production environment outages and API failures, with reports of 500 errors and timeouts when attempting to connect to services.
+
+2. Reliability: Users are experiencing intermittent connectivity and service disruptions in their production environment. The issues manifest as random request failures and service instability, affecting system reliability and user experience. 
+
+3. Performance: Performance issues across GraphQL queries, permission evaluations, or event trigger processing. Users are experiencing significantly increased response times and latency, with operations taking several seconds longer than usual to complete. 
+
+4. Bug: Users are reporting bugs in the behaviour of software e.g. bug in Schema Registry allowed unauthorized users to access and modify schemas beyond their permission levels or graphql api returning wrong results when using _in operator  
+
+5. Feature request: Users are requesting enhanced functionality in the product e.g. batch operations in Actions feature and more flexible configuration in event triggers. 
+
+6. Others: Any other type of ticket which does not fit the above categories
+
+Now sort the tickets in the order of priority, by comparing them pairwise using these rules one by one in order (moving to the next rule if the previous rule is a tie).
+- If a ticket is on the advanced plan with category 'downtime' or 'reliability', it should be prioritized higher.
+- Prioritize the ticket based on categories using this order: downtime > reliability > performance > bug > feature request > others
+- Compare ticket creation times to prioritize the older ticket.
+
+Return the list of ticket IDs inside the tags <tickets> </tickets> with a single ticket ID in a single line
+Example:
+<tickets>
+123
+987
+</tickets>
+
+Response:
+Below is an illustrative example of how one might derive and prioritize the top 5 support tickets among the last 10 open tickets using the rules you specified. Because no specific data was provided in your request, this example shows the process with hypothetical tickets and demonstrates the final output format (<tickets> … </tickets>).
+
+────────────────────────────────────────────────────────
+1) Retrieve the last 10 open tickets, sorted by creation time:
+   SELECT id,
+          description,
+          created_at
+     FROM support_ticket
+    WHERE status = 'open'
+ ORDER BY created_at DESC
+    LIMIT 10;
+
+2) For each of these 10 tickets:
+   • Extract the project ID (UUID) from the “description” using a regex pattern like:
+       -- Sample regex for UUID:
+       --   '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+   • Look up the project’s most recent plan:
+       SELECT c.plan_id,
+              p.name AS plan_name
+         FROM project_plan_changelogs c
+         JOIN plans p
+           ON p.id = c.plan_id
+        WHERE c.project_id = '<extracted-uuid-from-description>'
+     ORDER BY c.created_at DESC
+        LIMIT 1;
+   • Classify the ticket based on its description:
+       - downtime, reliability, performance, bug, feature request, or others
+   • Record the ticket’s created_at time.
+
+3) Apply the prioritization rules pairwise:
+   a) Advanced plan + (downtime or reliability) tickets get highest priority overall.
+   b) Next, order by category overall:
+        downtime > reliability > performance > bug > feature request > others
+   c) Finally, among tickets with the same plan/category, older tickets (earlier created_at) get priority.
+
+────────────────────────────────────────────────────────
+Example Walk-Through with Hypothetical Data
+
+Suppose we queried the last 10 open tickets and got the following results (simplified):
+
+ Ticket ID | Plan      | Category      | Created At   | (Other details)
+───────────┼──────────┼───────────────┼──────────────┼─────────────────
+ 110       | advanced | downtime      | 2023-01-10   | ...
+ 109       | advanced | reliability   | 2023-01-31   | ...
+ 108       | advanced | performance   | 2023-02-12   | ...
+ 107       | advanced | downtime      | 2023-02-15   | ...
+ 106       | free     | reliability   | 2023-03-01   | ...
+ 105       | standard | bug           | 2023-04-08   | ...
+ 104       | advanced | feature req.  | 2023-05-22   | ...
+ 103       | standard | downtime      | 2023-06-01   | ...
+ 102       | advanced | reliability   | 2023-06-15   | ...
+ 101       | standard | bug           | 2023-08-01   | ...
+
+Step A: Identify advanced-plan downtime/reliability tickets (they jump to the top):
+• 110 (advanced, downtime)
+• 107 (advanced, downtime)
+• 109 (advanced, reliability)
+• 102 (advanced, reliability)
+
+Within those, downtime outranks reliability, and older tickets outrank newer:
+1) 110 (older, advanced downtime)
+2) 107 (newer, advanced downtime)
+3) 109 (older, advanced reliability)
+4) 102 (newer, advanced reliability)
+
+Step B: Remaining tickets, sorted by category order (downtime > reliability > performance > bug > feature > others) and then by older ticket first:
+• Downtime: 103
+• Reliability: 106
+• Performance: 108
+• Bug: 105, 101 (105 is older)
+• Feature: 104
+Hence they get appended in the order: 103, 106, 108, 105, 101, 104
+
+Final ordering of all 10 tickets:  
+1) 110  
+2) 107  
+3) 109  
+4) 102  
+5) 103  
+6) 106  
+7) 108  
+8) 105  
+9) 101  
+10) 104  
+
+We only need the top 5 from that sorted list:
+
+<tickets>
+110
+107
+109
+102
+103
+</tickets>
+
+Those ticket IDs (110, 107, 109, 102, 103) are the highest-priority 5 according to your rules.
