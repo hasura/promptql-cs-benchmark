@@ -1,0 +1,301 @@
+[
+  {
+    "timestamp": "2025-01-28T17:44:10.128834",
+    "response": {
+      "id": "chatcmpl-AuelkHPnwxHkViaMKfVw2ULveXs3z",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_IVMaqNLMd9yRQXmG08e4B84v",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, description, created_at FROM support_ticket WHERE status = 'open' ORDER BY created_at DESC LIMIT 20;\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738066448,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 41,
+        "prompt_tokens": 1062,
+        "total_tokens": 1103,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:44:24.391337",
+    "response": {
+      "id": "chatcmpl-Auelm7j6IYnmrVrBBDdwCNMinGzu0",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_waAptuSwMEw0fwkbn28BvRts",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT id, plan_id, project_id FROM project_plan_changelogs WHERE project_id IN ('2a8d4b07-c391-450f-8153-f6521f8a20a0','76de9616-3d7b-49d7-b909-e154dda91489','386d8856-9020-47eb-a21a-2ebe6b81428e','d5dc02fc-707a-4084-854a-79f5866d4dd3','5ad39764-9b9b-48cb-8819-43ab40694b06','9b8f8c9a-7f76-4bc2-95c9-652b13f13a44','8edf6e2c-99b6-49af-b342-4aefe811b2f3','5f4d1be1-61b7-4b11-ba51-6e9b7f094c82','e452f72b-66e1-4c56-ada2-3525ab8fb280','b750445e-fba4-4644-b306-1550cfefad8b','e75d06e3-6ec1-4649-bc83-7d19cd07fd77','4aeefe6f-7dee-4395-82be-6d8e51aea9fd','5ad39764-9b9b-48cb-8819-43ab40694b06','598b3a1b-0166-420f-ac63-fa734cbf5c63','c5d9c906-2b61-424e-967b-fa3e27d09d44','5267a67e-d8ea-4154-b385-6269b033a471','fc2590f9-6bdc-43e3-9984-9246fd96f2dd','4e291cdc-0aab-4573-86a4-c82490831964') ORDER BY created_at DESC;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_8bKC8LQXo7LfH0cPC71GRl5V",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT id, name FROM plans;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738066450,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 507,
+        "prompt_tokens": 4189,
+        "total_tokens": 4696,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 4096
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:45:07.668310",
+    "response": {
+      "id": "chatcmpl-Auem0lIsKSnhIcuSYLkbxZfvdXRPr",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_rNoCfM8So94gHZrlcbcMFasG",
+                "function": {
+                  "arguments": "{\"pythonCode\":\"from functools import cmp_to_key\\nfrom datetime import datetime\\n\\n# ticket data\\nsupport_tickets = [\\n    {\\\"id\\\": 143, \\\"project_id\\\": \\\"2a8d4b07-c391-450f-8153-f6521f8a20a0\\\", \\\"created_at\\\": \\\"2025-01-03T20:32:35.345840+00:00\\\", \\\"description\\\": \\\"I am unable to access my project on Hasura Cloud. When I try to open the project dashboard, it fails to load and shows an error message. This is critically impacting our production environment and needs immediate attention.\\\", \\\"category\\\": \\\"downtime\\\"},\\n    {\\\"id\\\": 166, \\\"project_id\\\": \\\"2a8d4b07-c391-450f-8153-f6521f8a20a0\\\", \\\"created_at\\\": \\\"2024-12-21T14:32:35.345840+00:00\\\", \\\"description\\\": \\\"We would like to request support for custom GraphQL directives.\\\", \\\"category\\\": \\\"feature request\\\"},\\n    {\\\"id\\\": 209, \\\"project_id\\\": \\\"76de9616-3d7b-49d7-b909-e154dda91489\\\", \\\"created_at\\\": \\\"2024-12-05T07:00:00+00:00\\\", \\\"description\\\": \\\"We are experiencing a complete outage of our production environment.\\\", \\\"category\\\": \\\"downtime\\\"},\\n    {\\\"id\\\": 169, \\\"project_id\\\": \\\"386d8856-9020-47eb-a21a-2ebe6b81428e\\\", \\\"created_at\\\": \\\"2024-11-12T05:00:00+00:00\\\", \\\"description\\\": \\\"Resource exhaustion issues while using Schema Registry in production.\\\", \\\"category\\\": \\\"performance\\\"},\\n    {\\\"id\\\": 251, \\\"project_id\\\": \\\"d5dc02fc-707a-4084-854a-79f5866d4dd3\\\", \\\"created_at\\\": \\\"2024-10-25T04:00:00+00:00\\\", \\\"description\\\": \\\"Significant performance degradation with permissions operations.\\\", \\\"category\\\": \\\"performance\\\"},\\n    {\\\"id\\\": 139, \\\"project_id\\\": \\\"5ad39764-9b9b-48cb-8819-43ab40694b06\\\", \\\"created_at\\\": \\\"2024-10-18T03:00:00+00:00\\\", \\\"description\\\": \\\"Critical issue accessing Hasura project. GraphQL endpoint and console unreachable.\\\", \\\"category\\\": \\\"downtime\\\"},\\n    {\\\"id\\\": 144, \\\"project_id\\\": \\\"9b8f8c9a-7f76-4bc2-95c9-652b13f13a44\\\", \\\"created_at\\\": \\\"2024-10-06T07:00:00+00:00\\\", \\\"description\\\": \\\"All GraphQL operations returning 500 Internal Server Errors.\\\", \\\"category\\\": \\\"downtime\\\"},\\n    {\\\"id\\\": 215, \\\"project_id\\\": \\\"8edf6e2c-99b6-49af-b342-4aefe811b2f3\\\", \\\"created_at\\\": \\\"2024-10-06T06:00:00+00:00\\\", \\\"description\\\": \\\"Intermittent failures with the Actions feature.\\\", \\\"category\\\": \\\"reliability\\\"},\\n    {\\\"id\\\": 250, \\\"project_id\\\": \\\"d5dc02fc-707a-4084-854a-79f5866d4dd3\\\", \\\"created_at\\\": \\\"2024-09-29T08:00:00+00:00\\\", \\\"description\\\": \\\"Severe resource exhaustion using Actions, slow response times.\\\", \\\"category\\\": \\\"performance\\\"},\\n    {\\\"id\\\": 205, \\\"project_id\\\": \\\"5f4d1be1-61b7-4b11-ba51-6e9b7f094c82\\\", \\\"created_at\\\": \\\"2024-09-29T03:00:00+00:00\\\", \\\"description\\\": \\\"All GraphQL operations failing with 500 Internal Server Error.\\\", \\\"category\\\": \\\"downtime\\\"}\\n]\\n\\n# plan data\\nplans = {\\n    \\\"free\\\": [\\\"76de9616-3d7b-49d7-b909-e154dda91489\\\", \\\"598b3a1b-0166-420f-ac63-fa734cbf5c63\\\", \\\"4e291cdc-0aab-4573-86a4-c82490831964\\\"],\\n    \\\"base\\\": [\\\"2a8d4b07-c391-450f-8153-f6521f8a20a0\\\", \\\"b750445e-fba4-4644-b306-1550cfefad8b\\\", \\\"4aeefe6f-7dee-4395-82be-6d8e51aea9fd\\\", \\\"5ad39764-9b9b-48cb-8819-43ab40694b06\\\", \\\"d5dc02fc-707a-4084-854a-79f5866d4dd3\\\", \\\"8edf6e2c-99b6-49af-b342-4aefe811b2f3\\\", \\\"5267a67e-d8ea-4154-b385-6269b033a471\\\", \\\"fc2590f9-6bdc-43e3-9984-9246fd96f2dd\\\", \\\"e452f72b-66e1-4c56-ada2-3525ab8fb280\\\", \\\"e75d06e3-6ec1-4649-bc83-7d19cd07fd77\\\", \\\"5f4d1be1-61b7-4b11-ba51-6e9b7f094c82\\\"],\\n    \\\"advanced\\\": [\\\"386d8856-9020-47eb-a21a-2ebe6b81428e\\\", \\\"9b8f8c9a-7f76-4bc2-95c9-652b13f13a44\\\", \\\"c5d9c906-2b61-424e-967b-fa3e27d09d44\\\", \\\"e75d06e3-6ec1-4649-bc83-7d19cd07fd77\\\"]\\n}\\n\\n# Priority rules\\ndef compare_tickets(ticket1, ticket2):\\n    plan_priority = {\\\"advanced\\\": 3, \\\"base\\\": 2, \\\"free\\\": 1}\\n    category_priority = {\\\"downtime\\\": 6, \\\"reliability\\\": 5, \\\"performance\\\": 4, \\\"bug\\\": 3, \\\"feature request\\\": 2, \\\"others\\\": 1}\\n\\n    # Retrieve plan names\\n    plan1 = next((plan for plan, ids in plans.items() if ticket1['project_id'] in ids), None)\\n    plan2 = next((plan for plan, ids in plans.items() if ticket2['project_id'] in ids), None)\\n\\n    # First Rule: prioritizing tickets on advanced plan with 'downtime' or 'reliability' categories\\n    if (plan1 == 'advanced' and ticket1['category'] in ['downtime', 'reliability']) != (plan2 == 'advanced' and ticket2['category'] in ['downtime', 'reliability']):\\n        return -1 if plan1 == 'advanced' and ticket1['category'] in ['downtime', 'reliability'] else 1\\n\\n    # Second Rule: prioritizing tickets on base plan with 'downtime' or 'reliability' categories\\n    if (plan1 == 'base' and ticket1['category'] in ['downtime', 'reliability']) != (plan2 == 'base' and ticket2['category'] in ['downtime', 'reliability']):\\n        return -1 if plan1 == 'base' and ticket1['category'] in ['downtime', 'reliability'] else 1\\n\\n    # Third Rule: prioritizing by category\\n    if ticket1['category'] != ticket2['category']:\\n        return -1 if category_priority[ticket1['category']] > category_priority[ticket2['category']] else 1\\n\\n    # Fourth Rule: prioritizing by creation time (older first)\\n    created_at1 = datetime.fromisoformat(ticket1['created_at'][:-1] + '+00:00')\\n    created_at2 = datetime.fromisoformat(ticket2['created_at'][:-1] + '+00:00')\\n    return -1 if created_at1 < created_at2 else 1\\n\\n# Sort the tickets\\nsorted_tickets = sorted(support_tickets, key=cmp_to_key(compare_tickets))\\n\\n# Get top 5 tickets\\ntop_5_tickets = sorted_tickets[:5]\\n\\ntop_5_tickets\\n\",\"dataValues\":\"\"}",
+                  "name": "execute_python_program"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738066464,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 1977,
+        "prompt_tokens": 6652,
+        "total_tokens": 8629,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 4608
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:45:59.331119",
+    "response": {
+      "id": "chatcmpl-Auemi9Cg1BH2SpLlRCn20awYcKcv6",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_aPC9RXIrMCm9ujybYYB6wQCm",
+                "function": {
+                  "arguments": "{\"pythonCode\":\"from functools import cmp_to_key\\nfrom datetime import datetime\\n\\n# ticket data\\nsupport_tickets = [\\n    {\\\"id\\\": 143, \\\"project_id\\\": \\\"2a8d4b07-c391-450f-8153-f6521f8a20a0\\\", \\\"created_at\\\": \\\"2025-01-03T20:32:35.345840+00:00\\\", \\\"description\\\": \\\"I am unable to access my project on Hasura Cloud. When I try to open the project dashboard, it fails to load and shows an error message. This is critically impacting our production environment and needs immediate attention.\\\", \\\"category\\\": \\\"downtime\\\"},\\n    {\\\"id\\\": 166, \\\"project_id\\\": \\\"2a8d4b07-c391-450f-8153-f6521f8a20a0\\\", \\\"created_at\\\": \\\"2024-12-21T14:32:35.345840+00:00\\\", \\\"description\\\": \\\"We would like to request support for custom GraphQL directives.\\\", \\\"category\\\": \\\"feature request\\\"},\\n    {\\\"id\\\": 209, \\\"project_id\\\": \\\"76de9616-3d7b-49d7-b909-e154dda91489\\\", \\\"created_at\\\": \\\"2024-12-05T07:00:00+00:00\\\", \\\"description\\\": \\\"We are experiencing a complete outage of our production environment.\\\", \\\"category\\\": \\\"downtime\\\"},\\n    {\\\"id\\\": 169, \\\"project_id\\\": \\\"386d8856-9020-47eb-a21a-2ebe6b81428e\\\", \\\"created_at\\\": \\\"2024-11-12T05:00:00+00:00\\\", \\\"description\\\": \\\"Resource exhaustion issues while using Schema Registry in production.\\\", \\\"category\\\": \\\"performance\\\"},\\n    {\\\"id\\\": 251, \\\"project_id\\\": \\\"d5dc02fc-707a-4084-854a-79f5866d4dd3\\\", \\\"created_at\\\": \\\"2024-10-25T04:00:00+00:00\\\", \\\"description\\\": \\\"Significant performance degradation with permissions operations.\\\", \\\"category\\\": \\\"performance\\\"},\\n    {\\\"id\\\": 139, \\\"project_id\\\": \\\"5ad39764-9b9b-48cb-8819-43ab40694b06\\\", \\\"created_at\\\": \\\"2024-10-18T03:00:00+00:00\\\", \\\"description\\\": \\\"Critical issue accessing Hasura project. GraphQL endpoint and console unreachable.\\\", \\\"category\\\": \\\"downtime\\\"},\\n    {\\\"id\\\": 144, \\\"project_id\\\": \\\"9b8f8c9a-7f76-4bc2-95c9-652b13f13a44\\\", \\\"created_at\\\": \\\"2024-10-06T07:00:00+00:00\\\", \\\"description\\\": \\\"All GraphQL operations returning 500 Internal Server Errors.\\\", \\\"category\\\": \\\"downtime\\\"},\\n    {\\\"id\\\": 215, \\\"project_id\\\": \\\"8edf6e2c-99b6-49af-b342-4aefe811b2f3\\\", \\\"created_at\\\": \\\"2024-10-06T06:00:00+00:00\\\", \\\"description\\\": \\\"Intermittent failures with the Actions feature.\\\", \\\"category\\\": \\\"reliability\\\"},\\n    {\\\"id\\\": 250, \\\"project_id\\\": \\\"d5dc02fc-707a-4084-854a-79f5866d4dd3\\\", \\\"created_at\\\": \\\"2024-09-29T08:00:00+00:00\\\", \\\"description\\\": \\\"Severe resource exhaustion using Actions, slow response times.\\\", \\\"category\\\": \\\"performance\\\"},\\n    {\\\"id\\\": 205, \\\"project_id\\\": \\\"5f4d1be1-61b7-4b11-ba51-6e9b7f094c82\\\", \\\"created_at\\\": \\\"2024-09-29T03:00:00+00:00\\\", \\\"description\\\": \\\"All GraphQL operations failing with 500 Internal Server Error.\\\", \\\"category\\\": \\\"downtime\\\"}\\n]\\n\\n# plan data\\nplans = {\\n    \\\"free\\\": [\\\"76de9616-3d7b-49d7-b909-e154dda91489\\\", \\\"598b3a1b-0166-420f-ac63-fa734cbf5c63\\\", \\\"4e291cdc-0aab-4573-86a4-c82490831964\\\"],\\n    \\\"base\\\": [\\\"2a8d4b07-c391-450f-8153-f6521f8a20a0\\\", \\\"b750445e-fba4-4644-b306-1550cfefad8b\\\", \\\"4aeefe6f-7dee-4395-82be-6d8e51aea9fd\\\", \\\"5ad39764-9b9b-48cb-8819-43ab40694b06\\\", \\\"d5dc02fc-707a-4084-854a-79f5866d4dd3\\\", \\\"8edf6e2c-99b6-49af-b342-4aefe811b2f3\\\", \\\"5267a67e-d8ea-4154-b385-6269b033a471\\\", \\\"fc2590f9-6bdc-43e3-9984-9246fd96f2dd\\\", \\\"e452f72b-66e1-4c56-ada2-3525ab8fb280\\\", \\\"e75d06e3-6ec1-4649-bc83-7d19cd07fd77\\\", \\\"5f4d1be1-61b7-4b11-ba51-6e9b7f094c82\\\"],\\n    \\\"advanced\\\": [\\\"386d8856-9020-47eb-a21a-2ebe6b81428e\\\", \\\"9b8f8c9a-7f76-4bc2-95c9-652b13f13a44\\\", \\\"c5d9c906-2b61-424e-967b-fa3e27d09d44\\\", \\\"e75d06e3-6ec1-4649-bc83-7d19cd07fd77\\\"]\\n}\\n\\n# Priority rules\\ndef compare_tickets(ticket1, ticket2):\\n    plan_priority = {\\\"advanced\\\": 3, \\\"base\\\": 2, \\\"free\\\": 1}\\n    category_priority = {\\\"downtime\\\": 6, \\\"reliability\\\": 5, \\\"performance\\\": 4, \\\"bug\\\": 3, \\\"feature request\\\": 2, \\\"others\\\": 1}\\n\\n    # Retrieve plan names\\n    plan1 = next((plan for plan, ids in plans.items() if ticket1['project_id'] in ids), None)\\n    plan2 = next((plan for plan, ids in plans.items() if ticket2['project_id'] in ids), None)\\n\\n    # First Rule: prioritizing tickets on advanced plan with 'downtime' or 'reliability' categories\\n    if (plan1 == 'advanced' and ticket1['category'] in ['downtime', 'reliability']) != (plan2 == 'advanced' and ticket2['category'] in ['downtime', 'reliability']):\\n        return -1 if plan1 == 'advanced' and ticket1['category'] in ['downtime', 'reliability'] else 1\\n\\n    # Second Rule: prioritizing tickets on base plan with 'downtime' or 'reliability' categories\\n    if (plan1 == 'base' and ticket1['category'] in ['downtime', 'reliability']) != (plan2 == 'base' and ticket2['category'] in ['downtime', 'reliability']):\\n        return -1 if plan1 == 'base' and ticket1['category'] in ['downtime', 'reliability'] else 1\\n\\n    # Third Rule: prioritizing by category\\n    if ticket1['category'] != ticket2['category']:\\n        return -1 if category_priority[ticket1['category']] > category_priority[ticket2['category']] else 1\\n\\n    # Fourth Rule: prioritizing by creation time (older first)\\n    created_at1 = datetime.fromisoformat(ticket1['created_at'])\\n    created_at2 = datetime.fromisoformat(ticket2['created_at'])\\n    return -1 if created_at1 < created_at2 else 1\\n\\n# Sort the tickets\\nsorted_tickets = sorted(support_tickets, key=cmp_to_key(compare_tickets))\\n\\n# Get top 5 tickets\\ntop_5_tickets = sorted_tickets[:5]\\n\\ntop_5_tickets\\n\",\"dataValues\":\"\"}",
+                  "name": "execute_python_program"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738066508,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 1960,
+        "prompt_tokens": 8866,
+        "total_tokens": 10826,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 8448
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:46:43.007318",
+    "response": {
+      "id": "chatcmpl-AuenXm2qIf1W9G4fEQaapjSZGfMHQ",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "It seems I encountered an error while executing the Python code for sorting. Let me correct that and run the sorting algorithm for you again.",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_mkbVuM3YuXaByvSr93y5i2Ge",
+                "function": {
+                  "arguments": "{\"pythonCode\":\"from functools import cmp_to_key\\nfrom datetime import datetime\\n\\n# ticket data\\nsupport_tickets = [\\n    {\\\"id\\\": 143, \\\"project_id\\\": \\\"2a8d4b07-c391-450f-8153-f6521f8a20a0\\\", \\\"created_at\\\": \\\"2025-01-03T20:32:35.345840+00:00\\\", \\\"description\\\": \\\"I am unable to access my project on Hasura Cloud. When I try to open the project dashboard, it fails to load and shows an error message. This is critically impacting our production environment and needs immediate attention.\\\", \\\"category\\\": \\\"downtime\\\"},\\n    {\\\"id\\\": 166, \\\"project_id\\\": \\\"2a8d4b07-c391-450f-8153-f6521f8a20a0\\\", \\\"created_at\\\": \\\"2024-12-21T14:32:35.345840+00:00\\\", \\\"description\\\": \\\"We would like to request support for custom GraphQL directives.\\\", \\\"category\\\": \\\"feature request\\\"},\\n    {\\\"id\\\": 209, \\\"project_id\\\": \\\"76de9616-3d7b-49d7-b909-e154dda91489\\\", \\\"created_at\\\": \\\"2024-12-05T07:00:00+00:00\\\", \\\"description\\\": \\\"We are experiencing a complete outage of our production environment.\\\", \\\"category\\\": \\\"downtime\\\"},\\n    {\\\"id\\\": 169, \\\"project_id\\\": \\\"386d8856-9020-47eb-a21a-2ebe6b81428e\\\", \\\"created_at\\\": \\\"2024-11-12T05:00:00+00:00\\\", \\\"description\\\": \\\"Resource exhaustion issues while using Schema Registry in production.\\\", \\\"category\\\": \\\"performance\\\"},\\n    {\\\"id\\\": 251, \\\"project_id\\\": \\\"d5dc02fc-707a-4084-854a-79f5866d4dd3\\\", \\\"created_at\\\": \\\"2024-10-25T04:00:00+00:00\\\", \\\"description\\\": \\\"Significant performance degradation with permissions operations.\\\", \\\"category\\\": \\\"performance\\\"},\\n    {\\\"id\\\": 139, \\\"project_id\\\": \\\"5ad39764-9b9b-48cb-8819-43ab40694b06\\\", \\\"created_at\\\": \\\"2024-10-18T03:00:00+00:00\\\", \\\"description\\\": \\\"Critical issue accessing Hasura project. GraphQL endpoint and console unreachable.\\\", \\\"category\\\": \\\"downtime\\\"},\\n    {\\\"id\\\": 144, \\\"project_id\\\": \\\"9b8f8c9a-7f76-4bc2-95c9-652b13f13a44\\\", \\\"created_at\\\": \\\"2024-10-06T07:00:00+00:00\\\", \\\"description\\\": \\\"All GraphQL operations returning 500 Internal Server Errors.\\\", \\\"category\\\": \\\"downtime\\\"},\\n    {\\\"id\\\": 215, \\\"project_id\\\": \\\"8edf6e2c-99b6-49af-b342-4aefe811b2f3\\\", \\\"created_at\\\": \\\"2024-10-06T06:00:00+00:00\\\", \\\"description\\\": \\\"Intermittent failures with the Actions feature.\\\", \\\"category\\\": \\\"reliability\\\"},\\n    {\\\"id\\\": 250, \\\"project_id\\\": \\\"d5dc02fc-707a-4084-854a-79f5866d4dd3\\\", \\\"created_at\\\": \\\"2024-09-29T08:00:00+00:00\\\", \\\"description\\\": \\\"Severe resource exhaustion using Actions, slow response times.\\\", \\\"category\\\": \\\"performance\\\"},\\n    {\\\"id\\\": 205, \\\"project_id\\\": \\\"5f4d1be1-61b7-4b11-ba51-6e9b7f094c82\\\", \\\"created_at\\\": \\\"2024-09-29T03:00:00+00:00\\\", \\\"description\\\": \\\"All GraphQL operations failing with 500 Internal Server Error.\\\", \\\"category\\\": \\\"downtime\\\"}\\n]\\n\\n# plan data\\nplans = {\\n    \\\"free\\\": [\\\"76de9616-3d7b-49d7-b909-e154dda91489\\\", \\\"598b3a1b-0166-420f-ac63-fa734cbf5c63\\\", \\\"4e291cdc-0aab-4573-86a4-c82490831964\\\"],\\n    \\\"base\\\": [\\\"2a8d4b07-c391-450f-8153-f6521f8a20a0\\\", \\\"b750445e-fba4-4644-b306-1550cfefad8b\\\", \\\"4aeefe6f-7dee-4395-82be-6d8e51aea9fd\\\", \\\"5ad39764-9b9b-48cb-8819-43ab40694b06\\\", \\\"d5dc02fc-707a-4084-854a-79f5866d4dd3\\\", \\\"8edf6e2c-99b6-49af-b342-4aefe811b2f3\\\", \\\"5267a67e-d8ea-4154-b385-6269b033a471\\\", \\\"fc2590f9-6bdc-43e3-9984-9246fd96f2dd\\\", \\\"e452f72b-66e1-4c56-ada2-3525ab8fb280\\\", \\\"e75d06e3-6ec1-4649-bc83-7d19cd07fd77\\\", \\\"5f4d1be1-61b7-4b11-ba51-6e9b7f094c82\\\"],\\n    \\\"advanced\\\": [\\\"386d8856-9020-47eb-a21a-2ebe6b81428e\\\", \\\"9b8f8c9a-7f76-4bc2-95c9-652b13f13a44\\\", \\\"c5d9c906-2b61-424e-967b-fa3e27d09d44\\\", \\\"e75d06e3-6ec1-4649-bc83-7d19cd07fd77\\\"]\\n}\\n\\n# Priority rules\\ndef compare_tickets(ticket1, ticket2):\\n    category_priority = {\\\"downtime\\\": 6, \\\"reliability\\\": 5, \\\"performance\\\": 4, \\\"bug\\\": 3, \\\"feature request\\\": 2, \\\"others\\\": 1}\\n\\n    # Retrieve plan names\\n    plan1 = next((plan for plan, ids in plans.items() if ticket1['project_id'] in ids), None)\\n    plan2 = next((plan for plan, ids in plans.items() if ticket2['project_id'] in ids), None)\\n\\n    # First Rule: prioritizing tickets on advanced plan with 'downtime' or 'reliability' categories\\n    if (plan1 == 'advanced' and ticket1['category'] in ['downtime', 'reliability']) != (plan2 == 'advanced' and ticket2['category'] in ['downtime', 'reliability']):\\n        return -1 if plan1 == 'advanced' and ticket1['category'] in ['downtime', 'reliability'] else 1\\n\\n    # Second Rule: prioritizing tickets on base plan with 'downtime' or 'reliability' categories\\n    if (plan1 == 'base' and ticket1['category'] in ['downtime', 'reliability']) != (plan2 == 'base' and ticket2['category'] in ['downtime', 'reliability']):\\n        return -1 if plan1 == 'base' and ticket1['category'] in ['downtime', 'reliability'] else 1\\n\\n    # Third Rule: prioritizing by category\\n    if ticket1['category'] != ticket2['category']:\\n        return -1 if category_priority[ticket1['category']] > category_priority[ticket2['category']] else 1\\n\\n    # Fourth Rule: prioritizing by creation time (older first)\\n    created_at1 = datetime.fromisoformat(ticket1['created_at'].replace('Z', '+00:00'))\\n    created_at2 = datetime.fromisoformat(ticket2['created_at'].replace('Z', '+00:00'))\\n    return -1 if created_at1 < created_at2 else 1\\n\\n# Sort the tickets\\nsorted_tickets = sorted(support_tickets, key=cmp_to_key(compare_tickets))\\n\\n# Get top 5 tickets\\ntop_5_tickets = sorted_tickets[:5]\\n\\ntop_5_tickets\\n\",\"dataValues\":\"\"}",
+                  "name": "execute_python_program"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738066559,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 1983,
+        "prompt_tokens": 10854,
+        "total_tokens": 12837,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 10752
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:46:51.489510",
+    "response": {
+      "id": "chatcmpl-AueoFu0uqTW5VnacUNxzJ1PZj0oWi",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Unfortunately, there was an error in executing the Python code again. However, let me summarize the initial steps we would follow to prioritize the support tickets:\n\n1. **Extraction of Project ID**: The project IDs were extracted from the descriptions successfully.\n\n2. **Retrieving the Plan for Each Project**: Using the `project_plan_changelogs` and `plans`, I retrieved the plan information for each project ID.\n   - Advanced Plan: Projects on this plan included \"386d8856-9020-47eb-a21a-2ebe6b81428e\", \"9b8f8c9a-7f76-4bc2-95c9-652b13f13a44\", \"c5d9c906-2b61-424e-967b-fa3e27d09d44\".\n   - Base Plan: Projects including \"2a8d4b07-c391-450f-8153-f6521f8a20a0\", \"5ad39764-9b9b-48cb-8819-43ab40694b06\".\n   - Free Plan: Projects including \"76de9616-3d7b-49d7-b909-e154dda91489\", \"598b3a1b-0166-420f-ac63-fa734cbf5c63\".\n\n3. **Classification of Issues**: I classified the tickets as per the description using the rules provided.\n\n4. **Sorting Priority**: Tickets were to be sorted by priority rules:\n   - Focus on 'downtime' or 'reliability' on an advanced or base plan.\n   \n   - Tickets further sorted by category preference, then by creation date for any ties.\n\nLet me know if you'd like another attempt or further information on any specific points!",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738066603,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 376,
+        "prompt_tokens": 12867,
+        "total_tokens": 13243,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 12672
+        }
+      }
+    }
+  }
+]

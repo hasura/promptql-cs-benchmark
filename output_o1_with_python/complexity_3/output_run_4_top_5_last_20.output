@@ -1,0 +1,193 @@
+[
+  {
+    "timestamp": "2025-01-29T16:06:45.976900",
+    "response": {
+      "id": "chatcmpl-Auzid0e1K4W3Pws4gNLgi6iTgGPWO",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_Nk0fUUY63PSbIMEj0IbTkTMw",
+                "function": {
+                  "arguments": "{\"pythonCode\":\"import re\\nimport sys\\nimport json\\nimport datetime\\n\\nimport psycopg2\\n\\n# We'll define separate connection logic for support_tickets and control_plane.\\n# But the problem states that we can call specific endpoints instead.\\n# We'll directly call a function query_support_tickets and query_control_plane_data.\\n# We'll mock that in this code and do placeholders for actual queries.\\n\\n# We'll read from the provided data values (although the instructions said we do not read from stdin?),\\n# but let's assume we do:\\n\\ndata_values_str = '''{}'''\\n\\n# We'll define a function to do the classification:\\n\\ndef classify_ticket(subject, description):\\n    text = (subject + ' ' + description).lower()\\n    # Downtime\\n    downtime_keywords = [\\n        'downtime', 'console inaccessible', '500 error', 'time out', 'timeouts', 'production environment outages', 'service disruptions'\\n    ]\\n    for kw in downtime_keywords:\\n        if kw in text:\\n            return 'downtime'\\n    # Reliability\\n    reliability_keywords = [\\n        'reliability', 'intermittent connectivity', 'intermittent failures', 'random request failures', 'random service downtime', 'service instability'\\n    ]\\n    for kw in reliability_keywords:\\n        if kw in text:\\n            return 'reliability'\\n    # Performance\\n    performance_keywords = [ 'performance', 'latency', 'slow queries', 'increased response times', 'slowness' ]\\n    for kw in performance_keywords:\\n        if kw in text:\\n            return 'performance'\\n    # Bug\\n    bug_keywords = [ 'bug', 'incorrect results', 'unexpected behavior', 'schema registry allowed unauthorized' ]\\n    for kw in bug_keywords:\\n        if kw in text:\\n            return 'bug'\\n    # Feature request\\n    feature_keywords = [ 'feature request', 'requesting new functionality', 'looking for new feature' ]\\n    for kw in feature_keywords:\\n        if kw in text:\\n            return 'feature request'\\n    # others\\n    return 'others'\\n\\n# We define a function to figure out category order:\\ncategory_priority_map = {\\n    'downtime': 1,\\n    'reliability': 2,\\n    'performance': 3,\\n    'bug': 4,\\n    'feature request': 5,\\n    'others': 6\\n}\\n\\ndef fetch_support_tickets():\\n    # We'll call the function: query_support_tickets with a SQL.\\n    sql = \\\"\\\"\\\"\\n    SELECT id, subject, description, created_at\\n    FROM support_ticket\\n    WHERE status = 'open'\\n    ORDER BY created_at DESC\\n    LIMIT 20\\n    \\\"\\\"\\\"\\n    # We will do a JSON to the function.\\n    print(json.dumps({\\\"call_function\\\": \\\"query_support_tickets\\\", \\\"sql\\\": sql}))\\n\\n\\ndef parse_project_id(desc):\\n    # parse description for a uuid.\\n    pattern = r\\\"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\\\"\\n    match = re.search(pattern, desc)\\n    if match:\\n        return match.group(0)\\n    return None\\n\\n\\ndef fetch_plan_for_project(project_id):\\n    if not project_id:\\n        return None\\n    sql = f\\\"\\\"\\\"\\n    SELECT p.name as plan_name\\n    FROM project_plan_changelogs c\\n    JOIN plans p ON c.plan_id = p.id\\n    WHERE c.project_id = '{project_id}'\\n    ORDER BY c.created_at DESC\\n    LIMIT 1\\n    \\\"\\\"\\\"\\n    print(json.dumps({\\\"call_function\\\": \\\"query_control_plane_data\\\", \\\"sql\\\": sql}))\\n    return  # We'll parse the result from the response.\\n\\n# We'll define a placeholder main function that does the multi-step approach.\\n\\ndef main():\\n    # Step 1: fetch last 20 open tickets.\\n    fetch_support_tickets()\\n\\n    # We'll wait for the result from that.\\n    print(\\\"# After you run that, feed me the results with dataValues!\\\")\\n\\n\\nif __name__ == \\\"__main__\\\":\\n    main()\\n\"}",
+                  "name": "execute_python_program"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738146979,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 2657,
+        "prompt_tokens": 1102,
+        "total_tokens": 3759,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 1664,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1024
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T16:06:54.827128",
+    "response": {
+      "id": "chatcmpl-Auzj4p30sGCsADW2TzcLEOAHmgdK1",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_UvbE0Zhcg6OHfZpTdlhAhJt8",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, subject, description, created_at\\nFROM support_ticket\\nWHERE status = 'open'\\nORDER BY created_at DESC\\nLIMIT 20\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738147006,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 697,
+        "prompt_tokens": 2190,
+        "total_tokens": 2887,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 640,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1024
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T16:07:38.309957",
+    "response": {
+      "id": "chatcmpl-AuzjDtVIdJdp19R1olVsVverygSML",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_B7EI0Hp0TY3h9mcxMyYsv3jv",
+                "function": {
+                  "arguments": "{\"pythonCode\":\"import json\\nimport re\\nfrom functools import cmp_to_key\\n\\n# We'll define the categories.\\nCATEGORY_PRIORITY = {\\n    'downtime': 1,\\n    'reliability': 2,\\n    'performance': 3,\\n    'bug': 4,\\n    'feature request': 5,\\n    'others': 6\\n}\\n\\n# Helper to parse project IDs\\nUUID_PATTERN = r\\\"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\\\"\\n\\n# Classification function\\ndef classify_ticket(subject, description):\\n    text = (subject + ' ' + description).lower()\\n    downtime_keywords = [\\n        'downtime', 'console inaccessible', 'fail to load', 'fail to access', 'service down', 'production environment down', 'all graphql operations returning 500', '500 error', 'time out', 'timeouts', 'unable to access project', 'complete outage'\\n    ]\\n    for kw in downtime_keywords:\\n        if kw in text:\\n            return 'downtime'\\n\\n    reliability_keywords = [\\n        'reliability', 'intermittent connectivity', 'intermittent failures', 'random request failures', 'random service downtime', 'service instability', 'intermittent api request failures'\\n    ]\\n    for kw in reliability_keywords:\\n        if kw in text:\\n            return 'reliability'\\n\\n    performance_keywords = [ 'performance', 'latency', 'slow responses', 'increased response times', 'slowness', 'resource exhaustion' ]\\n    for kw in performance_keywords:\\n        if kw in text:\\n            return 'performance'\\n\\n    bug_keywords = [ 'bug', 'incorrect results', 'unexpected behavior', 'schema registry allowed unauthorized', 'graphql api returning wrong results' ]\\n    for kw in bug_keywords:\\n        if kw in text:\\n            return 'bug'\\n\\n    feature_keywords = [ 'feature request', 'requesting new functionality', 'looking for new feature', 'would like to request support for', 'could be supported in future releases' ]\\n    for kw in feature_keywords:\\n        if kw in text:\\n            return 'feature request'\\n\\n    return 'others'\\n\\n# Now define a function to build a priority comparison.\\n# We follow these steps:\\n# 1) If advanced plan and category in (downtime, reliability) => higher priority\\n# 2) Among the rest, order by category: downtime > reliability > performance > bug > feature request > others\\n# 3) Then older ticket (earlier creation time) is higher priority.\\n\\ndef compare_tickets(a, b):\\n    # a, b are dicts with: plan_name, category, created_at (iso8601), etc.\\n    # we'll parse creation_at to a date so we can compare.\\n    def is_advanced(plan_name):\\n        if plan_name and 'advanced' in plan_name.lower():\\n            return True\\n        return False\\n\\n    a_adv_d_r = 1 if is_advanced(a.get('plan_name')) and a['category'] in ['downtime','reliability'] else 0\\n    b_adv_d_r = 1 if is_advanced(b.get('plan_name')) and b['category'] in ['downtime','reliability'] else 0\\n    if a_adv_d_r != b_adv_d_r:\\n        # we want the ticket with 1 to come first.\\n        return -1 if a_adv_d_r > b_adv_d_r else 1\\n\\n    # next sort by category\\n    catA = CATEGORY_PRIORITY[a['category']]\\n    catB = CATEGORY_PRIORITY[b['category']]\\n    if catA != catB:\\n        return -1 if catA < catB else 1\\n\\n    # finally older ticket is higher priority => compare times ascending\\n    # parse creation time:\\n    a_time = a['created_at']\\n    b_time = b['created_at']\\n    # older => smaller date => negative\\n    if a_time < b_time:\\n        return -1\\n    elif a_time > b_time:\\n        return 1\\n    else:\\n        return 0\\n\\nprint(json.dumps({\\n    \\\"call_function\\\": \\\"query_control_plane_data\\\",\\n    \\\"sql\\\": \\\"\\\"\\\"\\nSELECT DISTINCT ON (c.project_id) c.project_id, p.name AS plan_name, c.created_at\\nFROM project_plan_changelogs c\\nJOIN plans p ON c.plan_id = p.id\\nWHERE c.project_id IN (\\n'2a8d4b07-c391-450f-8153-f6521f8a20a0',\\n'76de9616-3d7b-49d7-b909-e154dda91489',\\n'386d8856-9020-47eb-a21a-2ebe6b81428e',\\n'd5dc02fc-707a-4084-854a-79f5866d4dd3',\\n'5ad39764-9b9b-48cb-8819-43ab40694b06',\\n'9b8f8c9a-7f76-4bc2-95c9-652b13f13a44',\\n'8edf6e2c-99b6-49af-b342-4aefe811b2f3',\\n'5f4d1be1-61b7-4b11-ba51-6e9b7f094c82',\\n'e452f72b-66e1-4c56-ada2-3525ab8fb280',\\n'b750445e-fba4-4644-b306-1550cfefad8b',\\n'e75d06e3-6ec1-4649-bc83-7d19cd07fd77',\\n'4aeefe6f-7dee-4395-82be-6d8e51aea9fd',\\n'598b3a1b-0166-420f-ac63-fa734cbf5c63',\\n'c5d9c906-2b61-424e-967b-fa3e27d09d44',\\n'5267a67e-d8ea-4154-b385-6269b033a471',\\n'fc2590f9-6bdc-43e3-9984-9246fd96f2dd',\\n'4e291cdc-0aab-4573-86a4-c82490831964'\\n)\\nORDER BY c.project_id, c.created_at DESC;\\n\\\"\\\"\\\"\\n}))\"}",
+                  "name": "execute_python_program"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738147015,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 4660,
+        "prompt_tokens": 5609,
+        "total_tokens": 10269,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 3136,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 2048
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T16:08:45.069076",
+    "response": {
+      "id": "chatcmpl-AuzjuR1wxOa2gx6CFEPefcPyetivc",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "<tickets>\n246\n201\n205\n144\n209\n</tickets>",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738147058,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 6556,
+        "prompt_tokens": 7690,
+        "total_tokens": 14246,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 6528,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 5504
+        }
+      }
+    }
+  }
+]

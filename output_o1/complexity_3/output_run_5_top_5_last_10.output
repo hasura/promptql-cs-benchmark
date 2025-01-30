@@ -1,0 +1,143 @@
+[
+  {
+    "timestamp": "2025-01-29T13:29:01.429202",
+    "response": {
+      "id": "chatcmpl-AuxFsomySFUZufAwklFJ82Bp3Iky3",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_GHtt8C4kzByXznSPMO3dcnsN",
+                "function": {
+                  "arguments": "{\"sql\":\"WITH last_ten AS (\\n  SELECT\\n    t.id,\\n    substring(t.description FROM '([0-9A-Fa-f]{8}(-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12})') AS project_id,\\n    t.created_at,\\n    CASE\\n      WHEN t.description ILIKE '%widespread service disruption%'\\n        OR t.description ILIKE '%inability to access project console%'\\n        OR t.description ILIKE '%500 error%'\\n        OR t.description ILIKE '%time out%'\\n      THEN 'downtime'\\n      WHEN t.description ILIKE '%intermittent connectivity%'\\n        OR t.description ILIKE '%random request failure%'\\n      THEN 'reliability'\\n      WHEN t.description ILIKE '%performance%'\\n        OR t.description ILIKE '%increased response times%'\\n      THEN 'performance'\\n      WHEN t.description ILIKE '%bug%'\\n        OR t.description ILIKE '%wrong results%'\\n        OR t.description ILIKE '%unauthorized%'\\n      THEN 'bug'\\n      WHEN t.description ILIKE '%feature request%'\\n        OR t.description ILIKE '%enhanced functionality%'\\n      THEN 'feature request'\\n      ELSE 'others'\\n    END AS category\\n  FROM support_ticket t\\n  WHERE t.status = 'open'\\n  ORDER BY t.created_at DESC\\n  LIMIT 10\\n)\\nSELECT last_ten.id\\nFROM last_ten\\nLEFT JOIN LATERAL (\\n  SELECT c.plan_id\\n  FROM project_plan_changelogs c\\n  WHERE c.project_id::text = last_ten.project_id\\n  ORDER BY c.created_at DESC\\n  LIMIT 1\\n) c ON TRUE\\nLEFT JOIN plans p ON p.id = c.plan_id\\nORDER BY\\n  CASE WHEN p.name = 'advanced' AND last_ten.category IN ('downtime','reliability') THEN 1 ELSE 0 END DESC,\\n  CASE last_ten.category\\n    WHEN 'downtime' THEN 1\\n    WHEN 'reliability' THEN 2\\n    WHEN 'performance' THEN 3\\n    WHEN 'bug' THEN 4\\n    WHEN 'feature request' THEN 5\\n    ELSE 6\\n  END,\\n  last_ten.created_at\\nLIMIT 5;\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738137508,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 4243,
+        "prompt_tokens": 1010,
+        "total_tokens": 5253,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 3712,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T13:29:17.144363",
+    "response": {
+      "id": "chatcmpl-AuxGPpD3r8jFQ7EIsxLuoDBP4uObb",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_HxazpiqZQwPqh2Wxxb6PtxKN",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, description, created_at\\nFROM support_ticket\\nWHERE status = 'open'\\nORDER BY created_at DESC\\nLIMIT 10;\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738137541,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 1272,
+        "prompt_tokens": 1583,
+        "total_tokens": 2855,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 1216,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T13:29:48.413509",
+    "response": {
+      "id": "chatcmpl-AuxGfPwJg089TZWZc89Vl83D19mea",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "<tickets>\n205\n144\n139\n209\n143\n</tickets>",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738137557,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 4123,
+        "prompt_tokens": 3163,
+        "total_tokens": 7286,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 4096,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1408
+        }
+      }
+    }
+  }
+]

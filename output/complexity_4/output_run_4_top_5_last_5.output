@@ -1,0 +1,291 @@
+[
+  {
+    "timestamp": "2025-01-28T17:39:24.732111",
+    "response": {
+      "id": "chatcmpl-Aueh9N8zDd37LXVofoSYIXYBlfmg6",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_xfv81Zi12VkMWboAsNBfKKRB",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT * FROM support_ticket WHERE status = 'open' ORDER BY created_at DESC LIMIT 5;\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738066163,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 36,
+        "prompt_tokens": 1062,
+        "total_tokens": 1098,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:39:34.377861",
+    "response": {
+      "id": "chatcmpl-AuehBbfKSTyGbmE5lMf2JpwBiWBin",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_S5nBraUt6uaxskCwiFHhCyaz",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT p.id AS project_id, COALESCE(ppc.plan_id, '') AS latest_plan_id, ppc.created_at FROM projects p LEFT JOIN (\\n  SELECT project_id, plan_id, MAX(created_at) AS created_at\\n  FROM project_plan_changelogs\\n  GROUP BY project_id, plan_id\\n) ppc ON p.id = ppc.project_id WHERE p.id = '2a8d4b07-c391-450f-8153-f6521f8a20a0';\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_990V8MOhjUpJV7hylGZrhN5K",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT p.id AS project_id, COALESCE(ppc.plan_id, '') AS latest_plan_id, ppc.created_at FROM projects p LEFT JOIN (\\n  SELECT project_id, plan_id, MAX(created_at) AS created_at\\n  FROM project_plan_changelogs\\n  GROUP BY project_id, plan_id\\n) ppc ON p.id = ppc.project_id WHERE p.id = '76de9616-3d7b-49d7-b909-e154dda91489';\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_REPFg1fF9vxUkz5NDGtHaQg1",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT p.id AS project_id, COALESCE(ppc.plan_id, '') AS latest_plan_id, ppc.created_at FROM projects p LEFT JOIN (\\n  SELECT project_id, plan_id, MAX(created_at) AS created_at\\n  FROM project_plan_changelogs\\n  GROUP BY project_id, plan_id\\n) ppc ON p.id = ppc.project_id WHERE p.id = '386d8856-9020-47eb-a21a-2ebe6b81428e';\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_En2q0xiwnmWdg0kUNccqUtur",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT p.id AS project_id, COALESCE(ppc.plan_id, '') AS latest_plan_id, ppc.created_at FROM projects p LEFT JOIN (\\n  SELECT project_id, plan_id, MAX(created_at) AS created_at\\n  FROM project_plan_changelogs\\n  GROUP BY project_id, plan_id\\n) ppc ON p.id = ppc.project_id WHERE p.id = 'd5dc02fc-707a-4084-854a-79f5866d4dd3';\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738066165,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 493,
+        "prompt_tokens": 2263,
+        "total_tokens": 2756,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1024
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:39:45.830971",
+    "response": {
+      "id": "chatcmpl-AuehKky41IBPp922p8nkb7w46hbKr",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_k9aWQTYkDhfGl0QisUZD3PCg",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT p.id AS project_id, ppc.plan_id AS latest_plan_id, ppc.created_at FROM projects p LEFT JOIN (\\n  SELECT project_id, plan_id, MAX(created_at) AS created_at\\n  FROM project_plan_changelogs\\n  GROUP BY project_id, plan_id\\n) ppc ON p.id = ppc.project_id WHERE p.id = '2a8d4b07-c391-450f-8153-f6521f8a20a0';\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_uUsVqe5ahdkWfG8jRg2KzAux",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT p.id AS project_id, ppc.plan_id AS latest_plan_id, ppc.created_at FROM projects p LEFT JOIN (\\n  SELECT project_id, plan_id, MAX(created_at) AS created_at\\n  FROM project_plan_changelogs\\n  GROUP BY project_id, plan_id\\n) ppc ON p.id = ppc.project_id WHERE p.id = '76de9616-3d7b-49d7-b909-e154dda91489';\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_kmUm1r8JNnX3P39njxBXhGSA",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT p.id AS project_id, ppc.plan_id AS latest_plan_id, ppc.created_at FROM projects p LEFT JOIN (\\n  SELECT project_id, plan_id, MAX(created_at) AS created_at\\n  FROM project_plan_changelogs\\n  GROUP BY project_id, plan_id\\n) ppc ON p.id = ppc.project_id WHERE p.id = '386d8856-9020-47eb-a21a-2ebe6b81428e';\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_5v4ciItRjf0TfVuF6yZBjIDg",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT p.id AS project_id, ppc.plan_id AS latest_plan_id, ppc.created_at FROM projects p LEFT JOIN (\\n  SELECT project_id, plan_id, MAX(created_at) AS created_at\\n  FROM project_plan_changelogs\\n  GROUP BY project_id, plan_id\\n) ppc ON p.id = ppc.project_id WHERE p.id = 'd5dc02fc-707a-4084-854a-79f5866d4dd3';\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738066174,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 473,
+        "prompt_tokens": 2967,
+        "total_tokens": 3440,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 2688
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:39:47.158030",
+    "response": {
+      "id": "chatcmpl-AuehWt2suhdEB9nZQbTrZmbcGnEwK",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_iauZsoE9D54abaKfpKIFJ8Np",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id FROM plans WHERE name = 'Advanced'\" }",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738066186,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 26,
+        "prompt_tokens": 3785,
+        "total_tokens": 3811,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 3328
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:39:49.049813",
+    "response": {
+      "id": "chatcmpl-AuehXEEeP7PbXGdOFOyTL3pLaJCvE",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "It seems there was an issue retrieving the plan IDs to match them with their names to identify which one is \"Advanced.\" Mutual identification is crucial for the prioritization process. I can proceed with the available data or try a different approach to identify the advanced plan if you have any specific guidelines for identifying the plan types. Please let me know how you'd like to proceed!",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738066187,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 75,
+        "prompt_tokens": 3821,
+        "total_tokens": 3896,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 3712
+        }
+      }
+    }
+  }
+]

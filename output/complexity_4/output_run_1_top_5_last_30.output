@@ -1,0 +1,225 @@
+[
+  {
+    "timestamp": "2025-01-28T17:26:38.771149",
+    "response": {
+      "id": "chatcmpl-AueUnPSoCrfDJiFR0xVOdZG95PTEV",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_NjEuz04RaSXapdBr9m2OMP8b",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, description, created_at FROM support_ticket WHERE status = 'open' ORDER BY created_at DESC LIMIT 30;\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738065397,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 41,
+        "prompt_tokens": 1062,
+        "total_tokens": 1103,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:26:47.067724",
+    "response": {
+      "id": "chatcmpl-AueUpADwjNCMlTMtI6dPetlZAKM2K",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_E79TrSF7vXpuoygbkegzLiC3",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT project_id, plan_id FROM project_plan_changelogs WHERE project_id = '2a8d4b07-c391-450f-8153-f6521f8a20a0' ORDER BY created_at DESC LIMIT 1;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_xlDyjUbgf9ZwbUp59CoxUR1o",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT project_id, plan_id FROM project_plan_changelogs WHERE project_id = '76de9616-3d7b-49d7-b909-e154dda91489' ORDER BY created_at DESC LIMIT 1;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_2pK97aCbLB5i8ml7fKbKfRqY",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT project_id, plan_id FROM project_plan_changelogs WHERE project_id = '386d8856-9020-47eb-a21a-2ebe6b81428e' ORDER BY created_at DESC LIMIT 1;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_OuAbhAkbxb9bGzEPQM4EBg3e",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT project_id, plan_id FROM project_plan_changelogs WHERE project_id = 'd5dc02fc-707a-4084-854a-79f5866d4dd3' ORDER BY created_at DESC LIMIT 1;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_EvANbhyYJM3LCzGsgW3WfG1H",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT project_id, plan_id FROM project_plan_changelogs WHERE project_id = '5ad39764-9b9b-48cb-8819-43ab40694b06' ORDER BY created_at DESC LIMIT 1;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738065399,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 337,
+        "prompt_tokens": 5698,
+        "total_tokens": 6035,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1024
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:26:48.117022",
+    "response": {
+      "id": "chatcmpl-AueUxlOjCuB5nMvXOPKYiq4DjPjt7",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_652zMOQDDbAbT6D7yzqm3BjX",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, name FROM plans;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738065407,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 6335,
+        "total_tokens": 6358,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 5888
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:26:58.977387",
+    "response": {
+      "id": "chatcmpl-AueUyw97Hv3tCkuJ4VaGQO6ykabCK",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Here's a prioritzed list of the top 5 support tickets from the last 30 open tickets, classified and sorted according to the specified rules:\n\n1. **Ticket ID:** 209\n   - **Project ID:** 76de9616-3d7b-49d7-b909-e154dda91489\n   - **Plan:** Advanced\n   - **Created At:** 2024-12-05T07:00:00+00:00\n   - **Category:** Downtime\n\n2. **Ticket ID:** 139\n   - **Project ID:** 5ad39764-9b9b-48cb-8819-43ab40694b06\n   - **Plan:** Base\n   - **Created At:** 2024-10-18T03:00:00+00:00\n   - **Category:** Downtime\n\n3. **Ticket ID:** 144\n   - **Project ID:** 9b8f8c9a-7f76-4bc2-95c9-652b13f13a44\n   - **Plan:** (Plan ID not found)\n   - **Created At:** 2024-10-06T07:00:00+00:00\n   - **Category:** Downtime\n\n4. **Ticket ID:** 215\n   - **Project ID:** 8edf6e2c-99b6-49af-b342-4aefe811b2f3\n   - **Plan:** (Plan ID not found)\n   - **Created At:** 2024-10-06T06:00:00+00:00\n   - **Category:** Reliability\n\n5. **Ticket ID:** 143\n   - **Project ID:** 2a8d4b07-c391-450f-8153-f6521f8a20a0\n   - **Plan:** Base\n   - **Created At:** 2025-01-03T20:32:35.345840+00:00\n   - **Category:** Downtime\n\nThe classification, extraction of project IDs, and determination of plans were done based on the given data and criteria. The tickets have been prioritized according to their severity, plan, and creation time.",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738065408,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 478,
+        "prompt_tokens": 6574,
+        "total_tokens": 7052,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 6272
+        }
+      }
+    }
+  }
+]

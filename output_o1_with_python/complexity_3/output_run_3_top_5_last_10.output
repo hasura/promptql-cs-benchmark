@@ -1,0 +1,243 @@
+[
+  {
+    "timestamp": "2025-01-29T15:42:19.653439",
+    "response": {
+      "id": "chatcmpl-AuzLEkW1hX5B38Y3ZyUpiExUlKG2H",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_Ch4NCDnHZEjQcOu1gtK2ZJHo",
+                "function": {
+                  "arguments": "{\"pythonCode\":\"import re\\nimport json\\nimport sys\\nfrom functools import cmp_to_key\\nimport datetime\\n\\n# We'll fetch the last 10 open tickets from the support tickets DB.\\n# Then for each ticket, we will:\\n#   1) parse the ticket description to extract a project ID (an UUID)\\n#   2) fetch the plan from the control plane DB\\n#   3) classify the ticket into categories\\n#   4) sort them by the custom priority logic\\n#   5) output the top 5 ticket IDs in the requested format\\n\\nimport requests\\n\\n# We'll define a function to fetch data from the support tickets DB\\n# We'll define a function to fetch data from the control plane DB\\n\\nimport psycopg2\\n\\n# But we don't have direct connection details, we have to call the provided function.\\n# We'll do that by printing a JSON string describing the request to the relevant function.\\n\\n# We'll define helper functions which produce the appropriate JSON for the orchestrator.\\n\\n\\n# Step 1: Get the last 10 open tickets\\nprint(json.dumps({\\n    'name': 'query_support_tickets',\\n    'arguments': {\\n        'sql': \\\"\\\"\\\"\\n            SELECT id, description, created_at\\n            FROM support_ticket\\n            WHERE status = 'open'\\n            ORDER BY created_at DESC\\n            LIMIT 10;\\n        \\\"\\\"\\\"\\n    }\\n}))\"}",
+                  "name": "execute_python_program"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738145528,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 1419,
+        "prompt_tokens": 1095,
+        "total_tokens": 2514,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 1088,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1024
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T15:42:29.800097",
+    "response": {
+      "id": "chatcmpl-AuzLQ3kx8m220iiyPmiZz4GkJbFc1",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_D4a4ElAJZalQtdU19keVXKkl",
+                "function": {
+                  "arguments": "{\"sql\":\"\\n            SELECT id, description, created_at\\n            FROM support_ticket\\n            WHERE status = 'open'\\n            ORDER BY created_at DESC\\n            LIMIT 10;\\n        \"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738145540,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 703,
+        "prompt_tokens": 1507,
+        "total_tokens": 2210,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 640,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1024
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T15:43:01.320594",
+    "response": {
+      "id": "chatcmpl-AuzLaCz7gCzanny4O4LZUfK7j7vN3",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_W8X9iZkrnZpMaw2pirQ9mS4C",
+                "function": {
+                  "arguments": "{\"pythonCode\":\"import json\\nimport re\\nimport sys\\nfrom functools import cmp_to_key\\n\\n# The user wants the top 5 from the last 10 open tickets, sorted by the custom priority.\\n# We have partial data from the result of the last query. Let's store it, parse out project IDs, classify tickets, then fetch plan info, then sort.\\n\\nticket_data = [\\n  {\\n    \\\"id\\\": 143,\\n    \\\"description\\\": \\\"I am unable to access my project on Hasura Cloud. When I try to open the project dashboard, it fails to load and shows an error message. This is critically impacting our production environment and needs immediate attention.\\\\n\\\\nProject ID: abc123\\\\n\\\\nWe are using PostgreSQL as our database.\\\\n\\\\nVersion: v2.41.0\\\\n\\\\nPlease assist as soon as possible.\\\\n\\\\nThank you.\\\\n\\\\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\\\\n\\\",\\n    \\\"created_at\\\": \\\"2025-01-03T20:32:35.345840+00:00\\\"\\n  },\\n  {\\n    \\\"id\\\": 166,\\n    \\\"description\\\": \\\"Hello,\\\\n\\\\nWe are using your platform with a PostgreSQL database and would like to request support for custom GraphQL directives in queries and mutations. This feature would greatly help us implement advanced query logic and improve our application's flexibility.\\\\n\\\\nIs this something that could be supported in future releases?\\\\n\\\\nThank you for your assistance.\\\\n\\\\n\\\\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\\\\n\\\",\\n    \\\"created_at\\\": \\\"2024-12-21T14:32:35.345840+00:00\\\"\\n  },\\n  {\\n    \\\"id\\\": 209,\\n    \\\"description\\\": \\\"Hello,\\\\n\\\\nWe are experiencing a complete outage of our production environment. All our services are down, and users are unable to access the application, leading to a major disruption in our operations.\\\\n\\\\nOur application uses PostgreSQL as the database, and we are currently running version v2.48.5. We have not made any recent changes or deployments that could have caused this issue.\\\\n\\\\nWe urgently need assistance to resolve this problem.\\\\n\\\\nThank you,\\\\n[Your Name]\\\\n\\\\nProject ID: 76de9616-3d7b-49d7-b909-e154dda91489\\\\n\\\",\\n    \\\"created_at\\\": \\\"2024-12-05T07:00:00+00:00\\\"\\n  },\\n  {\\n    \\\"id\\\": 169,\\n    \\\"description\\\": \\\"Hi,\\\\n\\\\nWe are experiencing resource exhaustion issues while using the Schema Registry feature in our production environment. The Schema Registry seems to consume a lot of CPU and memory resources, leading to slow responses from our application.\\\\n\\\\nWe are using PostgreSQL as our database.\\\\n\\\\nVersion: v2.46.0\\\\n\\\\nCould you please help us resolve this issue?\\\\n\\\\nThanks.\\\\n\\\\nProject ID: 386d8856-9020-47eb-a21a-2ebe6b81428e\\\\n\\\",\\n    \\\"created_at\\\": \\\"2024-11-12T05:00:00+00:00\\\"\\n  },\\n  {\\n    \\\"id\\\": 251,\\n    \\\"description\\\": \\\"Hi Support,\\\\n\\\\nWe are experiencing significant performance degradation when performing operations that involve permissions in our Hasura setup. Queries that used to execute in milliseconds are now taking several seconds to complete, especially those with complex permission rules.\\\\n\\\\nWe are using PostgreSQL as our database. Current Hasura version: v2.44.0.\\\\n\\\\nCould you please help us troubleshoot this issue and suggest any optimizations?\\\\n\\\\nThanks.\\\\n\\\\nProject ID: d5dc02fc-707a-4084-854a-79f5866d4dd3\\\\n\\\",\\n    \\\"created_at\\\": \\\"2024-10-25T04:00:00+00:00\\\"\\n  },\\n  {\\n    \\\"id\\\": 139,\\n    \\\"description\\\": \\\"Hi support team,\\\\n\\\\nWe are experiencing a critical issue where we cannot access our Hasura project. The GraphQL endpoint and the console are both unreachable, and our application is down as a result. This is impacting our production environment.\\\\n\\\\nWe are using Postgres as our database backend. Our Hasura version is v2.47.1.\\\\n\\\\nThis issue is urgent and requires immediate attention. Please help us resolve this as soon as possible.\\\\n\\\\nThank you,\\\\n[User Name]\\\\n\\\\nProject ID: 5ad39764-9b9b-48cb-8819-43ab40694b06\\\\n\\\",\\n    \\\"created_at\\\": \\\"2024-10-18T03:00:00+00:00\\\"\\n  },\\n  {\\n    \\\"id\\\": 144,\\n    \\\"description\\\": \\\"We are experiencing a service disruption as all our GraphQL operations are returning 500 Internal Server Errors. We are using Postgres as our database and are on version v2.47.0. This is affecting our production environment. Please assist urgently.\\\\n\\\\nProject ID: 9b8f8c9a-7f76-4bc2-95c9-652b13f13a44\\\\n\\\",\\n    \\\"created_at\\\": \\\"2024-10-06T07:00:00+00:00\\\"\\n  },\\n  {\\n    \\\"id\\\": 215,\\n    \\\"description\\\": \\\"We are experiencing intermittent failures with the Actions feature in our production environment. The issue occurs randomly, and we cannot determine the cause. We are using PostgreSQL as our database. The problem started after upgrading to version v2.46.2. This is impacting our users, and we need assistance to resolve it as soon as possible.\\\\n\\\\nProject ID: 8edf6e2c-99b6-49af-b342-4aefe811b2f3\\\\n\\\",\\n    \\\"created_at\\\": \\\"2024-10-06T06:00:00+00:00\\\"\\n  },\\n  {\\n    \\\"id\\\": 250,\\n    \\\"description\\\": \\\"We are facing severe resource exhaustion and slow response times when using Actions in our production environment. The system becomes unresponsive under load, and API requests are timing out. We suspect this may be related to the recent upgrade to version v2.47.2.\\\\n\\\\nOur application uses Postgres as the database.\\\\n\\\\nPlease look into this issue as soon as possible as it is impacting our users.\\\\n\\\\nProject ID: d5dc02fc-707a-4084-854a-79f5866d4dd3\\\\n\\\",\\n    \\\"created_at\\\": \\\"2024-09-29T08:00:00+00:00\\\"\\n  },\\n  {\\n    \\\"id\\\": 205,\\n    \\\"description\\\": \\\"Hello,\\\\n\\\\nWe are experiencing a critical production issue where all our GraphQL operations are failing with 500 Internal Server Error responses. This is affecting all our users and needs immediate attention.\\\\n\\\\nOur backend uses PostgreSQL as the database, and we're running Hasura version v2.47.3.\\\\n\\\\nWe haven't made any recent changes to our setup. Could you please investigate and help resolve this issue as soon as possible?\\\\n\\\\nThank you.\\\\n\\\\nProject ID: 5f4d1be1-61b7-4b11-ba51-6e9b7f094c82\\\\n\\\",\\n    \\\"created_at\\\": \\\"2024-09-29T03:00:00+00:00\\\"\\n  }\\n]\\n\\n# We'll parse the project IDs from the descriptions. We'll look for all occurrences of patterns that match UUID.\\nuuid_pattern = re.compile(r\\\"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\\\", re.IGNORECASE)\\n\\ndef classify_ticket(description):\\n    # We'll decide a category among: downtime, reliability, performance, bug, feature request, others\\n    # We'll do naive detection based on the instructions and the text.\\n    # We'll just do manual logic based on our known data.\\n\\n    text = description.lower()\\n\\n    # We'll rely on logic from the user or the instructions.\\n    # But for the textual data we have, we assigned:\\n    # We'll do it more systematically.\\n\\n    if (\\\"outage\\\" in text or \\\"cannot access\\\" in text or \\\"unreachable\\\" in text or \\\"500 internal server error\\\" in text and \\\"all\\\" in text) or (\\\"all services are down\\\" in text) or (\\\"complete outage\\\" in text) or (\\\"service disruption\\\" in text and \\\"500\\\" in text):\\n        return \\\"downtime\\\"\\n    if \\\"intermittent\\\" in text or \\\"random\\\" in text or \\\"random failures\\\" in text or \\\"random errors\\\" in text:\\n        return \\\"reliability\\\"\\n    if \\\"slow\\\" in text or \\\"performance\\\" in text or \\\"resource exhaustion\\\" in text:\\n        return \\\"performance\\\"\\n    if \\\"bug\\\" in text or \\\"returning wrong results\\\" in text or \\\"unauthorized users\\\" in text:\\n        return \\\"bug\\\"\\n    if \\\"request support for\\\" in text or \\\"feature\\\" in text or \\\"supported in future releases\\\" in text:\\n        return \\\"feature request\\\"\\n    return \\\"others\\\"\\n\\n\\n# Next, parse project IDs from each ticket.\\nfor t in ticket_data:\\n    desc = t[\\\"description\\\"]\\n    found_uuids = uuid_pattern.findall(desc)\\n    if found_uuids:\\n        # We'll just take the last match in the description.\\n        # Or the first. We'll pick the first or last. Let's pick the first.\\n        # Actually let's just pick the last valid match since sometimes there's multiple lines.\\n        t[\\\"project_id\\\"] = found_uuids[-1]\\n    else:\\n        t[\\\"project_id\\\"] = None\\n    t[\\\"category\\\"] = classify_ticket(desc)\\n\\n# Now we gather the project IDs we have.\\nproject_ids = {t[\\\"project_id\\\"] for t in ticket_data if t[\\\"project_id\\\"] is not None}\\n\\n\\nprint(json.dumps({\\n    'name': 'query_control_plane_data',\\n    'arguments': {\\n        'sql': f\\\"\\\"\\\"\\n            SELECT DISTINCT ON (ppc.project_id) ppc.project_id::text, p.name as plan_name\\n            FROM project_plan_changelogs ppc\\n            JOIN plans p ON p.id = ppc.plan_id\\n            WHERE ppc.project_id IN ({', '.join(['\\\\'' + pid + '\\\\'' for pid in project_ids])})\\n            ORDER BY ppc.project_id, ppc.created_at DESC;\\n        \\\"\\\"\\\"\\n    }\\n}))\"}",
+                  "name": "execute_python_program"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738145550,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 4236,
+        "prompt_tokens": 3096,
+        "total_tokens": 7332,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 1728,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T15:43:16.820839",
+    "response": {
+      "id": "chatcmpl-AuzM56VE3e7kv2JLgv0Kmw8eIJdVn",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_OBg6Hdpujt44NHXo8hBn5ll6",
+                "function": {
+                  "arguments": "{\"sql\":\"\\n            SELECT DISTINCT ON (ppc.project_id) ppc.project_id::text, p.name as plan_name\\n            FROM project_plan_changelogs ppc\\n            JOIN plans p ON p.id = ppc.plan_id\\n            WHERE ppc.project_id IN ('9b8f8c9a-7f76-4bc2-95c9-652b13f13a44', '5ad39764-9b9b-48cb-8819-43ab40694b06', '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82', '386d8856-9020-47eb-a21a-2ebe6b81428e', '76de9616-3d7b-49d7-b909-e154dda91489', 'd5dc02fc-707a-4084-854a-79f5866d4dd3', '8edf6e2c-99b6-49af-b342-4aefe811b2f3', '2a8d4b07-c391-450f-8153-f6521f8a20a0')\\n            ORDER BY ppc.project_id, ppc.created_at DESC;\\n        \"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738145581,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 1009,
+        "prompt_tokens": 5923,
+        "total_tokens": 6932,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 704,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1408
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T15:43:44.580639",
+    "response": {
+      "id": "chatcmpl-AuzMLfb85VMVlFwIkgB9gUA6nk4dM",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "<tickets>\n205\n144\n139\n209\n143\n</tickets>",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738145597,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 3399,
+        "prompt_tokens": 6569,
+        "total_tokens": 9968,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 3392,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 5760
+        }
+      }
+    }
+  }
+]

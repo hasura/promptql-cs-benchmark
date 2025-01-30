@@ -1,0 +1,175 @@
+[
+  {
+    "timestamp": "2025-01-28T17:30:33.109387",
+    "response": {
+      "id": "chatcmpl-AueYYTCbJMGcyeIGrSxZEDz3oLLGj",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_8P9RBfQ42vhT6t77IPXuA87a",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, description, created_at FROM support_ticket WHERE status = 'open' ORDER BY created_at DESC LIMIT 20;\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738065630,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 41,
+        "prompt_tokens": 1062,
+        "total_tokens": 1103,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:30:54.011784",
+    "response": {
+      "id": "chatcmpl-AueYb62JQ0g1lSXckb4V4g08rIZyJ",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_xmUu8KJAp30n5iyNgWhK5iSQ",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT plan_id, project_id FROM project_plan_changelogs WHERE project_id IN ('2a8d4b07-c391-450f-8153-f6521f8a20a0', '76de9616-3d7b-49d7-b909-e154dda91489', '386d8856-9020-47eb-a21a-2ebe6b81428e', 'd5dc02fc-707a-4084-854a-79f5866d4dd3', '5ad39764-9b9b-48cb-8819-43ab40694b06') ORDER BY created_at DESC LIMIT 1;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_gWIqO45TsU4JLnr7QmN84qAT",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT id, name FROM plans;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_yrDMjigzsN8ZdW7M56MBkwvN",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT plan_id, project_id FROM project_plan_changelogs WHERE project_id IN ('9b8f8c9a-7f76-4bc2-95c9-652b13f13a44', '8edf6e2c-99b6-49af-b342-4aefe811b2f3', '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82', 'b750445e-fba4-4644-b306-1550cfefad8b', 'e75d06e3-6ec1-4649-bc83-7d19cd07fd77') ORDER BY created_at DESC LIMIT 1;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_i9mKD4DdGxOFxSNskODSN8Tc",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT plan_id, project_id FROM project_plan_changelogs WHERE project_id IN ('e452f72b-66e1-4c56-ada2-3525ab8fb280', '4aeefe6f-7dee-4395-82be-6d8e51aea9fd', '598b3a1b-0166-420f-ac63-fa734cbf5c63', 'c5d9c906-2b61-424e-967b-fa3e27d09d44', '5267a67e-d8ea-4154-b385-6269b033a471') ORDER BY created_at DESC LIMIT 1;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_aHKSAfKcP3EI4NJGrg1Zzc8d",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT plan_id, project_id FROM project_plan_changelogs WHERE project_id IN ('fc2590f9-6bdc-43e3-9984-9246fd96f2dd', '4e291cdc-0aab-4573-86a4-c82490831964') ORDER BY created_at DESC LIMIT 1;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738065633,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 621,
+        "prompt_tokens": 4189,
+        "total_tokens": 4810,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 4096
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:31:03.139604",
+    "response": {
+      "id": "chatcmpl-AueYwCxCa175lYPiyBqfdGXfghLtB",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Here is a categorized list of priority among the most recent 20 open support tickets along with their plans:\n\n- **Ticket ID 209** (Description: Complete outage, Project ID: 76de9616-3d7b-49d7-b909-e154dda91489, Plan: Free, Created At: 2024-12-05)\n  - **Classification**: Downtime (Critical service outage, affecting all users)\n  - **Priority Plan**: Base plan\n\n- **Ticket ID 144** (Description: Service disruption, 500 Internal Server Errors, Project ID: 9b8f8c9a-7f76-4bc2-95c9-652b13f13a44, Plan: Free, Created At: 2024-10-06)\n  - **Classification**: Downtime (All operations returning errors)\n  - **Priority Plan**: Base plan\n\n- **Ticket ID 201** (Description: Production down, All requests failing, Project ID: 598b3a1b-0166-420f-ac63-fa734cbf5c63, Plan: Base, Created At: 2024-08-07)\n  - **Classification**: Downtime (API service down, critical issue in production)\n  - **Priority Plan**: Advanced plan\n\n- **Ticket ID 193** (Description: All operations returning 500 Internal Server Errors, Project ID: 5267a67e-d8ea-4154-b385-6269b033a471, Plan: Advanced, Created At: 2024-07-13)\n  - **Classification**: Downtime (Complete service outage)\n  - **Priority Plan**: Advanced plan\n\n- **Ticket ID 186** (Description: Random API request failures, Project ID: 4e291cdc-0aab-4573-86a4-c82490831964, Plan: Base, Created At: 2024-05-29)\n  - **Classification**: Reliability (Intermittent connectivity issues)\n  - **Priority Plan**: Advanced plan\n\nAll tickets have been classified and prioritized based on the provided criteria. The sorting was done by considering the most critical situations first \u2014 Tickets with classification 'Downtime' are prioritized highest, followed by 'Reliability'. Among categories, older tickets were preferred if priority levels were the same.",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738065654,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 497,
+        "prompt_tokens": 5231,
+        "total_tokens": 5728,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 4736
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,193 @@
+[
+  {
+    "timestamp": "2025-01-29T14:17:40.415554",
+    "response": {
+      "id": "chatcmpl-Auy0xBRFns0ESQPokXfPQJ5fnIaCp",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_xJLrNJlT6TsOLa4xZecLc6gp",
+                "function": {
+                  "arguments": "{\"sql\":\"WITH last_5_open_tickets AS (\\n  SELECT id, description, created_at\\n  FROM support_ticket\\n  WHERE status = 'open'\\n  ORDER BY created_at DESC\\n  LIMIT 5\\n),\\nextracted_project_id AS (\\n  SELECT\\n    l5.id,\\n    l5.description,\\n    l5.created_at,\\n    -- Attempt to extract project_id (UUID) using regex\\n    (REGEXP_MATCHES(l5.description, '([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})'))[1] AS project_id\\n  FROM last_5_open_tickets l5\\n),\\nlatest_plan AS (\\n  SELECT\\n    ep.id,\\n    (\\n      SELECT p.name\\n      FROM project_plan_changelogs ppc\\n      JOIN plans p ON ppc.plan_id = p.id\\n      WHERE ppc.project_id::text = ep.project_id\\n      ORDER BY ppc.created_at DESC\\n      LIMIT 1\\n    ) AS plan_name\\n  FROM extracted_project_id ep\\n),\\nclassified AS (\\n  SELECT\\n    ep.id,\\n    ep.created_at,\\n    COALESCE(lp.plan_name, 'unknown') AS plan_name,\\n    CASE\\n      WHEN ep.description ~* '(widespread service disruptions|unable to access project consoles|production environment outages|500 error|timeouts)' THEN 'downtime'\\n      WHEN ep.description ~* '(intermittent connectivity|random request failures|service instability)' THEN 'reliability'\\n      WHEN ep.description ~* '(performance|increased response times|latency)' THEN 'performance'\\n      WHEN ep.description ~* 'bug' THEN 'bug'\\n      WHEN ep.description ~* '(feature request|requesting .* functionality)' THEN 'feature request'\\n      ELSE 'others'\\n    END AS category\\n  FROM extracted_project_id ep\\n  LEFT JOIN latest_plan lp ON ep.id = lp.id\\n)\\nSELECT c.id\\nFROM classified c\\nORDER BY\\n  -- (1) advanced plan w/ downtime or reliability: highest priority\\n  CASE WHEN plan_name = 'advanced' AND category IN ('downtime','reliability') THEN 1 ELSE 0 END DESC,\\n  -- (2) base plan w/ downtime or reliability: next highest priority\\n  CASE WHEN plan_name = 'base' AND category IN ('downtime','reliability') THEN 1 ELSE 0 END DESC,\\n  -- (3) category priority: downtime > reliability > performance > bug > feature request > others\\n  CASE category\\n    WHEN 'downtime' THEN 5\\n    WHEN 'reliability' THEN 4\\n    WHEN 'performance' THEN 3\\n    WHEN 'bug' THEN 2\\n    WHEN 'feature request' THEN 1\\n    ELSE 0\\n  END DESC,\\n  -- (4) older ticket first\\n  c.created_at ASC\\n;\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738140427,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 4264,
+        "prompt_tokens": 1037,
+        "total_tokens": 5301,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 3584,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T14:17:49.391625",
+    "response": {
+      "id": "chatcmpl-Auy1VQULRhiym3DIqwznKue8hK4AB",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_oArY0jXovd8Mk9zYU69KTfTy",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, description, created_at \\nFROM support_ticket\\nWHERE status = 'open'\\nORDER BY created_at DESC\\nLIMIT 5;\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738140461,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 951,
+        "prompt_tokens": 1762,
+        "total_tokens": 2713,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 896,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T14:18:04.174092",
+    "response": {
+      "id": "chatcmpl-Auy1dbn27bVfYGh6itwgwb7MTwyag",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_ukLViwpbg7ZqI9vZiF86n1bX",
+                "function": {
+                  "arguments": "{\"sql\":\"WITH latest_plan AS (\\n    SELECT DISTINCT ON (ppc.project_id) ppc.project_id,\\n        p.name AS plan_name,\\n        ppc.created_at AS plan_changed_at\\n    FROM project_plan_changelogs ppc\\n    JOIN plans p ON ppc.plan_id = p.id\\n    WHERE ppc.project_id IN (\\n        '2a8d4b07-c391-450f-8153-f6521f8a20a0',\\n        '76de9616-3d7b-49d7-b909-e154dda91489',\\n        '386d8856-9020-47eb-a21a-2ebe6b81428e',\\n        'd5dc02fc-707a-4084-854a-79f5866d4dd3'\\n    )\\n    ORDER BY ppc.project_id, ppc.created_at DESC\\n)\\nSELECT project_id, plan_name FROM latest_plan;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738140469,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 1900,
+        "prompt_tokens": 2591,
+        "total_tokens": 4491,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 1664,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1664
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T14:18:15.423078",
+    "response": {
+      "id": "chatcmpl-Auy1sa67lXoGrtkXhOZp4GHnrJ37G",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "<tickets>\n143\n209\n251\n169\n166\n</tickets>",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738140484,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 1371,
+        "prompt_tokens": 2991,
+        "total_tokens": 4362,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 1344,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 2432
+        }
+      }
+    }
+  }
+]

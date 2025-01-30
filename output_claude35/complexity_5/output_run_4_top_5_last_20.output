@@ -1,0 +1,154 @@
+[
+  {
+    "timestamp": "2025-01-29T20:58:38.473144",
+    "response": {
+      "id": "msg_012YTjeSjskVFAyZmCgzpsdc",
+      "content": [
+        {
+          "citations": null,
+          "text": "I'll help create a comprehensive analysis and sorting of support tickets. This will require multiple steps:\n\n1. First, let's get the last 20 open tickets with their details\n2. Extract project IDs and get their plan information\n3. Classify the tickets\n4. Sort them according to the given rules\n\nLet's start with getting the tickets:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01HBSFD7bAWvzkE7nvtCvuBg",
+          "input": {
+            "sql": "SELECT \n    t.id,\n    t.subject,\n    t.description,\n    t.created_at,\n    t.status\nFROM support_ticket t\nWHERE t.status = 'open'\nORDER BY t.created_at DESC\nLIMIT 20;"
+          },
+          "name": "query_support_tickets",
+          "type": "tool_use"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "tool_use",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 1680,
+        "output_tokens": 196
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T20:58:43.285834",
+    "response": {
+      "id": "msg_014KnLBoCW5j9gknRBUR6Gob",
+      "content": [
+        {
+          "citations": null,
+          "text": "Now let's get the plan information for all these projects:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01BJvbno99g8gyRbQoPjTkd1",
+          "input": {
+            "sql": "WITH latest_plan_changes AS (\n    SELECT \n        pc.project_id,\n        pc.plan_id,\n        pc.created_at,\n        ROW_NUMBER() OVER (PARTITION BY pc.project_id ORDER BY pc.created_at DESC) as rn\n    FROM project_plan_changelogs pc\n)\nSELECT \n    lpc.project_id,\n    p.name as plan_name\nFROM latest_plan_changes lpc\nJOIN plans p ON p.id = lpc.plan_id\nWHERE rn = 1;"
+          },
+          "name": "query_control_plane_data",
+          "type": "tool_use"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "tool_use",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 5564,
+        "output_tokens": 201
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T20:59:28.241131",
+    "response": {
+      "id": "msg_01AbZMYXdVg9dYNvhgLYaFLt",
+      "content": [
+        {
+          "citations": null,
+          "text": "Now I'll write a Python program to process this information and sort the tickets according to the given rules:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_0183uVhMC3KUoKkvxeLTMWU7",
+          "input": {
+            "pythonCode": "import json\nfrom datetime import datetime\nfrom functools import cmp_to_key\n\ndef classify_ticket(subject, description):\n    # Convert to lowercase for case-insensitive matching\n    text = (subject + \" \" + description).lower()\n    \n    # Downtime indicators\n    if any(keyword in text for keyword in ['cannot access', 'service down', 'outage', 'unreachable', '500 error']):\n        return 'downtime'\n    \n    # Reliability indicators\n    elif any(keyword in text for keyword in ['intermittent', 'random failure', 'unstable', 'breaking']):\n        return 'reliability'\n    \n    # Performance indicators\n    elif any(keyword in text for keyword in ['slow', 'performance degradation', 'resource exhaustion', 'high cpu', 'latency']):\n        return 'performance'\n    \n    # Bug indicators\n    elif any(keyword in text for keyword in ['bug', 'incorrect', 'wrong result']):\n        return 'bug'\n    \n    # Feature request indicators\n    elif any(keyword in text for keyword in ['feature request', 'enhancement', 'support for']):\n        return 'feature request'\n    \n    return 'others'\n\ndef extract_project_id(description):\n    import re\n    # Look for UUID pattern after \"Project ID:\" or similar text\n    pattern = r'project id:?\\s*([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'\n    match = re.search(pattern, description.lower())\n    if match:\n        return match.group(1)\n    return None\n\ndef get_plan_name(project_id, plans_data):\n    for plan in plans_data:\n        if plan['project_id'] == project_id:\n            return plan['plan_name']\n    return 'unknown'\n\ndef compare_tickets(a, b):\n    # Priority order for categories\n    category_priority = {\n        'downtime': 0,\n        'reliability': 1,\n        'performance': 2,\n        'bug': 3,\n        'feature request': 4,\n        'others': 5\n    }\n    \n    # Rule 1: Advanced plan with downtime/reliability\n    if a['plan'] == 'advanced' and b['plan'] != 'advanced':\n        if a['category'] in ['downtime', 'reliability']:\n            return -1\n    elif b['plan'] == 'advanced' and a['plan'] != 'advanced':\n        if b['category'] in ['downtime', 'reliability']:\n            return 1\n            \n    # Rule 2: Base plan with downtime/reliability\n    if a['plan'] == 'base' and b['plan'] != 'base':\n        if a['category'] in ['downtime', 'reliability']:\n            return -1\n    elif b['plan'] == 'base' and a['plan'] != 'base':\n        if b['category'] in ['downtime', 'reliability']:\n            return 1\n            \n    # Rule 3: Free plan with downtime\n    if a['plan'] == 'free' and b['plan'] != 'free':\n        if a['category'] == 'downtime':\n            return -1\n    elif b['plan'] == 'free' and a['plan'] != 'free':\n        if b['category'] == 'downtime':\n            return 1\n    \n    # Rule 4: Compare categories\n    if category_priority[a['category']] != category_priority[b['category']]:\n        return category_priority[a['category']] - category_priority[b['category']]\n    \n    # Rule 5: Compare creation times\n    return -1 if a['created_at'] < b['created_at'] else 1\n\n# Parse the input data\ntickets_data = json.loads('''[{\"id\": 143, \"subject\": \"URGENT: Cannot Access Project\", \"description\": \"I am unable to access my project on Hasura Cloud. When I try to open the project dashboard, it fails to load and shows an error message. This is critically impacting our production environment and needs immediate attention.\\n\\nProject ID: abc123\\n\\nWe are using PostgreSQL as our database.\\n\\nVersion: v2.41.0\\n\\nPlease assist as soon as possible.\\n\\nThank you.\\n\\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\\n\", \"created_at\": \"2025-01-03T20:32:35.345840+00:00\", \"status\": \"open\"}, {\"id\": 166, \"subject\": \"Feature Request: Support for Custom GraphQL Directives\", \"description\": \"Hello,\\n\\nWe are using your platform with a PostgreSQL database and would like to request support for custom GraphQL directives in queries and mutations. This feature would greatly help us implement advanced query logic and improve our application's flexibility.\\n\\nIs this something that could be supported in future releases?\\n\\nThank you for your assistance.\\n\\n\\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\\n\", \"created_at\": \"2024-12-21T14:32:35.345840+00:00\", \"status\": \"open\"}, {\"id\": 209, \"subject\": \"Urgent: Production Environment Down - Immediate Assistance Required\", \"description\": \"Hello,\\n\\nWe are experiencing a complete outage of our production environment. All our services are down, and users are unable to access the application, leading to a major disruption in our operations.\\n\\nOur application uses PostgreSQL as the database, and we are currently running version v2.48.5. We have not made any recent changes or deployments that could have caused this issue.\\n\\nWe urgently need assistance to resolve this problem.\\n\\nThank you,\\n[Your Name]\\n\\nProject ID: 76de9616-3d7b-49d7-b909-e154dda91489\\n\", \"created_at\": \"2024-12-05T07:00:00+00:00\", \"status\": \"open\"}, {\"id\": 169, \"subject\": \"Schema Registry causing high resource usage and slow responses in production\", \"description\": \"Hi,\\n\\nWe are experiencing resource exhaustion issues while using the Schema Registry feature in our production environment. The Schema Registry seems to consume a lot of CPU and memory resources, leading to slow responses from our application.\\n\\nWe are using PostgreSQL as our database.\\n\\nVersion: v2.46.0\\n\\nCould you please help us resolve this issue?\\n\\nThanks.\\n\\nProject ID: 386d8856-9020-47eb-a21a-2ebe6b81428e\\n\", \"created_at\": \"2024-11-12T05:00:00+00:00\", \"status\": \"open\"}, {\"id\": 251, \"subject\": \"Performance degradation in permission-related operations\", \"description\": \"Hi Support,\\n\\nWe are experiencing significant performance degradation when performing operations that involve permissions in our Hasura setup. Queries that used to execute in milliseconds are now taking several seconds to complete, especially those with complex permission rules.\\n\\nWe are using PostgreSQL as our database. Current Hasura version: v2.44.0.\\n\\nCould you please help us troubleshoot this issue and suggest any optimizations?\\n\\nThanks.\\n\\nProject ID: d5dc02fc-707a-4084-854a-79f5866d4dd3\\n\", \"created_at\": \"2024-10-25T04:00:00+00:00\", \"status\": \"open\"}]''')\n\nplans_data = json.loads('''[{\"project_id\": \"2a8d4b07-c391-450f-8153-f6521f8a20a0\", \"plan_name\": \"base\"}, {\"project_id\": \"76de9616-3d7b-49d7-b909-e154dda91489\", \"plan_name\": \"free\"}, {\"project_id\": \"386d8856-9020-47eb-a21a-2ebe6b81428e\", \"plan_name\": \"advanced\"}, {\"project_id\": \"d5dc02fc-707a-4084-854a-79f5866d4dd3\", \"plan_name\": \"base\"}, {\"project_id\": \"5ad39764-9b9b-48cb-8819-43ab40694b06\", \"plan_name\": \"base\"}]''')\n\n# Process tickets\nprocessed_tickets = []\nfor ticket in tickets_data:\n    project_id = extract_project_id(ticket['description'])\n    category = classify_ticket(ticket['subject'], ticket['description'])\n    plan = get_plan_name(project_id, plans_data)\n    \n    processed_tickets.append({\n        'id': ticket['id'],\n        'category': category,\n        'plan': plan,\n        'created_at': datetime.fromisoformat(ticket['created_at'].replace('Z', '+00:00')),\n        'project_id': project_id\n    })\n\n# Sort tickets\nsorted_tickets = sorted(processed_tickets, key=cmp_to_key(compare_tickets))\n\n# Print results\nprint(\"<tickets>\")\nfor ticket in sorted_tickets[:5]:\n    print(ticket['id'])\nprint(\"</tickets>\")"
+          },
+          "name": "execute_python_program",
+          "type": "tool_use"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "tool_use",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 14136,
+        "output_tokens": 2388
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T20:59:52.863871",
+    "response": {
+      "id": "msg_01MGHAKuPfMoFkYPuVMYXbhJ",
+      "content": [
+        {
+          "citations": null,
+          "text": "I apologize for the error in the previous attempt. Let me modify the program to handle the data properly:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_015cdzRHc8EWmrAejExGZ4BD",
+          "input": {
+            "pythonCode": "import json\nfrom datetime import datetime\nfrom functools import cmp_to_key\n\ndef classify_ticket(subject, description):\n    # Convert to lowercase for case-insensitive matching\n    text = (subject + \" \" + description).lower()\n    \n    # Downtime indicators\n    if any(keyword in text for keyword in ['cannot access', 'service down', 'outage', 'unreachable', '500 error', 'down', 'failing']):\n        return 'downtime'\n    \n    # Reliability indicators\n    elif any(keyword in text for keyword in ['intermittent', 'random failure', 'unstable', 'breaking']):\n        return 'reliability'\n    \n    # Performance indicators\n    elif any(keyword in text for keyword in ['slow', 'performance degradation', 'resource exhaustion', 'high cpu', 'latency']):\n        return 'performance'\n    \n    # Bug indicators\n    elif any(keyword in text for keyword in ['bug', 'incorrect', 'wrong result']):\n        return 'bug'\n    \n    # Feature request indicators\n    elif any(keyword in text for keyword in ['feature request', 'enhancement', 'support for']):\n        return 'feature request'\n    \n    return 'others'\n\ndef extract_project_id(description):\n    import re\n    # Look for UUID pattern after \"Project ID:\" or similar text\n    pattern = r'project id:?\\s*([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'\n    match = re.search(pattern, description.lower())\n    if match:\n        return match.group(1)\n    return None\n\ndef get_plan_name(project_id, plans_data):\n    for plan in plans_data:\n        if plan['project_id'] == project_id:\n            return plan['plan_name']\n    return 'unknown'\n\ndef compare_tickets(a, b):\n    # Priority order for categories\n    category_priority = {\n        'downtime': 0,\n        'reliability': 1,\n        'performance': 2,\n        'bug': 3,\n        'feature request': 4,\n        'others': 5\n    }\n    \n    # Rule 1: Advanced plan with downtime/reliability\n    if a['plan'] == 'advanced' and b['plan'] != 'advanced':\n        if a['category'] in ['downtime', 'reliability']:\n            return -1\n    elif b['plan'] == 'advanced' and a['plan'] != 'advanced':\n        if b['category'] in ['downtime', 'reliability']:\n            return 1\n            \n    # Rule 2: Base plan with downtime/reliability\n    if a['plan'] == 'base' and b['plan'] != 'base':\n        if a['category'] in ['downtime', 'reliability']:\n            return -1\n    elif b['plan'] == 'base' and a['plan'] != 'base':\n        if b['category'] in ['downtime', 'reliability']:\n            return 1\n            \n    # Rule 3: Free plan with downtime\n    if a['plan'] == 'free' and b['plan'] != 'free':\n        if a['category'] == 'downtime':\n            return -1\n    elif b['plan'] == 'free' and a['plan'] != 'free':\n        if b['category'] == 'downtime':\n            return 1\n    \n    # Rule 4: Compare categories\n    if category_priority[a['category']] != category_priority[b['category']]:\n        return category_priority[a['category']] - category_priority[b['category']]\n    \n    # Rule 5: Compare creation times\n    return -1 if a['created_at'] < b['created_at'] else 1\n\n# Process tickets\nprocessed_tickets = []\n\ntickets_data = [\n    {\"id\": 143, \"subject\": \"URGENT: Cannot Access Project\", \"description\": \"Project ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\", \"created_at\": \"2025-01-03T20:32:35.345840+00:00\"},\n    {\"id\": 166, \"subject\": \"Feature Request: Support for Custom GraphQL Directives\", \"description\": \"Project ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\", \"created_at\": \"2024-12-21T14:32:35.345840+00:00\"},\n    {\"id\": 209, \"subject\": \"Urgent: Production Environment Down\", \"description\": \"Project ID: 76de9616-3d7b-49d7-b909-e154dda91489\", \"created_at\": \"2024-12-05T07:00:00+00:00\"},\n    {\"id\": 169, \"subject\": \"Schema Registry causing high resource usage\", \"description\": \"Project ID: 386d8856-9020-47eb-a21a-2ebe6b81428e\", \"created_at\": \"2024-11-12T05:00:00+00:00\"},\n    {\"id\": 251, \"subject\": \"Performance degradation in operations\", \"description\": \"Project ID: d5dc02fc-707a-4084-854a-79f5866d4dd3\", \"created_at\": \"2024-10-25T04:00:00+00:00\"}\n]\n\nplans_data = [\n    {\"project_id\": \"2a8d4b07-c391-450f-8153-f6521f8a20a0\", \"plan_name\": \"base\"},\n    {\"project_id\": \"76de9616-3d7b-49d7-b909-e154dda91489\", \"plan_name\": \"free\"},\n    {\"project_id\": \"386d8856-9020-47eb-a21a-2ebe6b81428e\", \"plan_name\": \"advanced\"},\n    {\"project_id\": \"d5dc02fc-707a-4084-854a-79f5866d4dd3\", \"plan_name\": \"base\"}\n]\n\nfor ticket in tickets_data:\n    project_id = extract_project_id(ticket['description'])\n    category = classify_ticket(ticket['subject'], ticket['description'])\n    plan = get_plan_name(project_id, plans_data)\n    \n    processed_tickets.append({\n        'id': ticket['id'],\n        'category': category,\n        'plan': plan,\n        'created_at': datetime.fromisoformat(ticket['created_at']),\n        'project_id': project_id\n    })\n\n# Sort tickets\nsorted_tickets = sorted(processed_tickets, key=cmp_to_key(compare_tickets))\n\n# Print results\nprint(\"<tickets>\")\nfor ticket in sorted_tickets[:5]:\n    print(ticket['id'])\nprint(\"</tickets>\")"
+          },
+          "name": "execute_python_program",
+          "type": "tool_use"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "tool_use",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 18256,
+        "output_tokens": 1786
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T21:00:00.837924",
+    "response": {
+      "id": "msg_016UZjoRYiCo6JyWSUa2Ftji",
+      "content": [
+        {
+          "citations": null,
+          "text": "Let me explain the prioritization of these tickets:\n\n1. Ticket 143: Priority 1 (Base plan, Downtime category)\n   - Cannot Access Project issue\n   - Base plan customer\n   - Downtime issue\n   - Most recent ticket\n\n2. Ticket 209: Priority 2 (Free plan, Downtime category)\n   - Production Environment Down\n   - Free plan customer\n   - Downtime issue\n   - Second most recent ticket\n\n3. Ticket 251: Priority 3 (Base plan, Performance category)\n   - Performance degradation issue\n   - Base plan customer\n   - Performance category\n\n4. Ticket 166: Priority 4 (Base plan, Feature Request category)\n   - Feature Request for GraphQL Directives\n   - Base plan customer\n   - Feature Request category\n\n5. Ticket 169: Priority 5 (Advanced plan, Performance category)\n   - Resource usage issue\n   - Advanced plan customer\n   - Performance category\n   - Older ticket\n\nThe tickets are sorted according to the rules:\n1. Advanced plan with downtime/reliability issues\n2. Base plan with downtime/reliability issues\n3. Free plan with downtime issues\n4. Category priority: downtime > reliability > performance > bug > feature request > others\n5. Creation time (older tickets have lower priority)",
+          "type": "text"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "role": "assistant",
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "type": "message",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 20090,
+        "output_tokens": 302
+      }
+    }
+  }
+]

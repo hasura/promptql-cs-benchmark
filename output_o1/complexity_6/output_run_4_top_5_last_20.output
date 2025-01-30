@@ -1,0 +1,193 @@
+[
+  {
+    "timestamp": "2025-01-30T13:18:58.657081",
+    "response": {
+      "id": "chatcmpl-AvJZw09YMxD1FWKCOm6LcrHvsOz02",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_BEqPpmQyK5rLxMzKPnY4YB37",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, description, created_at FROM support_ticket WHERE status='open' ORDER BY created_at DESC LIMIT 20;\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738223320,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 2138,
+        "prompt_tokens": 1059,
+        "total_tokens": 3197,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 2048,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-30T13:19:32.127441",
+    "response": {
+      "id": "chatcmpl-AvJaFjXdVzPBr5QGjx9bbDkMojMHD",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_A4kUDBlGfpM5JNj4Upl4hqmS",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT DISTINCT ON (p.id) p.id AS project_id, plan.name AS plan_name\\nFROM projects p\\nLEFT JOIN project_plan_changelogs pc ON p.id = pc.project_id\\nLEFT JOIN plans plan ON pc.plan_id = plan.id\\nWHERE p.id IN (\\n  '2a8d4b07-c391-450f-8153-f6521f8a20a0',\\n  '76de9616-3d7b-49d7-b909-e154dda91489',\\n  '386d8856-9020-47eb-a21a-2ebe6b81428e',\\n  'd5dc02fc-707a-4084-854a-79f5866d4dd3',\\n  '5ad39764-9b9b-48cb-8819-43ab40694b06',\\n  '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44',\\n  '8edf6e2c-99b6-49af-b342-4aefe811b2f3',\\n  '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82',\\n  'e452f72b-66e1-4c56-ada2-3525ab8fb280',\\n  'b750445e-fba4-4644-b306-1550cfefad8b',\\n  'e75d06e3-6ec1-4649-bc83-7d19cd07fd77',\\n  '4aeefe6f-7dee-4395-82be-6d8e51aea9fd',\\n  '598b3a1b-0166-420f-ac63-fa734cbf5c63',\\n  'c5d9c906-2b61-424e-967b-fa3e27d09d44',\\n  '5267a67e-d8ea-4154-b385-6269b033a471',\\n  'fc2590f9-6bdc-43e3-9984-9246fd96f2dd',\\n  '4e291cdc-0aab-4573-86a4-c82490831964'\\n)\\nORDER BY p.id, pc.created_at DESC;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738223339,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 3960,
+        "prompt_tokens": 4185,
+        "total_tokens": 8145,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 3392,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-30T13:19:54.567989",
+    "response": {
+      "id": "chatcmpl-AvJam8zMtvVlosgmMDhgpuILJJeoH",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_hzoeCLoVSqJVPt7LlYsE3bRF",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT project_id, COALESCE(SUM(amount), 0) AS net_revenue\\nFROM invoice_item\\nWHERE project_id IN (\\n  '2a8d4b07-c391-450f-8153-f6521f8a20a0',\\n  '76de9616-3d7b-49d7-b909-e154dda91489',\\n  '386d8856-9020-47eb-a21a-2ebe6b81428e',\\n  'd5dc02fc-707a-4084-854a-79f5866d4dd3',\\n  '5ad39764-9b9b-48cb-8819-43ab40694b06',\\n  '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44',\\n  '8edf6e2c-99b6-49af-b342-4aefe811b2f3',\\n  '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82',\\n  'e452f72b-66e1-4c56-ada2-3525ab8fb280',\\n  'b750445e-fba4-4644-b306-1550cfefad8b',\\n  'e75d06e3-6ec1-4649-bc83-7d19cd07fd77',\\n  '4aeefe6f-7dee-4395-82be-6d8e51aea9fd',\\n  '598b3a1b-0166-420f-ac63-fa734cbf5c63',\\n  'c5d9c906-2b61-424e-967b-fa3e27d09d44',\\n  '5267a67e-d8ea-4154-b385-6269b033a471',\\n  'fc2590f9-6bdc-43e3-9984-9246fd96f2dd',\\n  '4e291cdc-0aab-4573-86a4-c82490831964'\\n)\\n  AND created_at >= '2024-01-16'\\nGROUP BY project_id\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738223372,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 2722,
+        "prompt_tokens": 5464,
+        "total_tokens": 8186,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 2176,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 4096
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-30T13:20:35.322379",
+    "response": {
+      "id": "chatcmpl-AvJb84VgIhHfGtm7mnZKzFL6coQ6a",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "<tickets>\n246\n205\n178\n193\n139\n</tickets>",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738223394,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 3613,
+        "prompt_tokens": 6648,
+        "total_tokens": 10261,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 3584,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 5376
+        }
+      }
+    }
+  }
+]

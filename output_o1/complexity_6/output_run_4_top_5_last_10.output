@@ -1,0 +1,193 @@
+[
+  {
+    "timestamp": "2025-01-30T13:17:37.040608",
+    "response": {
+      "id": "chatcmpl-AvJYl8djSo0XgXOaOmDEgA03AfC6P",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_U7wPgR4Fq8D67rU2IuQldPGN",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT * FROM support_ticket WHERE status = 'open' ORDER BY created_at DESC LIMIT 10\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738223247,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 1206,
+        "prompt_tokens": 1059,
+        "total_tokens": 2265,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 1152,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-30T13:17:46.286752",
+    "response": {
+      "id": "chatcmpl-AvJYvGNt1B0gHguK5LiZJK2lSiDxq",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_XKt8IHLCNRS2CCAvZBuX24iS",
+                "function": {
+                  "arguments": "{\"sql\":\"WITH latest_plan AS (\\n  SELECT DISTINCT ON (project_id) project_id, plan_id, created_at AS plan_assigned_at\\n  FROM project_plan_changelogs\\n  ORDER BY project_id, created_at DESC\\n)\\nSELECT latest_plan.project_id, plans.name AS plan_name\\nFROM latest_plan\\nJOIN plans ON plans.id = latest_plan.plan_id\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738223257,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 933,
+        "prompt_tokens": 3399,
+        "total_tokens": 4332,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 832,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-30T13:18:04.611704",
+    "response": {
+      "id": "chatcmpl-AvJZ4eVFIEu19SPjPAgVlq24ebgJH",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_kQJ63kj7rQr3JSdyfQY7iOBC",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT project_id, COALESCE(SUM(amount),0) as net_revenue\\nFROM invoice_item\\nWHERE created_at >= '2024-01-16'::date\\nGROUP BY project_id\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738223266,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 1986,
+        "prompt_tokens": 12232,
+        "total_tokens": 14218,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 1920,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 3328
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-30T13:18:40.530142",
+    "response": {
+      "id": "chatcmpl-AvJZN4um4YCvDUBBiS2dHfKEU54Hv",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "<tickets>\n205\n139\n144\n209\n143\n</tickets>",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738223285,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 4251,
+        "prompt_tokens": 16294,
+        "total_tokens": 20545,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 4224,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 12160
+        }
+      }
+    }
+  }
+]

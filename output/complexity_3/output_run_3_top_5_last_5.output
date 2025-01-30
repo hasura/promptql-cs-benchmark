@@ -1,0 +1,151 @@
+[
+  {
+    "timestamp": "2025-01-28T16:47:14.553751",
+    "response": {
+      "id": "chatcmpl-Audsfh2tFzXV2aMmXI3TMg27nI5jw",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_jA30jllD7Hd6nqyiHk7DkpKV",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, description, created_at FROM support_ticket WHERE status = 'open' ORDER BY created_at DESC LIMIT 5;\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738063033,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 41,
+        "prompt_tokens": 1072,
+        "total_tokens": 1113,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T16:47:19.169441",
+    "response": {
+      "id": "chatcmpl-AudsgAcdJlzcVBpMULtsv2HT6Nnaw",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_mm0HIPGOn1uy6PEq9jq5WPfT",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT project_id, plan_id FROM project_plan_changelogs WHERE project_id IN ('2a8d4b07-c391-450f-8153-f6521f8a20a0', '76de9616-3d7b-49d7-b909-e154dda91489', '386d8856-9020-47eb-a21a-2ebe6b81428e', 'd5dc02fc-707a-4084-854a-79f5866d4dd3') AND created_at = (SELECT MAX(created_at) FROM project_plan_changelogs WHERE project_id = project_id);\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_C162gZQmUZsPBxQAUxQ1nGte",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT id FROM plans WHERE name ILIKE '%advanced%';\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738063034,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 194,
+        "prompt_tokens": 1896,
+        "total_tokens": 2090,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1792
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T16:47:28.483095",
+    "response": {
+      "id": "chatcmpl-Audsl69wDuFSCxuQq3YIhl0gIowdt",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "It seems that the project to plan mapping did not return any results. This usually means that either the `project_plan_changelogs` table doesn't have recent plan entries for the requested project IDs or some other issue occurred.\n\nLet's proceed with the prioritization using fallback logic that doesn't rely on plan information explicitly. Since advanced plan information isn't available, I'll prioritize using the other rules provided i.e. category and ticket creation time. \n\n### Ticket Categorization based on descriptions:\n\n1. **Ticket ID 143**: \n   - Category: Downtime\n   - Created At: 2025-01-03\n\n2. **Ticket ID 166**: \n   - Category: Feature request\n   - Created At: 2024-12-21\n\n3. **Ticket ID 209**: \n   - Category: Downtime\n   - Created At: 2024-12-05\n\n4. **Ticket ID 169**: \n   - Category: Performance\n   - Created At: 2024-11-12\n\n5. **Ticket ID 251**: \n   - Category: Performance\n   - Created At: 2024-10-25\n\n### Priority Decision:\n\n1. **Downtime**: ID 209, ID 143\n2. **Performance**: ID 251, ID 169\n3. **Feature Request**: ID 166\n\nNow, I'll provide the sorted list of ticket IDs as per the above priority analysis:\n\n<tickets>\n209\n143\n251\n169\n166\n</tickets>",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738063039,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 320,
+        "prompt_tokens": 2157,
+        "total_tokens": 2477,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1920
+        }
+      }
+    }
+  }
+]

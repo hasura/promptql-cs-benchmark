@@ -1,0 +1,193 @@
+[
+  {
+    "timestamp": "2025-01-30T12:56:21.172977",
+    "response": {
+      "id": "chatcmpl-AvJE5nRbmHn4DP9pptbztQGm6jqUg",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_DskRwdxL4JbFT2xWLgmuuXJh",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, subject, description, created_at FROM support_ticket WHERE status = 'open' ORDER BY created_at DESC LIMIT 10\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738221965,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 1716,
+        "prompt_tokens": 1059,
+        "total_tokens": 2775,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 1664,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-30T12:56:45.526435",
+    "response": {
+      "id": "chatcmpl-AvJELhMew9nYtsBAvHLDE141wGz0x",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_qXAXR9V3QaXSRD24YoVbbmZv",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT DISTINCT ON (ppc.project_id) ppc.project_id, pl.name AS plan_name, ppc.created_at\\nFROM project_plan_changelogs ppc\\nJOIN plans pl ON pl.id = ppc.plan_id\\nWHERE ppc.project_id IN (\\n  '2a8d4b07-c391-450f-8153-f6521f8a20a0',\\n  '76de9616-3d7b-49d7-b909-e154dda91489',\\n  '386d8856-9020-47eb-a21a-2ebe6b81428e',\\n  'd5dc02fc-707a-4084-854a-79f5866d4dd3',\\n  '5ad39764-9b9b-48cb-8819-43ab40694b06',\\n  '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44',\\n  '8edf6e2c-99b6-49af-b342-4aefe811b2f3',\\n  '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82'\\n)\\nORDER BY ppc.project_id, ppc.created_at DESC;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738221981,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 3074,
+        "prompt_tokens": 2785,
+        "total_tokens": 5859,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 2752,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-30T12:57:22.070824",
+    "response": {
+      "id": "chatcmpl-AvJEkyaURPGTd4iguTFr6M4Lpj255",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_zSzgYue3VMFtoeQ2HTm0NT7Y",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT project_id, SUM(amount) AS net_revenue\\nFROM invoice_item\\nWHERE project_id IN (\\n  '2a8d4b07-c391-450f-8153-f6521f8a20a0',\\n  '76de9616-3d7b-49d7-b909-e154dda91489',\\n  '386d8856-9020-47eb-a21a-2ebe6b81428e',\\n  'd5dc02fc-707a-4084-854a-79f5866d4dd3',\\n  '5ad39764-9b9b-48cb-8819-43ab40694b06',\\n  '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44',\\n  '8edf6e2c-99b6-49af-b342-4aefe811b2f3',\\n  '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82'\\n)\\n  AND created_at >= '2024-01-16' \\nGROUP BY project_id;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738222006,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 2602,
+        "prompt_tokens": 3658,
+        "total_tokens": 6260,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 2304,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 2688
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-30T12:58:11.715304",
+    "response": {
+      "id": "chatcmpl-AvJFKwtXbe0s95AH8LDYdHPtrAIsr",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Below are the last 10 open tickets (by descending creation time) with their extracted details and classification, followed by the top 5 in prioritized order:\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n1) Ticket ID: 143  \n   Project ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0  \n   Plan: base  \n   Created at: 2025-01-03T20:32:35.345840+00:00  \n   Category: downtime (cannot access project, production issue)  \n   Net revenue since 2024-01-16: 0  \n\n2) Ticket ID: 166  \n   Project ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0  \n   Plan: base  \n   Created at: 2024-12-21T14:32:35.345840+00:00  \n   Category: feature request (custom GraphQL directives)  \n   Net revenue since 2024-01-16: 0  \n\n3) Ticket ID: 209  \n   Project ID: 76de9616-3d7b-49d7-b909-e154dda91489  \n   Plan: free  \n   Created at: 2024-12-05T07:00:00+00:00  \n   Category: downtime (complete outage of production environment)  \n   Net revenue since 2024-01-16: 0  \n\n4) Ticket ID: 169  \n   Project ID: 386d8856-9020-47eb-a21a-2ebe6b81428e  \n   Plan: advanced  \n   Created at: 2024-11-12T05:00:00+00:00  \n   Category: performance (Schema Registry causing high resource usage)  \n   Net revenue since 2024-01-16: 7980.00  \n\n5) Ticket ID: 251  \n   Project ID: d5dc02fc-707a-4084-854a-79f5866d4dd3  \n   Plan: base  \n   Created at: 2024-10-25T04:00:00+00:00  \n   Category: performance (significant performance degradation in permissions)  \n   Net revenue since 2024-01-16: 840.00  \n\n6) Ticket ID: 139  \n   Project ID: 5ad39764-9b9b-48cb-8819-43ab40694b06  \n   Plan: base  \n   Created at: 2024-10-18T03:00:00+00:00  \n   Category: downtime (cannot access console and endpoint)  \n   Net revenue since 2024-01-16: 4560.00  \n\n7) Ticket ID: 144  \n   Project ID: 9b8f8c9a-7f76-4bc2-95c9-652b13f13a44  \n   Plan: free  \n   Created at: 2024-10-06T07:00:00+00:00  \n   Category: downtime (all GraphQL operations return 500 errors)  \n   Net revenue since 2024-01-16: 0  \n\n8) Ticket ID: 215  \n   Project ID: 8edf6e2c-99b6-49af-b342-4aefe811b2f3  \n   Plan: base  \n   Created at: 2024-10-06T06:00:00+00:00  \n   Category: reliability (intermittent actions failures)  \n   Net revenue since 2024-01-16: 4450.00  \n\n9) Ticket ID: 250  \n   Project ID: d5dc02fc-707a-4084-854a-79f5866d4dd3  \n   Plan: base  \n   Created at: 2024-09-29T08:00:00+00:00  \n   Category: performance (resource exhaustion, slow responses with Actions)  \n   Net revenue since 2024-01-16: 840.00  \n\n10) Ticket ID: 205  \n    Project ID: 5f4d1be1-61b7-4b11-ba51-6e9b7f094c82  \n    Plan: advanced  \n    Created at: 2024-09-29T03:00:00+00:00  \n    Category: downtime (all GraphQL operations returning 500 errors)  \n    Net revenue since 2024-01-16: 16544.00  \n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\nPriority Sorting Rules Recap:\n1) An advanced-plan ticket with 'downtime' or 'reliability' is highest among any tie.  \n2) A base/free-plan ticket with 'downtime' is next-highest among any tie.  \n3) Compare net revenue (higher is higher priority).  \n4) Compare ticket creation times (older is higher priority if still tied).\n\nSorted by priority (top 5 shown):  \n1) Ticket 205  (advanced + downtime)  \n2) Ticket 139  (base + downtime; net revenue 4560 > 0)  \n3) Ticket 144  (free + downtime; among zero-revenue downtime tickets, it\u2019s oldest)  \n4) Ticket 209  (free + downtime; next oldest of zero-revenue downtime tickets)  \n5) Ticket 143  (base + downtime; newest of the zero-revenue downtime tickets)  \n\n<tickets>\n205\n139\n144\n209\n143\n</tickets>",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738222042,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 4595,
+        "prompt_tokens": 4188,
+        "total_tokens": 8783,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 3392,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 3584
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,317 @@
+[
+  {
+    "timestamp": "2025-01-28T17:20:47.267741",
+    "response": {
+      "id": "chatcmpl-AueP8hvQ1EmhWRmj0qLiZxX3LwVog",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_0T6euS4OrtoiiI6mLorm7fUW",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, description, created_at FROM support_ticket WHERE status = 'open' ORDER BY created_at DESC LIMIT 5;\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738065046,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 41,
+        "prompt_tokens": 1062,
+        "total_tokens": 1103,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:20:58.510363",
+    "response": {
+      "id": "chatcmpl-AueP9dZ6gY6TS8HgMbW154qpnmVpz",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_2Zth0Xo1bzlgPktWECPkx1Qm",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT a.project_id, b.name AS plan_name\\nFROM \\n  (SELECT project_id, plan_id FROM project_plan_changelogs \\n  WHERE project_id = '2a8d4b07-c391-450f-8153-f6521f8a20a0'\\n  ORDER BY created_at DESC LIMIT 1) a\\nJOIN plans b ON a.plan_id = b.id;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_Un9clvztov8aIp8lIpHKPQ2x",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT a.project_id, b.name AS plan_name\\nFROM \\n  (SELECT project_id, plan_id FROM project_plan_changelogs \\n  WHERE project_id = '76de9616-3d7b-49d7-b909-e154dda91489'\\n  ORDER BY created_at DESC LIMIT 1) a\\nJOIN plans b ON a.plan_id = b.id;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_3KPSGCON5ETEQENED04oYKxU",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT a.project_id, b.name AS plan_name\\nFROM \\n  (SELECT project_id, plan_id FROM project_plan_changelogs \\n  WHERE project_id = '386d8856-9020-47eb-a21a-2ebe6b81428e'\\n  ORDER BY created_at DESC LIMIT 1) a\\nJOIN plans b ON a.plan_id = b.id;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_sycqGjx92QY9pRKIcUqaWdnZ",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT a.project_id, b.name AS plan_name\\nFROM \\n  (SELECT project_id, plan_id FROM project_plan_changelogs \\n  WHERE project_id = 'd5dc02fc-707a-4084-854a-79f5866d4dd3'\\n  ORDER BY created_at DESC LIMIT 1) a\\nJOIN plans b ON a.plan_id = b.id;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738065047,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 409,
+        "prompt_tokens": 1886,
+        "total_tokens": 2295,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1024
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:21:03.947597",
+    "response": {
+      "id": "chatcmpl-AuePKtED1DWjg4ChG1YdHe3N07JU5",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_5ZwzEbQg4yF8e6ZjYSI8onnv",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT a.project_id, b.name AS plan_name\\nFROM \\n  (SELECT project_id, plan_id FROM project_plan_changelogs \\n  WHERE project_id = 'abc123'>\\n  ORDER BY created_at DESC LIMIT 1) a\\nJOIN plans b ON a.plan_id = b.id;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738065058,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 80,
+        "prompt_tokens": 2449,
+        "total_tokens": 2529,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 2176
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:21:08.555912",
+    "response": {
+      "id": "chatcmpl-AuePQASP9zbSpwB58EgQ9bKNQoXOQ",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_eFYGIQO2T6QbcyyOaisn9CFM",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT a.project_id, b.name AS plan_name\\nFROM \\n  (SELECT project_id, plan_id FROM project_plan_changelogs \\n  WHERE project_id = 'abc123'\\n  ORDER BY created_at DESC LIMIT 1) a\\nJOIN plans b ON a.plan_id = b.id;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738065064,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 79,
+        "prompt_tokens": 2581,
+        "total_tokens": 2660,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 2432
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:21:43.681445",
+    "response": {
+      "id": "chatcmpl-AuePUDEYX4OVNO8KzmGHrIh7VMaJA",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "The ticket with Project ID \"abc123\" does not have a valid UUID format and cannot be checked for plan information. However, let's proceed with the available details to classify and prioritize the tickets. \n\n### Ticket Information and Classification\n\n1. **Ticket ID**: 143\n   - **Project ID**: 2a8d4b07-c391-450f-8153-f6521f8a20a0\n   - **Plan**: Base\n   - **Created At**: 2025-01-03\n   - **Category**: Downtime (description indicates inability to access and potential production outages)\n\n2. **Ticket ID**: 166\n   - **Project ID**: 2a8d4b07-c391-450f-8153-f6521f8a20a0\n   - **Plan**: Base\n   - **Created At**: 2024-12-21\n   - **Category**: Feature request (request support for custom GraphQL directives)\n\n3. **Ticket ID**: 209\n   - **Project ID**: 76de9616-3d7b-49d7-b909-e154dda91489\n   - **Plan**: Free\n   - **Created At**: 2024-12-05\n   - **Category**: Downtime (complete outage and disruption in operations)\n\n4. **Ticket ID**: 169\n   - **Project ID**: 386d8856-9020-47eb-a21a-2ebe6b81428e\n   - **Plan**: Advanced\n   - **Created At**: 2024-11-12\n   - **Category**: Performance (resource exhaustion and slow responses)\n\n5. **Ticket ID**: 251\n   - **Project ID**: d5dc02fc-707a-4084-854a-79f5866d4dd3\n   - **Plan**: Base\n   - **Created At**: 2024-10-25\n   - **Category**: Performance (significant performance degradation, especially with permission-driven tasks)\n\n### Priority Rules Applied\n\nTo prioritize these tickets:\n- **Advanced Plan** + **Downtime** or **Reliability**: Higher\n- **Base Plan** + **Downtime** or **Reliability**: Next\n- Category order: Downtime > Reliability > Performance > Bug > Feature request > Others\n- Older ticket takes precedence within the same category and plan priority.\n\nI will now sort the tickets based on these rules.",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_hA3ChXeNkQhFrq5WGl5PTmjU",
+                "function": {
+                  "arguments": "{\"pythonCode\":\"from functools import cmp_to_key\\n\\n# Ticket information as list of dictionaries\\ntickets = [\\n    {\\n        \\\"id\\\": 143,\\n        \\\"plan\\\": \\\"base\\\",\\n        \\\"created_at\\\": \\\"2025-01-03\\\",\\n        \\\"category\\\": \\\"downtime\\\"\\n    },\\n    {\\n        \\\"id\\\": 166,\\n        \\\"plan\\\": \\\"base\\\",\\n        \\\"created_at\\\": \\\"2024-12-21\\\",\\n        \\\"category\\\": \\\"feature request\\\"\\n    },\\n    {\\n        \\\"id\\\": 209,\\n        \\\"plan\\\": \\\"free\\\",\\n        \\\"created_at\\\": \\\"2024-12-05\\\",\\n        \\\"category\\\": \\\"downtime\\\"\\n    },\\n    {\\n        \\\"id\\\": 169,\\n        \\\"plan\\\": \\\"advanced\\\",\\n        \\\"created_at\\\": \\\"2024-11-12\\\",\\n        \\\"category\\\": \\\"performance\\\"\\n    },\\n    {\\n        \\\"id\\\": 251,\\n        \\\"plan\\\": \\\"base\\\",\\n        \\\"created_at\\\": \\\"2024-10-25\\\",\\n        \\\"category\\\": \\\"performance\\\"\\n    }\\n]\\n\\ncategory_priority = {\\n    \\\"downtime\\\": 1,\\n    \\\"reliability\\\": 2,\\n    \\\"performance\\\": 3,\\n    \\\"bug\\\": 4,\\n    \\\"feature request\\\": 5,\\n    \\\"others\\\": 6\\n}\\n\\nplan_priority = {\\n    \\\"advanced\\\": 1,  # highest priority for downtime/reliability in advanced\\n    \\\"base\\\": 2,      # priority for downtime/reliability in base\\n    \\\"free\\\": 3       # lowest priority\\n}\\n\\n# Compare function using cmp_to_key\\ndef compare_tickets(ticket1, ticket2):\\n    # Advanced plan with Downtime or Reliability\\n    if ticket1[\\\"plan\\\"] == \\\"advanced\\\" and ticket2[\\\"plan\\\"] != \\\"advanced\\\":\\n        return -1\\n    if ticket2[\\\"plan\\\"] == \\\"advanced\\\" and ticket1[\\\"plan\\\"] != \\\"advanced\\\":\\n        return 1\\n    \\n    # Base plan with Downtime or Reliability\\n    if ticket1[\\\"plan\\\"] == \\\"base\\\" and ticket2[\\\"plan\\\"] != \\\"base\\\":\\n        return -1\\n    if ticket2[\\\"plan\\\"] == \\\"base\\\" and ticket1[\\\"plan\\\"] != \\\"base\\\":\\n        return 1\\n    \\n    # Category priority\\n    if category_priority[ticket1[\\\"category\\\"]] < category_priority[ticket2[\\\"category\\\"]]:\\n        return -1\\n    if category_priority[ticket1[\\\"category\\\"]] > category_priority[ticket2[\\\"category\\\"]]:\\n        return 1\\n\\n    # Creation date\\n    if ticket1[\\\"created_at\\\"] < ticket2[\\\"created_at\\\"]:\\n        return -1\\n    if ticket1[\\\"created_at\\\"] > ticket2[\\\"created_at\\\"]:\\n        return 1\\n\\n    return 0\\n\\n# Sort tickets\\nsorted_tickets = sorted(tickets, key=cmp_to_key(compare_tickets))\\n\\n# Return sorted ticket IDs\\nsorted_ticket_ids = [ticket[\\\"id\\\"] for ticket in sorted_tickets]\\n\\nsorted_ticket_ids\"}",
+                  "name": "execute_python_program"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738065068,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 1269,
+        "prompt_tokens": 2714,
+        "total_tokens": 3983,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 2560
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:21:48.700221",
+    "response": {
+      "id": "chatcmpl-AueQ4oW868xa9kUIFQLlvXDH0ZYnh",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "I encountered an unexpected issue while executing the sorting logic. Let's present the sorted order of the tickets based on a manual appraisal using the previously detailed rules:\n\n### Sorted Priority Order of Tickets\n\n1. **Ticket ID: 143**\n   - **Plan**: Base, **Category**: Downtime\n\n2. **Ticket ID: 209**\n   - **Plan**: Free, **Category**: Downtime\n\n3. **Ticket ID: 169**\n   - **Plan**: Advanced, **Category**: Performance\n\n4. **Ticket ID: 251**\n   - **Plan**: Base, **Category**: Performance\n\n5. **Ticket ID: 166**\n   - **Plan**: Base, **Category**: Feature Request\n\nThis mailing order reflects the prioritization criteria that had been provided, acknowledging the importance of plan type, category, and ticket creation date where applicable. If further adjustments or detailed analyses are desired, please let me know.",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738065104,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 200,
+        "prompt_tokens": 4013,
+        "total_tokens": 4213,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 3840
+        }
+      }
+    }
+  }
+]

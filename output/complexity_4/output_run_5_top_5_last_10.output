@@ -1,0 +1,299 @@
+[
+  {
+    "timestamp": "2025-01-28T17:49:27.614348",
+    "response": {
+      "id": "chatcmpl-AueqsgrvM2EJz00FaRTddft9zRAVR",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_QnefB89P3qWaxOo4QZExyGwf",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, description, created_at FROM support_ticket WHERE status = 'open' ORDER BY created_at DESC LIMIT 10;\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738066766,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 41,
+        "prompt_tokens": 1062,
+        "total_tokens": 1103,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:49:41.752901",
+    "response": {
+      "id": "chatcmpl-Aueqt66dIp2hbfcWyXE8fXtXFzjvd",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_RXM5lVx00xXW4s8yfh3oi4Ue",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT project_id, plan_id FROM project_plan_changelogs WHERE project_id = '2a8d4b07-c391-450f-8153-f6521f8a20a0' ORDER BY created_at DESC LIMIT 1;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_azftRW5WycFC1O2HkzHj1CnZ",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT project_id, plan_id FROM project_plan_changelogs WHERE project_id = '76de9616-3d7b-49d7-b909-e154dda91489' ORDER BY created_at DESC LIMIT 1;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_JtBHbE7D4x411jydTx4syU4n",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT project_id, plan_id FROM project_plan_changelogs WHERE project_id = '386d8856-9020-47eb-a21a-2ebe6b81428e' ORDER BY created_at DESC LIMIT 1;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_nJkFeJAR4SKpcX6Zkq9Cji6E",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT project_id, plan_id FROM project_plan_changelogs WHERE project_id = 'd5dc02fc-707a-4084-854a-79f5866d4dd3' ORDER BY created_at DESC LIMIT 1;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_0KmXsK7zLI0XT31PlpMqFNIM",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT project_id, plan_id FROM project_plan_changelogs WHERE project_id = '5ad39764-9b9b-48cb-8819-43ab40694b06' ORDER BY created_at DESC LIMIT 1;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_q8WTqrLpFr1fxmtqeGpaDvtE",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT project_id, plan_id FROM project_plan_changelogs WHERE project_id = '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44' ORDER BY created_at DESC LIMIT 1;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_qDCK9lDDdUyxsk7XvwOXqEF5",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT project_id, plan_id FROM project_plan_changelogs WHERE project_id = '8edf6e2c-99b6-49af-b342-4aefe811b2f3' ORDER BY created_at DESC LIMIT 1;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_8wulTcTkJjFWXjE2c1nNhFmU",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT project_id, plan_id FROM project_plan_changelogs WHERE project_id = '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82' ORDER BY created_at DESC LIMIT 1;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738066767,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 542,
+        "prompt_tokens": 2638,
+        "total_tokens": 3180,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 2560
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:49:44.205067",
+    "response": {
+      "id": "chatcmpl-Auer8OcQOzqTFd5Uz3aOJvldTXNGI",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_Pt6259kDUlwhC0f1KYCOHF4B",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, name FROM plans WHERE id IN ('307a87a8-9185-4711-8470-38cdb9b6b42a', '2d41d1de-51fa-41ed-8acd-6ee63bcd316e', '34a91812-c6ab-4e35-b011-7433bf68299d');\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738066782,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 98,
+        "prompt_tokens": 3665,
+        "total_tokens": 3763,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 3584
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:50:15.985645",
+    "response": {
+      "id": "chatcmpl-AuerA8kMkoDEbMDDJeXWMW793bj7D",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_IrQ1AXgh5v6NUc5MmWOaI2O9",
+                "function": {
+                  "arguments": "{\"pythonCode\":\"from functools import cmp_to_key\\nimport datetime\\n\\n# The data for 10 recent open tickets\\nsupport_tickets = [\\n    {'id': 143, 'project_id': '2a8d4b07-c391-450f-8153-f6521f8a20a0', 'plan': 'base', 'created_at': '2025-01-03T20:32:35.345840+00:00', 'category': 'downtime'},\\n    {'id': 166, 'project_id': '2a8d4b07-c391-450f-8153-f6521f8a20a0', 'plan': 'base', 'created_at': '2024-12-21T14:32:35.345840+00:00', 'category': 'feature request'},\\n    {'id': 209, 'project_id': '76de9616-3d7b-49d7-b909-e154dda91489', 'plan': 'free', 'created_at': '2024-12-05T07:00:00+00:00', 'category': 'downtime'},\\n    {'id': 169, 'project_id': '386d8856-9020-47eb-a21a-2ebe6b81428e', 'plan': 'base', 'created_at': '2024-11-12T05:00:00+00:00', 'category': 'performance'},\\n    {'id': 251, 'project_id': 'd5dc02fc-707a-4084-854a-79f5866d4dd3', 'plan': 'base', 'created_at': '2024-10-25T04:00:00+00:00', 'category': 'performance'},\\n    {'id': 139, 'project_id': '5ad39764-9b9b-48cb-8819-43ab40694b06', 'plan': 'base', 'created_at': '2024-10-18T03:00:00+00:00', 'category': 'downtime'},\\n    {'id': 144, 'project_id': '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44', 'plan': 'free', 'created_at': '2024-10-06T07:00:00+00:00', 'category': 'reliability'},\\n    {'id': 215, 'project_id': '8edf6e2c-99b6-49af-b342-4aefe811b2f3', 'plan': 'base', 'created_at': '2024-10-06T06:00:00+00:00', 'category': 'reliability'},\\n    {'id': 250, 'project_id': 'd5dc02fc-707a-4084-854a-79f5866d4dd3', 'plan': 'base', 'created_at': '2024-09-29T08:00:00+00:00', 'category': 'performance'},\\n    {'id': 205, 'project_id': '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82', 'plan': 'advanced', 'created_at': '2024-09-29T03:00:00+00:00', 'category': 'downtime'}\\n]\\n\\ncategory_priority = {\\n    'downtime': 1,\\n    'reliability': 2,\\n    'performance': 3,\\n    'bug': 4,\\n    'feature request': 5,\\n    'others': 6\\n}\\n\\nplan_priority = {\\n    'advanced': 1,\\n    'base': 2,\\n    'free': 3\\n}\\n\\ndef compare_tickets(ticket1, ticket2):\\n    # Rule 1: Advanced plan with downtime/reliability issue\\n    if plan_priority[ticket1['plan']] == 1 and ticket1['category'] in ['downtime', 'reliability']:\\n        if plan_priority[ticket2['plan']] == 1 and ticket2['category'] in ['downtime', 'reliability']:\\n            pass  # Both are same priority by this rule\\n        else:\\n            return -1  # ticket1 is higher priority\\n    elif plan_priority[ticket2['plan']] == 1 and ticket2['category'] in ['downtime', 'reliability']:\\n        return 1   # ticket2 is higher priority\\n    # Rule 2: Base plan with downtime/reliability issue\\n    if plan_priority[ticket1['plan']] == 2 and ticket1['category'] in ['downtime', 'reliability']:\\n        if plan_priority[ticket2['plan']] == 2 and ticket2['category'] in ['downtime', 'reliability']:\\n            pass\\n        else:\\n            return -1\\n    elif plan_priority[ticket2['plan']] == 2 and ticket2['category'] in ['downtime', 'reliability']:\\n        return 1\\n    # Rule 3: Category\\n    if category_priority[ticket1['category']] != category_priority[ticket2['category']]:\\n        return category_priority[ticket1['category']] - category_priority[ticket2['category']]\\n    # Rule 4: Older is prioritized\\n    time1 = datetime.datetime.fromisoformat(ticket1['created_at'].replace('Z', '+00:00'))\\n    time2 = datetime.datetime.fromisoformat(ticket2['created_at'].replace('Z', '+00:00'))\\n    if time1 != time2:\\n        return (time1 - time2).total_seconds()\\n    return 0\\n\\n# Sort tickets by custom comparison\\nsorted_tickets = sorted(support_tickets, key=cmp_to_key(compare_tickets))\\nfor ticket in sorted_tickets[:5]:\\n    print(ticket['id'], ticket['plan'], ticket['category'], ticket['created_at'])\\n\",\"dataValues\":\"{}\"}",
+                  "name": "execute_python_program"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738066784,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 1369,
+        "prompt_tokens": 3892,
+        "total_tokens": 5261,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 3840
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T17:50:22.004925",
+    "response": {
+      "id": "chatcmpl-AuergqtD9ntDjpHZ7u55Jl871oOFh",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Here are the top 5 support tickets you should prioritize:\n\n1. **Ticket ID:** 205\n   - **Plan:** Advanced\n   - **Category:** Downtime\n   - **Created At:** 2024-09-29T03:00:00+00:00\n\n2. **Ticket ID:** 139\n   - **Plan:** Base\n   - **Category:** Downtime\n   - **Created At:** 2024-10-18T03:00:00+00:00\n\n3. **Ticket ID:** 143\n   - **Plan:** Base\n   - **Category:** Downtime\n   - **Created At:** 2025-01-03T20:32:35.345840+00:00\n\n4. **Ticket ID:** 215\n   - **Plan:** Base\n   - **Category:** Reliability\n   - **Created At:** 2024-10-06T06:00:00+00:00\n\n5. **Ticket ID:** 209\n   - **Plan:** Free\n   - **Category:** Downtime\n   - **Created At:** 2024-12-05T07:00:00+00:00\n\nThese tickets are sorted based on the specified priority criteria.",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738066816,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 267,
+        "prompt_tokens": 5397,
+        "total_tokens": 5664,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 5120
+        }
+      }
+    }
+  }
+]

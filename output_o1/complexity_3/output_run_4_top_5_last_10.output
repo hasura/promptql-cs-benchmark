@@ -1,0 +1,43 @@
+[
+  {
+    "timestamp": "2025-01-29T13:24:25.854445",
+    "response": {
+      "id": "chatcmpl-AuxBFopCX1TygG0i1fGqrHPSJ9MPD",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Below is an illustrative example of how one might derive and prioritize the top 5 support tickets among the last 10 open tickets using the rules you specified. Because no specific data was provided in your request, this example shows the process with hypothetical tickets and demonstrates the final output format (<tickets> \u2026 </tickets>).\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n1) Retrieve the last 10 open tickets, sorted by creation time:\n   SELECT id,\n          description,\n          created_at\n     FROM support_ticket\n    WHERE status = 'open'\n ORDER BY created_at DESC\n    LIMIT 10;\n\n2) For each of these 10 tickets:\n   \u2022 Extract the project ID (UUID) from the \u201cdescription\u201d using a regex pattern like:\n       -- Sample regex for UUID:\n       --   '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'\n   \u2022 Look up the project\u2019s most recent plan:\n       SELECT c.plan_id,\n              p.name AS plan_name\n         FROM project_plan_changelogs c\n         JOIN plans p\n           ON p.id = c.plan_id\n        WHERE c.project_id = '<extracted-uuid-from-description>'\n     ORDER BY c.created_at DESC\n        LIMIT 1;\n   \u2022 Classify the ticket based on its description:\n       - downtime, reliability, performance, bug, feature request, or others\n   \u2022 Record the ticket\u2019s created_at time.\n\n3) Apply the prioritization rules pairwise:\n   a) Advanced plan + (downtime or reliability) tickets get highest priority overall.\n   b) Next, order by category overall:\n        downtime > reliability > performance > bug > feature request > others\n   c) Finally, among tickets with the same plan/category, older tickets (earlier created_at) get priority.\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nExample Walk-Through with Hypothetical Data\n\nSuppose we queried the last 10 open tickets and got the following results (simplified):\n\n Ticket ID | Plan      | Category      | Created At   | (Other details)\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n 110       | advanced | downtime      | 2023-01-10   | ...\n 109       | advanced | reliability   | 2023-01-31   | ...\n 108       | advanced | performance   | 2023-02-12   | ...\n 107       | advanced | downtime      | 2023-02-15   | ...\n 106       | free     | reliability   | 2023-03-01   | ...\n 105       | standard | bug           | 2023-04-08   | ...\n 104       | advanced | feature req.  | 2023-05-22   | ...\n 103       | standard | downtime      | 2023-06-01   | ...\n 102       | advanced | reliability   | 2023-06-15   | ...\n 101       | standard | bug           | 2023-08-01   | ...\n\nStep A: Identify advanced-plan downtime/reliability tickets (they jump to the top):\n\u2022 110 (advanced, downtime)\n\u2022 107 (advanced, downtime)\n\u2022 109 (advanced, reliability)\n\u2022 102 (advanced, reliability)\n\nWithin those, downtime outranks reliability, and older tickets outrank newer:\n1) 110 (older, advanced downtime)\n2) 107 (newer, advanced downtime)\n3) 109 (older, advanced reliability)\n4) 102 (newer, advanced reliability)\n\nStep B: Remaining tickets, sorted by category order (downtime > reliability > performance > bug > feature > others) and then by older ticket first:\n\u2022 Downtime: 103\n\u2022 Reliability: 106\n\u2022 Performance: 108\n\u2022 Bug: 105, 101 (105 is older)\n\u2022 Feature: 104\nHence they get appended in the order: 103, 106, 108, 105, 101, 104\n\nFinal ordering of all 10 tickets:  \n1) 110  \n2) 107  \n3) 109  \n4) 102  \n5) 103  \n6) 106  \n7) 108  \n8) 105  \n9) 101  \n10) 104  \n\nWe only need the top 5 from that sorted list:\n\n<tickets>\n110\n107\n109\n102\n103\n</tickets>\n\nThose ticket IDs (110, 107, 109, 102, 103) are the highest-priority 5 according to your rules.",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738137221,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 5990,
+        "prompt_tokens": 1010,
+        "total_tokens": 7000,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 4992,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  }
+]

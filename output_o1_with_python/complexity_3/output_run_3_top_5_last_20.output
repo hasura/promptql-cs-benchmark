@@ -1,0 +1,193 @@
+[
+  {
+    "timestamp": "2025-01-29T16:01:15.629375",
+    "response": {
+      "id": "chatcmpl-AuzdKjgIkMJlxABX6HHWs88qF1n9K",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_26N6pWu7sbHarK2rltHvl4JL",
+                "function": {
+                  "arguments": "{\"pythonCode\":\"import re\\nimport json\\nfrom functools import cmp_to_key\\nimport sys\\n\\n# We'll define a function to classify a ticket based on its subject/description\\n# Classification instructions:\\n# 1) downtime: wide service disruptions preventing access.\\n# 2) reliability: intermittent connectivity issues.\\n# 3) performance: performance or latency issues.\\n# 4) bug: software bug reports.\\n# 5) feature request: new functionality requests.\\n# 6) others: everything else.\\n\\n\\ndef classify_ticket(subject, description):\\n    text = (subject + \\\" \\\" + description).lower()\\n    # We'll check the keywords for classification in a certain order.\\n    # Typically, we can guess the classification by some keyword detection.\\n    # We'll do it manually, looking for words.\\n\\n    # Downtime keywords\\n    downtime_keywords = [\\\"outage\\\", \\\"downtime\\\", \\\"500 error\\\", \\\"time out\\\", \\\"timeout\\\", \\\"service disruption\\\", \\\"widespread\\\", \\\"production environment outage\\\"]\\n    # Reliability keywords\\n    reliability_keywords = [\\\"intermittent\\\", \\\"random failures\\\", \\\"service instability\\\", \\\"reliability\\\"]\\n    # Performance keywords\\n    performance_keywords = [\\\"performance\\\", \\\"latency\\\", \\\"slow response\\\", \\\"slow queries\\\", \\\"long response time\\\"]\\n    # Bug keywords\\n    bug_keywords = [\\\"bug\\\", \\\"unexpected behavior\\\", \\\"wrong result\\\", \\\"error in code\\\", \\\"issue with schema registry\\\", \\\"_in operator\\\"]\\n    # Feature request keywords\\n    feature_request_keywords = [\\\"feature request\\\", \\\"enhanced functionality\\\", \\\"batch operations\\\", \\\"improvement request\\\", \\\"flexible configuration\\\"]\\n\\n    def contains_any(phrase, words):\\n        return any(w in phrase for w in words)\\n\\n    # check for downtime\\n    if contains_any(text, downtime_keywords):\\n        return \\\"downtime\\\"\\n    # reliability\\n    if contains_any(text, reliability_keywords):\\n        return \\\"reliability\\\"\\n    # performance\\n    if contains_any(text, performance_keywords):\\n        return \\\"performance\\\"\\n    # bug\\n    if contains_any(text, bug_keywords):\\n        return \\\"bug\\\"\\n    # feature request\\n    if contains_any(text, feature_request_keywords):\\n        return \\\"feature request\\\"\\n    # else others\\n    return \\\"others\\\"\\n\\n\\n# Attempt to parse project ID (UUID) from the description.\\n# We'll use a regex to find the first occurrence of a UUID pattern in the text.\\n\\nuuid_regex = re.compile(r'[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}')\\n\\ndef extract_project_id(description):\\n    match = uuid_regex.search(description)\\n    if match:\\n        return match.group(0)\\n    return None\\n\\n# We'll retrieve the last 20 tickets with status = 'open' from support_ticket.\\n# Then for each ticket, parse out the project_id from the description.\\n# Then get the plan from the plan changelogs.\\n# Then classify.\\n# Then sort.\\n# Then output.\\n\\nimport requests\\n\\n# We'll define a function to do the sorting. We have these steps:\\n# 1) if advanced plan + category in {downtime, reliability}, higher priority\\n# 2) category order: downtime > reliability > performance > bug > feature request > others\\n# 3) older ticket first\\n\\ncategory_order = {\\n    'downtime': 1,\\n    'reliability': 2,\\n    'performance': 3,\\n    'bug': 4,\\n    'feature request': 5,\\n    'others': 6\\n}\\n\\ndef is_advanced_plan(plan_name):\\n    # We'll guess that advanced plan means plan_name = 'Advanced' or 'Pro'. Possibly. We'll check if the plan_name has the word 'advanced'.\\n    if not plan_name:\\n        return False\\n    return plan_name.strip().lower() == 'advanced'\\n\\n\\ndef compare_tickets(t1, t2):\\n    # t is a dict with keys: 'plan_name', 'category', 'created_at' (datetime), 'id' etc.\\n    # 1) if advanced plan + category in {downtime, reliability}, higher priority\\n    t1_advanced = is_advanced_plan(t1.get('plan_name', '')) and t1.get('category') in ['downtime', 'reliability']\\n    t2_advanced = is_advanced_plan(t2.get('plan_name', '')) and t2.get('category') in ['downtime', 'reliability']\\n    if t1_advanced and not t2_advanced:\\n        return -1  # t1 is higher priority\\n    elif t2_advanced and not t1_advanced:\\n        return 1\\n\\n    # 2) category order: downtime > reliability > performance > bug > feature request > others\\n    c1 = category_order.get(t1.get('category'), 999)\\n    c2 = category_order.get(t2.get('category'), 999)\\n    if c1 != c2:\\n        return -1 if c1 < c2 else 1\\n\\n    # 3) older ticket first\\n    # We compare created_at times. We want older first => smaller created_at => negative.\\n    # Actually, older means t1 < t2 if t1 is older => t1 has an earlier date.\\n    if t1['created_at'] < t2['created_at']:\\n        return -1\\n    elif t1['created_at'] > t2['created_at']:\\n        return 1\\n\\n    return 0\\n\\n\\n# We'll run queries now.\\n# We'll fetch the last 20 support tickets from the support_ticket DB.\\n\\n\\ndef main():\\n    import datetime\\n    from dateutil import parser\\n\\n    # Step 1: get the last 20 open tickets\\n    from functions import query_support_tickets, query_control_plane_data\\n\\n    sql_tickets = \\\"\\\"\\\"\\n    SELECT id, is_public, priority, status, subject, description, type, assignee_id, requester_id, created_at, url\\n    FROM support_ticket\\n    WHERE status = 'open'\\n    ORDER BY created_at DESC\\n    LIMIT 20\\n    \\\"\\\"\\\"\\n    tickets_data = query_support_tickets.run({\\\"sql\\\": sql_tickets})\\n\\n    # Step 2: for each ticket, parse project ID\\n    # Step 3: get the plan from the plan_changelogs\\n    # We'll store a list of dict.\\n\\n    results = []\\n\\n    for row in tickets_data:\\n        ticket_id = row[0]\\n        subject = row[4] or \\\"\\\"\\n        description = row[5] or \\\"\\\"\\n        created_at = row[9]  # presumably a datetime\\n        if isinstance(created_at, str):\\n            created_at = parser.parse(created_at)\\n        # parse project id\\n        project_id = extract_project_id(description)\\n\\n        # get plan name from the control plane if project id was found.\\n        plan_name = None\\n        if project_id:\\n            # we find the most recent plan changelog from project_plan_changelogs for that project, then get plan id from plans.\\n            sql_plan = f\\\"\\\"\\\"\\n            SELECT ppc.plan_id, ppc.created_at, pl.name\\n            FROM project_plan_changelogs ppc\\n            JOIN plans pl ON ppc.plan_id = pl.id\\n            WHERE ppc.project_id = '{project_id}'\\n            ORDER BY ppc.created_at DESC\\n            LIMIT 1\\n            \\\"\\\"\\\"\\n            plan_data = query_control_plane_data.run({\\\"sql\\\": sql_plan})\\n            if len(plan_data) > 0:\\n                plan_name = plan_data[0][2]\\n\\n        # Step 4: classify the ticket\\n        category = classify_ticket(subject, description)\\n\\n        results.append({\\n            'id': ticket_id,\\n            'project_id': project_id,\\n            'plan_name': plan_name if plan_name else None,\\n            'category': category,\\n            'created_at': created_at,\\n        })\\n\\n    # Step 5: sort them using the rules.\\n    sorted_results = sorted(results, key=cmp_to_key(compare_tickets))\\n\\n    # Step 6: output the top 5 ticket IDs in the <tickets></tickets> format.\\n    top_5 = sorted_results[:5]\\n\\n    sys.stdout.write(\\\"<tickets>\\\\n\\\")\\n    for r in top_5:\\n        sys.stdout.write(str(r['id']) + \\\"\\\\n\\\")\\n    sys.stdout.write(\\\"</tickets>\\\\n\\\")\\n\\nif __name__ == \\\"__main__\\\":\\n    main()\\n\"}",
+                  "name": "execute_python_program"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738146650,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 2944,
+        "prompt_tokens": 1102,
+        "total_tokens": 4046,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 960,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T16:01:35.192684",
+    "response": {
+      "id": "chatcmpl-AuzdkrVhhUKhmQqcErKYL2cXmTOWz",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_gU7gvnmVxvsAHPsYDJQHceNK",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, subject, description, created_at FROM support_ticket WHERE status = 'open' ORDER BY created_at DESC LIMIT 20\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738146676,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 2356,
+        "prompt_tokens": 3236,
+        "total_tokens": 5592,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 2304,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1024
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T16:02:00.911953",
+    "response": {
+      "id": "chatcmpl-Auze3ez7Ev0bz9dw0w26Fsy7Q5GNr",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_stlQxMpQe76mVgrt1qrMe7di",
+                "function": {
+                  "arguments": "{\"sql\":\"WITH last_changelog AS (\\n  SELECT ppc.*, ROW_NUMBER() OVER (PARTITION BY ppc.project_id ORDER BY ppc.created_at DESC) as rn\\n  FROM project_plan_changelogs ppc\\n  WHERE ppc.project_id in (\\n    '2a8d4b07-c391-450f-8153-f6521f8a20a0',\\n    '76de9616-3d7b-49d7-b909-e154dda91489',\\n    '386d8856-9020-47eb-a21a-2ebe6b81428e',\\n    'd5dc02fc-707a-4084-854a-79f5866d4dd3',\\n    '5ad39764-9b9b-48cb-8819-43ab40694b06',\\n    '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44',\\n    '8edf6e2c-99b6-49af-b342-4aefe811b2f3',\\n    '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82',\\n    'e452f72b-66e1-4c56-ada2-3525ab8fb280',\\n    'b750445e-fba4-4644-b306-1550cfefad8b',\\n    'e75d06e3-6ec1-4649-bc83-7d19cd07fd77',\\n    '4aeefe6f-7dee-4395-82be-6d8e51aea9fd',\\n    '598b3a1b-0166-420f-ac63-fa734cbf5c63',\\n    'c5d9c906-2b61-424e-967b-fa3e27d09d44',\\n    '5267a67e-d8ea-4154-b385-6269b033a471',\\n    'fc2590f9-6bdc-43e3-9984-9246fd96f2dd',\\n    '4e291cdc-0aab-4573-86a4-c82490831964'\\n  )\\n)\\nSELECT last_changelog.project_id, plans.name\\nFROM last_changelog\\nJOIN plans ON last_changelog.plan_id = plans.id\\nWHERE last_changelog.rn = 1\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738146695,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 3025,
+        "prompt_tokens": 6651,
+        "total_tokens": 9676,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 2432,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 3072
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-29T16:02:45.891449",
+    "response": {
+      "id": "chatcmpl-AuzeTYZPJYb22BtVzmFKHjPxFLiRH",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "<tickets>\n193\n246\n178\n205\n201\n</tickets>",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738146721,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 5468,
+        "prompt_tokens": 7940,
+        "total_tokens": 13408,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 5440,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 6528
+        }
+      }
+    }
+  }
+]

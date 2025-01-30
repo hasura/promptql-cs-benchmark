@@ -1,0 +1,225 @@
+[
+  {
+    "timestamp": "2025-01-28T16:45:58.790577",
+    "response": {
+      "id": "chatcmpl-AudrRBs6CCe1nPPZfvDZUTgEvpEXk",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_4hw0M4nPtCjHWaqUUyhzhikf",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, description, created_at FROM support_ticket WHERE status = 'open' ORDER BY created_at DESC LIMIT 30\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738062957,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 40,
+        "prompt_tokens": 1072,
+        "total_tokens": 1112,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T16:46:12.659526",
+    "response": {
+      "id": "chatcmpl-AudrT7r71wGklE8f0AXsCu0iDhcsn",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_pa8IyccqLLQigktP520l3ayW",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT ppcl.project_id, pl.name as plan_name, ppcl.created_at FROM project_plan_changelogs ppcl JOIN plans pl ON ppcl.plan_id = pl.id WHERE ppcl.project_id = '2a8d4b07-c391-450f-8153-f6521f8a20a0' ORDER BY ppcl.created_at DESC LIMIT 1\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_x8PPX0D0Jd7sRJOpp0YqOGjN",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT ppcl.project_id, pl.name as plan_name, ppcl.created_at FROM project_plan_changelogs ppcl JOIN plans pl ON ppcl.plan_id = pl.id WHERE ppcl.project_id = '76de9616-3d7b-49d7-b909-e154dda91489' ORDER BY ppcl.created_at DESC LIMIT 1\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_9M29UjgsJyVlYZZRYGFAg7Zo",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT ppcl.project_id, pl.name as plan_name, ppcl.created_at FROM project_plan_changelogs ppcl JOIN plans pl ON ppcl.plan_id = pl.id WHERE ppcl.project_id = '386d8856-9020-47eb-a21a-2ebe6b81428e' ORDER BY ppcl.created_at DESC LIMIT 1\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_3wp8pC7I1jBQu5p6YzMf6pHs",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT ppcl.project_id, pl.name as plan_name, ppcl.created_at FROM project_plan_changelogs ppcl JOIN plans pl ON ppcl.plan_id = pl.id WHERE ppcl.project_id = 'd5dc02fc-707a-4084-854a-79f5866d4dd3' ORDER BY ppcl.created_at DESC LIMIT 1\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              },
+              {
+                "id": "call_XV3wYagUd9w1GOIb5fVBcef9",
+                "function": {
+                  "arguments": "{\"sql\": \"SELECT ppcl.project_id, pl.name as plan_name, ppcl.created_at FROM project_plan_changelogs ppcl JOIN plans pl ON ppcl.plan_id = pl.id WHERE ppcl.project_id = '5ad39764-9b9b-48cb-8819-43ab40694b06' ORDER BY ppcl.created_at DESC LIMIT 1\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738062959,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 467,
+        "prompt_tokens": 5707,
+        "total_tokens": 6174,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T16:47:12.212720",
+    "response": {
+      "id": "chatcmpl-Audrh2udNYPxoyhrWqNSeJoDE3doZ",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_SO2UcpdwXY3BCogtpz2uDrUo",
+                "function": {
+                  "arguments": "{\"pythonCode\":\"from functools import cmp_to_key\\n\\n# Tickets data from previous steps (only IDs and creation dates are directly usable from raw data)\\ntickets = [\\n    {\\n        \\\"id\\\": 143,\\n        \\\"description\\\": \\\"I am unable to access my project on Hasura Cloud. When I try to open the project dashboard, it fails to load and shows an error message. This is critically impacting our production environment and needs immediate attention.\\\\n\\\\nProject ID: abc123\\\\n\\\\nWe are using PostgreSQL as our database.\\\\n\\\\nVersion: v2.41.0\\\\n\\\\nPlease assist as soon as possible.\\\\n\\\\nThank you.\\\\n\\\\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\\\\n\\\",\\n        \\\"created_at\\\": \\\"2025-01-03T20:32:35.345840+00:00\\\",\\n        \\\"project_id\\\": \\\"2a8d4b07-c391-450f-8153-f6521f8a20a0\\\",\\n        \\\"plan\\\": \\\"base\\\",\\n        \\\"category\\\": \\\"downtime\\\"\\n    },\\n    {\\n        \\\"id\\\": 166,\\n        \\\"description\\\": \\\"Hello,\\\\n\\\\nWe are using your platform with a PostgreSQL database and would like to request support for custom GraphQL directives in queries and mutations. This feature would greatly help us implement advanced query logic and improve our application's flexibility.\\\\n\\\\nIs this something that could be supported in future releases?\\\\n\\\\nThank you for your assistance.\\\\n\\\\n\\\\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\\\\n\\\",\\n        \\\"created_at\\\": \\\"2024-12-21T14:32:35.345840+00:00\\\",\\n        \\\"project_id\\\": \\\"2a8d4b07-c391-450f-8153-f6521f8a20a0\\\",\\n        \\\"plan\\\": \\\"base\\\",\\n        \\\"category\\\": \\\"feature request\\\"\\n    },\\n    {\\n        \\\"id\\\": 209,\\n        \\\"description\\\": \\\"Hello,\\\\n\\\\nWe are experiencing a complete outage of our production environment. All our services are down, and users are unable to access the application, leading to a major disruption in our operations.\\\\n\\\\nOur application uses PostgreSQL as the database, and we are currently running version v2.48.5. We have not made any recent changes or deployments that could have caused this issue.\\\\n\\\\nWe urgently need assistance to resolve this problem.\\\\n\\\\nThank you,\\\\n[Your Name]\\\\n\\\\nProject ID: 76de9616-3d7b-49d7-b909-e154dda91489\\\\n\\\",\\n        \\\"created_at\\\": \\\"2024-12-05T07:00:00+00:00\\\",\\n        \\\"project_id\\\": \\\"76de9616-3d7b-49d7-b909-e154dda91489\\\",\\n        \\\"plan\\\": \\\"free\\\",\\n        \\\"category\\\": \\\"downtime\\\"\\n    },\\n    {\\n        \\\"id\\\": 169,\\n        \\\"description\\\": \\\"Hi,\\\\n\\\\nWe are experiencing resource exhaustion issues while using the Schema Registry feature in our production environment. The Schema Registry seems to consume a lot of CPU and memory resources, leading to slow responses from our application.\\\\n\\\\nWe are using PostgreSQL as our database.\\\\n\\\\nVersion: v2.46.0\\\\n\\\\nCould you please help us resolve this issue?\\\\n\\\\nThanks.\\\\n\\\\nProject ID: 386d8856-9020-47eb-a21a-2ebe6b81428e\\\\n\\\",\\n        \\\"created_at\\\": \\\"2024-11-12T05:00:00+00:00\\\",\\n        \\\"project_id\\\": \\\"386d8856-9020-47eb-a21a-2ebe6b81428e\\\",\\n        \\\"plan\\\": \\\"advanced\\\",\\n        \\\"category\\\": \\\"performance\\\"\\n    },\\n    {\\n        \\\"id\\\": 251,\\n        \\\"description\\\": \\\"Hi Support,\\\\n\\\\nWe are experiencing significant performance degradation when performing operations that involve permissions in our Hasura setup. Queries that used to execute in milliseconds are now taking several seconds to complete, especially those with complex permission rules.\\\\n\\\\nWe are using PostgreSQL as our database. Current Hasura version: v2.44.0.\\\\n\\\\nCould you please help us troubleshoot this issue and suggest any optimizations?\\\\n\\\\nThanks.\\\\n\\\\nProject ID: d5dc02fc-707a-4084-854a-79f5866d4dd3\\\\n\\\",\\n        \\\"created_at\\\": \\\"2024-10-25T04:00:00+00:00\\\",\\n        \\\"project_id\\\": \\\"d5dc02fc-707a-4084-854a-79f5866d4dd3\\\",\\n        \\\"plan\\\": \\\"base\\\",\\n        \\\"category\\\": \\\"performance\\\"\\n    },\\n    {\\n        \\\"id\\\": 139,\\n        \\\"description\\\": \\\"Hi support team,\\\\n\\\\nWe are experiencing a critical issue where we cannot access our Hasura project. The GraphQL endpoint and the console are both unreachable, and our application is down as a result. This is impacting our production environment.\\\\n\\\\nWe are using Postgres as our database backend. Our Hasura version is v2.47.1.\\\\n\\\\nThis issue is urgent and requires immediate attention. Please help us resolve this as soon as possible.\\\\n\\\\nThank you,\\\\n[User Name]\\\\n\\\\nProject ID: 5ad39764-9b9b-48cb-8819-43ab40694b06\\\\n\\\",\\n        \\\"created_at\\\": \\\"2024-10-18T03:00:00+00:00\\\",\\n        \\\"project_id\\\": \\\"5ad39764-9b9b-48cb-8819-43ab40694b06\\\",\\n        \\\"plan\\\": \\\"base\\\",\\n        \\\"category\\\": \\\"downtime\\\"\\n    }\\n]\\n\\n# Helper function: Compare by priority rules\\ndef compare_tickets(t1, t2):\\n    # Prioritize based on advanced plan with downtime or reliability\\n    advanced_critical = ['downtime', 'reliability']\\n    if (t1[\\\"plan\\\"] == \\\"advanced\\\" and t1[\\\"category\\\"] in advanced_critical) != (t2[\\\"plan\\\"] == \\\"advanced\\\" and t2[\\\"category\\\"] in advanced_critical):\\n        return -1 if (t1[\\\"plan\\\"] == \\\"advanced\\\" and t1[\\\"category\\\"] in advanced_critical) else 1\\n\\n    # Prioritize based on category order\\n    category_order = {\\n        \\\"downtime\\\": 1,\\n        \\\"reliability\\\": 2,\\n        \\\"performance\\\": 3,\\n        \\\"bug\\\": 4,\\n        \\\"feature request\\\": 5,\\n        \\\"others\\\": 6\\n    }\\n    if category_order[t1[\\\"category\\\"]] != category_order[t2[\\\"category\\\"]]:\\n        return category_order[t1[\\\"category\\\"]] - category_order[t2[\\\"category\\\"]]\\n\\n    # Prioritize older tickets\\n    if t1[\\\"created_at\\\"] != t2[\\\"created_at\\\"]:\\n        return (t1[\\\"created_at\\\"] < t2[\\\"created_at\\\"]) - (t1[\\\"created_at\\\"] > t2[\\\"created_at\\\"])\\n\\n    return 0\\n\\n# Sort the tickets\\nsorted_tickets = sorted(tickets, key=cmp_to_key(compare_tickets))\\n\\n# Get sorted ticket IDs\\nsorted_ticket_ids = [t[\\\"id\\\"] for t in sorted_tickets]\\n\\n# Return the top 5\\nprint(\\\"<tickets>\\\")\\nfor ticket_id in sorted_ticket_ids[:5]:\\n    print(ticket_id)\\nprint(\\\"</tickets>\\\")\"}",
+                  "name": "execute_python_program"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738062973,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 1791,
+        "prompt_tokens": 6489,
+        "total_tokens": 8280,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 6016
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-01-28T16:47:13.284423",
+    "response": {
+      "id": "chatcmpl-AudsexMgSPMKau6qFXA4jMjUwGBlG",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "<tickets>\n143\n209\n139\n169\n251\n</tickets>",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738063032,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_50cad350e4",
+      "usage": {
+        "completion_tokens": 18,
+        "prompt_tokens": 8324,
+        "total_tokens": 8342,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 8192
+        }
+      }
+    }
+  }
+]
