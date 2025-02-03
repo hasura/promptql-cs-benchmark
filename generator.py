@@ -131,6 +131,7 @@ def main():
             print(plan_changes)
             invoices = invoice_generator.generate_and_insert_invoices(cp_connection_params, project_id=project['id'], price_per_model_advanced=price_per_model_advanced)
             print(invoices)
+<<<<<<< HEAD
             
             months_diff = months_between(datetime.now(), project['created_at']) 
             if ticket_frequency == "low" and plan['name'] in ['base', 'advanced']:
@@ -151,6 +152,11 @@ def main():
                                                                                            project_id=project['id'], 
                                                                                            num_tickets=num_tickets
                                                                                            )
+=======
+            support_tickets = support_ticket_generator.generate_and_insert_support_tickets(cp_connection_params, st_connection_params, project_id=project['id'], 
+                                                                                           support_request_pattern_type=support_request_pattern_type, 
+                                                                                           ticket_frequency=ticket_frequency)
+>>>>>>> origin/main
             print(support_tickets)
 
 if __name__ == "__main__":

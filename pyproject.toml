@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "promptql-cs-benchmark"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+psycopg2 = "^2.9.10"
+anthropic = "^0.45.2"
+openai = "^1.60.2"
+pydantic = "^2.10.6"
+pyyaml = "^6.0.2"
+requests = "^2.32.3"
+faker = "^35.1.0"
+numpy = "^2.2.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

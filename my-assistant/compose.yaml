@@ -21,6 +21,13 @@ services:
       io.hasura.ddn.service-name: engine
     ports:
       - 3280:3000
+    depends_on:
+      app_control_plane_pg:
+        condition: service_started
+      app_support_tickets_pg:
+        condition: service_started
+      app_typescript:
+        condition: service_started
   otel-collector:
     command:
       - --config=/etc/otel-collector-config.yaml
@@ -47,3 +54,6 @@ services:
       io.hasura.ddn.service-name: promptql-playground
     ports:
       - 3282:5000
+    depends_on:
+      engine:
+        condition: service_started

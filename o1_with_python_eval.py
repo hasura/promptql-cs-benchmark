@@ -4,7 +4,7 @@ from openai import AsyncOpenAI
 from typing import List, Dict, Any
 import logging
 import json
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from decimal import Decimal
 import tempfile
 import subprocess
@@ -24,6 +24,8 @@ class DateTimeEncoder(json.JSONEncoder):
             return o.isoformat()
         if isinstance(o, Decimal):
             return str(o)
+        if isinstance(o, timedelta):
+            return f"{o.seconds} seconds"
         return super().default(o)
 
 class DatabaseTool:
@@ -182,6 +184,7 @@ class AIAssistant:
 Additional Instructions:
 
 - Always write queries that are compatible with PostgreSQL
+- Current timestamp is: {datetime.now()}
 - Use cmp_to_key if writing a sorting algorithm focused on pairwise comparison.
 - Never use stdin anywhere in the python program
 """
@@ -203,12 +206,15 @@ Additional Instructions:
 
         try:
             while tool_loop_count < MAX_TOOL_LOOPS:
+                print(f"\n[{datetime.now()}] waiting for llm response...")
                 completion = await self.client.chat.completions.create(
                     model="o1",
                     messages=self.messages,
                     tools=self.db_tool.tool_schemas,
-                    tool_choice="auto"
+                    tool_choice="auto",
                 )
+                print(f"[{datetime.now()}] received llm response...\n")
+                print(f"Usage: {completion.usage.model_dump()}")
 
                 # Store the API response
                 self.api_responses.append({

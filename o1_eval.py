@@ -4,7 +4,7 @@ from openai import AsyncOpenAI
 from typing import List, Dict, Any
 import logging
 import json
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from decimal import Decimal
 import tempfile
 import subprocess
@@ -15,16 +15,23 @@ logger = logging.getLogger(__name__)
 
 # Database Configuration
 CONTROL_PLANE_URL = "postgresql://postgres:postgres@localhost:5432/control_plane_new"
-SUPPORT_TICKETS_URL = "postgresql://postgres:postgres@localhost:5432/support_tickets_new"
+SUPPORT_TICKETS_URL = (
+    "postgresql://postgres:postgres@localhost:5432/support_tickets_new"
+)
+
 
 class DateTimeEncoder(json.JSONEncoder):
     """Custom JSON encoder for handling datetime and Decimal objects"""
+
     def default(self, o):
         if isinstance(o, (datetime, date)):
             return o.isoformat()
         if isinstance(o, Decimal):
             return str(o)
+        if isinstance(o, timedelta):
+            return f"{o.seconds} seconds"
         return super().default(o)
+
 
 class DatabaseTool:
     def __init__(self):
@@ -33,7 +40,9 @@ class DatabaseTool:
         self.support_tickets_conn = psycopg2.connect(SUPPORT_TICKETS_URL)
         self.schema_cache = {}
 
-    def get_database_schema(self, conn: psycopg2.extensions.connection, custom_where_clause: str) -> str:
+    def get_database_schema(
+        self, conn: psycopg2.extensions.connection, custom_where_clause: str
+    ) -> str:
         """Get database schema information"""
         with conn.cursor() as cursor:
             query = """
@@ -47,33 +56,36 @@ class DatabaseTool:
                     table_schema = 'public' AND {}
                 ORDER BY 
                     table_name, ordinal_position;
-            """.format(custom_where_clause)
-            
+            """.format(
+                custom_where_clause
+            )
+
             cursor.execute(query)
             results = cursor.fetchall()
-            
+
             schema = {}
             for row in results:
                 table_name, column_name, data_type = row
                 if table_name not in schema:
-                    schema[table_name] = {'columns': []}
-                schema[table_name]['columns'].append({
-                    'name': column_name,
-                    'type': data_type
-                })
-            
-            schema_str = '\n'
+                    schema[table_name] = {"columns": []}
+                schema[table_name]["columns"].append(
+                    {"name": column_name, "type": data_type}
+                )
+
+            schema_str = "\n"
             for table, details in schema.items():
                 schema_str += f"table {table} columns ("
-                for col in details['columns']:
+                for col in details["columns"]:
                     schema_str += f" {col['name']} {col['type']},"
-                schema_str += ')\n'
-                
+                schema_str += ")\n"
+
             return schema_str.strip()
 
-    def execute_query(self, conn: psycopg2.extensions.connection, sql: str) -> List[Dict]:
+    def execute_query(
+        self, conn: psycopg2.extensions.connection, sql: str
+    ) -> List[Dict]:
         """Execute a read-only SQL query"""
-        
+
         logger.info("Executing SQL: \n %s", sql)
         with conn.cursor() as cursor:
             try:
@@ -101,12 +113,12 @@ class DatabaseTool:
                         "properties": {
                             "sql": {
                                 "type": "string",
-                                "description": "SQL query to execute"
+                                "description": "SQL query to execute",
                             }
                         },
-                        "required": ["sql"]
-                    }
-                }
+                        "required": ["sql"],
+                    },
+                },
             },
             {
                 "type": "function",
@@ -118,12 +130,12 @@ class DatabaseTool:
                         "properties": {
                             "sql": {
                                 "type": "string",
-                                "description": "SQL query to execute"
+                                "description": "SQL query to execute",
                             }
                         },
-                        "required": ["sql"]
-                    }
-                }
+                        "required": ["sql"],
+                    },
+                },
             },
             # {
             #     "type": "function",
@@ -153,25 +165,23 @@ class DatabaseTool:
         self.control_plane_conn.close()
         self.support_tickets_conn.close()
 
+
 class AIAssistant:
     def __init__(self):
         self.db_tool = DatabaseTool()
-        self.client = AsyncOpenAI(
-            api_key=os.environ.get("OPENAI_API_KEY")
-        )
+        self.client = AsyncOpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
         # Cache schemas on initialization
         self.control_plane_schema = self.db_tool.get_database_schema(
-            self.db_tool.control_plane_conn,
-            "table_name NOT LIKE 'support%'"
+            self.db_tool.control_plane_conn, "table_name NOT LIKE 'support%'"
         )
         self.support_tickets_schema = self.db_tool.get_database_schema(
-            self.db_tool.support_tickets_conn,
-            "table_name LIKE 'support%'"
+            self.db_tool.support_tickets_conn, "table_name LIKE 'support%'"
         )
         # Initialize conversation history with system message
-        self.init_messages = [{
-            "role": "system",
-            "content": f"""You are an assistant with access to two databases with the following schemas:
+        self.init_messages = [
+            {
+                "role": "system",
+                "content": f"""You are an assistant with access to two databases with the following schemas:
 
 1. Control Plane Database Schema:
 {self.control_plane_schema}
@@ -183,8 +193,10 @@ Additional Instructions:
 
 - Always write queries that are compatible with PostgreSQL
 - Use tools provided to get the actual answer and don't stop with the theoretical plan
-"""
-        }]
+- Current timestamp is: {datetime.now()}
+""",
+            }
+        ]
         self.messages = self.init_messages.copy()
         self.api_responses = []
 
@@ -196,61 +208,69 @@ Additional Instructions:
         """Process a query using available tools and GPT-4 while maintaining conversation history"""
         # Add the new user query to the conversation history
         self.messages.append({"role": "user", "content": query})
-        
         tool_loop_count = 0
         MAX_TOOL_LOOPS = 10
 
         try:
             while tool_loop_count < MAX_TOOL_LOOPS:
+                print(f"\n[{datetime.now()}] waiting for llm response...")
                 completion = await self.client.chat.completions.create(
                     model="o1",
                     messages=self.messages,
                     tools=self.db_tool.tool_schemas,
-                    tool_choice="auto"
+                    tool_choice="auto",
                 )
+                print(f"[{datetime.now()}] received llm response...\n")
+                print(f"Usage: {completion.usage.model_dump()}")
 
                 # Store the API response
-                self.api_responses.append({
-                    "timestamp": datetime.now().isoformat(),
-                    "response": completion.model_dump()
-                })
-                                
+                self.api_responses.append(
+                    {
+                        "timestamp": datetime.now().isoformat(),
+                        "response": completion.model_dump(),
+                    }
+                )
+
                 assistant_message = completion.choices[0].message
 
                 if not assistant_message.tool_calls:
                     # Add the assistant's response to conversation history
-                    self.messages.append({
-                        "role": "assistant",
-                        "content": assistant_message.content or ""
-                    })
+                    self.messages.append(
+                        {
+                            "role": "assistant",
+                            "content": assistant_message.content or "",
+                        }
+                    )
                     return assistant_message.content or ""
 
                 # Add assistant message with tool calls to conversation history
-                self.messages.append({
-                    "role": "assistant",
-                    "content": assistant_message.content or "",
-                    "tool_calls": assistant_message.tool_calls
-                })
+                self.messages.append(
+                    {
+                        "role": "assistant",
+                        "content": assistant_message.content or "",
+                        "tool_calls": assistant_message.tool_calls,
+                    }
+                )
                 if len(assistant_message.tool_calls) > 0:
                     tool_loop_count += 1
                 for tool_call in assistant_message.tool_calls:
-                    
+
                     function_name = tool_call.function.name
                     function_args = json.loads(tool_call.function.arguments)
-                    
+
                     result = None
                     error_message = None
-                    
+
                     try:
                         if function_name == "query_control_plane_data":
                             result = self.db_tool.execute_query(
                                 self.db_tool.control_plane_conn,
-                                function_args.get("sql", "")
+                                function_args.get("sql", ""),
                             )
                         elif function_name == "query_support_tickets":
                             result = self.db_tool.execute_query(
                                 self.db_tool.support_tickets_conn,
-                                function_args.get("sql", "")
+                                function_args.get("sql", ""),
                             )
                         # elif function_name == "execute_python_program":
                         #     result = execute_python_code(
@@ -263,117 +283,119 @@ Additional Instructions:
                         result = {"error": error_message}
 
                     # Add tool response to conversation history
-                    self.messages.append({
-                        "role": "tool",
-                        "tool_call_id": tool_call.id,
-                        "name": function_name,
-                        "content": json.dumps(result, indent=2, cls=DateTimeEncoder)
-                    })
+                    self.messages.append(
+                        {
+                            "role": "tool",
+                            "tool_call_id": tool_call.id,
+                            "name": function_name,
+                            "content": json.dumps(
+                                result, indent=2, cls=DateTimeEncoder
+                            ),
+                        }
+                    )
 
                 if tool_loop_count >= MAX_TOOL_LOOPS:
                     # Add max tool use warning to conversation history
-                    self.messages.append({
-                        "role": "user",
-                        "content": "You have reached the maximum number of tool uses. Please provide a final response based on the information you have gathered so far."
-                    })
+                    self.messages.append(
+                        {
+                            "role": "user",
+                            "content": "You have reached the maximum number of tool uses. Please provide a final response based on the information you have gathered so far.",
+                        }
+                    )
 
             final_completion = await self.client.chat.completions.create(
-                model="o1",
-                messages=self.messages
+                model="o1", messages=self.messages
             )
-            
+
             # Store the final API response
-            self.api_responses.append({
-                "timestamp": datetime.now().isoformat(),
-                "response": final_completion.model_dump()
-            })
-                                        
+            self.api_responses.append(
+                {
+                    "timestamp": datetime.now().isoformat(),
+                    "response": final_completion.model_dump(),
+                }
+            )
+
             final_response = final_completion.choices[0].message.content or ""
             # Add final response to conversation history
-            self.messages.append({
-                "role": "assistant",
-                "content": final_response
-            })
-            return final_response 
+            self.messages.append({"role": "assistant", "content": final_response})
+            return final_response
 
         except Exception as e:
             error_message = f"Error processing query: {str(e)}"
             logger.error(error_message)
             # Add error message to conversation history
-            self.messages.append({
-                "role": "assistant",
-                "content": error_message
-            })
+            self.messages.append({"role": "assistant", "content": error_message})
             return error_message
 
     def close(self):
         """Close all connections"""
         self.db_tool.close()
 
+
 def execute_python_code(python_code: str, data_values: str = "[]") -> Dict[str, str]:
     """Execute Python code and return the results"""
-    
+
     logger.info("Executing Python: \n %s", python_code)
-    
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.py', delete=False) as tmp:
+
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False) as tmp:
         tmp.write(python_code)
         tmp_path = tmp.name
 
     try:
         process = subprocess.Popen(
-            ['python3', tmp_path, data_values],
+            ["python3", tmp_path, data_values],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            text=True
+            text=True,
         )
         stdout, stderr = process.communicate()
-        return {
-            "stdout": stdout,
-            "stderr": stderr,
-            "exitCode": process.returncode
-        }
+        return {"stdout": stdout, "stderr": stderr, "exitCode": process.returncode}
     finally:
         os.unlink(tmp_path)
-        
+
 
 async def main():
     assistant = AIAssistant()
-    
+
     try:
         while True:
             print("\nEnter your question (or 'quit' to exit)")
-            print("Use Ctrl+D (Unix) or Ctrl+Z (Windows) on an empty line to finish multi-line input")
+            print(
+                "Use Ctrl+D (Unix) or Ctrl+Z (Windows) on an empty line to finish multi-line input"
+            )
             print("---")
-            
+
             lines = []
             try:
                 while True:
                     line = input()
-                    
+
                     # Check for quit command after each line
-                    if line.lower().strip() == 'quit':
+                    if line.lower().strip() == "quit":
                         return
-                        
+
                     if not line and not lines:
                         continue
                     lines.append(line)
             except EOFError:
                 pass
-            
-            query = '\n'.join(lines).strip()
-            
+
+            query = "\n".join(lines).strip()
+
             if not query:
                 continue
-            
+
             response = await assistant.process_query(query)
             print("\nO1's response:")
             print(response)
-            
+
     except KeyboardInterrupt:
         print("\nExiting...")
     finally:
         assistant.close()
 
+
 if __name__ == "__main__":
     import asyncio
+
     asyncio.run(main())

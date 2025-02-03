@@ -700,7 +700,7 @@ def generate_and_insert_support_tickets(cp_connection_params, st_connection_para
     conn = psycopg2.connect(**st_connection_params)
 
     cp_conn = psycopg2.connect(**cp_connection_params)
-    
+
     try:
         # Create tickets for a specific project
         ticket_ids = create_tickets(
@@ -754,3 +754,5 @@ if __name__ == "__main__":
     finally:
         conn.close()
         cp_conn.close()
+
+
