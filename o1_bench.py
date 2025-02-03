@@ -66,13 +66,8 @@ class QueryProcessor:
         try:
             query_template = self.read_query(input_filepath)
             
-<<<<<<< HEAD
             for lastn in [30, 40, 50]:
                 for topk in [5]:
-=======
-            for lastn in [20, 30]:
-                for topk in [15]:
->>>>>>> origin/main
                 # for topk in range(30, lastn+1, 5):
                     for run_index in range(1, 6):
                         run_info = {
