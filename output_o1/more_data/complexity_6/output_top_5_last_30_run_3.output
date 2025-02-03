@@ -1,0 +1,243 @@
+[
+  {
+    "timestamp": "2025-02-03T21:06:05.423706",
+    "response": {
+      "id": "chatcmpl-Awsm7uquCNog6nlbUf9aQdQxQ3vtn",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_pVr9xxb0atNen87kKwGqdtb2",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, is_public, priority, status, subject, description, type, assignee_id, requester_id, created_at, url\\nFROM support_ticket\\nWHERE status = 'open'\\nORDER BY created_at DESC\\nLIMIT 30;\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738596943,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 2572,
+        "prompt_tokens": 1187,
+        "total_tokens": 3759,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 2496,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1024
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-03T21:06:43.066168",
+    "response": {
+      "id": "chatcmpl-AwsmTqipb3iL8F9KTANiLOnju9yU3",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_94luTV5UeqnVkF3Wqb1WcALg",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, requester_id FROM support_ticket WHERE status = 'open' ORDER BY created_at DESC LIMIT 30\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738596965,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 4465,
+        "prompt_tokens": 8245,
+        "total_tokens": 12710,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 4416,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1024
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-03T21:07:35.192178",
+    "response": {
+      "id": "chatcmpl-Awsn5IS3QRim866pclImapvWuiRy8",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_fvWagW7I2UhmvsJVqRrD0rpH",
+                "function": {
+                  "arguments": "{\"sql\":\"WITH project_ids AS (\\n    SELECT DISTINCT\\n        regexp_replace(\\n            regexp_replace(description, '.*Project ID: ([0-9a-fA-F-]+).*', '\\\\1'),\\n            '^.*(\\\\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\\\\b).*$', '\\\\1'\\n        ) AS project_id_raw\\n    FROM (\\n        SELECT id, description\\n        FROM support_ticket\\n        WHERE status = 'open'\\n        ORDER BY created_at DESC\\n        LIMIT 30\\n    ) st\\n), clean_project_ids AS (\\n    SELECT project_id_raw AS project_id\\n    FROM project_ids\\n    WHERE project_id_raw ~ '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'\\n    GROUP BY project_id_raw\\n), last_plan AS (\\n    SELECT DISTINCT ON (ppc.project_id)\\n        ppc.project_id,\\n        p.name AS plan_name\\n    FROM project_plan_changelogs ppc\\n    JOIN plans p ON p.id = ppc.plan_id\\n    WHERE ppc.project_id IN (SELECT project_id FROM clean_project_ids)\\n    ORDER BY ppc.project_id, ppc.created_at DESC\\n), project_revenue AS (\\n    SELECT project_id, COALESCE(SUM(amount),0)::numeric AS total_revenue\\n    FROM invoice_item\\n    WHERE project_id IN (SELECT project_id FROM clean_project_ids)\\n    GROUP BY project_id\\n), user_ownership_revenue AS (\\n    SELECT u.id AS user_id, COALESCE(SUM(ii.amount), 0)::numeric AS user_total_revenue\\n    FROM users u\\n    LEFT JOIN projects pr ON pr.owner_id = u.id\\n    LEFT JOIN invoice_item ii ON ii.project_id = pr.id\\n    GROUP BY u.id\\n)\\nSELECT\\n    st.id AS ticket_id,\\n    st.description,\\n    CASE -- classify by category\\n        WHEN (\\n            (st.description ILIKE '%unable to access%' OR st.description ILIKE '%cannot access%' OR st.description ILIKE '%down%' OR st.description ILIKE '%outage%' OR st.description ILIKE '%510%' OR st.description ILIKE '%5xx%' OR st.subject ILIKE '%down%')\\n            AND st.description ILIKE '%production%'\\n        ) THEN 'downtime'\\n        WHEN (st.description ILIKE '%intermittent%' OR st.description ILIKE '%random%' OR st.description ILIKE '%erratic%' OR st.description ILIKE '%stability%' OR st.description ILIKE '%instability%' OR st.description ILIKE '%connectivity%')\\n            THEN 'reliability'\\n        WHEN (st.description ILIKE '%performance%' OR st.description ILIKE '%degradation%' OR st.description ILIKE '%slow%' OR st.description ILIKE '%resource exhaustion%' OR st.subject ILIKE '%Performance%')\\n            THEN 'performance'\\n        WHEN (st.description ILIKE '%bug%' OR st.subject ILIKE '%bug%') THEN 'bug'\\n        WHEN (st.description ILIKE '%feature request%' OR st.subject ILIKE '%feature request%') THEN 'feature request'\\n        ELSE 'others'\\n    END AS category,\\n    CASE -- parse project id from description (the last valid one we can find)\\n        WHEN regexp_replace(st.description, '.*Project ID: ([0-9a-fA-F-]+).*', '\\\\1') ~ '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$' THEN regexp_replace(st.description, '.*Project ID: ([0-9a-fA-F-]+).*', '\\\\1')\\n        ELSE NULL\\n    END AS extracted_project_id,\\n    st.created_at,\\n    u.email AS user_email,\\n    last_plan.plan_name,\\n    COALESCE(pr.total_revenue,0) AS project_revenue,\\n    COALESCE(uor.user_total_revenue,0) AS user_total_revenue\\nFROM support_ticket st\\nLEFT JOIN users u ON u.id = st.requester_id\\nLEFT JOIN LATERAL (\\n    SELECT regexp_replace(st.description, '.*Project ID: ([0-9a-fA-F-]+).*', '\\\\1') AS pid\\n) d ON true\\nLEFT JOIN last_plan ON last_plan.project_id = d.pid\\nLEFT JOIN project_revenue pr ON pr.project_id = d.pid\\nLEFT JOIN user_ownership_revenue uor ON uor.user_id = u.id\\nWHERE st.status = 'open'\\nORDER BY st.created_at DESC\\nLIMIT 30;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738597003,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 5903,
+        "prompt_tokens": 8894,
+        "total_tokens": 14797,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 4800,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 8064
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-03T21:08:00.708623",
+    "response": {
+      "id": "chatcmpl-AwsnvL6qF0raBESzIV60g5w4P4BPg",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_RA1hH3WUms4sezejvHS7jy0Q",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, email\\nFROM support_user\\nWHERE id IN (\\n  205, 121, 62, 42, 181, 157, 176, 1, 3, 45, 79, 180, 136, 164, 185, 110, 28, 167, 55, 126\\n)\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738597055,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 2981,
+        "prompt_tokens": 10034,
+        "total_tokens": 13015,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 2880,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-03T21:09:51.960861",
+    "response": {
+      "id": "chatcmpl-AwsoLlD7WW9hry8HsXGTSPIWBbVSO",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Below are the top 5 open support tickets (out of the last 30) based on the specified priority scoring rules, along with their key details:\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n1) Ticket ID: 143\n   \u2022 Description: \"I am unable to access my project on Hasura Cloud \u2026 critically impacting our production environment \u2026 Project ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\"\n   \u2022 Extracted Project ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\n   \u2022 Plan: Free (no data available)\n   \u2022 Project Revenue: 0\n   \u2022 Requester Email: kimberly.riddle@harrison.org\n   \u2022 Total User Revenue (all projects): 0\n   \u2022 Created At: 2025-01-03T20:32:35.345840+00:00\n   \u2022 Category: downtime\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n2) Ticket ID: 287\n   \u2022 Description: \"We are currently unable to access our project on your platform \u2026 impacting our production environment \u2026 Project ID: 570737f1-ada3-413b-bec5-e82b6c324fb3\"\n   \u2022 Extracted Project ID: 570737f1-ada3-413b-bec5-e82b6c324fb3\n   \u2022 Plan: Free (no data available)\n   \u2022 Project Revenue: 0\n   \u2022 Requester Email: aaron.williams@mendez-stewart.com\n   \u2022 Total User Revenue (all projects): 0\n   \u2022 Created At: 2024-12-12T07:00:00+00:00\n   \u2022 Category: downtime\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n3) Ticket ID: 209\n   \u2022 Description: \"We are experiencing a complete outage of our production environment \u2026 Project ID: 76de9616-3d7b-49d7-b909-e154dda91489\"\n   \u2022 Extracted Project ID: 76de9616-3d7b-49d7-b909-e154dda91489\n   \u2022 Plan: Free (no data available)\n   \u2022 Project Revenue: 0\n   \u2022 Requester Email: jennifer.brown@phelps-lewis.com\n   \u2022 Total User Revenue (all projects): 0\n   \u2022 Created At: 2024-12-05T07:00:00+00:00\n   \u2022 Category: downtime\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n4) Ticket ID: 286\n   \u2022 Description: \"Our API service is completely down and unresponsive \u2026 5xx errors \u2026 Project ID: 386d8856-9020-47eb-a21a-2ebe6b81428e\"\n   \u2022 Extracted Project ID: 386d8856-9020-47eb-a21a-2ebe6b81428e\n   \u2022 Plan: Free (no data available)\n   \u2022 Project Revenue: 0\n   \u2022 Requester Email: anthony.lam@berry-smith.biz\n   \u2022 Total User Revenue (all projects): 0\n   \u2022 Created At: 2024-11-10T03:00:00+00:00\n   \u2022 Category: downtime\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n5) Ticket ID: 139\n   \u2022 Description: \"We are experiencing a critical issue where we cannot access our Hasura project \u2026 impacting our production environment \u2026 Project ID: 5ad39764-9b9b-48cb-8819-43ab40694b06\"\n   \u2022 Extracted Project ID: 5ad39764-9b9b-48cb-8819-43ab40694b06\n   \u2022 Plan: Free (no data available)\n   \u2022 Project Revenue: 0\n   \u2022 Requester Email: jacob.lambert@gomez.com\n   \u2022 Total User Revenue (all projects): 0\n   \u2022 Created At: 2024-10-18T03:00:00+00:00\n   \u2022 Category: downtime\n\n<tickets>\n143\n287\n209\n286\n139\n</tickets>",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738597081,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 8196,
+        "prompt_tokens": 10658,
+        "total_tokens": 18854,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 7296,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 8704
+        }
+      }
+    }
+  }
+]

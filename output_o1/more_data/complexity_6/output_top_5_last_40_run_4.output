@@ -1,0 +1,443 @@
+[
+  {
+    "timestamp": "2025-02-03T21:38:12.370568",
+    "response": {
+      "id": "chatcmpl-AwtHB4fbSV1UY0GlOxU1FLUNQIfDQ",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_X6QA2UKW49lHCkqZhghF0nPS",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, description, created_at, requester_id FROM support_ticket WHERE status = 'open' ORDER BY created_at DESC LIMIT 40\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738598869,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 2357,
+        "prompt_tokens": 1187,
+        "total_tokens": 3544,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 2304,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1024
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-03T21:40:30.462487",
+    "response": {
+      "id": "chatcmpl-AwtHZYXNnxSlUMkCiDkaWFfYrIEIa",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_cd9oPFQPgRH11u7jkFRqS94h",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT DISTINCT requester_id FROM support_ticket WHERE status = 'open' ORDER BY requester_id\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738598893,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 2795,
+        "prompt_tokens": 7755,
+        "total_tokens": 10550,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 2752,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-03T21:41:41.582266",
+    "response": {
+      "id": "chatcmpl-AwtJmjSONKbT5t632mImRmFgRYlIG",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_65OJFCLwyjMMCciEI0MTx4Mh",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, email FROM support_user WHERE id IN (1,3,6,15,25,28,42,45,51,55,62,79,110,121,126,136,157,164,167,176,180,181,185,205)\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738599030,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 1620,
+        "prompt_tokens": 8163,
+        "total_tokens": 9783,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 1536,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 7680
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-03T21:42:15.168747",
+    "response": {
+      "id": "chatcmpl-AwtKwYRpd274j2fzx6wMfs0hxe57j",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_6MlRvAH6Z8ehA82dI6U2j2rf",
+                "function": {
+                  "arguments": "{\"sql\":\"WITH unique_projects AS (\\n    SELECT unnest(ARRAY[\\n        '2a8d4b07-c391-450f-8153-f6521f8a20a0',\\n        '570737f1-ada3-413b-bec5-e82b6c324fb3',\\n        '936120f2-5ed2-4bcb-af57-e9b3eeacee81',\\n        '76de9616-3d7b-49d7-b909-e154dda91489',\\n        '3039d26f-0ab2-4501-8e64-07b16526115a',\\n        '386d8856-9020-47eb-a21a-2ebe6b81428e',\\n        'd5dc02fc-707a-4084-854a-79f5866d4dd3',\\n        '5ad39764-9b9b-48cb-8819-43ab40694b06',\\n        '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44',\\n        '8edf6e2c-99b6-49af-b342-4aefe811b2f3',\\n        '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82',\\n        '11ee5798-e7e9-4b78-a087-9e7c1d05751c',\\n        'e452f72b-66e1-4c56-ada2-3525ab8fb280',\\n        'b750445e-fba4-4644-b306-1550cfefad8b',\\n        '0a2cfc2f-be0c-463e-b3ba-87862a1e79c3',\\n        'e75d06e3-6ec1-4649-bc83-7d19cd07fd77',\\n        '4aeefe6f-7dee-4395-82be-6d8e51aea9fd',\\n        '598b3a1b-0166-420f-ac63-fa734cbf5c63',\\n        'c5d9c906-2b61-424e-967b-fa3e27d09d44',\\n        '2dcc6504-ce95-4167-8a18-8ffc21d3c071',\\n        '5267a67e-d8ea-4154-b385-6269b033a471',\\n        'fc2590f9-6bdc-43e3-9984-9246fd96f2dd',\\n        '4e291cdc-0aab-4573-86a4-c82490831964',\\n        '4d76af73-0ea4-4d9f-9247-78ab43a23704',\\n        '4fbe297d-f58e-477e-a6c9-f5c98cb92555',\\n        'eabbc719-c5cb-461c-9144-e531de1b0617',\\n        '2a3b7790-2cc4-48b5-a290-e6e880bb76e2',\\n        '9aed3be2-245d-4e1e-9040-5317a8a8daf1',\\n        'c73759e8-6f3d-4607-b276-8d61011c124d',\\n        '529fbeeb-39fe-46bc-9b22-aa898eb82745',\\n        'a2976ee4-8966-4ed9-8def-2cab3e171cd8'\\n    ]) as project_id\\n), latest_plan AS (\\n    SELECT DISTINCT ON (project_id) project_id, plan_id, created_at\\n    FROM project_plan_changelogs\\n    WHERE project_id IN (SELECT project_id FROM unique_projects)\\n    ORDER BY project_id, created_at DESC\\n)\\nSELECT\\n    ppc.project_id,\\n    pl.name AS plan_name\\nFROM latest_plan ppc\\nLEFT JOIN plans pl ON ppc.plan_id = pl.id\\nORDER BY ppc.project_id;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738599102,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 4266,
+        "prompt_tokens": 8870,
+        "total_tokens": 13136,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 3264,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-03T21:42:27.353495",
+    "response": {
+      "id": "chatcmpl-AwtLTPYEL7lEfIp29ULxkVoAJkUK4",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_4fRaad1kaLJds8olMilLl4zD",
+                "function": {
+                  "arguments": "{\"sql\":\"WITH unique_projects AS (\\n    SELECT unnest(ARRAY[\\n        '2a8d4b07-c391-450f-8153-f6521f8a20a0'::uuid,\\n        '570737f1-ada3-413b-bec5-e82b6c324fb3'::uuid,\\n        '936120f2-5ed2-4bcb-af57-e9b3eeacee81'::uuid,\\n        '76de9616-3d7b-49d7-b909-e154dda91489'::uuid,\\n        '3039d26f-0ab2-4501-8e64-07b16526115a'::uuid,\\n        '386d8856-9020-47eb-a21a-2ebe6b81428e'::uuid,\\n        'd5dc02fc-707a-4084-854a-79f5866d4dd3'::uuid,\\n        '5ad39764-9b9b-48cb-8819-43ab40694b06'::uuid,\\n        '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44'::uuid,\\n        '8edf6e2c-99b6-49af-b342-4aefe811b2f3'::uuid,\\n        '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82'::uuid,\\n        '11ee5798-e7e9-4b78-a087-9e7c1d05751c'::uuid,\\n        'e452f72b-66e1-4c56-ada2-3525ab8fb280'::uuid,\\n        'b750445e-fba4-4644-b306-1550cfefad8b'::uuid,\\n        '0a2cfc2f-be0c-463e-b3ba-87862a1e79c3'::uuid,\\n        'e75d06e3-6ec1-4649-bc83-7d19cd07fd77'::uuid,\\n        '4aeefe6f-7dee-4395-82be-6d8e51aea9fd'::uuid,\\n        '598b3a1b-0166-420f-ac63-fa734cbf5c63'::uuid,\\n        'c5d9c906-2b61-424e-967b-fa3e27d09d44'::uuid,\\n        '2dcc6504-ce95-4167-8a18-8ffc21d3c071'::uuid,\\n        '5267a67e-d8ea-4154-b385-6269b033a471'::uuid,\\n        'fc2590f9-6bdc-43e3-9984-9246fd96f2dd'::uuid,\\n        '4e291cdc-0aab-4573-86a4-c82490831964'::uuid,\\n        '4d76af73-0ea4-4d9f-9247-78ab43a23704'::uuid,\\n        '4fbe297d-f58e-477e-a6c9-f5c98cb92555'::uuid,\\n        'eabbc719-c5cb-461c-9144-e531de1b0617'::uuid,\\n        '2a3b7790-2cc4-48b5-a290-e6e880bb76e2'::uuid,\\n        '9aed3be2-245d-4e1e-9040-5317a8a8daf1'::uuid,\\n        'c73759e8-6f3d-4607-b276-8d61011c124d'::uuid,\\n        '529fbeeb-39fe-46bc-9b22-aa898eb82745'::uuid,\\n        'a2976ee4-8966-4ed9-8def-2cab3e171cd8'::uuid\\n    ]) as project_id\\n), latest_plan AS (\\n    SELECT DISTINCT ON (project_id) project_id, plan_id, created_at\\n    FROM project_plan_changelogs\\n    WHERE project_id IN (SELECT project_id FROM unique_projects)\\n    ORDER BY project_id, created_at DESC\\n)\\nSELECT\\n    ppc.project_id,\\n    pl.name AS plan_name\\nFROM latest_plan ppc\\nLEFT JOIN plans pl ON ppc.plan_id = pl.id\\nORDER BY ppc.project_id;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738599135,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 1256,
+        "prompt_tokens": 9943,
+        "total_tokens": 11199,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 192,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 8064
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-03T21:43:02.766323",
+    "response": {
+      "id": "chatcmpl-AwtLfuSt1trVzsC9SJEjsnSqnSrYe",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_9r4WaKXP8qusdTlEuXfFNmqN",
+                "function": {
+                  "arguments": "{\"sql\":\"WITH project_revenues AS (\\n    SELECT project_id, COALESCE(SUM(amount),0) AS total_revenue\\n    FROM invoice_item\\n    WHERE project_id IN (\\n        '2a8d4b07-c391-450f-8153-f6521f8a20a0',\\n        '570737f1-ada3-413b-bec5-e82b6c324fb3',\\n        '936120f2-5ed2-4bcb-af57-e9b3eeacee81',\\n        '76de9616-3d7b-49d7-b909-e154dda91489',\\n        '3039d26f-0ab2-4501-8e64-07b16526115a',\\n        '386d8856-9020-47eb-a21a-2ebe6b81428e',\\n        'd5dc02fc-707a-4084-854a-79f5866d4dd3',\\n        '5ad39764-9b9b-48cb-8819-43ab40694b06',\\n        '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44',\\n        '8edf6e2c-99b6-49af-b342-4aefe811b2f3',\\n        '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82',\\n        '11ee5798-e7e9-4b78-a087-9e7c1d05751c',\\n        'e452f72b-66e1-4c56-ada2-3525ab8fb280',\\n        'b750445e-fba4-4644-b306-1550cfefad8b',\\n        '0a2cfc2f-be0c-463e-b3ba-87862a1e79c3',\\n        'e75d06e3-6ec1-4649-bc83-7d19cd07fd77',\\n        '4aeefe6f-7dee-4395-82be-6d8e51aea9fd',\\n        '598b3a1b-0166-420f-ac63-fa734cbf5c63',\\n        'c5d9c906-2b61-424e-967b-fa3e27d09d44',\\n        '2dcc6504-ce95-4167-8a18-8ffc21d3c071',\\n        '5267a67e-d8ea-4154-b385-6269b033a471',\\n        'fc2590f9-6bdc-43e3-9984-9246fd96f2dd',\\n        '4e291cdc-0aab-4573-86a4-c82490831964',\\n        '4d76af73-0ea4-4d9f-9247-78ab43a23704',\\n        '4fbe297d-f58e-477e-a6c9-f5c98cb92555',\\n        'eabbc719-c5cb-461c-9144-e531de1b0617',\\n        '2a3b7790-2cc4-48b5-a290-e6e880bb76e2',\\n        '9aed3be2-245d-4e1e-9040-5317a8a8daf1',\\n        'c73759e8-6f3d-4607-b276-8d61011c124d',\\n        '529fbeeb-39fe-46bc-9b22-aa898eb82745',\\n        'a2976ee4-8966-4ed9-8def-2cab3e171cd8'\\n    )\\n    GROUP BY project_id\\n)\\nSELECT project_id, total_revenue FROM project_revenues;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738599147,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 4339,
+        "prompt_tokens": 12302,
+        "total_tokens": 16641,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 3392,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 9856
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-03T21:43:22.853596",
+    "response": {
+      "id": "chatcmpl-AwtMFQluiChC7MyxSv9bM996K3BfT",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_eAHYNPyoYIt9endHHJzaVnMi",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, email, customer_id FROM users\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738599183,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 2274,
+        "prompt_tokens": 14296,
+        "total_tokens": 16570,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 2240,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 12160
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-03T21:44:12.029640",
+    "response": {
+      "id": "chatcmpl-AwtN0UeYBsI1VylhOexsPX4gFgpV5",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_X0ycSARvpMpMimkdPimlPXKO",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT u.email AS control_plane_email, u.customer_id AS control_plane_customer_id,\\n       COALESCE(SUM(ii.amount), 0) AS total_user_revenue\\nFROM projects p\\nJOIN users u ON p.owner_id = u.id\\nLEFT JOIN invoice_item ii ON p.id = ii.project_id\\nGROUP BY u.email, u.customer_id;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738599230,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 2466,
+        "prompt_tokens": 20958,
+        "total_tokens": 23424,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 2368,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 20864
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-03T21:45:38.134264",
+    "response": {
+      "id": "chatcmpl-AwtNMPVTNZBII5msiTBBStsXTCJyq",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Below are the top 5 open support tickets (among the last 40 open) once scored and sorted in descending order of priority. Each ticket entry shows:\n\n\u2022 Ticket ID  \n\u2022 Description (abbreviated for brevity)  \n\u2022 Extracted Project ID  \n\u2022 Most recent Plan of that Project  \n\u2022 Total Project Revenue  \n\u2022 Requester\u2019s (ticket creator\u2019s) email  \n\u2022 Total User Revenue (sum of revenues for all projects belonging to that user, as matched by email)  \n\u2022 Created At time  \n\u2022 Classified Category  \n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\n1) Ticket ID: 246\n   \u2022 Description (abbreviated): \u201cOur production Hasura service is currently down\u2026 critical outage\u2026 Please investigate\u2026 Project ID: c5d9c906-2b61-424e-967b-fa3e27d09d44\u201d\n   \u2022 Project ID: c5d9c906-2b61-424e-967b-fa3e27d09d44\n   \u2022 Plan: advanced\n   \u2022 Project Revenue: 28615.00\n   \u2022 Requester Email: brian.liu@gibbs.biz\n   \u2022 User Total Revenue: 41510.00\n   \u2022 Created At: 2024-07-27T08:00:00+00:00\n   \u2022 Category: downtime\n\n2) Ticket ID: 205\n   \u2022 Description (abbreviated): \u201cCritical production issue, all GraphQL operations failing with 500\u2026 Project ID: 5f4d1be1-61b7-4b11-ba51-6e9b7f094c82\u201d\n   \u2022 Project ID: 5f4d1be1-61b7-4b11-ba51-6e9b7f094c82\n   \u2022 Plan: advanced\n   \u2022 Project Revenue: 16544.00\n   \u2022 Requester Email: richard.trevino@hughes-tyler.org\n   \u2022 User Total Revenue: 16544.00\n   \u2022 Created At: 2024-09-29T03:00:00+00:00\n   \u2022 Category: downtime\n\n3) Ticket ID: 143\n   \u2022 Description (abbreviated): \u201cUnable to access project on Hasura Cloud\u2026 fails to load\u2026 This is critically impacting production\u2026 Project ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\u201d\n   \u2022 Project ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\n   \u2022 Plan: base\n   \u2022 Project Revenue: 0.00\n   \u2022 Requester Email: kimberly.riddle@harrison.org\n   \u2022 User Total Revenue: 45486.00\n   \u2022 Created At: 2025-01-03T20:32:35.345840+00:00\n   \u2022 Category: downtime\n\n4) Ticket ID: 287\n   \u2022 Description (abbreviated): \u201cWe are currently unable to access our project (404 Project Not Found)\u2026 This is impacting production\u2026 Project ID: 570737f1-ada3-413b-bec5-e82b6c324fb3\u201d\n   \u2022 Project ID: 570737f1-ada3-413b-bec5-e82b6c324fb3\n   \u2022 Plan: advanced\n   \u2022 Project Revenue: 4617.00\n   \u2022 Requester Email: aaron.williams@mendez-stewart.com\n   \u2022 User Total Revenue: 8617.00\n   \u2022 Created At: 2024-12-12T07:00:00+00:00\n   \u2022 Category: downtime\n\n5) Ticket ID: 286\n   \u2022 Description (abbreviated): \u201cOur API service is completely down and unresponsive\u2026 All production endpoints failing\u2026 Project ID: 386d8856-9020-47eb-a21a-2ebe6b81428e\u201d\n   \u2022 Project ID: 386d8856-9020-47eb-a21a-2ebe6b81428e\n   \u2022 Plan: advanced\n   \u2022 Project Revenue: 7980.00\n   \u2022 Requester Email: anthony.lam@berry-smith.biz\n   \u2022 User Total Revenue: 7980.00\n   \u2022 Created At: 2024-11-10T03:00:00+00:00\n   \u2022 Category: downtime\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\n<tickets>\n246\n205\n143\n287\n286\n</tickets>",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738599252,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 9814,
+        "prompt_tokens": 26321,
+        "total_tokens": 36135,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 8832,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 20864
+        }
+      }
+    }
+  }
+]

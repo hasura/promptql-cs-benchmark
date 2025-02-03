@@ -7,6 +7,7 @@ import invoice_generator
 import support_agent_generator
 import support_ticket_generator
 from typing import List, Dict
+from datetime import datetime
 
 import psycopg2
 from psycopg2.extras import execute_values
@@ -44,6 +45,9 @@ PLANS = [
         "id": "28058da3-610f-4d2f-94d8-10bf0a340d6b"
     }
 ]
+
+def months_between(date1, date2):
+    return (date1.year - date2.year) * 12 + (date1.month - date2.month)
 
 def insert_plans(connection_params, plans: List[Dict]):
 
@@ -107,20 +111,16 @@ def main():
         # Random price between $30-100 per model for advanced plan. Fixed for a project
         price_per_model_advanced = int(random.uniform(30, 100))
     
-        support_request_pattern_type = random.choices(['easy', 'average', 'hard'], weights=[0.4, 0.5, 0.1])[0]
-    
         ticket_frequency = random.choices(['low', 'medium', 'high'], weights=[0.4, 0.5, 0.1])[0]
     
         print('plan:', plan)
         print('request_pattern_type: ', request_pattern_type)
         print('price_per_model_advanced: ', price_per_model_advanced)
-        print('support_request_pattern_type: ', support_request_pattern_type)
         print('ticket_frequency: ', ticket_frequency)
     
         user = user_generator.generate_and_insert_user(cp_connection_params, plan = plan, 
                                                        initial_request_pattern_type=request_pattern_type, 
                                                        price_per_model_advanced=price_per_model_advanced,
-                                                       support_request_pattern_type=support_request_pattern_type,
                                                        ticket_frequency=ticket_frequency)
         pprint(user)
     
@@ -131,11 +131,36 @@ def main():
             print(plan_changes)
             invoices = invoice_generator.generate_and_insert_invoices(cp_connection_params, project_id=project['id'], price_per_model_advanced=price_per_model_advanced)
             print(invoices)
+<<<<<<< HEAD
+            
+            months_diff = months_between(datetime.now(), project['created_at']) 
+            if ticket_frequency == "low" and plan['name'] in ['base', 'advanced']:
+                num_tickets = random.randint(0, int(months_diff/8))
+            elif ticket_frequency == 'medium' and plan['name'] in ['base', 'advanced']:
+                num_tickets = random.randint(1, max(1, int(months_diff/4)))
+            elif ticket_frequency == 'high' and plan['name'] in ['base', 'advanced']:
+                num_tickets = random.randint(2, max(2, int(months_diff/2)))
+            elif ticket_frequency == "low" and plan['name'] == "free":
+                num_tickets = 0
+            elif ticket_frequency == "medium" and plan['name'] == "free":
+                num_tickets = random.randint(0, 1)
+            elif ticket_frequency == "high" and plan['name'] == "free":
+                num_tickets = random.randint(0, 2)
+            else:
+                num_tickets = random.randint(0, 2)               
+            support_tickets = support_ticket_generator.generate_and_insert_support_tickets(cp_connection_params, st_connection_params, 
+                                                                                           project_id=project['id'], 
+                                                                                           num_tickets=num_tickets
+                                                                                           )
+=======
             support_tickets = support_ticket_generator.generate_and_insert_support_tickets(cp_connection_params, st_connection_params, project_id=project['id'], 
                                                                                            support_request_pattern_type=support_request_pattern_type, 
                                                                                            ticket_frequency=ticket_frequency)
+>>>>>>> origin/main
             print(support_tickets)
 
 if __name__ == "__main__":
     main()
-    
+
+ 
+

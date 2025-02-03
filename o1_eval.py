@@ -208,7 +208,6 @@ Additional Instructions:
         """Process a query using available tools and GPT-4 while maintaining conversation history"""
         # Add the new user query to the conversation history
         self.messages.append({"role": "user", "content": query})
-
         tool_loop_count = 0
         MAX_TOOL_LOOPS = 10
 

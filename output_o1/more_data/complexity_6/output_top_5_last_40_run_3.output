@@ -1,0 +1,193 @@
+[
+  {
+    "timestamp": "2025-02-03T21:33:27.880910",
+    "response": {
+      "id": "chatcmpl-AwtCTux9bNIVFGe4PvsoO9sZvzwUU",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_BlTVSgp5HBiYlYZkVYdHPHte",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT st.id,\\n       st.created_at,\\n       st.subject,\\n       st.description,\\n       st.requester_id,\\n       su.email as requester_email,\\n       (SELECT (regexp_matches(st.description, '([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})'))[1]) as extracted_project_id\\nFROM support_ticket st\\nJOIN support_user su ON su.id = st.requester_id\\nWHERE st.status = 'open'\\nORDER BY st.created_at DESC\\nLIMIT 40;\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738598577,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 3502,
+        "prompt_tokens": 1187,
+        "total_tokens": 4689,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 3328,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1024
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-03T21:34:21.641657",
+    "response": {
+      "id": "chatcmpl-AwtCytrRzOSfGYnDgGg4KKqUNlVvi",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_0Pl6Bk3mTRL4A2mN8ieOleID",
+                "function": {
+                  "arguments": "{\"sql\":\"WITH plan AS (\\n    SELECT DISTINCT ON (ppc.project_id)\\n           ppc.project_id,\\n           p.name AS plan_name,\\n           ppc.created_at as plan_created_at\\n    FROM project_plan_changelogs ppc\\n    JOIN plans p ON p.id = ppc.plan_id\\n    WHERE ppc.project_id IN (\\n        '2a8d4b07-c391-450f-8153-f6521f8a20a0',\\n        '570737f1-ada3-413b-bec5-e82b6c324fb3',\\n        '936120f2-5ed2-4bcb-af57-e9b3eeacee81',\\n        '76de9616-3d7b-49d7-b909-e154dda91489',\\n        '3039d26f-0ab2-4501-8e64-07b16526115a',\\n        '386d8856-9020-47eb-a21a-2ebe6b81428e',\\n        'd5dc02fc-707a-4084-854a-79f5866d4dd3',\\n        '5ad39764-9b9b-48cb-8819-43ab40694b06',\\n        '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44',\\n        '8edf6e2c-99b6-49af-b342-4aefe811b2f3',\\n        '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82',\\n        '11ee5798-e7e9-4b78-a087-9e7c1d05751c',\\n        'e452f72b-66e1-4c56-ada2-3525ab8fb280',\\n        'b750445e-fba4-4644-b306-1550cfefad8b',\\n        '0a2cfc2f-be0c-463e-b3ba-87862a1e79c3',\\n        'e75d06e3-6ec1-4649-bc83-7d19cd07fd77',\\n        '4aeefe6f-7dee-4395-82be-6d8e51aea9fd',\\n        '598b3a1b-0166-420f-ac63-fa734cbf5c63',\\n        'c5d9c906-2b61-424e-967b-fa3e27d09d44',\\n        '2dcc6504-ce95-4167-8a18-8ffc21d3c071',\\n        '5267a67e-d8ea-4154-b385-6269b033a471',\\n        'fc2590f9-6bdc-43e3-9984-9246fd96f2dd',\\n        '4e291cdc-0aab-4573-86a4-c82490831964',\\n        '4d76af73-0ea4-4d9f-9247-78ab43a23704',\\n        '4fbe297d-f58e-477e-a6c9-f5c98cb92555',\\n        'eabbc719-c5cb-461c-9144-e531de1b0617',\\n        '2a3b7790-2cc4-48b5-a290-e6e880bb76e2',\\n        '9aed3be2-245d-4e1e-9040-5317a8a8daf1',\\n        'c73759e8-6f3d-4607-b276-8d61011c124d',\\n        '529fbeeb-39fe-46bc-9b22-aa898eb82745',\\n        'a2976ee4-8966-4ed9-8def-2cab3e171cd8'\\n    )\\n    ORDER BY ppc.project_id, ppc.created_at DESC\\n),\\nrevenue AS (\\n    SELECT project_id,\\n           COALESCE(SUM(amount), 0) AS total_project_revenue\\n    FROM invoice_item\\n    WHERE project_id IN (\\n        '2a8d4b07-c391-450f-8153-f6521f8a20a0',\\n        '570737f1-ada3-413b-bec5-e82b6c324fb3',\\n        '936120f2-5ed2-4bcb-af57-e9b3eeacee81',\\n        '76de9616-3d7b-49d7-b909-e154dda91489',\\n        '3039d26f-0ab2-4501-8e64-07b16526115a',\\n        '386d8856-9020-47eb-a21a-2ebe6b81428e',\\n        'd5dc02fc-707a-4084-854a-79f5866d4dd3',\\n        '5ad39764-9b9b-48cb-8819-43ab40694b06',\\n        '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44',\\n        '8edf6e2c-99b6-49af-b342-4aefe811b2f3',\\n        '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82',\\n        '11ee5798-e7e9-4b78-a087-9e7c1d05751c',\\n        'e452f72b-66e1-4c56-ada2-3525ab8fb280',\\n        'b750445e-fba4-4644-b306-1550cfefad8b',\\n        '0a2cfc2f-be0c-463e-b3ba-87862a1e79c3',\\n        'e75d06e3-6ec1-4649-bc83-7d19cd07fd77',\\n        '4aeefe6f-7dee-4395-82be-6d8e51aea9fd',\\n        '598b3a1b-0166-420f-ac63-fa734cbf5c63',\\n        'c5d9c906-2b61-424e-967b-fa3e27d09d44',\\n        '2dcc6504-ce95-4167-8a18-8ffc21d3c071',\\n        '5267a67e-d8ea-4154-b385-6269b033a471',\\n        'fc2590f9-6bdc-43e3-9984-9246fd96f2dd',\\n        '4e291cdc-0aab-4573-86a4-c82490831964',\\n        '4d76af73-0ea4-4d9f-9247-78ab43a23704',\\n        '4fbe297d-f58e-477e-a6c9-f5c98cb92555',\\n        'eabbc719-c5cb-461c-9144-e531de1b0617',\\n        '2a3b7790-2cc4-48b5-a290-e6e880bb76e2',\\n        '9aed3be2-245d-4e1e-9040-5317a8a8daf1',\\n        'c73759e8-6f3d-4607-b276-8d61011c124d',\\n        '529fbeeb-39fe-46bc-9b22-aa898eb82745',\\n        'a2976ee4-8966-4ed9-8def-2cab3e171cd8'\\n    )\\n    GROUP BY project_id\\n)\\nSELECT COALESCE(plan.project_id, revenue.project_id) AS project_id,\\n       plan.plan_name,\\n       revenue.total_project_revenue\\nFROM plan\\nFULL OUTER JOIN revenue ON plan.project_id = revenue.project_id\\nORDER BY project_id;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738598608,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 6549,
+        "prompt_tokens": 10391,
+        "total_tokens": 16940,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 4608,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-03T21:34:38.974374",
+    "response": {
+      "id": "chatcmpl-AwtDqkh0z2bCfFo0TcYIKvM1V7MJn",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_AcKIiP0VCkZjxnpnfVvfBaot",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT u.id as user_id,\\n       u.email,\\n       COALESCE(SUM(ii.amount), 0) as total_user_revenue\\nFROM users u\\nLEFT JOIN projects p ON p.owner_id = u.id\\nLEFT JOIN invoice_item ii ON ii.project_id = p.id\\nWHERE u.email IN (\\n    'kimberly.riddle@harrison.org',\\n    'aaron.williams@mendez-stewart.com',\\n    'john.nguyen@miller-ewing.com',\\n    'jennifer.brown@phelps-lewis.com',\\n    'andrew.stokes@arnold.com',\\n    'anthony.lam@berry-smith.biz',\\n    'aaron.davis@cooper-schultz.com',\\n    'jacob.lambert@gomez.com',\\n    'tanya.williams@davis.com',\\n    'sandra.davis@mckenzie.net',\\n    'richard.trevino@hughes-tyler.org',\\n    'maria.leblanc@butler.com',\\n    'dana.hudson@shaw.info',\\n    'gina.brooks@medina-johnson.com',\\n    'olivia.jordan@murphy-hart.net',\\n    'john.reed@becker.com',\\n    'brian.liu@gibbs.biz',\\n    'jerry.white@ferguson.com',\\n    'william.robinson@williams-burgess.biz',\\n    'lisa.fields@graves.com',\\n    'michael.jones@johnson-brady.com',\\n    'colleen.hogan@brown.com',\\n    'gordon.vang@nelson.com',\\n    'mark.lowe@bush.info'\\n)\\nGROUP BY u.id, u.email;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738598662,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 1777,
+        "prompt_tokens": 13994,
+        "total_tokens": 15771,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 1344,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1024
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-03T21:37:49.523891",
+    "response": {
+      "id": "chatcmpl-AwtF7bvct0nnN518JlDjdasUEhUos",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Below are the top 5 open support tickets (amongst the last 40 open tickets) in descending order of their calculated priority score. For each ticket, the relevant details are shown: description, extracted project ID, plan name, total project revenue, requester email, total user revenue (across all their projects), created_at time, and classified category.\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n1) Ticket ID: 261\n   Created At: 2024-09-26T06:00:00+00:00\n   Description: \"Hi, \u2026 queries involving role-based permissions are much slower than before \u2026 Project ID: e452f72b-66e1-4c56-ada2-3525ab8fb280\"\n   Extracted Project ID: e452f72b-66e1-4c56-ada2-3525ab8fb280\n   Plan: advanced\n   Total Project Revenue: 45486\n   Requester Email: kimberly.riddle@harrison.org\n   Total User Revenue: 45486\n   Category: Performance\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n2) Ticket ID: 246\n   Created At: 2024-07-27T08:00:00+00:00\n   Description: \"Hello, \u2026 Our production Hasura service is currently down, \u2026 Project ID: c5d9c906-2b61-424e-967b-fa3e27d09d44\"\n   Extracted Project ID: c5d9c906-2b61-424e-967b-fa3e27d09d44\n   Plan: advanced\n   Total Project Revenue: 28615\n   Requester Email: brian.liu@gibbs.biz\n   Total User Revenue: 41510\n   Category: Downtime\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n3) Ticket ID: 143\n   Created At: 2025-01-03T20:32:35.345840+00:00\n   Description: \"I am unable to access my project on Hasura Cloud \u2026 Project ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\"\n   Extracted Project ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\n   Plan: base\n   Total Project Revenue: 0\n   Requester Email: kimberly.riddle@harrison.org\n   Total User Revenue: 45486\n   Category: Downtime\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n4) Ticket ID: 280\n   Created At: 2024-04-24T01:00:00+00:00\n   Description: \"Hello, \u2026 We are experiencing a critical issue where we cannot reach our Hasura project \u2026 Project ID: 2a3b7790-2cc4-48b5-a290-e6e880bb76e2\"\n   Extracted Project ID: 2a3b7790-2cc4-48b5-a290-e6e880bb76e2\n   Plan: advanced\n   Total Project Revenue: 12710\n   Requester Email: michael.jones@johnson-brady.com\n   Total User Revenue: 63558\n   Category: Downtime\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n5) Ticket ID: 205\n   Created At: 2024-09-29T03:00:00+00:00\n   Description: \"Hello, \u2026 all our GraphQL operations are failing with 500 Internal Server Error responses \u2026 Project ID: 5f4d1be1-61b7-4b11-ba51-6e9b7f094c82\"\n   Extracted Project ID: 5f4d1be1-61b7-4b11-ba51-6e9b7f094c82\n   Plan: advanced\n   Total Project Revenue: 16544\n   Requester Email: richard.trevino@hughes-tyler.org\n   Total User Revenue: 16544\n   Category: Downtime\n\n<tickets>\n261\n246\n143\n280\n205\n</tickets>",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738598741,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 9679,
+        "prompt_tokens": 15904,
+        "total_tokens": 25583,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 8768,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 15744
+        }
+      }
+    }
+  }
+]

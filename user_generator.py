@@ -231,15 +231,15 @@ class DatabaseInserter:
             template="(%s, %s, %s, %s, %s)"
         )
         
-    def insert_data_generation_seeds(self, projects: List[Dict], initial_request_pattern_type: str, price_per_model_advanced: int, support_request_pattern_type: str, ticket_frequency: str):
+    def insert_data_generation_seeds(self, projects: List[Dict], initial_request_pattern_type: str, price_per_model_advanced: int, ticket_frequency: str):
         project_values = [
-            (project['id'], initial_request_pattern_type, price_per_model_advanced, support_request_pattern_type, ticket_frequency) for project in projects
+            (project['id'], initial_request_pattern_type, price_per_model_advanced, ticket_frequency) for project in projects
         ]
 
         execute_values(
             self.cursor,
             """
-            INSERT INTO data_generation_seeds(project_id, initial_request_pattern_type, price_per_model_advanced, support_request_pattern_type, ticket_frequency)
+            INSERT INTO data_generation_seeds(project_id, initial_request_pattern_type, price_per_model_advanced, ticket_frequency)
             VALUES %s
             """,
             project_values,
@@ -258,7 +258,6 @@ def generate_and_insert_user(connection_params: Dict[str, str],
                            plan:str,
                            initial_request_pattern_type: str,
                            price_per_model_advanced: int,
-                           support_request_pattern_type: str,
                            ticket_frequency: str,
                            start_date: datetime = datetime(2022, 1, 1),
                            end_date: datetime = datetime.now(),
@@ -286,7 +285,7 @@ def generate_and_insert_user(connection_params: Dict[str, str],
         db_inserter.insert_user(dataset['user'])
         db_inserter.insert_projects(dataset['projects'])
         db_inserter.insert_plan_changes(dataset['plan_changes'])
-        db_inserter.insert_data_generation_seeds(dataset['projects'], initial_request_pattern_type, price_per_model_advanced, support_request_pattern_type, ticket_frequency)
+        db_inserter.insert_data_generation_seeds(dataset['projects'], initial_request_pattern_type, price_per_model_advanced,ticket_frequency)
         
         # Commit and close
         db_inserter.commit()
@@ -323,7 +322,7 @@ def main():
         db_inserter.insert_user(dataset['user'])
         db_inserter.insert_projects(dataset['projects'])
         db_inserter.insert_plan_changes(dataset['plan_changes'])
-        db_inserter.insert_data_generation_seeds(dataset['projects'], "intermittent", 60, "average", "medium")
+        db_inserter.insert_data_generation_seeds(dataset['projects'], "intermittent", 60, "average")
         
         # Commit the transaction
         db_inserter.commit()
