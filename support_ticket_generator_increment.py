@@ -116,6 +116,8 @@ def update_tickets(num_tickets: Optional[int] = None, num_open_tickets: Optional
         for project_id, count in project_counts.items():
             print(f"Project {project_id}: Created {count} tickets")
             
+        return results
+            
     finally:
         conn.close()
         cp_conn.close()
@@ -133,5 +135,17 @@ if __name__ == "__main__":
     group.add_argument('--num-open-tickets', type=int,
                       help='Number of open tickets to create')
     
+    # Add output file argument
+    parser.add_argument('--output-file', type=str, required=True,
+                      help='Path to the output file to store results')
+    
     args = parser.parse_args()
-    update_tickets(num_tickets=args.num_tickets, num_open_tickets=args.num_open_tickets)
+    results = update_tickets(num_tickets=args.num_tickets, num_open_tickets=args.num_open_tickets)
+    
+    # Store results in the specified output file
+    try:
+        with open(args.output_file, 'w') as f:
+            json.dump(results, f, indent=2)
+        print(f"\nResults have been saved to {args.output_file}")
+    except Exception as e:
+        print(f"Error saving results to file: {str(e)}")

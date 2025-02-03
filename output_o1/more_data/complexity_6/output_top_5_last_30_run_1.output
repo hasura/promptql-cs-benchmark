@@ -1,0 +1,293 @@
+[
+  {
+    "timestamp": "2025-02-03T20:56:52.919903",
+    "response": {
+      "id": "chatcmpl-AwsdHNU16ePvYY1NmMp92nw6e0chf",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_mxaTOqQ6sRnaOSqdAHqQ3xrt",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, description, created_at, requester_id FROM support_ticket WHERE status = 'open' ORDER BY created_at DESC LIMIT 30;\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738596395,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 2298,
+        "prompt_tokens": 1187,
+        "total_tokens": 3485,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 2240,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-03T20:58:04.758503",
+    "response": {
+      "id": "chatcmpl-AwsdZVtjyxs7onmHY8l48FCvIYAeb",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_wrOEd4mHtL1ZYlb8w2YtS6zL",
+                "function": {
+                  "arguments": "{\"sql\":\"WITH last_ppc AS (\\n  SELECT DISTINCT ON (project_id) project_id, plan_id, created_at\\n  FROM project_plan_changelogs\\n  WHERE project_id IN (\\n    '2a8d4b07-c391-450f-8153-f6521f8a20a0',\\n    '570737f1-ada3-413b-bec5-e82b6c324fb3',\\n    '936120f2-5ed2-4bcb-af57-e9b3eeacee81',\\n    '76de9616-3d7b-49d7-b909-e154dda91489',\\n    '3039d26f-0ab2-4501-8e64-07b16526115a',\\n    '386d8856-9020-47eb-a21a-2ebe6b81428e',\\n    'd5dc02fc-707a-4084-854a-79f5866d4dd3',\\n    '5ad39764-9b9b-48cb-8819-43ab40694b06',\\n    '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44',\\n    '8edf6e2c-99b6-49af-b342-4aefe811b2f3',\\n    '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82',\\n    '11ee5798-e7e9-4b78-a087-9e7c1d05751c',\\n    'e452f72b-66e1-4c56-ada2-3525ab8fb280',\\n    'b750445e-fba4-4644-b306-1550cfefad8b',\\n    '0a2cfc2f-be0c-463e-b3ba-87862a1e79c3',\\n    'e75d06e3-6ec1-4649-bc83-7d19cd07fd77',\\n    '4aeefe6f-7dee-4395-82be-6d8e51aea9fd',\\n    '598b3a1b-0166-420f-ac63-fa734cbf5c63',\\n    'c5d9c906-2b61-424e-967b-fa3e27d09d44',\\n    '2dcc6504-ce95-4167-8a18-8ffc21d3c071',\\n    '5267a67e-d8ea-4154-b385-6269b033a471',\\n    'fc2590f9-6bdc-43e3-9984-9246fd96f2dd',\\n    '4e291cdc-0aab-4573-86a4-c82490831964',\\n    '4d76af73-0ea4-4d9f-9247-78ab43a23704'\\n  )\\n  ORDER BY project_id, created_at DESC\\n)\\nSELECT last_ppc.project_id, pl.name AS plan_name\\nFROM last_ppc\\nLEFT JOIN plans pl ON pl.id = last_ppc.plan_id;\\n\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738596413,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 8782,
+        "prompt_tokens": 6202,
+        "total_tokens": 14984,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 8000,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1024
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-03T20:58:22.955675",
+    "response": {
+      "id": "chatcmpl-AwsejEcDgRmpLTL4w52DXiZzGvqQ6",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_8iHFPq1wsfUU42nprBQY08As",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT st.id AS ticket_id, su.email AS requester_email, st.created_at\\nFROM support_ticket st\\nJOIN support_user su ON st.requester_id = su.id\\nWHERE st.id IN (\\n143,166,287,288,209,289,169,286,251,139,144,215,250,205,290,261,237,284,285,265,178,203,201,246,283,193,277,186,282,180\\n)\"}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738596485,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 2112,
+        "prompt_tokens": 7988,
+        "total_tokens": 10100,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 1984,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 6016
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-03T20:59:01.145927",
+    "response": {
+      "id": "chatcmpl-Awsf1Xo97eVrkjWvrJLcgsDbYJN1s",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_QB3dw64OaRv5MFOK6ZzXEBwu",
+                "function": {
+                  "arguments": "{\"sql\":\"SELECT id, email\\nFROM users\\nWHERE email IN (\\n  'kimberly.riddle@harrison.org',\\n  'aaron.williams@mendez-stewart.com',\\n  'john.nguyen@miller-ewing.com',\\n  'jennifer.brown@phelps-lewis.com',\\n  'andrew.stokes@arnold.com',\\n  'anthony.lam@berry-smith.biz',\\n  'sandra.davis@mckenzie.net',\\n  'lisa.fields@graves.com',\\n  'william.robinson@williams-burgess.biz',\\n  'john.reed@becker.com',\\n  'jacob.lambert@gomez.com',\\n  'richard.trevino@hughes-tyler.org',\\n  'aaron.davis@cooper-schultz.com',\\n  'dana.hudson@shaw.info',\\n  'brian.liu@gibbs.biz',\\n  'gina.brooks@medina-johnson.com',\\n  'maria.leblanc@butler.com',\\n  'aaron.williams@mendez-stewart.com',\\n  'tanya.williams@davis.com',\\n  'jerry.white@ferguson.com',\\n  'john.nguyen@miller-ewing.com' -- repeated\\n)\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738596503,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 4245,
+        "prompt_tokens": 9684,
+        "total_tokens": 13929,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 3904,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 7808
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-03T20:59:23.201646",
+    "response": {
+      "id": "chatcmpl-AwsfdJ7raV0PGFgt2aieTwsUalC7a",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_m6CuDqLxFIGFGixLNiyCZOkl",
+                "function": {
+                  "arguments": "{\"sql\":\"-- 1) Get the owner of each project\\nWITH project_owners AS (\\n  SELECT p.id AS project_id, p.owner_id\\n  FROM projects p\\n  WHERE p.id IN (\\n        '2a8d4b07-c391-450f-8153-f6521f8a20a0',\\n        '570737f1-ada3-413b-bec5-e82b6c324fb3',\\n        '936120f2-5ed2-4bcb-af57-e9b3eeacee81',\\n        '76de9616-3d7b-49d7-b909-e154dda91489',\\n        '3039d26f-0ab2-4501-8e64-07b16526115a',\\n        '386d8856-9020-47eb-a21a-2ebe6b81428e',\\n        'd5dc02fc-707a-4084-854a-79f5866d4dd3',\\n        '5ad39764-9b9b-48cb-8819-43ab40694b06',\\n        '9b8f8c9a-7f76-4bc2-95c9-652b13f13a44',\\n        '8edf6e2c-99b6-49af-b342-4aefe811b2f3',\\n        '5f4d1be1-61b7-4b11-ba51-6e9b7f094c82',\\n        '11ee5798-e7e9-4b78-a087-9e7c1d05751c',\\n        'e452f72b-66e1-4c56-ada2-3525ab8fb280',\\n        'b750445e-fba4-4644-b306-1550cfefad8b',\\n        '0a2cfc2f-be0c-463e-b3ba-87862a1e79c3',\\n        'e75d06e3-6ec1-4649-bc83-7d19cd07fd77',\\n        '4aeefe6f-7dee-4395-82be-6d8e51aea9fd',\\n        '598b3a1b-0166-420f-ac63-fa734cbf5c63',\\n        'c5d9c906-2b61-424e-967b-fa3e27d09d44',\\n        '2dcc6504-ce95-4167-8a18-8ffc21d3c071',\\n        '5267a67e-d8ea-4154-b385-6269b033a471',\\n        'fc2590f9-6bdc-43e3-9984-9246fd96f2dd',\\n        '4e291cdc-0aab-4573-86a4-c82490831964',\\n        '4d76af73-0ea4-4d9f-9247-78ab43a23704'\\n    )\\n    AND p.deleted_at IS NULL\\n),\\n-- 2) Summarize revenue per project\\nproject_revenue AS (\\n  SELECT project_id, COALESCE(SUM(amount), 0) AS total_project_revenue\\n  FROM invoice_item\\n  GROUP BY project_id\\n),\\n-- 3) Summarize revenue per user (owner)\\nuser_revenue AS (\\n  SELECT p.owner_id AS user_id, COALESCE(SUM(ii.amount), 0) AS total_user_revenue\\n  FROM invoice_item ii\\n  JOIN projects p ON p.id = ii.project_id\\n  WHERE p.deleted_at IS NULL\\n  GROUP BY p.owner_id\\n)\\nSELECT \\n  po.project_id,\\n  po.owner_id,\\n  pr.total_project_revenue,\\n  ur.total_user_revenue\\nFROM project_owners po\\nLEFT JOIN project_revenue pr ON pr.project_id = po.project_id\\nLEFT JOIN user_revenue ur ON ur.user_id = po.owner_id\\nORDER BY po.project_id;\"}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738596541,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 2234,
+        "prompt_tokens": 10939,
+        "total_tokens": 13173,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 1280,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 9600
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-03T21:01:00.389443",
+    "response": {
+      "id": "chatcmpl-AwsfzmKYDhO4OrpXuQtH4eQPcTrV1",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Below are the top 5 open support tickets (among the most recent 30 open ones) after applying the specified classification and scoring rules. Each ticket entry shows:\n\n\u2022 Ticket ID  \n\u2022 Description  \n\u2022 Extracted Project ID  \n\u2022 Most Recent Plan of the Project  \n\u2022 Total Revenue Generated by That Project  \n\u2022 Requester\u2019s Email  \n\u2022 Total Revenue Generated by All Projects of the Requester  \n\u2022 Created-At Time of the Ticket  \n\u2022 Classified Category  \n\n-------------------------------------------------------------------------------\n1) TICKET ID: 261\n   --------------------------------------------------\n   DESCRIPTION:\n     \"Hi,\n      We are experiencing significant performance degradation in our application's permissions operations. After upgrading to version v2.47.2, we've noticed that queries involving role-based permissions are much slower than before. We're using Postgres as our database.\n\n      Could you please assist us in resolving this issue?\n\n      Thank you,\n      [Your Name]\n\n      Project ID: e452f72b-66e1-4c56-ada2-3525ab8fb280\"\n   EXTRACTED PROJECT ID: e452f72b-66e1-4c56-ada2-3525ab8fb280\n   PLAN: Advanced\n   PROJECT REVENUE: 45486\n   REQUESTER EMAIL: kimberly.riddle@harrison.org\n   TOTAL REVENUE (REQUESTER): 45486\n   CREATED AT: 2024-09-26T06:00:00+00:00\n   CLASSIFICATION: Performance\n\n-------------------------------------------------------------------------------\n2) TICKET ID: 143\n   --------------------------------------------------\n   DESCRIPTION:\n     \"I am unable to access my project on Hasura Cloud. When I try to open the project dashboard, it fails to load and shows an error message. This is critically impacting our production environment and needs immediate attention.\n\n      Project ID: abc123\n\n      We are using PostgreSQL as our database.\n\n      Version: v2.41.0\n\n      Please assist as soon as possible.\n\n      Thank you.\n\n      Project ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\"\n   EXTRACTED PROJECT ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\n   PLAN: Base\n   PROJECT REVENUE: 0\n   REQUESTER EMAIL: kimberly.riddle@harrison.org\n   TOTAL REVENUE (REQUESTER): 45486\n   CREATED AT: 2025-01-03T20:32:35.345840+00:00\n   CLASSIFICATION: Downtime\n\n-------------------------------------------------------------------------------\n3) TICKET ID: 246\n   --------------------------------------------------\n   DESCRIPTION:\n     \"Hello,\n\n      Our production Hasura service is currently down, and all API requests to our GraphQL endpoints are failing with 500 errors. This is causing a critical outage for our application and impacting all our users.\n\n      We are using Postgres as our database backend.\n\n      Version: v2.48.5\n\n      Please investigate and resolve this issue immediately.\n\n      Thank you,\n      John Doe\n\n      Project ID: c5d9c906-2b61-424e-967b-fa3e27d09d44\"\n   EXTRACTED PROJECT ID: c5d9c906-2b61-424e-967b-fa3e27d09d44\n   PLAN: Advanced\n   PROJECT REVENUE: 28615\n   REQUESTER EMAIL: brian.liu@gibbs.biz\n   TOTAL REVENUE (REQUESTER): 39395\n   CREATED AT: 2024-07-27T08:00:00+00:00\n   CLASSIFICATION: Downtime\n\n-------------------------------------------------------------------------------\n4) TICKET ID: 205\n   --------------------------------------------------\n   DESCRIPTION:\n     \"Hello,\n\n      We are experiencing a critical production issue where all our GraphQL operations are failing with 500 Internal Server Error responses. This is affecting all our users and needs immediate attention.\n\n      Our backend uses PostgreSQL as the database, and we're running Hasura version v2.47.3.\n\n      We haven't made any recent changes to our setup. Could you please investigate and help resolve this issue as soon as possible?\n\n      Thank you.\n\n      Project ID: 5f4d1be1-61b7-4b11-ba51-6e9b7f094c82\"\n   EXTRACTED PROJECT ID: 5f4d1be1-61b7-4b11-ba51-6e9b7f094c82\n   PLAN: Advanced\n   PROJECT REVENUE: 16544\n   REQUESTER EMAIL: richard.trevino@hughes-tyler.org\n   TOTAL REVENUE (REQUESTER): 16544\n   CREATED AT: 2024-09-29T03:00:00+00:00\n   CLASSIFICATION: Downtime\n\n-------------------------------------------------------------------------------\n5) TICKET ID: 285\n   --------------------------------------------------\n   DESCRIPTION:\n     \"Hi support team,\n\n      We're experiencing severe performance issues in our production environment. Our GraphQL queries are responding very slowly, and we're noticing resource exhaustion on our servers.\n\n      Details:\n      - Database: PostgreSQL\n      - Version: v2.46.2\n\n      This issue is affecting our users, and we need urgent assistance to resolve this problem.\n\n      Please let us know what additional information you need from us to diagnose and fix this issue.\n\n      Thank you.\n\n      Project ID: e75d06e3-6ec1-4649-bc83-7d19cd07fd77\"\n   EXTRACTED PROJECT ID: e75d06e3-6ec1-4649-bc83-7d19cd07fd77\n   PLAN: Advanced\n   PROJECT REVENUE: 26973\n   REQUESTER EMAIL: gina.brooks@medina-johnson.com\n   TOTAL REVENUE (REQUESTER): 31783\n   CREATED AT: 2024-08-27T05:00:00+00:00\n   CLASSIFICATION: Performance\n\n-------------------------------------------------------------------------------\n<tickets>\n261\n143\n246\n205\n285\n</tickets>",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738596563,
+      "model": "o1-2024-12-17",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_d91c966719",
+      "usage": {
+        "completion_tokens": 11038,
+        "prompt_tokens": 13753,
+        "total_tokens": 24791,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 9728,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 10752
+        }
+      }
+    }
+  }
+]
