@@ -39,6 +39,7 @@ psql -h localhost -U postgres -d support_tickets_new -f support_tickets_dump_feb
 
 ```bash
 cd my-assistant
+ddn supergraph build local
 docker compose up -d
 ddn console --local
 ```
