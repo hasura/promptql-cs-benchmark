@@ -8,6 +8,7 @@ from datetime import datetime, date, timedelta
 from decimal import Decimal
 import tempfile
 import subprocess
+import argparse
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -204,7 +205,7 @@ Additional Instructions:
         self.messages = self.init_messages.copy()
         self.api_responses = []
 
-    async def process_query(self, query: str) -> str:
+    async def process_query(self, query: str, model: str) -> str:
         """Process a query using available tools and GPT-4 while maintaining conversation history"""
         # Add the new user query to the conversation history
         self.messages.append({"role": "user", "content": query})
@@ -215,13 +216,15 @@ Additional Instructions:
             while tool_loop_count < MAX_TOOL_LOOPS:
                 print(f"\n[{datetime.now()}] waiting for llm response...")
                 completion = await self.client.chat.completions.create(
-                    model="o1",
+                    model=model,
                     messages=self.messages,
                     tools=self.db_tool.tool_schemas,
                     tool_choice="auto",
                 )
                 print(f"[{datetime.now()}] received llm response...\n")
-                print(f"Usage: {completion.usage.model_dump()}")
+                print(
+                    f"Model: {completion.model} Usage: {completion.usage.model_dump()}"
+                )
 
                 # Store the API response
                 self.api_responses.append(
@@ -304,7 +307,7 @@ Additional Instructions:
                     )
 
             final_completion = await self.client.chat.completions.create(
-                model="o1", messages=self.messages
+                model=model, messages=self.messages
             )
 
             # Store the final API response
@@ -355,6 +358,12 @@ def execute_python_code(python_code: str, data_values: str = "[]") -> Dict[str, 
 
 
 async def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--model", type=str, default="o3-mini", help="Model name (eg: o1, o3-mini)"
+    )
+    args = parser.parse_args()
+
     assistant = AIAssistant()
 
     try:
@@ -385,8 +394,8 @@ async def main():
             if not query:
                 continue
 
-            response = await assistant.process_query(query)
-            print("\nO1's response:")
+            response = await assistant.process_query(query=query, model=args.model)
+            print("\nModel's response:")
             print(response)
 
     except KeyboardInterrupt:
