@@ -390,9 +390,10 @@ def create_tickets(
     conn,
     cp_conn,
     project_id: str,
-    ticket_frequency: str,
+    num_tickets: int,
+    ticket_status: str | None = None,
     start_date: datetime | None = None
-) -> List[int]:
+) -> tuple[List[int], List[str]]:
     """
     Generate support tickets based on project metrics and interaction patterns
     """
@@ -417,23 +418,7 @@ def create_tickets(
     
     project_plan = get_project_plan(cp_cursor, project_id=project_id, date=datetime.now(timezone.utc))
 
-    if ticket_frequency == "low" and project_plan in ['base', 'advanced']:
-        num_tickets = random.randint(0, int(months_diff/8))
-    elif ticket_frequency == 'medium' and project_plan in ['base', 'advanced']:
-        num_tickets = random.randint(1, max(1, int(months_diff/4)))
-    elif ticket_frequency == 'high' and project_plan in ['base', 'advanced']:
-        num_tickets = random.randint(2, max(2, int(months_diff/2)))
-    elif ticket_frequency == "low" and project_plan == "free":
-        num_tickets = 0
-    elif ticket_frequency == "medium" and project_plan == "free":
-        num_tickets = random.randint(0, 1)
-    elif ticket_frequency == "high" and project_plan == "free":
-        num_tickets = random.randint(0, 2)
-    else:
-        num_tickets = random.randint(0, 2)
-
-    print('number of support tickets to generate: ', num_tickets,
-          ', plan: ', project_plan, ', ticket frequency: ', ticket_frequency)
+    print('number of support tickets to generate: ', num_tickets, ', plan: ', project_plan)
 
     # Get significant dates for ticket creation
     significant_dates = get_significant_dates(
@@ -510,7 +495,8 @@ def create_tickets(
                 "status": "open",
                 "subject": subject,
                 "description": description,
-                "type": random.choices([None, str(ticket_type)], weights=[0.75, 0.25])[0],
+                "type": random.choices([None, ticket_type.value], weights=[0.75, 0.25])[0],
+                "original_type": ticket_type.value,
                 # Using Support_User agent ID
                 "assignee_id": random.choice(agent_ids),
                 "requester_id": requester_support_id,     # Using Support_User customer ID
@@ -531,31 +517,31 @@ def create_tickets(
     """
 
     ticket_ids = []
+    ticket_types = []
     for ticket in tickets:
         cursor.execute(insert_query, ticket)
         ticket_id = cursor.fetchone()[0]
         ticket_ids.append(ticket_id)
+        ticket_types.append(ticket['original_type'])
+        
         response_pattern = random.choices(
             ['smooth', 'average', 'struggling'], weights=[0.25, 0.5, 0.25])[0]
         if ticket['priority'] == 'high':
             num_comments = random.randint(4, 10)
             status = random.choices(
-                ['open', 'pending', 'closed'], weights=[0.2, 0.1, 0.7])[0]
+                ['open', 'pending', 'closed'], weights=[0.2, 0.1, 0.7])[0] if ticket_status is None else ticket_status
         elif ticket['priority'] == 'medium':
             num_comments = random.randint(0, 6)
             status = random.choices(
-                ['open', 'pending', 'closed'], weights=[0.2, 0.3, 0.5])[0]
+                ['open', 'pending', 'closed'], weights=[0.2, 0.3, 0.5])[0] if ticket_status is None else ticket_status
         elif ticket['priority'] == 'low':
             num_comments = random.randint(0, 4)
             status = random.choices(
-                ['open', 'pending', 'closed'], weights=[0.5, 0.3, 0.2])[0]
+                ['open', 'pending', 'closed'], weights=[0.5, 0.3, 0.2])[0] if ticket_status is None else ticket_status
         else:
             num_comments = random.randint(0, 2)
             status = random.choices(
-                ['open', 'pending', 'closed'], weights=[0.3, 0.3, 0.4])[0]
-
-        if status == "closed":
-            num_comments = num_comments + 1  # avoid
+                ['open', 'pending', 'closed'], weights=[0.3, 0.3, 0.4])[0] if ticket_status is None else ticket_status
 
         print('EXPECTED STATUS: ', status)
         status, ticket_comments = get_ai_generated_ticket_comments(
@@ -582,7 +568,7 @@ def create_tickets(
 
     conn.commit()
     cp_conn.commit()
-    return ticket_ids
+    return ticket_ids, ticket_types
 
 
 def get_ai_generated_description(proto_description)  -> Tuple[str, str] | None:
@@ -710,19 +696,18 @@ Generate comments with the following properties
         return 'open', []
 
 
-def generate_and_insert_support_tickets(cp_connection_params, st_connection_params, project_id, support_request_pattern_type, ticket_frequency):
+def generate_and_insert_support_tickets(cp_connection_params, st_connection_params, project_id, num_tickets):
     conn = psycopg2.connect(**st_connection_params)
 
     cp_conn = psycopg2.connect(**cp_connection_params)
-
+    
     try:
         # Create tickets for a specific project
         ticket_ids = create_tickets(
             conn,
             cp_conn,
             project_id,
-            support_request_pattern_type,
-            ticket_frequency
+            num_tickets=num_tickets
         )
         print(f"Created {len(ticket_ids)} tickets with IDs: {ticket_ids}")
         return ticket_ids
@@ -731,7 +716,18 @@ def generate_and_insert_support_tickets(cp_connection_params, st_connection_para
         conn.close()
         cp_conn.close()
 
-def update_tickets():
+if __name__ == "__main__":
+    import argparse
+
+    # Set up argument parser
+    parser = argparse.ArgumentParser(description='Create support tickets for a project')
+    parser.add_argument('--project-id', type=str, required=True,
+                       help='UUID of the project')
+    parser.add_argument('--num-tickets', type=int, required=True,
+                       help='Number of tickets to create')
+
+    args = parser.parse_args()
+
     # Database connection parameters
     conn = psycopg2.connect(
         dbname="support_tickets_new",
@@ -739,109 +735,22 @@ def update_tickets():
         password="postgres",
         host="localhost"
     )
-
     cp_conn = psycopg2.connect(
         dbname="control_plane_new",
         user="postgres",
         password="postgres",
         host="localhost"
     )
-
     try:
-        cursor = cp_conn.cursor()
-        
-        # Get all projects from data_generation_seeds
-        cursor.execute("""
-            SELECT project_id, ticket_frequency 
-            FROM data_generation_seeds
-            order by project_id
-        """)
-        
-        projects = cursor.fetchall()
-        
-        if not projects:
-            print("No projects found in data_generation_seeds table")
-            return
-        
-        results = []
-        errors = []
-        
-        # Process each project
-        for project_id, ticket_frequency in projects:
-            try:
-                print(f"Processing project: {project_id} with frequency: {ticket_frequency}")
-                
-                # Create tickets for this project
-                ticket_ids = create_tickets(
-                    conn,
-                    cp_conn,
-                    project_id=project_id,
-                    ticket_frequency=ticket_frequency
-                )
-                
-                results.append({
-                    'project_id': project_id,
-                    'tickets_created': len(ticket_ids),
-                    'ticket_ids': ticket_ids
-                })
-                
-                print(f"Created {len(ticket_ids)} tickets for project {project_id}")
-                
-            except Exception as e:
-                error_msg = f"Error processing project {project_id}: {str(e)}"
-                print(error_msg)
-                errors.append(error_msg)
-                raise e
-                continue
-        
-        # Print summary
-        print("\nProcessing completed!")
-        print(f"Successfully processed {len(results)} projects")
-        if errors:
-            print(f"\nEncountered {len(errors)} errors:")
-            for error in errors:
-                print(f"- {error}")
-        
-        print("\nDetailed results:")
-        for result in results:
-            print(f"Project {result['project_id']}: Created {result['tickets_created']} tickets")
-            
+        # Create tickets for a specific project
+        ticket_ids = create_tickets(
+            conn,
+            cp_conn,
+            project_id=args.project_id,
+            num_tickets=args.num_tickets,
+            # start_date = datetime(2024, 11, 1)
+        )
+        print(f"Created {len(ticket_ids)} tickets with IDs: {ticket_ids}")
     finally:
         conn.close()
         cp_conn.close()
-
-if __name__ == "__main__":
-    import sys
-
-    if len(sys.argv) > 1 and sys.argv[1] == "update_tickets":
-        update_tickets()
-    else:
-        # Database connection parameters
-        conn = psycopg2.connect(
-            dbname="support_tickets_new",
-            user="postgres",
-            password="postgres",
-            host="localhost"
-        )
-
-        cp_conn = psycopg2.connect(
-            dbname="control_plane_new",
-            user="postgres",
-            password="postgres",
-            host="localhost"
-        )
-
-        try:
-            # Create tickets for a specific project
-            ticket_ids = create_tickets(
-                conn,
-                cp_conn,
-                project_id="1b40dfe0-02f6-4e2c-aaf8-b275434b2dae",
-                ticket_frequency='high',
-                # start_date = datetime(2024, 11, 1)
-            )
-            print(f"Created {len(ticket_ids)} tickets with IDs: {ticket_ids}")
-
-        finally:
-            conn.close()
-            cp_conn.close()
