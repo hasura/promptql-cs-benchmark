@@ -1,27 +1,234 @@
 {
-    "identifier": "support_ticket_metrics",
-    "title": "Support Ticket Metrics by Category",
+    "identifier": "ticket_classification_metrics",
+    "title": "Support Ticket Classification Metrics",
     "artifact_type": "table",
     "data": [
       {
         "category": "free_tier_bugs",
         "issue_count": 9,
-        "mean_time": 300.78
+        "mean_time": 300.78,
+        "issues": [
+          {
+            "project_id": "9b8f8c9a-7f76-4bc2-95c9-652b13f13a44",
+            "issue_id": "144"
+          },
+          {
+            "project_id": "4498c412-ba05-4840-8a6f-d0ac8aec6d60",
+            "issue_id": "175"
+          },
+          {
+            "project_id": "4fbe297d-f58e-477e-a6c9-f5c98cb92555",
+            "issue_id": "187"
+          },
+          {
+            "project_id": "8ed9b9ee-91e0-4086-a614-2a1a42894b50",
+            "issue_id": "214"
+          },
+          {
+            "project_id": "76de9616-3d7b-49d7-b909-e154dda91489",
+            "issue_id": "209"
+          },
+          {
+            "project_id": "a8ac56dc-7d19-4d9f-bee8-ea032f5d07d8",
+            "issue_id": "230"
+          },
+          {
+            "project_id": "2dcc6504-ce95-4167-8a18-8ffc21d3c071",
+            "issue_id": "283"
+          },
+          {
+            "project_id": "936120f2-5ed2-4bcb-af57-e9b3eeacee81",
+            "issue_id": "288"
+          },
+          {
+            "project_id": "3039d26f-0ab2-4501-8e64-07b16526115a",
+            "issue_id": "289"
+          }
+        ]
       },
       {
         "category": "free_tier_non_bugs",
         "issue_count": 0,
-        "mean_time": 0
+        "mean_time": 0,
+        "issues": []
       },
       {
         "category": "paid_tiers_performance",
-        "issue_count": 14,
-        "mean_time": 231.71
+        "issue_count": 19,
+        "mean_time": 242,
+        "issues": [
+          {
+            "project_id": "4d76af73-0ea4-4d9f-9247-78ab43a23704",
+            "issue_id": "180"
+          },
+          {
+            "project_id": "386d8856-9020-47eb-a21a-2ebe6b81428e",
+            "issue_id": "169"
+          },
+          {
+            "project_id": "4e291cdc-0aab-4573-86a4-c82490831964",
+            "issue_id": "182"
+          },
+          {
+            "project_id": "5267a67e-d8ea-4154-b385-6269b033a471",
+            "issue_id": "190"
+          },
+          {
+            "project_id": "4e291cdc-0aab-4573-86a4-c82490831964",
+            "issue_id": "186"
+          },
+          {
+            "project_id": "5ad39764-9b9b-48cb-8819-43ab40694b06",
+            "issue_id": "203"
+          },
+          {
+            "project_id": "a2976ee4-8966-4ed9-8def-2cab3e171cd8",
+            "issue_id": "228"
+          },
+          {
+            "project_id": "b750445e-fba4-4644-b306-1550cfefad8b",
+            "issue_id": "237"
+          },
+          {
+            "project_id": "d5dc02fc-707a-4084-854a-79f5866d4dd3",
+            "issue_id": "250"
+          },
+          {
+            "project_id": "d5dc02fc-707a-4084-854a-79f5866d4dd3",
+            "issue_id": "251"
+          },
+          {
+            "project_id": "e452f72b-66e1-4c56-ada2-3525ab8fb280",
+            "issue_id": "261"
+          },
+          {
+            "project_id": "e75d06e3-6ec1-4649-bc83-7d19cd07fd77",
+            "issue_id": "264"
+          },
+          {
+            "project_id": "e75d06e3-6ec1-4649-bc83-7d19cd07fd77",
+            "issue_id": "265"
+          },
+          {
+            "project_id": "eabbc719-c5cb-461c-9144-e531de1b0617",
+            "issue_id": "267"
+          },
+          {
+            "project_id": "fa2a7ebd-b7d9-46e4-9e8c-3e103d08a563",
+            "issue_id": "275"
+          },
+          {
+            "project_id": "2a3b7790-2cc4-48b5-a290-e6e880bb76e2",
+            "issue_id": "280"
+          },
+          {
+            "project_id": "598b3a1b-0166-420f-ac63-fa734cbf5c63",
+            "issue_id": "282"
+          },
+          {
+            "project_id": "0a2cfc2f-be0c-463e-b3ba-87862a1e79c3",
+            "issue_id": "284"
+          },
+          {
+            "project_id": "e75d06e3-6ec1-4649-bc83-7d19cd07fd77",
+            "issue_id": "285"
+          }
+        ]
       },
       {
         "category": "paid_tiers_non_performance",
-        "issue_count": 27,
-        "mean_time": 244.63
+        "issue_count": 22,
+        "mean_time": 238.68,
+        "issues": [
+          {
+            "project_id": "5ad39764-9b9b-48cb-8819-43ab40694b06",
+            "issue_id": "139"
+          },
+          {
+            "project_id": "2a8d4b07-c391-450f-8153-f6521f8a20a0",
+            "issue_id": "143"
+          },
+          {
+            "project_id": "529fbeeb-39fe-46bc-9b22-aa898eb82745",
+            "issue_id": "150"
+          },
+          {
+            "project_id": "4aeefe6f-7dee-4395-82be-6d8e51aea9fd",
+            "issue_id": "178"
+          },
+          {
+            "project_id": "2a8d4b07-c391-450f-8153-f6521f8a20a0",
+            "issue_id": "166"
+          },
+          {
+            "project_id": "5267a67e-d8ea-4154-b385-6269b033a471",
+            "issue_id": "188"
+          },
+          {
+            "project_id": "5267a67e-d8ea-4154-b385-6269b033a471",
+            "issue_id": "193"
+          },
+          {
+            "project_id": "529fbeeb-39fe-46bc-9b22-aa898eb82745",
+            "issue_id": "195"
+          },
+          {
+            "project_id": "529fbeeb-39fe-46bc-9b22-aa898eb82745",
+            "issue_id": "197"
+          },
+          {
+            "project_id": "598b3a1b-0166-420f-ac63-fa734cbf5c63",
+            "issue_id": "201"
+          },
+          {
+            "project_id": "5f4d1be1-61b7-4b11-ba51-6e9b7f094c82",
+            "issue_id": "205"
+          },
+          {
+            "project_id": "8edf6e2c-99b6-49af-b342-4aefe811b2f3",
+            "issue_id": "215"
+          },
+          {
+            "project_id": "9aed3be2-245d-4e1e-9040-5317a8a8daf1",
+            "issue_id": "224"
+          },
+          {
+            "project_id": "c73759e8-6f3d-4607-b276-8d61011c124d",
+            "issue_id": "247"
+          },
+          {
+            "project_id": "c5d9c906-2b61-424e-967b-fa3e27d09d44",
+            "issue_id": "246"
+          },
+          {
+            "project_id": "e452f72b-66e1-4c56-ada2-3525ab8fb280",
+            "issue_id": "259"
+          },
+          {
+            "project_id": "fc2590f9-6bdc-43e3-9984-9246fd96f2dd",
+            "issue_id": "277"
+          },
+          {
+            "project_id": "fc2590f9-6bdc-43e3-9984-9246fd96f2dd",
+            "issue_id": "276"
+          },
+          {
+            "project_id": "a2976ee4-8966-4ed9-8def-2cab3e171cd8",
+            "issue_id": "281"
+          },
+          {
+            "project_id": "386d8856-9020-47eb-a21a-2ebe6b81428e",
+            "issue_id": "286"
+          },
+          {
+            "project_id": "11ee5798-e7e9-4b78-a087-9e7c1d05751c",
+            "issue_id": "290"
+          },
+          {
+            "project_id": "570737f1-ada3-413b-bec5-e82b6c324fb3",
+            "issue_id": "287"
+          }
+        ]
       }
     ]
   }
