@@ -1,6 +1,7 @@
 Classify all open (status = 'open') issues into one of four categories as follows:
 
 For each ticket do the following:
+
 - get the description of the ticket
 - intelligently (without heuristics) extract the project ID from the ticket description. project IDs are UUIDs
 - get the plan the project is most recently on
@@ -16,25 +17,37 @@ For each categorization problem (bug/non-bug, performance/non-performance), do n
 
 Create an artifact containing metrics in the following format:
 
-[
+{
     "free_tier_bugs": {
       "issue_count": ...,
-      "mean_time": ...
+      "mean_time": ...,
+      "issues": [
+        { 
+          "project_id": "...",
+          "issue_id": "..."
+        }, 
+        ...
+      ]
     },
     "free_tier_non_bugs": {
       "issue_count": ...,
-      "mean_time": ...
+      "mean_time": ...,
+      "issues": ...
     },
     "paid_tiers_performance": {
       "issue_count": ...,
-      "mean_time": ...
+      "mean_time": ...,
+      "issues": ...
     },
     "paid_tiers_non_performance": {
       "issue_count": ...,
-      "mean_time": ...
+      "mean_time": ...,
+      "issues": ...
     },
     ...
-]
+}
+
+issues should be a list of objects consisting of issues (project_id and issue_id). 
 
 issue_count should be an integer and mean_time should be reported as a number of days.
 
