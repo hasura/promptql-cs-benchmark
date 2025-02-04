@@ -1,0 +1,39 @@
+Classify all open (status = 'open') issues into one of four categories as follows:
+
+For each ticket do the following:
+- get the description of the ticket
+- intelligently (without heuristics) extract the project ID from the ticket description. project IDs are UUIDs
+- get the plan the project is most recently on
+- put the issue into one of the following four categories:
+  - Free tier bug reports: if the user is in the free plan, AND the issue description is reporting a bug.
+  - Free tier non-bug reports: if the user is in the free plan, AND the issue description is NOT reporting a bug.
+  - Paid tiers performance issues: if the user is NOT in the free plan, AND the issue description is specifically reporting a performance problem.
+  - Paid tiers non-performance issues: if the user is NOT in the free plan, AND the issue description is NOT specifically reporting a performance problem.
+
+For each category, compute a count of issues along with a mean number of days that issues have been open within that category.
+
+For each categorization problem (bug/non-bug, performance/non-performance), do not use substring matching or other heuristics. Instead, analyze the issue description text intelligently.
+
+- First, respond with a description of your approach.
+- Then, execute your strategy and respond with a JSON object of metrics in the following format:
+[
+    "free_tier_bugs": {
+      "issue_count": ...,
+      "mean_time": ...
+    },
+    "free_tier_non_bugs": {
+      "issue_count": ...,
+      "mean_time": ...
+    },
+    "paid_tiers_performance": {
+      "issue_count": ...,
+      "mean_time": ...
+    },
+    "paid_tiers_non_performance": {
+      "issue_count": ...,
+      "mean_time": ...
+    },
+    ...
+]
+
+issue_count should be an integer and mean_time should be reported as a number of days.

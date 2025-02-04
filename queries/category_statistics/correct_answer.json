@@ -1,0 +1,27 @@
+{
+    "identifier": "support_ticket_metrics",
+    "title": "Support Ticket Metrics by Category",
+    "artifact_type": "table",
+    "data": [
+      {
+        "category": "free_tier_bugs",
+        "issue_count": 9,
+        "mean_time": 300.78
+      },
+      {
+        "category": "free_tier_non_bugs",
+        "issue_count": 0,
+        "mean_time": 0
+      },
+      {
+        "category": "paid_tiers_performance",
+        "issue_count": 14,
+        "mean_time": 231.71
+      },
+      {
+        "category": "paid_tiers_non_performance",
+        "issue_count": 27,
+        "mean_time": 244.63
+      }
+    ]
+  }
