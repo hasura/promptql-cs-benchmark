@@ -1,0 +1,134 @@
+Get me all support tickets where users (excluding agents) mention Hasura versions between 2.45.0 and 2.45.2:
+
+- For each support ticket, look for version mentions in:
+ * support_ticket.description
+ * support_ticket.subject
+ * Only include support_ticket_comment.body where:
+   - JOIN support_ticket_comment with support_user on support_ticket_comment.user_id = support_user.id
+   - AND support_user.role != 'agent'
+
+- Search for version patterns like using classify:
+
+- Ticket summary statistics:
+ * Total tickets mentioning any of these versions
+ * ID's of the open tickets with matching version mentions
+ * ID's of the closed tickets with matching version mentions
+ * ID's of the pending tickets with matching version mentions
+
+In the response, make sure that all ID's in the open/closed/pending tickets follow the version pattern and be careful so you do not include all open/closed/pending ticket ids.
+
+In the response, make sure that all arrays of ID's are sorted.
+
+Use this SQL:
+<sql>
+WITH user_comments AS (
+    SELECT 
+        tc.ticket_id,
+        tc.body as comment_body
+    FROM support_ticket_comment tc
+    JOIN support_user u ON tc.user_id = u.id
+    WHERE u.role != 'agent'
+)
+SELECT 
+    t.id as ticket_id,
+    t.subject,
+    t.description,
+    t.status,
+    STRING_AGG(uc.comment_body, ' ') as user_comments
+FROM support_ticket t
+LEFT JOIN user_comments uc ON t.id = uc.ticket_id
+GROUP BY t.id, t.subject, t.description, t.status
+</sql>
+
+Return Format:
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["summary", "2.45.0", "2.45.1", "2.45.2"],
+  "properties": {
+    "summary": {
+      "type": "object",
+      "required": ["total_tickets", "open_tickets", "pending_tickets", "closed_tickets"],
+      "properties": {
+        "total_tickets": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "open_tickets": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "pending_tickets": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "closed_tickets": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "2.45.0": {
+      "type": "object",
+      "required": ["tickets"],
+      "properties": {
+        "tickets": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "2.45.1": {
+      "type": "object",
+      "required": ["tickets"],
+      "properties": {
+        "tickets": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "2.45.2": {
+      "type": "object",
+      "required": ["tickets"],
+      "properties": {
+        "tickets": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+- Return as valid JSON in format, make sure you use valid JSON and not single quotes!
+{
+ "summary": {
+   "total_tickets": number,
+   "open_tickets": [ticket_id_1, ticket_id_2, ...],
+   "pending_tickets": [ticket_id_1, ticket_id_2, ...],
+   "closed_tickets": [ticket_id_1, ticket_id_2, ...]
+ },
+ "2.45.0": {
+   "tickets": [ticket_id_1, ticket_id_2, ...]
+ },
+ "2.45.1": {
+   "tickets": [ticket_id_1, ticket_id_3, ...]
+ },
+ "2.45.2": {
+   "tickets": [ticket_id_4, ticket_id_5, ...]
+ }
+}

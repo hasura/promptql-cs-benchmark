@@ -1,0 +1,10 @@
+Look at each ticket and extract the following information:
+
+{
+    "ticket_id" "id",
+    "ticket_subject": "subject",
+    "hasura_version": "V1",
+    "caused_service_disruption": true/false,
+    "classified_as_solved": true/false,
+    "awaiting_more_information" true/false
+}

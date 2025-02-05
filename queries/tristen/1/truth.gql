@@ -1,0 +1,38 @@
+query Truth {
+  tickets2450: support_ticket(
+    where: {_or: [{subject: {_like: "%2.45.0%"}}, {description: {_like: "%2.45.0%"}}, {support_ticket_comments: {body: {_like: "%2.45.0%"}, support_user: {role: {_eq: "user"}}}}]}
+    order_by: {id: Asc}
+  ) {
+    id
+  }
+  tickets2451: support_ticket(
+    where: {_or: [{subject: {_like: "%2.45.1%"}}, {description: {_like: "%2.45.1%"}}, {support_ticket_comments: {body: {_like: "%2.45.1%"}, support_user: {role: {_eq: "user"}}}}]}
+    order_by: {id: Asc}
+  ) {
+    id
+  }
+  tickets2452: support_ticket(
+    where: {_or: [{subject: {_like: "%2.45.2%"}}, {description: {_like: "%2.45.2%"}}, {support_ticket_comments: {body: {_like: "%2.45.2%"}, support_user: {role: {_eq: "user"}}}}]}
+    order_by: {id: Asc}
+  ) {
+    id
+  }
+  open: support_ticket(
+    where: {id: {_in: [178, 163, 268, 263, 221, 237, 142, 153, 183, 195, 217, 219, 221, 227, 235, 259, 271]}, status: {_eq: "open"}}
+    order_by: {id: Asc}
+  ) {
+    id
+  }
+  pending: support_ticket(
+    where: {id: {_in: [178, 163, 268, 263, 221, 237, 142, 153, 183, 195, 217, 219, 221, 227, 235, 259, 271]}, status: {_eq: "pending"}}
+    order_by: {id: Asc}
+  ) {
+    id
+  }
+  closed: support_ticket(
+    where: {id: {_in: [178, 163, 268, 263, 221, 237, 142, 153, 183, 195, 217, 219, 221, 227, 235, 259, 271]}, status: {_eq: "closed"}}
+    order_by: {id: Asc}
+  ) {
+    id
+  }
+}
