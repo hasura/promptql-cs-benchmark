@@ -1,6 +1,5 @@
-Get the users and projects with the highest error rates for (March 14th to March 16th 2024) AND (October 2024) AND (November 2024), then fetch their lifetime support tickets, following these steps:
+Get the users and projects with the highest error rates for (March 14th to March 16th 2024) AND (October 2024) AND (November 2024) AND (The first 15 days of November 2024) AND (October 15th to October 18th 2023), then fetch their lifetime support tickets, following these steps:
 
-Use your tools to solve the problem.
 
 1. Error Rate Calculation:
   - For each project, calculate the average error rate during the specified date range where:
@@ -131,8 +130,6 @@ Order the response array by the first dates in the date-range and the second dat
   },
   "minItems": 1
 }
-
-Remember to USE YOUR TOOLS.
 
 - Return as valid JSON in format, make sure you use valid JSON and (not single quotes)!
 [
