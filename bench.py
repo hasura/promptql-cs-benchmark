@@ -6,7 +6,7 @@ from typing import List, Dict, Any, Optional
 from pydantic import BaseModel
 import yaml
 from datetime import datetime, timedelta
-from o1_eval import AIAssistant as O1Assistant
+from o1_eval import AIAssistant as OpenAIAssistant
 from claude35_eval import AIAssistant as ClaudeAssistant
 
 
@@ -18,7 +18,6 @@ class InputConfig(BaseModel):
     promptql_prompt: str
     llm_prompt: str
     result_artifact_name: str
-    result_tag_name: str
     variations: Optional[List[InputVariations]] = None
     repeat: Optional[int] = None
     
@@ -31,7 +30,7 @@ class QueryProcessor:
         """Read and validate query from YAML file"""
         try:
             with open(filepath) as f:
-                data = yaml.safe_load(f)
+                data = yaml.load(f, Loader=yaml.FullLoader)
                 return InputConfig.model_validate(data)
         except Exception as e:
             raise Exception(f"Failed to read query file: {e}")
@@ -74,7 +73,8 @@ class QueryProcessor:
             'response': response,
             'history': self.assistant.messages
         }
-        
+
+    #TODO: Process the response to parse out the json output        
     def process_response(self, results: dict):
         return results['response']
         
@@ -130,14 +130,21 @@ async def main():
     args = parser.parse_args()
     
     if args.system == "promptql":
+        #TODO: Add promptql executor class which uses NL API
         processor = QueryProcessor(PromptQLAssistant(args.model), output_dir=f"{args.output_dir}/{args.system}")
-    else:
+    elif args.system == "llm":
         if args.model == "o1":
-            processor = QueryProcessor(O1Assistant(), output_dir=f"{args.output_dir}/{args.system}/{args.model}")
+            processor = QueryProcessor(OpenAIAssistant("o1"), output_dir=f"{args.output_dir}/{args.system}/{args.model}")
+        elif args.model == "o3-mini":
+            processor = QueryProcessor(OpenAIAssistant("o3-mini"), output_dir=f"{args.output_dir}/{args.system}/{args.model}")
         elif args.model == "anthropic":
             processor = QueryProcessor(ClaudeAssistant(), output_dir=f"{args.output_dir}/{args.system}/{args.model}")
         else:
             print("unknown model")
+            exit(1)
+    else:
+        print("uknown system")
+        exit(1)
     
     await processor.run(args.input_filepath, args.system) # type: ignore
 
