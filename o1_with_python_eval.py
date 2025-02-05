@@ -354,6 +354,8 @@ def execute_python_code(python_code: str, data_values: str = "[]") -> Dict[str, 
             text=True,
         )
         stdout, stderr = process.communicate()
+        print(stdout)
+        print(stderr)
         return {"stdout": stdout, "stderr": stderr, "exitCode": process.returncode}
     finally:
         os.unlink(tmp_path)
