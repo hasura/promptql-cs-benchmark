@@ -8,10 +8,16 @@ For each ticket do the following:
 - intelligently (without heuristics) extract the project ID from the ticket description. project IDs are UUIDs,
 - get the plan the project is most recently on, using the query_control_plane_data tool to fetch project and plan data,
 - put the issue into one of the following four categories:
-  - Free tier bug reports: if the user is in the free plan, AND the issue description is reporting a bug.
+  - Free tier bug reports: if the user is in the free plan (plan name = 'free'), AND the issue description is reporting a bug.
   - Free tier non-bug reports: if the user is in the free plan, AND the issue description is NOT reporting a bug.
   - Paid tiers performance issues: if the user is NOT in the free plan, AND the issue description is specifically reporting a performance problem.
   - Paid tiers non-performance issues: if the user is NOT in the free plan, AND the issue description is NOT specifically reporting a performance problem.
+
+The free tier plans is identified by the name 'free'. 'base' and 'advanced' are both paid plans.
+
+Performance issues include slow response times, high latency, etc., and do not include service disruption, timeouts or downtime issues.
+
+Tickets which are exlusively about performance issues or service disruption should not be classified as bugs.
 
 For each category, compute a count of issues along with a mean number of days that issues have been open within that category.
 
@@ -49,8 +55,8 @@ Respond with a JSON object of metrics in the following format:
     ...
 }
 
-issues should be a list of objects consisting of issues (project_id and issue_id). 
+issues should be a comma-separated list of issue IDs, in increasing order.
 
-issue_count should be an integer and mean_time should be reported as a number of days.
+Use a current date of 2025/01/01. issue_count should be an integer and mean_time should be reported as a number of days since 2025/01/01.
 
 The total issue_count values should equal the number of open issues.
