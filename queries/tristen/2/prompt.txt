@@ -1,0 +1,154 @@
+Get the users and projects with the highest error rates for (March 14th to March 16th 2024) AND (October 2024) AND (November 2024), then fetch their lifetime support tickets, following these steps:
+
+Use your tools to solve the problem.
+
+1. Error Rate Calculation:
+  - For each project, calculate the average error rate during the specified date range where:
+    - Only consider dates where error_rate is not null
+    - Calculate average error rate per project across all valid dates in range
+    - Do not convert responses from the database to floats or you will lose precision
+  - Identify all projects that have the highest average error rate
+  - If multiple projects tie for the highest error rate, include all of them
+
+2. For the identified projects:
+  - Collect project IDs
+  - Get the associated user email for each project
+  - Remove duplicate emails if a user owns multiple highest-error-rate projects
+
+3. Support Tickets:
+  - For each unique user email identified:
+    - Get all support tickets ever created by that user (no date filtering)
+    - Collect all ticket IDs for that user
+    - Collect the ticket comments and see if the most recent comment for the ticket was from a user with role user, and if so include the ticket ID as a unresponsed ticket.
+    - (IMPORTANT: Tickets with no comments are also unresponded).
+
+4. Date Range Requirements:
+  - Start date and end date should be inclusive
+  - Dates should be in YYYY-MM-DD format
+
+5. General Advice:
+- Always test edge cases (no data, no comments, null values)
+- Use explicit NULL handling in SQL rather than relying on JOIN behavior
+- Cast arrays to sets then back to arrays to ensure no duplicates
+- Return consistent data structures regardless of error conditions
+- Consider using simpler SQL queries even if they require more lines of code
+- ((VALIDATE THE TYPES! Check using isinstance to validate the responses!))
+- DON'T MESS UP AND INCLUDE null in arrays.
+- REMEMBER - Even if the user doesn't have any tickets, they ought to have an entry in the tickets map with an empty array in that case.
+
+Edge cases to handle:
+  - If no error rate data exists for the period, return error_rate as 0
+  - If a project has no associated user, exclude it
+  - If a user has no support tickets, include their email with an empty array
+  - Ensure a users support tickets array does not include duplicates
+  - Ensure that project ids, user emails, and ticket id arrays don't contain any duplicates.
+  - If multiple projects have the same highest error rate, include all of them
+  - Make sure to follow your instructions and not do anything silly like trying to return in your codes main body.
+
+Order the response array by the first dates in the date-range and the second date if the first date matches in (REVERSE CHRONOLOGICAL) order.
+
+- The return MUST match the following JSON schema and should be returned directly:
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "range_start",
+      "range_end",
+      "error_rate",
+      "project_ids",
+      "user_emails",
+      "tickets",
+      "unresponsed_tickets"
+    ],
+    "properties": {
+      "range_start": {
+        "type": "string",
+        "format": "date",
+        "description": "Start date of the range"
+      },
+      "range_end": {
+        "type": "string",
+        "format": "date",
+        "description": "End date of the range"
+      },
+      "error_rate": {
+        "type": "number",
+        "description": "Average error rate of the highest-error projects",
+        "minimum": 0
+      },
+      "project_ids": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+        },
+        "description": "UUIDs of all projects with the highest error rate",
+        "uniqueItems": true,
+        "minItems": 1
+      },
+      "user_emails": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "email",
+          "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+        },
+        "description": "Emails of users who own these projects",
+        "uniqueItems": true,
+        "minItems": 1
+      },
+      "tickets": {
+        "type": "object",
+        "description": "Mapping of user emails to their ticket IDs",
+        "patternProperties": {
+          "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "uniqueItems": true,
+            "minItems": 0
+          }
+        },
+        "additionalProperties": false
+      },
+      "unresponsed_tickets": {
+        "type": "array",
+        "description": "Array of ticket IDs that haven't been responded to by an agent",
+        "items": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "uniqueItems": true,
+        "minItems": 0
+      }
+    },
+    "additionalProperties": false
+  },
+  "minItems": 1
+}
+
+Remember to USE YOUR TOOLS.
+
+- Return as valid JSON in format, make sure you use valid JSON and (not single quotes)!
+[
+    {
+        "range_start": date,
+        "range_end": date, 
+        "error_rate": number,     // EXACT Average error rate of the highest-error projects
+        "project_ids": string[],  // UUIDs of all projects with the highest error rate, sorted ascending
+        "user_emails": string[],  // Emails of users who own these projects, sorted ascending
+        "tickets": {
+            // For each user email, array of their ticket IDs sorted ascending
+            "user1@example.com": [1, 2, 3],
+            "user2@example.com": [4, 5, 6]
+        },
+        "unresponsed_tickets": [1, 2, 3] // If the last comment on a ticket was from a user OR there are no ticket comments include it, sorted ascending
+    }, ...
+]
+
+Remember single quotes are BAD. NO SINGLE QUOTES IN JSON. {'BAD AI': 'DO NOT DO THIS'} 

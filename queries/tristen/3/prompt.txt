@@ -1,0 +1,3 @@
+TODO: 
+
+Classify all tickets as solved or not solved by looking at the ticket subject and description and all ticket comments in chronological order and then classifying them as solved or not solved based on the last responses. If the last response is from a support agent then it is solved, if the last response expresses sentiment that the issue is solved then it is solved. If there is ongoing help needed, it is not solved.
