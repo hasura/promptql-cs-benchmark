@@ -27,7 +27,7 @@ promptql_prompt: |
   - Prioritize the ticket based on categories using this order: downtime > reliability > performance > bug > feature request > others
   - Compare ticket creation times to prioritize the older ticket.
 
-  Return the list of ticket IDs inside the tags <tickets> </tickets> with a single ticket ID in a single line
+  Also, print the list of ticket IDs inside the tags <tickets> </tickets> with a single ticket ID in a single line
   Example:
   <tickets>
   123
@@ -62,7 +62,7 @@ llm_prompt: |
   - Prioritize the ticket based on categories using this order: downtime > reliability > performance > bug > feature request > others
   - Compare ticket creation times to prioritize the older ticket.
 
-  Return the list of ticket IDs inside the tags <tickets> </tickets> with a single ticket ID in a single line
+  Also, print the list of ticket IDs inside the tags <tickets> </tickets> with a single ticket ID in a single line. There should be {k} entries
   Example:
   <tickets>
   123
