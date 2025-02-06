@@ -120,24 +120,24 @@ class DatabaseTool:
                     "required": ["sql"]
                 }
             },
-            {
-                "name": "execute_python_program",
-                "description": "Run a Python program with optional data values passed as command line argument",
-                "input_schema": {
-                    "type": "object",
-                    "properties": {
-                        "pythonCode": {
-                            "type": "string",
-                            "description": "Python code to execute"
-                        },
-                        "dataValues": {
-                            "type": "string",
-                            "description": "JSON string of data values"
-                        }
-                    },
-                    "required": ["pythonCode"]
-                }
-            }
+            # {
+            #     "name": "execute_python_program",
+            #     "description": "Run a Python program with optional data values passed as command line argument",
+            #     "input_schema": {
+            #         "type": "object",
+            #         "properties": {
+            #             "pythonCode": {
+            #                 "type": "string",
+            #                 "description": "Python code to execute"
+            #             },
+            #             "dataValues": {
+            #                 "type": "string",
+            #                 "description": "JSON string of data values"
+            #             }
+            #         },
+            #         "required": ["pythonCode"]
+            #     }
+            # }
         ]
 
     def close(self):
@@ -170,7 +170,7 @@ class AIAssistant:
 
 Additional Instructions:
 - Always write queries that are compatible with PostgreSQL
-- Use cmp_to_key if writing a sorting algorithm focused on pairwise comparison.
+- Current timestamp is: {datetime.now()}
 """
         self.messages = []
         self.api_responses = []
@@ -233,11 +233,11 @@ Additional Instructions:
                                         self.db_tool.support_tickets_conn,
                                         function_args.get("sql", "")
                                     )
-                                elif function_name == "execute_python_program":
-                                    result = execute_python_code(
-                                        function_args.get("pythonCode", ""),
-                                        function_args.get("dataValues", "[]")
-                                    )
+                                # elif function_name == "execute_python_program":
+                                #     result = execute_python_code(
+                                #         function_args.get("pythonCode", ""),
+                                #         function_args.get("dataValues", "[]")
+                                #     )
                         
                                 # Collect tool result
                                 tool_results.append({
