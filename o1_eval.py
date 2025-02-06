@@ -168,7 +168,8 @@ class DatabaseTool:
 
 
 class AIAssistant:
-    def __init__(self):
+    def __init__(self, model):
+        self.model = model
         self.db_tool = DatabaseTool()
         self.client = AsyncOpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
         # Cache schemas on initialization
@@ -193,8 +194,8 @@ class AIAssistant:
 Additional Instructions:
 
 - Always write queries that are compatible with PostgreSQL
-- Use tools provided to get the actual answer and don't stop with the theoretical plan
 - Current timestamp is: {datetime.now()}
+- Use tools provided to get the actual answer and don't stop with the theoretical plan
 """,
             }
         ]
@@ -205,7 +206,7 @@ Additional Instructions:
         self.messages = self.init_messages.copy()
         self.api_responses = []
 
-    async def process_query(self, query: str, model: str) -> str:
+    async def process_query(self, query: str) -> str:
         """Process a query using available tools and GPT-4 while maintaining conversation history"""
         # Add the new user query to the conversation history
         self.messages.append({"role": "user", "content": query})
@@ -216,7 +217,7 @@ Additional Instructions:
             while tool_loop_count < MAX_TOOL_LOOPS:
                 print(f"\n[{datetime.now()}] waiting for llm response...")
                 completion = await self.client.chat.completions.create(
-                    model=model,
+                    model=self.model,
                     messages=self.messages,
                     tools=self.db_tool.tool_schemas,
                     tool_choice="auto",
@@ -364,7 +365,7 @@ async def main():
     )
     args = parser.parse_args()
 
-    assistant = AIAssistant()
+    assistant = AIAssistant(model=args.model)
 
     try:
         while True:
@@ -394,7 +395,7 @@ async def main():
             if not query:
                 continue
 
-            response = await assistant.process_query(query=query, model=args.model)
+            response = await assistant.process_query(query=query)
             print("\nModel's response:")
             print(response)
 

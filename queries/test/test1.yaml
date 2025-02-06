@@ -1,0 +1,28 @@
+promptql_prompt: |
+  Give me a sorted list of top 30 support tickets which I should prioritize amongst the last 50 open tickets (i.e., status = 'open').
+  
+  For each ticket, get the time the ticket was created at
+
+  Now prioritize the tickets based on the time it was created giving higher priority to older ticket.
+
+  Return the list of ticket IDs inside the tags <tickets> </tickets> with a single ticket ID in a single line
+  Example:
+  <tickets>
+  123
+  987
+  </tickets> 
+llm_prompt: |
+  Give me a sorted list of top 30 support tickets which I should prioritize amongst the last 50 open tickets (i.e., status = 'open').
+  
+  For each ticket, get the time the ticket was created at
+
+  Now prioritize the tickets based on the time it was created giving higher priority to older ticket.
+
+  Return the list of ticket IDs inside the tags <tickets> </tickets> with a single ticket ID in a single line
+  Example:
+  <tickets>
+  123
+  987
+  </tickets> 
+result_artifact_name: prioritized_tickets
+result_tag_name: tickets

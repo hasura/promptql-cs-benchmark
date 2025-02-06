@@ -1,0 +1,32 @@
+promptql_prompt: |
+  What’s the average time of resolution (in hours) for all support tickets created since {time}?
+
+  Notes:
+  1. For open or pending issues consider the time till 17-01-2025 00:00 hours
+  2. Assume timezone as UTC if a timestamp doesn't have timezone
+llm_prompt: |
+  What’s the average time of resolution (in hours) for all support tickets since {time}?
+
+  Notes:
+  1. For open or pending issues consider the time till 17-01-2025 00:00 hours
+  2. Assume timezone as UTC if a timestamp doesn't have timezone
+
+  Print only the number 
+result_artifact_name: average_resolution_time
+result_tag_name: time
+variations:
+ - name: since_2024-09-01
+   parameters:
+    time: "2024-09-01"
+ - name: since_2024-06-01
+   parameters:
+     time: "2024-06-01"
+ - name: since_2024-03-01
+   parameters:
+    time: "2024-03-01"
+ - name: since_2024-01-01
+   parameters:
+    time: "2024-01-01"
+ - name: since_1900-01-01
+   parameters:
+    time: "1900-01-01"
