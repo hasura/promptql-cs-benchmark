@@ -48,10 +48,16 @@ ddn console --local
 
 - Ensure python dependencies are installed
 ```bash
-poetry install
+poetry install --no-root
 ```
 
 - Run the model
 ```bash
 poetry run python o1_eval.py --model <o1|o3-mini>
+```
+
+Run bench: 
+
+```bash
+OPENAI_API_KEY=key poetry run python bench.py --model=o3-mini --input_filepath=inputs/prompt_1.yaml --output_dir=outputs --system=llm
 ```

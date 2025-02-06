@@ -82,17 +82,18 @@ class QueryProcessor:
         """Main processing loop"""
         try:
             input_config = self.read_input(input_filepath)
-        
             # Determine query template based on system
             query_template = input_config.promptql_prompt if system == "promptql" else input_config.llm_prompt
-        
             # Handle variations or default case
             variations = input_config.variations or [InputVariations(name="default", parameters={})]
         
             for variation in variations:
                 # Format query with parameters (empty dict for default case)
-                query = query_template.format(**variation.parameters)
-            
+                query = query_template
+                for param_name, param_value in variation.parameters.items():
+                    # We should do a direct replace. To the user it changes nothing
+                    # Python template string formatting will break if the prompt includes any brackets {}
+                    query = query.replace('{' + f'{param_name}' + '}', str(param_value))
                 # Determine number of runs
                 num_runs = input_config.repeat if input_config.repeat else 1
             
@@ -112,10 +113,48 @@ class QueryProcessor:
                     elapsed_time = datetime.now() - start_time
                 
                     print(f"TOTAL PROCESSING TIME: {elapsed_time} seconds")
+
+                    final_answer = None
+                    print(results["response"])
+                    try:
+                        final_answer = json.loads(results["response"])
+                        results["response"] = final_answer
+                    except json.decoder.JSONDecodeError:
+                        print("TRYING AGAIN")
+                        try:
+                            final_answer = json.loads(results["response"].lstrip("```json").lstrip('```').rstrip('```'))
+                            results["response"] = final_answer
+                        except json.decoder.JSONDecodeError:
+                            print("TRYING AGAIN - Ask LLM to fix")
+                            fix_prompt = """Your previous response was not valid JSON. Please provide your complete response in valid JSON format.
+                            Previous response: {previous_response}
+                            
+                            Format your response as a raw JSON object, without any markdown code blocks or additional text.""".format(
+                                previous_response=results["response"]
+                            )
+                            
+                            new_results = await self.process_query(fix_prompt)
+                            try:
+                                final_answer = json.loads(new_results["response"])
+                                results["response"] = final_answer
+                            except json.decoder.JSONDecodeError:
+                                try:
+                                    final_answer = json.loads(results["response"].lstrip("```json").lstrip('```').rstrip('```'))
+                                    results["response"] = final_answer
+                                except json.decoder.JSONDecodeError:
+                                    print("Cannot process response")
+                                    pass
+                    finally:
+                        if final_answer is None:
+                            # MARK: TODO
+                            # If final_answer is still None then we didn't get valid JSON
+                            # So we should tell the assistant that it needs to fix it's output to be valid JSON.
+                            # OR we can try other common validation patterns we see.
+                            pass
                     self.save_results(variation.name, run_index, results, elapsed_time)
                 
         except Exception as e:
-            print(f"Error during processing: {e}")
+            print(f"Error during processing: {e}\nError Type: {type(e)}")
         finally:
             self.assistant.close()
 

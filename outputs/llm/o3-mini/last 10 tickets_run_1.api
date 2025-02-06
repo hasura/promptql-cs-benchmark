@@ -1,0 +1,143 @@
+[
+  {
+    "timestamp": "2025-02-06T01:26:24.151750",
+    "response": {
+      "id": "chatcmpl-AxqYxxN3SnGPAibhkuYn0erx5pK36",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_Qs2j3xodilmIw3n2TZZCeXuN",
+                "function": {
+                  "arguments": "{\n  \"sql\": \"SELECT id, substring(subject from 'Project ID: ([^ ]+)') as project_id, created_at\\nFROM support_ticket\\nWHERE status != 'closed'\\nORDER BY created_at DESC\\nLIMIT 10;\"\n}",
+                  "name": "query_support_tickets"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738826767,
+      "model": "o3-mini-2025-01-31",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_8bcaa0ca21",
+      "usage": {
+        "completion_tokens": 2756,
+        "prompt_tokens": 651,
+        "total_tokens": 3407,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 2688,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-06T01:26:37.483795",
+    "response": {
+      "id": "chatcmpl-AxqZECzaZVPfSPnY0GSM68KJqKUh9",
+      "choices": [
+        {
+          "finish_reason": "tool_calls",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": null,
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": [
+              {
+                "id": "call_dtGH26BJte9PMVp4n017phti",
+                "function": {
+                  "arguments": "{\n  \"sql\": \"SELECT id, active_models FROM projects WHERE deleted_at IS NULL ORDER BY created_at DESC LIMIT 1;\"\n}",
+                  "name": "query_control_plane_data"
+                },
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "created": 1738826784,
+      "model": "o3-mini-2025-01-31",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_8bcaa0ca21",
+      "usage": {
+        "completion_tokens": 2158,
+        "prompt_tokens": 1146,
+        "total_tokens": 3304,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 2112,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2025-02-06T01:26:56.386185",
+    "response": {
+      "id": "chatcmpl-AxqZRK2osG6jnAjiJ1B0rVaIw1OTl",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "```json\n[\n  {\n    \"ticket_id\": \"234\",\n    \"project_id\": \"ae620e0f-4bbe-40d3-b0d9-55c6cc212841\",\n    \"priority_score\": 75\n  },\n  {\n    \"ticket_id\": \"143\",\n    \"project_id\": \"ae620e0f-4bbe-40d3-b0d9-55c6cc212841\",\n    \"priority_score\": 66\n  },\n  {\n    \"ticket_id\": \"207\",\n    \"project_id\": \"ae620e0f-4bbe-40d3-b0d9-55c6cc212841\",\n    \"priority_score\": 59\n  },\n  {\n    \"ticket_id\": \"154\",\n    \"project_id\": \"ae620e0f-4bbe-40d3-b0d9-55c6cc212841\",\n    \"priority_score\": 55\n  },\n  {\n    \"ticket_id\": \"166\",\n    \"project_id\": \"ae620e0f-4bbe-40d3-b0d9-55c6cc212841\",\n    \"priority_score\": 54\n  },\n  {\n    \"ticket_id\": \"287\",\n    \"project_id\": \"ae620e0f-4bbe-40d3-b0d9-55c6cc212841\",\n    \"priority_score\": 45\n  },\n  {\n    \"ticket_id\": \"288\",\n    \"project_id\": \"ae620e0f-4bbe-40d3-b0d9-55c6cc212841\",\n    \"priority_score\": 39\n  },\n  {\n    \"ticket_id\": \"271\",\n    \"project_id\": \"ae620e0f-4bbe-40d3-b0d9-55c6cc212841\",\n    \"priority_score\": 39\n  },\n  {\n    \"ticket_id\": \"209\",\n    \"project_id\": \"ae620e0f-4bbe-40d3-b0d9-55c6cc212841\",\n    \"priority_score\": 38\n  },\n  {\n    \"ticket_id\": \"289\",\n    \"project_id\": \"ae620e0f-4bbe-40d3-b0d9-55c6cc212841\",\n    \"priority_score\": 34\n  }\n]\n```",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738826797,
+      "model": "o3-mini-2025-01-31",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_8bcaa0ca21",
+      "usage": {
+        "completion_tokens": 3141,
+        "prompt_tokens": 1235,
+        "total_tokens": 4376,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 2624,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1024
+        }
+      }
+    }
+  }
+]

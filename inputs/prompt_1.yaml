@@ -1,0 +1,26 @@
+promptql_prompt: |
+  prioritize {data} open tickets for me
+  put the result in a artifact with identifier 'prioritized_support_tickets'
+llm_prompt: |
+  prioritize {data} open tickets for me. first query query_support_tickets tool, then query query_control_plane_data tool. put your result in the following format:
+  ```json
+  [{
+    "ticket_id": "123",
+    "project_id": "456",
+    "priority_score": 84.1,
+  }]
+  ```
+result_artifact_name: prioritized_support_tickets
+variations:
+  - name: last 10 tickets
+    parameters:
+      data: last 10
+  - name: last 20 tickets
+    parameters:
+      data: last 20
+  - name: last 30 tickets
+    parameters:
+      data: last 30
+  - name: last 50 tickets
+    parameters:
+      data: last 50
