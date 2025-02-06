@@ -44,7 +44,8 @@ class QueryProcessor:
         # Save main output
         with open(f"{base_filename}.result", 'w') as f:
             output = self.process_response(results)
-            json.dump(output,f, indent=2, default=str)
+            f.write(output)
+            #json.dump(output,f, indent=2, default=str)
             
         # Save conversation history
         with open(f"{base_filename}.history", 'w') as f:

@@ -1,0 +1,66 @@
+promptql_prompt: |
+  What’s the average time of resolution (in hours) for all downtime and reliability related issues (combined) created since {time} and which belong to advanced plan projects that also have more than $10000 in revenue since 2024-01-01?
+
+  These are categories of issues with their descriptions, categorize each issue intelligently using the subject and description of the ticket and the following instructions
+
+  Classify category instructions:
+
+  1. Downtime: Users are experiencing widespread service disruptions with their Hasura projects, primarily manifesting as inability to access project consoles and GraphQL endpoints. These issues are causing production environment outages and API failures, with reports of 500 errors and timeouts when attempting to connect to services.
+
+  2. Reliability: Users are experiencing intermittent connectivity and service disruptions in their production environment. The issues manifest as random request failures and service or feature instability, affecting system reliability and user experience. 
+
+  3. Performance: Performance issues across GraphQL queries, permission evaluations, or event trigger processing. Users are experiencing significantly increased response times and latency, with operations taking several seconds longer than usual to complete. 
+
+  4. Bug: Users are reporting bugs in the software e.g. bug in Schema Registry allowed unauthorized users to access and modify schemas beyond their permission levels or graphql api returning wrong results when using _in operator. Usually, these can be easily reproduced under specific conditions and are not related to intermittent service issues
+
+  5. Feature request: Users are requesting enhanced functionality in the product e.g. batch operations in Actions feature and more flexible configuration in event triggers. 
+
+  6. Others: Any other type of ticket which does not fit the above categories
+
+  Notes:
+  1. For open or pending issues consider the time till 17-01-2025 00:00 hours
+  2. Assume timezone as UTC if a timestamp doesn't have timezone
+  3. Extract the project_id intelligently from the ticket description. It should be a UUID
+llm_prompt: |
+  What’s the average time of resolution (in hours) for all downtime and reliability related issues (combined) created since {time} and which belong to advanced plan projects that also have more than $10000 in revenue since 2024-01-01?
+
+  These are categories of issues with their descriptions, categorize each issue intelligently using the subject and description of the ticket and the following instructions
+
+  Classify category instructions:
+
+  1. Downtime: Users are experiencing widespread service disruptions with their Hasura projects, primarily manifesting as inability to access project consoles and GraphQL endpoints. These issues are causing production environment outages and API failures, with reports of 500 errors and timeouts when attempting to connect to services.
+
+  2. Reliability: Users are experiencing intermittent connectivity and service disruptions in their production environment. The issues manifest as random request failures and service or feature instability, affecting system reliability and user experience. 
+
+  3. Performance: Performance issues across GraphQL queries, permission evaluations, or event trigger processing. Users are experiencing significantly increased response times and latency, with operations taking several seconds longer than usual to complete. 
+
+  4. Bug: Users are reporting bugs in the software e.g. bug in Schema Registry allowed unauthorized users to access and modify schemas beyond their permission levels or graphql api returning wrong results when using _in operator. Usually, these can be easily reproduced under specific conditions and are not related to intermittent service issues
+
+  5. Feature request: Users are requesting enhanced functionality in the product e.g. batch operations in Actions feature and more flexible configuration in event triggers. 
+
+  6. Others: Any other type of ticket which does not fit the above categories
+
+  Notes:
+  1. For open or pending issues consider the time till 17-01-2025 00:00 hours
+  2. Assume timezone as UTC if a timestamp doesn't have timezone
+  3. Extract the project_id intelligently from the ticket description. It should be a UUID
+
+  Print only the number
+result_artifact_name: average_resolution_time
+result_tag_name: time
+variations:
+ - name: since_2024-09-01
+   parameters:
+    time: "2024-09-01"
+ - name: since_2024-06-01
+   parameters:
+     time: "2024-06-01"
+ - name: since_2024-03-01
+   parameters:
+    time: "2024-03-01"
+ - name: since_2024-01-01
+   parameters:
+    time: "2024-01-01"
+ - name: since_1900-01-01
+   parameters:
+    time: "1900-01-01"
