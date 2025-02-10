@@ -168,7 +168,7 @@ class DatabaseTool:
 
 
 class AIAssistant:
-    def __init__(self, model):
+    def __init__(self, model: str = 'o1'):
         self.model = model
         self.db_tool = DatabaseTool()
         self.client = AsyncOpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
@@ -331,7 +331,7 @@ Additional Instructions:
             self.messages.append({"role": "assistant", "content": error_message})
             return error_message
 
-    def close(self):
+    async def close(self):
         """Close all connections"""
         self.db_tool.close()
 
@@ -402,7 +402,7 @@ async def main():
     except KeyboardInterrupt:
         print("\nExiting...")
     finally:
-        assistant.close()
+        await assistant.close()
 
 
 if __name__ == "__main__":

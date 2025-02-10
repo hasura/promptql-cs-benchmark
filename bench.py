@@ -8,6 +8,7 @@ import yaml
 from datetime import datetime, timedelta
 from o1_eval import AIAssistant as OpenAIAssistant
 from claude35_eval import AIAssistant as ClaudeAssistant
+from promptql_eval import AIAssistant as PromptQLAssistant
 
 
 class InputVariations(BaseModel):
@@ -118,7 +119,7 @@ class QueryProcessor:
         except Exception as e:
             print(f"Error during processing: {e}")
         finally:
-            self.assistant.close()
+            await self.assistant.close()
 
 async def main():
     import argparse

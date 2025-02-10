@@ -295,7 +295,7 @@ Additional Instructions:
         self.messages = []
         self.api_responses = []
 
-    def close(self):
+    async def close(self):
         """Close all connections"""
         self.db_tool.close()
 
@@ -360,7 +360,7 @@ async def main():
     except KeyboardInterrupt:
         print("\nExiting...")
     finally:
-        assistant.close()
+        await assistant.close()
 
 if __name__ == "__main__":
     import asyncio
