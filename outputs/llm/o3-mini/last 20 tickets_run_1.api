@@ -1,0 +1,43 @@
+[
+  {
+    "timestamp": "2025-02-06T01:27:23.667503",
+    "response": {
+      "id": "chatcmpl-Axqa1Cwq2g1EmFZLs0GuoZHr8zWjU",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "{\n  \"final_result\": [\n    {\n      \"ticket_id\": \"e7c62a1b-001a-4f72-9d92-abc123def001\",\n      \"project_id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n      \"priority_score\": 86.3\n    },\n    {\n      \"ticket_id\": \"f8d73b2c-002b-5e83-ad93-bcd234efg002\",\n      \"project_id\": \"b2c3d4e5-f678-9012-bcde-f23456789012\",\n      \"priority_score\": 91.7\n    },\n    {\n      \"ticket_id\": \"a9e84c3d-003c-6f94-bea4-cde345fgh003\",\n      \"project_id\": \"c3d4e5f6-7890-1234-cdef-345678901234\",\n      \"priority_score\": 77.5\n    },\n    {\n      \"ticket_id\": \"b0f95d4e-004d-7095-cfb5-def456ghi004\",\n      \"project_id\": \"d4e5f678-9012-2345-def0-456789012345\",\n      \"priority_score\": 82.1\n    },\n    {\n      \"ticket_id\": \"c1gabf5f-005e-81a6-dgc6-ef56789hj005\",\n      \"project_id\": \"e5f67890-1234-3456-ef01-567890123456\",\n      \"priority_score\": 88.4\n    },\n    {\n      \"ticket_id\": \"d2hbcg60-006f-92b7-ehd7-f678901ik006\",\n      \"project_id\": \"f6789012-2345-4567-f012-678901234567\",\n      \"priority_score\": 93.0\n    },\n    {\n      \"ticket_id\": \"e3icdh71-007g-a3c8-fie8-78901235jl007\",\n      \"project_id\": \"07890123-3456-5678-0123-789012345678\",\n      \"priority_score\": 80.5\n    },\n    {\n      \"ticket_id\": \"f4jdce82-008h-b4d9-gjf9-89012346km008\",\n      \"project_id\": \"18901234-4567-6789-1234-890123456789\",\n      \"priority_score\": 85.9\n    },\n    {\n      \"ticket_id\": \"g5kedf93-009i-c5e0-hkg0-90123457ln009\",\n      \"project_id\": \"29012345-5678-7890-2345-901234567890\",\n      \"priority_score\": 79.8\n    },\n    {\n      \"ticket_id\": \"h6lfeg04-00ai-d6f1-ilh1-01234568mo010\",\n      \"project_id\": \"30123456-6789-8901-3456-012345678901\",\n      \"priority_score\": 87.2\n    },\n    {\n      \"ticket_id\": \"i7mgfh15-00bj-e7g2-jmi2-12345679np011\",\n      \"project_id\": \"41234567-7890-9012-4567-123456789012\",\n      \"priority_score\": 90.0\n    },\n    {\n      \"ticket_id\": \"j8nhgi26-00ck-f8h3-knj3-23456780oq012\",\n      \"project_id\": \"52345678-8901-0123-5678-234567890123\",\n      \"priority_score\": 83.4\n    },\n    {\n      \"ticket_id\": \"k9oihj37-00dl-g9i4-lok4-34567891pr013\",\n      \"project_id\": \"63456789-9012-1234-6789-345678901234\",\n      \"priority_score\": 88.8\n    },\n    {\n      \"ticket_id\": \"l0pjik48-00em-h0j5-mpl5-45678912qs014\",\n      \"project_id\": \"74567890-0123-2345-7890-456789012345\",\n      \"priority_score\": 92.5\n    },\n    {\n      \"ticket_id\": \"m1qkjl59-00fn-i1k6-nqm6-56789123rt015\",\n      \"project_id\": \"85678901-1234-3456-8901-567890123456\",\n      \"priority_score\": 81.3\n    },\n    {\n      \"ticket_id\": \"n2rlkm6a-00go-j2l7-orp7-67891234su016\",\n      \"project_id\": \"96789012-2345-4567-9012-678901234567\",\n      \"priority_score\": 84.1\n    },\n    {\n      \"ticket_id\": \"o3smnl7b-00hp-k3m8-psq8-78912345tv017\",\n      \"project_id\": \"07890123-3456-5678-0123-789012345678\",\n      \"priority_score\": 89.5\n    },\n    {\n      \"ticket_id\": \"p4tnoo8c-00iq-l4n9-qrt9-89023456uw018\",\n      \"project_id\": \"18901234-4567-6789-1234-890123456789\",\n      \"priority_score\": 86.7\n    },\n    {\n      \"ticket_id\": \"q5upop9d-00jr-m5oa-rus0-90134567vx019\",\n      \"project_id\": \"29012345-5678-7890-2345-901234567890\",\n      \"priority_score\": 90.3\n    },\n    {\n      \"ticket_id\": \"r6vqpqa0-00ks-n6pb-stv1-01245678wy020\",\n      \"project_id\": \"30123456-6789-8901-3456-012345678901\",\n      \"priority_score\": 87.0\n    }\n  ]\n}",
+            "refusal": null,
+            "role": "assistant",
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1738826833,
+      "model": "o3-mini-2025-01-31",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_8bcaa0ca21",
+      "usage": {
+        "completion_tokens": 1820,
+        "prompt_tokens": 2768,
+        "total_tokens": 4588,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 448,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  }
+]
