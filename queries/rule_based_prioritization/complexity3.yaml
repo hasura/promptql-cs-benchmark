@@ -26,12 +26,7 @@ promptql_prompt: |
   - Prioritize the ticket based on categories using this order: downtime > reliability > performance > bug > feature request > others
   - Compare ticket creation times to prioritize the older ticket.
 
-  Also, print the list of ticket IDs inside the tags <tickets> </tickets> with a single ticket ID in a single line. There should be {k} entries
-  Example:
-  <tickets>
-  123
-  987
-  </tickets>
+  Store the sorted ticket ids in a an artifact named "prioritized_tickets" with the key "ticket_id"
 llm_prompt: |
   Give me a sorted list of top {k} support tickets which I should prioritize amongst the last {n} open tickets (i.e., status = 'open').
   
@@ -77,15 +72,3 @@ variations:
    parameters:
      k: 20
      n: 20
- - name: top_30_last_30 
-   parameters:
-     k: 30
-     n: 30
- - name: top_40_last_40 
-   parameters:
-     k: 40
-     n: 40
- - name: top_50_last_50 
-   parameters:
-     k: 50
-     n: 50

@@ -9,6 +9,7 @@ from datetime import datetime, date
 from decimal import Decimal
 import tempfile
 import subprocess
+import re
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -294,10 +295,20 @@ Additional Instructions:
         """Clear conversation history"""
         self.messages = []
         self.api_responses = []
+        
+    def process_response(self, response: str, tag_name: str) -> str | None:
+        return extract_xml_tag_content(response, tag_name=tag_name)
 
     async def close(self):
         """Close all connections"""
         self.db_tool.close()
+
+def extract_xml_tag_content(xml_string, tag_name):
+    pattern = f"<{tag_name}>(.*?)</{tag_name}>"
+    match = re.search(pattern, xml_string, re.DOTALL)
+    if match:
+        return match.group(1).strip()
+    return None
 
 def execute_python_code(python_code: str, data_values: str = "[]") -> Dict[str, str|int]:
     """Execute Python code and return the results"""

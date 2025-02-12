@@ -71,7 +71,6 @@ class AIAssistant:
                 json=payload,
                 headers={
                     "Content-Type": "application/json",
-                    "Authorization": f"Bearer {os.getenv('PROMPTQL_API_KEY')}"
                 }
             ) as response:
                 if response.status != 200:
@@ -101,13 +100,27 @@ class AIAssistant:
         except Exception as e:
             error_message = f"Error processing query: {str(e)}"
             logger.error(error_message)
-            # Add error message to conversation history
-            self.messages.append({"role": "assistant", "content": error_message})
             return error_message
         
     def clear_history(self):
         self.messages = []
         self.api_responses = []
+        
+    def process_response(self, response: str, artifact_name: str, key: str | None = None):
+        last_found_artifact = {}
+        for interaction in self.messages:
+            # Check if the interaction has modified artifacts
+            if modified_artifacts := interaction.get("modified_artifacts"):
+                # Look for matching artifact_id
+                for artifact in modified_artifacts:
+                    if artifact.get("identifier") == artifact_name:
+                        last_found_artifact = artifact
+                        
+        if key is None:
+            return last_found_artifact.get("data")
+        else:
+            return [{key: item[key]} for item in last_found_artifact.get("data")] 
+        
 
     async def close(self):
         """Close all connections"""

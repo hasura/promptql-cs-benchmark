@@ -9,6 +9,7 @@ from decimal import Decimal
 import tempfile
 import subprocess
 import argparse
+import re
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -331,10 +332,20 @@ Additional Instructions:
             self.messages.append({"role": "assistant", "content": error_message})
             return error_message
 
+    def process_response(self, response: str, tag_name: str) -> str | None:
+        return extract_xml_tag_content(response, tag_name=tag_name)
+        
     async def close(self):
         """Close all connections"""
         self.db_tool.close()
 
+
+def extract_xml_tag_content(xml_string, tag_name):
+    pattern = f"<{tag_name}>(.*?)</{tag_name}>"
+    match = re.search(pattern, xml_string, re.DOTALL)
+    if match:
+        return match.group(1).strip()
+    return None
 
 def execute_python_code(python_code: str, data_values: str = "[]") -> Dict[str, str]:
     """Execute Python code and return the results"""
