@@ -36,10 +36,11 @@ class DateTimeEncoder(json.JSONEncoder):
 
 
 class DatabaseTool:
-    def __init__(self):
+    def __init__(self, has_python_tool: bool = False):
         # Initialize database connections
         self.control_plane_conn = psycopg2.connect(CONTROL_PLANE_URL)
         self.support_tickets_conn = psycopg2.connect(SUPPORT_TICKETS_URL)
+        self.has_python_tool = has_python_tool
         self.schema_cache = {}
 
     def get_database_schema(
@@ -104,7 +105,7 @@ class DatabaseTool:
     @property
     def tool_schemas(self) -> List[Dict]:
         """Return the tool schemas in OpenAI format"""
-        return [
+        tools = [
             {
                 "type": "function",
                 "function": {
@@ -139,28 +140,52 @@ class DatabaseTool:
                     },
                 },
             },
-            # {
-            #     "type": "function",
-            #     "function": {
-            #         "name": "execute_python_program",
-            #         "description": "Run a Python program with optional data values passed as command line argument. The results should be printed in stdout or stderr",
-            #         "parameters": {
-            #             "type": "object",
-            #             "properties": {
-            #                 "pythonCode": {
-            #                     "type": "string",
-            #                     "description": "Python code to execute"
-            #                 },
-            #                 "dataValues": {
-            #                     "type": "string",
-            #                     "description": "JSON string of data values"
-            #                 }
-            #             },
-            #             "required": ["pythonCode"]
-            #         }
-            #     }
-            # }
+
         ]
+        
+        if self.has_python_tool:
+            python_tool = {
+                "type": "function",
+                "function": {
+                    "name": "execute_python_program",
+                    "description": "Run a Python program. Output will be printed in stdout",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "pythonCode": {
+                                "type": "string",
+                                "description": "Python code to execute"
+                            }
+                        },
+                        "required": ["pythonCode"]
+                    }
+                }
+            } 
+            tools.append(python_tool)
+        
+        return tools
+    
+    def execute_python_code(self, python_code: str) -> Dict[str, str]:
+        """Execute Python code and return the results"""
+
+        logger.info("Executing Python: \n %s", python_code)
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False) as tmp:
+            tmp.write(python_code)
+            tmp_path = tmp.name
+
+        try:
+            process = subprocess.Popen(
+                ["python3", tmp_path],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+            )
+            stdout, stderr = process.communicate()
+            return {"stdout": stdout, "stderr": stderr, "exitCode": process.returncode}
+        finally:
+            os.unlink(tmp_path)
+
 
     def close(self):
         """Close database connections"""
@@ -169,16 +194,16 @@ class DatabaseTool:
 
 
 class AIAssistant:
-    def __init__(self, model: str = 'o1'):
+    def __init__(self, model: str = 'o1', has_python_tool: bool = False):
         self.model = model
-        self.db_tool = DatabaseTool()
+        self.tools = DatabaseTool(has_python_tool)
         self.client = AsyncOpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
         # Cache schemas on initialization
-        self.control_plane_schema = self.db_tool.get_database_schema(
-            self.db_tool.control_plane_conn, "table_name NOT LIKE 'support%'"
+        self.control_plane_schema = self.tools.get_database_schema(
+            self.tools.control_plane_conn, "table_name NOT LIKE 'support%'"
         )
-        self.support_tickets_schema = self.db_tool.get_database_schema(
-            self.db_tool.support_tickets_conn, "table_name LIKE 'support%'"
+        self.support_tickets_schema = self.tools.get_database_schema(
+            self.tools.support_tickets_conn, "table_name LIKE 'support%'"
         )
         # Initialize conversation history with system message
         self.init_messages = [
@@ -220,7 +245,7 @@ Additional Instructions:
                 completion = await self.client.chat.completions.create(
                     model=self.model,
                     messages=self.messages,
-                    tools=self.db_tool.tool_schemas,
+                    tools=self.tools.tool_schemas,
                     tool_choice="auto",
                 )
                 print(f"[{datetime.now()}] received llm response...\n")
@@ -268,20 +293,19 @@ Additional Instructions:
 
                     try:
                         if function_name == "query_control_plane_data":
-                            result = self.db_tool.execute_query(
-                                self.db_tool.control_plane_conn,
+                            result = self.tools.execute_query(
+                                self.tools.control_plane_conn,
                                 function_args.get("sql", ""),
                             )
                         elif function_name == "query_support_tickets":
-                            result = self.db_tool.execute_query(
-                                self.db_tool.support_tickets_conn,
+                            result = self.tools.execute_query(
+                                self.tools.support_tickets_conn,
                                 function_args.get("sql", ""),
                             )
-                        # elif function_name == "execute_python_program":
-                        #     result = execute_python_code(
-                        #         function_args.get("pythonCode", ""),
-                        #         function_args.get("dataValues", "[]")
-                        #     )
+                        elif function_name == "execute_python_program":
+                            result = self.tools.execute_python_code(
+                                function_args.get("pythonCode", "")
+                            )
                     except Exception as e:
                         error_message = f"Error executing {function_name}: {str(e)}"
                         logger.error(error_message)
@@ -337,7 +361,7 @@ Additional Instructions:
         
     async def close(self):
         """Close all connections"""
-        self.db_tool.close()
+        self.tools.close()
 
 
 def extract_xml_tag_content(xml_string, tag_name):
@@ -346,28 +370,6 @@ def extract_xml_tag_content(xml_string, tag_name):
     if match:
         return match.group(1).strip()
     return None
-
-def execute_python_code(python_code: str, data_values: str = "[]") -> Dict[str, str]:
-    """Execute Python code and return the results"""
-
-    logger.info("Executing Python: \n %s", python_code)
-
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False) as tmp:
-        tmp.write(python_code)
-        tmp_path = tmp.name
-
-    try:
-        process = subprocess.Popen(
-            ["python3", tmp_path, data_values],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-        )
-        stdout, stderr = process.communicate()
-        return {"stdout": stdout, "stderr": stderr, "exitCode": process.returncode}
-    finally:
-        os.unlink(tmp_path)
-
 
 async def main():
     parser = argparse.ArgumentParser()
