@@ -5,14 +5,14 @@
 There are 6 stack variations to run for every question. So given a question, golden truth etc. we need to capture results on these 6 different stacks.
 
 1. Data upfront without tools (oracle prompt)
-  1. With python
-  2. Without python
+    1. With python
+    2. Without python
 2. With tools
-  1. With python
-  2. Without python
+    1. With python
+    2. Without python
 3. PromptQL
-  1. With initial artifact (equivalent of oracle prompt)
-  2. With tools (aka SQL engine)
+    1. With initial artifact (equivalent of oracle prompt)
+    2. With tools (aka SQL engine)
 
 **Automatic evaluation**
 
