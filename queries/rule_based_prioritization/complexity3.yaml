@@ -125,7 +125,9 @@ variations:
    parameters:
      k: 10
      n: 10
+   ground_truth_path: ground_truth_complexity5_k_10_n_10.txt
  - name: top_20_last_20 
    parameters:
      k: 20
      n: 20
+   ground_truth_path: ground_truth_complexity5_k_20_n_20.txt

@@ -55,3 +55,22 @@ poetry install
 ```bash
 poetry run python o1_eval.py --model <o1|o3-mini>
 ```
+
+### Automatic benchmarks
+
+System can be `promptql`, `tool_calling` or `oracle`
+Model can be `anthropic`, `o1` or `o3-mini`
+
+```bash
+python bench.py --input_filepath queries/rule_based_prioritization/complexity3.yaml --output_dir output_complexity3 --system oracle --model anthropic --with-python-tool
+```
+
+#### Measure score
+
+You can also automatically compute scores by comparing ground truth with evaluation runs by providing the 
+query file, output directory (which has the evaluation runs) and a python module file which has a function 
+which computes score between ground truth and test result: `evaluate_score(ground_truth: str, test_result: str) -> float`
+
+```bash
+python evaluation.py queries/rule_based_prioritization/complexity3.yaml output_complexity3 test_scorer.py
+```
