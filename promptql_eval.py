@@ -1,5 +1,4 @@
 import os
-import aiohttp
 from openai import AsyncOpenAI
 from typing import List, Dict, Any
 import logging
@@ -9,6 +8,7 @@ from decimal import Decimal
 import tempfile
 import subprocess
 import argparse
+import requests
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -25,7 +25,6 @@ class AIAssistant:
             self.llm_key = os.getenv('ANTHROPIC_API_KEY')
         else:
             self.llm_key = os.getenv('OPENAI_API_KEY')
-        self.client = aiohttp.ClientSession()
         self.messages = []
         self.api_responses = []
         
@@ -45,7 +44,7 @@ class AIAssistant:
             "artifacts": [],
             "system_instructions": "",  # Add system instructions if needed
             "timezone": "America/Los_Angeles",
-            "interactions": self.messages,
+            "interactions": self.messages.copy(),
             "stream": False
         }
 
@@ -63,27 +62,23 @@ class AIAssistant:
             payload = self._prepare_payload(query)
             payload["interactions"].append(interaction)
             
-            print(f"\n[{datetime.now()}] waiting for llm response...")
-            
             # Make the API call
-            async with self.client.post( # type: ignore
+            print(f"\n[{datetime.now()}] waiting for llm response...")
+            with requests.post( # type: ignore
                 "https://api.promptql.pro.hasura.io/query", 
                 json=payload,
                 headers={
                     "Content-Type": "application/json",
                 }
             ) as response:
-                if response.status != 200:
-                    error_msg = f"API request failed with status {response.status}"
+                if response.status_code != 200:
+                    error_msg = f"API request failed with status {response.status_code}"
                     logger.error(error_msg)
-                    response_text = await response.text()
-                    logger.error(f"Response: {response_text}")
+                    logger.error(f"Response: {response.text}")
                     raise Exception(error_msg)
                 
-                result = await response.json()
-                
-                print(json.dumps(result, indent=2))
-                
+                result = response.json()
+
                 interaction.update(result)
                 
                 # Extract the assistant's response
@@ -122,20 +117,10 @@ class AIAssistant:
             return [{key: item[key]} for item in last_found_artifact.get("data")] 
         
 
-    async def close(self):
-        """Close all connections"""
-        if self.client:
-            await self.client.close()
-            self.client = None
-
-
 async def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--model", type=str, default="anthropic", help="Model name (eg: hasura, anthropic, gpt-4o)"
-    )
-    parser.add_argument(
-        "--api-key", type=str, default="", help="Model name (eg: hasura, anthropic, gpt-4o)"
     )
     args = parser.parse_args()
 
@@ -176,10 +161,6 @@ async def main():
     except KeyboardInterrupt:
         print("\nExiting...")
         
-    finally:
-        await assistant.close()
-
-
 if __name__ == "__main__":
     import asyncio
 
