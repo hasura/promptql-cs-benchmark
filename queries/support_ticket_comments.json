@@ -1,0 +1,1710 @@
+[
+  {
+    "id": "464",
+    "ticket_id": "140",
+    "body": "Hi there,\n\nThank you for bringing this to our attention. We understand that high latency in GraphQL queries can significantly impact your production environment. To assist you better, could you please provide us with the specific queries that are experiencing this latency? Additionally, any logs or traces that show the performance metrics would be extremely helpful.\n\nLooking forward to your response.\n\nBest,\nHasura Support",
+    "created_at": "2023-05-07 10:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "465",
+    "ticket_id": "140",
+    "body": "Hello,\n\nThanks for your prompt reply. The queries that are taking longer than expected include the following:\n- `query1`: Fetching user data\n- `query2`: Retrieving transaction history\n\nWe have attached the relevant logs that show the query execution times. Please let me know if you need any further information.\n\nThank you for your assistance!",
+    "created_at": "2023-05-08 12:00:00+00",
+    "user_id": "205"
+  },
+  {
+    "id": "466",
+    "ticket_id": "141",
+    "body": "Hi John,\n\nThank you for reaching out and providing detailed information about the performance issues you're experiencing with your permissions setup. I understand the urgency of this matter, especially since it's impacting your live users.\n\nTo assist you better, could you please share the specific role-based permissions you have configured? Additionally, if you could provide any relevant query logs or examples where you notice the delays, it would greatly help us in diagnosing the issue.\n\nLooking forward to your response.\n\nBest regards,\nHasura Support",
+    "created_at": "2023-10-24 03:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "467",
+    "ticket_id": "142",
+    "body": "Hello,\n\nThank you for bringing this critical issue to our attention. We have thoroughly investigated the permissions related to the Schema Registry feature. Our team has identified a bug that was causing the permissions to be incorrectly applied, allowing unauthorized access to certain schemas.\n\nWe have released a patch in version v2.45.1 that addresses this issue. Please update your setup to this version to ensure that the permissions are enforced correctly.\n\nIf you have any further questions or need assistance, feel free to reach out.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-09-11 10:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "468",
+    "ticket_id": "143",
+    "body": "Hi there,\n\nThank you for reaching out to Hasura Support. I understand the urgency of the situation with your project dashboard failing to load. I'm currently investigating this issue for project ID: abc123 and will provide you with an update shortly.\n\nIn the meantime, could you please share any specific error messages you're encountering? This information will greatly help us in diagnosing the problem.\n\nThanks for your patience!\n\nBest,\nHasura Support",
+    "created_at": "2025-01-03 20:32:35.34584+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "469",
+    "ticket_id": "144",
+    "body": "Hi there,\n\nThank you for reaching out to us regarding the service disruption. I understand that you're experiencing 500 Internal Server Errors with your GraphQL operations, and this is critical for your production environment. \n\nI will investigate this issue and get back to you shortly with an update.\n\nThanks for your patience,\nHasura Support",
+    "created_at": "2024-10-06 07:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "470",
+    "ticket_id": "145",
+    "body": "Hello,\n\nThank you for bringing this to our attention. We've investigated the issue and found that there was a temporary outage in our service that affected some queries. We have implemented a fix, and your GraphQL queries and mutations should now be functioning normally.\n\nPlease check and let us know if you encounter any further issues.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-06-15 08:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "471",
+    "ticket_id": "145",
+    "body": "Hi Hasura Support,\n\nThank you for the quick resolution! We've tested our queries and mutations, and everything is working as expected now. We appreciate your prompt assistance in resolving this critical issue in our production environment.\n\nBest,\nThe Team",
+    "created_at": "2024-06-16 09:00:00+00",
+    "user_id": "6"
+  },
+  {
+    "id": "472",
+    "ticket_id": "146",
+    "body": "Hi Team XYZ,\n\nThank you for reaching out regarding the performance issues with your event triggers. I understand that this is impacting your production environment, and I'm here to help.\n\nCould you please provide additional details such as the number of event triggers configured, the frequency of the inserts and updates, and any specific logs or metrics that indicate the slowdown? This information will help us analyze the situation better.\n\nLooking forward to your response.\n\nBest,\nHasura Support",
+    "created_at": "2024-07-02 02:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "473",
+    "ticket_id": "147",
+    "body": "Hi there,\n\nThank you for reaching out to Hasura Support. We understand the urgency of the issue you're facing with your project. Our team is currently investigating the timeout errors and working to resolve this as quickly as possible. We appreciate your patience.\n\nBest,\nHasura Support",
+    "created_at": "2023-10-02 03:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "474",
+    "ticket_id": "147",
+    "body": "Hello,\n\nWe have successfully resolved the connectivity issues with your Hasura project. The GraphQL endpoint and console are now accessible. Please verify on your end and let us know if you encounter any further issues.\n\nThank you for your understanding.\n\nBest regards,\nHasura Support",
+    "created_at": "2023-10-03 04:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "475",
+    "ticket_id": "148",
+    "body": "Hi there,\n\nThank you for reaching out to us regarding the random failures you are experiencing with your GraphQL requests. We understand how critical this is for your production environment. After investigating the issue, we found that it was related to intermittent network connectivity problems between your Hasura instance and the PostgreSQL database.\n\nWe have implemented some optimizations on our end to enhance the stability of the connection. Please monitor your application and let us know if the problems persist.\n\nThanks,\nHasura Support",
+    "created_at": "2023-11-08 03:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "476",
+    "ticket_id": "148",
+    "body": "Thank you for the quick response!\n\nI have monitored the GraphQL requests since your changes, and I am pleased to report that the random failures have significantly decreased. We appreciate your assistance in resolving this issue. If we encounter any further problems, we'll reach out again.\n\nBest,\nThe Team",
+    "created_at": "2023-11-09 09:00:00+00",
+    "user_id": "6"
+  },
+  {
+    "id": "477",
+    "ticket_id": "149",
+    "body": "Hi,\n\nI\u2019m really sorry for the inconvenience you\u2019re experiencing with the Schema Registry feature. This can be quite frustrating. I\u2019ve looked into your issue, and it seems there might be some underlying cause for these random failures. We recommend checking the database logs for any anomalies during the times you experience these failures. Additionally, you might want to consider upgrading to the latest version if you haven't already, as it often contains important fixes.\n\nPlease let me know if this helps or if you need further assistance.\n\nBest,\nHasura Support",
+    "created_at": "2024-02-08 02:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "478",
+    "ticket_id": "150",
+    "body": "Hi there,\n\nThank you for reaching out to Hasura Support. I understand the urgency of the situation with your project being inaccessible. I will investigate this issue immediately and will keep you updated on our progress.\n\nBest,\nHasura support",
+    "created_at": "2024-02-21 02:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "479",
+    "ticket_id": "151",
+    "body": "Hi,\n\nI\u2019m really sorry to hear about the issues you\u2019re experiencing with your production environment. I\u2019m looking into this as a priority and will try to provide some help as soon as possible.\n\nThanks for your patience.\n\nBest,\nHasura support",
+    "created_at": "2024-11-09 08:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "480",
+    "ticket_id": "151",
+    "body": "Hi,\n\nI\u2019ve found that sometimes when PostgreSQL becomes unresponsive, it could be due to various reasons such as long-running queries or connection issues. Could you please check your database logs for any signs of issues?\n\nI\u2019ll keep digging in the meantime.\n\nThanks,\nHasura support",
+    "created_at": "2024-11-10 09:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "481",
+    "ticket_id": "151",
+    "body": "Hi,\n\nI\u2019m really glad to hear that the issue has been resolved on your end. It seems like there were some transient connection problems with PostgreSQL that have cleared up. Please keep an eye on the performance and let us know if anything changes.\n\nThank you for your understanding!\n\nBest regards,\nHasura support",
+    "created_at": "2024-11-12 10:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "482",
+    "ticket_id": "152",
+    "body": "Hello [Your Name],\n\nThank you for reaching out to us regarding the Actions feature. We really appreciate your feedback and understand the importance of batch operations for your project.\n\nI have escalated your request to our product team for further consideration. They are currently assessing the feasibility of adding batch operation support in the future.\n\nThank you for your patience as we work through this!\n\nBest,\nHasura Support",
+    "created_at": "2024-12-12 07:15:14.666839+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "483",
+    "ticket_id": "152",
+    "body": "Hi [Your Name],\n\nI\u2019m sorry for any confusion about the current capabilities of our Actions feature. Unfortunately, batch processing isn\u2019t supported at this time, which might limit your use case.\n\nWe understand this can be a setback, and I genuinely apologize for the inconvenience. I will keep you updated if any new changes are made regarding this feature.\n\nThanks for your understanding!\n\nRegards,\nHasura Support",
+    "created_at": "2024-12-15 09:30:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "484",
+    "ticket_id": "152",
+    "body": "Hi Hasura Support,\n\nThank you for your responses. I appreciate you forwarding my request to the product team. I understand that these changes take time, and I look forward to any future updates regarding batch operations in Actions.\n\nBest regards,\n[Your Name]",
+    "created_at": "2024-12-20 11:45:00+00",
+    "user_id": "10"
+  },
+  {
+    "id": "485",
+    "ticket_id": "153",
+    "body": "Hi,\n\nThank you for reaching out to us regarding the Event Triggers configuration in Hasura. We understand the need for more flexibility and granular control for your use case involving multiple tables. \n\nWe have noted your feedback and will take it into consideration for future updates. If you have any further questions or need assistance with anything else, feel free to ask.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-12-28 17:10:36.119263+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "486",
+    "ticket_id": "154",
+    "body": "Hi there,\n\nThank you for your detailed request regarding batch processing in Actions. We appreciate the insights you've provided on how this feature could enhance your application's performance.\n\nCould you please provide us with specific examples of how you intend to use batch processing? This will help us understand your requirements better and assess its feasibility.\n\nLooking forward to your response!\n\nBest regards,\nHasura Support",
+    "created_at": "2024-12-23 11:39:57.555042+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "487",
+    "ticket_id": "155",
+    "body": "Hi there,\n\nThank you for bringing this to our attention. We have thoroughly investigated the issue with intermittent Event Trigger failures in your production environment. Our team has identified a configuration that may have been contributing to these inconsistencies.\n\nWe have applied the necessary changes and monitored the system for stability. Please verify and let us know if you experience any further issues.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-12-30 01:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "488",
+    "ticket_id": "155",
+    "body": "Hello Hasura Support,\n\nI appreciate the quick turnaround and the resolution to the Event Trigger issue. We have tested the application, and everything seems to be functioning as expected now. Thank you for your support!\n\nBest,\nUser",
+    "created_at": "2024-12-31 02:00:00+00",
+    "user_id": "10"
+  },
+  {
+    "id": "489",
+    "ticket_id": "156",
+    "body": "Hi there,\n\nThank you for your patience as we investigated the performance degradation in your Actions operations. After reviewing the logs and performance metrics, we identified that the recent upgrade to version v2.45.3 had introduced some optimizations affecting the way Actions interact with your databases.\n\nWe have implemented a fix that should restore the performance back to expected levels. Please monitor your Actions and let us know if you notice any further issues.\n\nThank you for bringing this to our attention, and we appreciate your understanding.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-05-26 07:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "490",
+    "ticket_id": "157",
+    "body": "Hi there,\n\nThank you for reaching out to us regarding your use case with the Remote Schemas feature. I understand that integrating multiple remote schemas, especially with overlapping types and custom field mappings can be quite challenging.\n\nWe appreciate your feedback and the request for enhancement. Our team is continuously working on improving features based on user needs, although I cannot guarantee a quick turnaround on this.\n\nWe'll definitely take your input into consideration for future updates.\n\nBest,\nHasura Support",
+    "created_at": "2024-12-02 15:21:47.209258+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "491",
+    "ticket_id": "157",
+    "body": "Hi,\n\nI just wanted to follow up and confirm that your request has been logged and sent to our development team for review. I understand that this issue with Remote Schemas is important for your project.\n\nPlease let us know if you have any other questions or need further assistance while we look into this.\n\nThank you for your patience!\n\nBest regards,\nHasura Support",
+    "created_at": "2024-12-02 15:22:47.209258+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "492",
+    "ticket_id": "158",
+    "body": "Hi there,\n\nThanks for reaching out regarding the latency issues with your remote schemas. We understand how critical performance is, especially in production environments. \n\nAfter investigating, we identified some optimization opportunities in how queries are being structured when integrating data from both Postgres and MongoDB. \n\nWe've implemented these changes on our end and you should see an improvement now.\n\nBest,\nHasura Support",
+    "created_at": "2024-08-11 02:05:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "493",
+    "ticket_id": "158",
+    "body": "Hi Support Team,\n\nThank you for your prompt response and for addressing the latency issue. I have tested the queries again and I can confirm that the performance has significantly improved. \n\nWe appreciate your assistance in resolving this matter quickly.\n\nBest regards,\nUser",
+    "created_at": "2024-08-12 10:15:00+00",
+    "user_id": "117"
+  },
+  {
+    "id": "494",
+    "ticket_id": "158",
+    "body": "Hi,\n\nWe are glad to hear that the performance has improved for you. If you encounter any further issues or have any other questions, feel free to reach out.\n\nThank you for your patience and for trusting us with your support needs.\n\nBest,\nHasura Support",
+    "created_at": "2024-08-13 14:30:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "495",
+    "ticket_id": "159",
+    "body": "Hi there,\n\nThanks for bringing this to our attention. To better assist you, could you please provide us with more details about the API requests that are failing? Specifically, any error messages you are receiving and the frequency of these failures would be helpful.\n\nLooking forward to your response.\n\nBest,\nHasura Support",
+    "created_at": "2024-09-20 05:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "496",
+    "ticket_id": "159",
+    "body": "Hello,\n\nThank you for the additional information. Additionally, could you let us know if there have been any recent changes to your API configuration or database schema that might correlate with the onset of these failures? This will help us pinpoint the issue more effectively.\n\nAppreciate your cooperation!\n\nBest,\nHasura Support",
+    "created_at": "2024-09-21 10:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "497",
+    "ticket_id": "160",
+    "body": "Hi,\n\nThank you for reaching out regarding the intermittent API failures you are experiencing. We understand how critical this is for your production environment. Our team will begin investigating this issue right away.\n\nBest,\nHasura Support",
+    "created_at": "2024-09-26 01:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "498",
+    "ticket_id": "160",
+    "body": "Hello,\n\nAfter reviewing the logs and the error messages, we did find some patterns indicating that the failures may be related to database connection limits being reached during peak traffic. We recommend monitoring your database connections and possibly increasing the limit if feasible.\n\nLet us know if you need assistance with that.\n\nThanks,\nHasura Support",
+    "created_at": "2024-09-27 10:30:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "499",
+    "ticket_id": "160",
+    "body": "Hi,\n\nWe have implemented optimizations on our end and have not seen any recurring issues. Please monitor the situation on your end and feel free to reach out if the problem persists. We appreciate your patience while we addressed this matter.\n\nBest regards,\n[Your Name]\nHasura Support",
+    "created_at": "2024-09-29 14:45:00+00",
+    "user_id": "180"
+  },
+  {
+    "id": "500",
+    "ticket_id": "161",
+    "body": "Hi there,\n\nThank you for reaching out to us regarding the intermittent API request failures. We understand how crucial it is for your production environment to function smoothly. After reviewing the logs and your configuration, we have identified that the issue was due to a temporary network glitch affecting API connectivity.\n\nWe have made necessary adjustments to improve the stability of your API requests. Please monitor the situation and let us know if you encounter any further issues.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-12-05 08:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "501",
+    "ticket_id": "161",
+    "body": "Hello Hasura Support,\n\nThanks for addressing the issue promptly! We're happy to report that since your adjustments, the API requests have been stable and we're not experiencing any failures. Appreciate your assistance!\n\nBest,\nThe Team",
+    "created_at": "2024-12-06 09:00:00+00",
+    "user_id": "19"
+  },
+  {
+    "id": "502",
+    "ticket_id": "162",
+    "body": "Hi,\n\nI am really sorry to hear that your service is down. I understand how critical this is for your users. \n\nLet me see if I can figure out what is going wrong. Please hold on while I check the system logs and configurations to diagnose the issue.\n\nThanks for your patience.",
+    "created_at": "2024-08-14 08:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "503",
+    "ticket_id": "162",
+    "body": "Hi,\n\nI was looking at the logs and it appears there might be some connection issues between Hasura and your PostgreSQL database. I am not entirely sure, but it could also be related to the recent version update. \n\nCould you please confirm if there were any changes made recently on your end?\n\nThank you.",
+    "created_at": "2024-08-15 09:30:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "504",
+    "ticket_id": "162",
+    "body": "Hi,\n\nI am glad to inform you that we found the root cause of the issue. It was due to a misconfigured connection string that caused API requests to fail. We have corrected it and your service should be back up now. \n\nPlease check on your end and let us know if everything is working fine. Thank you for your understanding and patience while we sorted this out!",
+    "created_at": "2024-08-16 10:15:00+00",
+    "user_id": "155"
+  },
+  {
+    "id": "505",
+    "ticket_id": "163",
+    "body": "Hi there,\n\nThank you for bringing this to our attention. We understand the impact that high CPU and memory usage can have on your production environment. After reviewing your case, we have identified some optimizations for your queries involving remote schemas that could alleviate the resource spikes.\n\nPlease try implementing these changes and let us know if you continue to experience issues.\n\nBest regards,\nHasura support",
+    "created_at": "2024-05-24 10:30:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "506",
+    "ticket_id": "163",
+    "body": "Thank you for your assistance. We have implemented the suggested optimizations and are seeing an improvement in performance. The CPU and memory usage are now within acceptable limits, and the response times have improved significantly. \n\nWe appreciate your support in resolving this issue.\n\nBest,\nTeam",
+    "created_at": "2024-05-25 15:00:00+00",
+    "user_id": "15"
+  },
+  {
+    "id": "507",
+    "ticket_id": "164",
+    "body": "Hello,\n\nI\u2019m really sorry for the inconvenience you are experiencing with the complete outage in your production environment. I\u2019m trying to figure out what has gone wrong here. Can you please provide me with any error messages you are seeing in your logs or any recent changes made to your setup?\n\nThanks for your patience.",
+    "created_at": "2024-02-25 03:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "508",
+    "ticket_id": "164",
+    "body": "I appreciate you reaching out. Just to clarify, is this a sudden outage or has it been progressively getting worse? Also, it would help if you could provide details on the specific services that are down and if there are any patterns you\u2019ve noticed in the downtime.\n\nThanks for your understanding as I work through this issue.",
+    "created_at": "2024-02-26 04:30:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "509",
+    "ticket_id": "165",
+    "body": "Hi [Your Name],\n\nThank you for reaching out regarding the resource exhaustion and slow response times you're experiencing with the Schema Registry feature. To assist you better, could you please provide the following information:\n\n1. What is the current size of your metadata?\n2. How many concurrent requests are typically being processed?\n3. Are you observing any specific patterns or triggers that correlate with the performance issues?\n\nOnce we have these details, we can proceed with a more targeted investigation.\n\nBest,\nHasura Support",
+    "created_at": "2024-04-24 05:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "510",
+    "ticket_id": "165",
+    "body": "Hello Hasura Support,\n\nThanks for your prompt response. Here are the details you requested:\n\n1. The current size of our metadata is approximately 1.5 MB.\n2. We typically have around 20 concurrent requests.\n3. The performance issues seem to occur more frequently during peak hours, especially when multiple users are accessing the Schema Registry simultaneously.\n\nPlease let me know if you need any more information to help diagnose the issue.\n\nThank you,\n[Your Name]",
+    "created_at": "2024-04-25 10:00:00+00",
+    "user_id": "15"
+  },
+  {
+    "id": "511",
+    "ticket_id": "166",
+    "body": "Hello,\n\nThank you for reaching out and for your suggestion about supporting custom GraphQL directives in queries and mutations. We recognize the potential of this feature in enhancing the flexibility of your application's query logic.\n\nI will escalate this request to our product team for consideration in future releases. We appreciate your input and will keep you updated on any developments regarding this feature.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-12-21 14:32:35.34584+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "512",
+    "ticket_id": "167",
+    "body": "Hi,\n\nThanks for reaching out to us. We understand that high latency with event triggers can be quite disruptive. After reviewing your project, we found that the upgrade to version v2.47.2 introduced some changes that may have impacted your workload processing.\n\nWe recommend optimizing your event trigger configurations and checking the database performance metrics during the trigger execution. Additionally, consider indexing any relevant columns that are frequently queried during these events.\n\nPlease let us know if you need further assistance.\n\nBest,\nHasura Support",
+    "created_at": "2024-08-05 02:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "513",
+    "ticket_id": "167",
+    "body": "Hi,\n\nThank you for your recommendations. We have implemented the suggested optimizations and monitored the performance. We're happy to report that the latency issues have been resolved, and the workload processing is back to normal.\n\nThanks for your help!\n\nBest regards,\nThe Team",
+    "created_at": "2024-08-05 03:00:00+00",
+    "user_id": "80"
+  },
+  {
+    "id": "514",
+    "ticket_id": "168",
+    "body": "Hi,\n\nI\u2019m really sorry for the delays you are experiencing with the Permissions feature. I understand that resource exhaustion can be frustrating, especially in a production environment.\n\nFrom what you described, it seems that the increased complexity of role-based permissions may be leading to performance degradation. We recommend checking your Postgres configuration to ensure it\u2019s optimized for handling complex queries efficiently.\n\nAdditionally, consider reviewing the permission rules to see if there are any that could be simplified or adjusted to reduce the load. If you can provide more details on the specific permission rules you have set up, I might be able to give more tailored advice.\n\nThanks for your patience, and I hope we can resolve this issue together.\n\nBest,\nHasura Support",
+    "created_at": "2024-11-10 01:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "515",
+    "ticket_id": "169",
+    "body": "Hello,\n\nThank you for reaching out regarding the resource exhaustion issues you're experiencing with the Schema Registry feature. We understand how critical performance is in a production environment and we will investigate this matter promptly.\n\nCould you provide more details about the specific scenarios or operations that seem to be consuming excessive resources? Additionally, any logs or metrics that could help us diagnose the issue would be greatly appreciated.\n\nBest,\nHasura Support",
+    "created_at": "2024-11-12 06:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "516",
+    "ticket_id": "170",
+    "body": "Hi,\n\nThank you for your patience while we investigated this issue. We have identified the root cause of the 500 Internal Server Error responses and implemented a fix on our end. Please verify the functionality of your GraphQL operations and let us know if you encounter any further issues.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-02-03 08:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "517",
+    "ticket_id": "171",
+    "body": "Hello,\n\nThank you for bringing this to our attention. I understand that performance degradation in Schema Registry operations can significantly impact your workflows, especially in a production environment. \n\nTo assist you better, could you please provide us with more details regarding your current database configuration and any recent changes that might have affected performance? Additionally, it would be helpful to know the average response times you're experiencing.\n\nLooking forward to your response.\n\nBest,\nHasura Support",
+    "created_at": "2024-11-29 06:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "518",
+    "ticket_id": "172",
+    "body": "Hi [Your Name],\n\nThank you for reaching out to us regarding the API request failures. We have investigated the issue and observed that the intermittent failures were due to temporary network latency. Our team has implemented optimizations to improve the stability of API calls in your production environment.\n\nPlease monitor the situation and let us know if you encounter any further issues.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-08-14 06:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "519",
+    "ticket_id": "172",
+    "body": "Hello Hasura Support,\n\nThank you for the prompt response and for addressing the issue. I'm happy to report that we have not experienced any further API request failures since your optimizations. We appreciate your help in resolving this.\n\nBest,\n[Your Name]",
+    "created_at": "2024-08-15 07:30:00+00",
+    "user_id": "14"
+  },
+  {
+    "id": "520",
+    "ticket_id": "173",
+    "body": "Hi [Your Name],\n\nThank you for reaching out to us regarding the issues with remote schemas in your production environment. \n\nI understand that you're experiencing erratic errors and intermittent failures when querying remote schema fields. This can be quite frustrating, and I apologize for the inconvenience.\n\nLet me take a look at this issue and see what can be done. I will update you shortly.\n\nBest,\nHasura Support",
+    "created_at": "2024-10-25 04:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "521",
+    "ticket_id": "173",
+    "body": "Hi [Your Name],\n\nI've been reviewing your setup. Since the remote schemas were working in staging, it could be a configuration difference between the environments. \n\nIt might help to ensure that the remote schema URLs are correctly set in your production environment. Can you double-check that?\n\nAlso, have you considered checking the logs for any additional error messages that might provide insight?\n\nThanks,\nHasura Support",
+    "created_at": "2024-10-26 09:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "522",
+    "ticket_id": "173",
+    "body": "Hello [Your Name],\n\nAfter further investigation, it seems that there were some discrepancies in the schema definitions that were causing the errors you mentioned. We have made adjustments to the remote schema configurations on our end, and everything should be functioning as expected now.\n\nPlease verify from your side and let us know if you still encounter any issues. Thank you for your patience!\n\nBest regards,\nHasura Support",
+    "created_at": "2024-10-28 11:30:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "523",
+    "ticket_id": "174",
+    "body": "Hello,\n\nThank you for bringing this to our attention. We understand the urgency of the situation, and I am currently investigating the downtime of your GraphQL engine. Can you please provide any error logs or additional details that might help us diagnose the issue more effectively?\n\nBest regards,\nHasura Support",
+    "created_at": "2024-11-30 01:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "524",
+    "ticket_id": "176",
+    "body": "Hi there,\n\nThank you for reaching out regarding the latency issues with your Event Triggers. I appreciate the detailed information you've provided. \n\nTo assist you better, could you please provide the following details?\n- How many event triggers are currently set up in your project?\n- What is the average volume of events being processed?\n- Are there any specific patterns or times when the latency spikes seem to occur?\n\nOnce I have this information, I can investigate further.\n\nThanks,\nHasura Support",
+    "created_at": "2024-09-21 06:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "525",
+    "ticket_id": "177",
+    "body": "Hi there,\n\nThank you for reaching out regarding the intermittent errors with your GraphQL API. We understand how disruptive this can be, especially in a production environment. After reviewing the logs and your configuration, we believe this may be related to some changes in version v2.48.5. \n\nWe recommend rolling back to the previous version temporarily while we investigate further.\n\nBest,\nHasura Support",
+    "created_at": "2024-04-29 10:12:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "526",
+    "ticket_id": "177",
+    "body": "Hello,\n\nWe have identified the root cause of the errors as being linked to a recent change in the handling of feature categories in the updated version. Our engineering team has implemented a fix, and it will be included in the next release scheduled for next week. We advise you to monitor the situation closely until then.\n\nLet us know if you need further assistance.\n\nThanks,\nHasura Support",
+    "created_at": "2024-05-02 14:45:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "527",
+    "ticket_id": "177",
+    "body": "Thank you for your prompt responses and the updates.\n\nWe have rolled back to the previous version as suggested, and it seems to have stabilized the API for now. We appreciate your efforts in resolving this issue and look forward to the upcoming fix. Please keep us posted!\n\nBest regards,\nSupport Team",
+    "created_at": "2024-05-05 09:30:00+00",
+    "user_id": "121"
+  },
+  {
+    "id": "528",
+    "ticket_id": "178",
+    "body": "Hello,\n\nThank you for reaching out regarding the 500 Internal Server Error responses. I understand how critical this issue is for your production environment. \n\nI will investigate this immediately and get back to you with updates as soon as possible.\n\nBest,\nHasura Support",
+    "created_at": "2024-08-25 08:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "529",
+    "ticket_id": "179",
+    "body": "Hello,\n\nI am really sorry to hear that your API service is down. This is concerning, and I understand the urgency of the situation. \n\nCan you please provide me with more details about the environment? Like, are there any recent changes made to the configuration or deployment? Also, if you could share any error logs or messages from your application, that might help us investigate further.\n\nThanks for your patience as we work through this.\n\nBest,\nHasura Support",
+    "created_at": "2024-04-10 10:15:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "530",
+    "ticket_id": "180",
+    "body": "Hi [Your Name],\n\nThanks for reaching out to Hasura Support.\n\nI understand that you are experiencing timeout errors while trying to access your Hasura project dashboard and GraphQL API. I will begin investigating this issue right away and keep you updated.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-05-10 12:09:49.874596+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "531",
+    "ticket_id": "181",
+    "body": "Hi there,\n\nThank you for reaching out. I am trying to understand your request about batch mutations for multiple records.\n\nCurrently, I am not sure if this functionality exists in our GraphQL feature set. I will need to check with the engineering team for confirmation. Please bear with me while I dig into this.\n\nThanks for your patience.",
+    "created_at": "2024-05-26 08:09:49.874596+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "532",
+    "ticket_id": "181",
+    "body": "Hello again,\n\nI wanted to follow up on your inquiry regarding batch mutations. It seems that we do not have this feature implemented at the moment. However, I will escalate this to our team to see if there are plans to add it in the future.\n\nI appreciate your understanding as I gather more information.",
+    "created_at": "2024-05-27 10:15:49.874596+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "533",
+    "ticket_id": "182",
+    "body": "Hi [Your Name],\n\nThank you for reaching out regarding the resource exhaustion issues you're experiencing. We understand how critical this is for your production environment. \n\nTo help us troubleshoot, could you please provide more details about the specific queries that are causing the spikes in CPU and memory usage? Additionally, any insights into how many concurrent users are hitting these queries would be helpful.\n\nLooking forward to your response.\n\nBest,\nHasura Support",
+    "created_at": "2023-09-02 09:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "534",
+    "ticket_id": "182",
+    "body": "Hello Hasura Support,\n\nThank you for your prompt response. The queries that are causing issues involve complex permissions checks, particularly when filtering data based on user roles. We have around 50 concurrent users accessing these permissions-heavy queries at peak times. \n\nI hope this information helps in diagnosing the problem.\n\nBest regards,\n[Your Name]",
+    "created_at": "2023-09-03 10:00:00+00",
+    "user_id": "126"
+  },
+  {
+    "id": "535",
+    "ticket_id": "183",
+    "body": "Hi,\n\nThank you for your patience. We have identified the issue causing the 500 Internal Server Errors and have deployed a fix to your environment. Please verify and let us know if everything is working as expected.\n\nBest regards,\nHasura Support",
+    "created_at": "2023-12-16 02:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "536",
+    "ticket_id": "184",
+    "body": "Hi John,\n\nThanks for reaching out to us regarding the intermittent errors with remote schemas.\n\nI am trying to understand the issue better. Can you please provide more details about the specific queries that are failing? Also, are you able to check the logs for any additional error messages or patterns that might help us in troubleshooting this?\n\nThanks,\nHasura Support",
+    "created_at": "2024-02-18 05:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "537",
+    "ticket_id": "184",
+    "body": "Hello,\n\nI appreciate your patience. I am having some trouble pinpointing the exact cause of these errors. If possible, could you share the exact error messages you are seeing in the logs or any relevant information that could assist us in figuring this out?\n\nThank you,\nHasura Support",
+    "created_at": "2024-02-19 10:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "538",
+    "ticket_id": "185",
+    "body": "Hi,\n\nThank you for your patience. We reviewed your reported latency issues with Actions queries in your production environment. Our team identified some optimization opportunities that could potentially enhance performance. We recommend monitoring the query execution times and database performance metrics to pinpoint any bottlenecks. \n\nAdditionally, we suggest analyzing your query patterns and ensuring that the necessary indexes are in place for optimal performance. If the issue persists, please feel free to reach out again, and we can investigate further.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-04-23 03:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "539",
+    "ticket_id": "186",
+    "body": "Hello,\n\nThank you for reaching out to Hasura Support regarding the intermittent API request failures you are experiencing. I understand how frustrating this can be, and I'm here to help you resolve this issue. \n\nTo get started, could you please provide any error messages you are receiving along with any specific endpoints that seem to be affected? Additionally, it would be helpful to know if there are any particular times when these failures occur more frequently.\n\nLooking forward to your response!\n\nBest,\nHasura Support",
+    "created_at": "2024-05-29 03:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "540",
+    "ticket_id": "187",
+    "body": "Hi,\n\nThank you for reaching out. I understand that you're experiencing random failures with the Actions feature after upgrading to version v2.47.1. I will investigate this issue and get back to you with updates soon.\n\nBest,\nHasura support",
+    "created_at": "2024-05-10 02:15:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "541",
+    "ticket_id": "187",
+    "body": "Hello,\n\nI wanted to follow up on the issue. Could you please provide any error logs or additional details about the failures? This will help us troubleshoot the problem more effectively.\n\nThanks,\nHasura support",
+    "created_at": "2024-05-11 03:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "542",
+    "ticket_id": "188",
+    "body": "Hello,\n\nThank you for reaching out regarding the intermittent failures with your remote schemas. I understand the impact this has on your production environment. To better assist you, could you please provide the specific error messages you are encountering and any relevant logs from your Hasura instance? Additionally, if you could share any patterns or specific times when these failures occur, it would be greatly helpful for our investigation.\n\nLooking forward to your response!\n\nBest,\nHasura Support",
+    "created_at": "2023-09-01 01:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "543",
+    "ticket_id": "189",
+    "body": "Hi there,\n\nThanks for reaching out to us regarding the latency issues you're encountering with the FeatureCategory.Actions queries. We understand how critical this is for your production workload.\n\nAfter reviewing your case and the performance metrics, we identified some optimizations that can be applied to your queries, which should help reduce the response times significantly. We've made the necessary adjustments on our end and everything is now performing as expected.\n\nPlease monitor the performance over the next few days and let us know if you encounter any further issues.\n\nThank you for your patience!\n\nBest regards,\nHasura Support",
+    "created_at": "2023-11-14 01:15:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "544",
+    "ticket_id": "190",
+    "body": "Hi there,\n\nThank you for reaching out regarding the intermittent API request failures you're experiencing in your production environment. We understand how critical this issue is and will do our best to assist you.\n\nCould you please provide more details about the errors you're encountering? Any specific error messages or logs would be helpful in diagnosing the issue.\n\nThanks,\nHasura support",
+    "created_at": "2024-01-08 04:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "545",
+    "ticket_id": "190",
+    "body": "Hello,\n\nWe have checked the initial logs and need to gather further information to pinpoint the issue. Could you also share the frequency of these failures, any specific endpoints that are failing, and the average load on your PostgreSQL database during these incidents?\n\nLooking forward to your response.\n\nBest,\nHasura support",
+    "created_at": "2024-01-09 10:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "546",
+    "ticket_id": "191",
+    "body": "Hi there,\n\nThank you for reaching out to us regarding the 500 Internal Server Errors you are experiencing with your GraphQL operations. We understand how critical this is for your service.\n\nAfter a thorough investigation, we found that there was an unexpected issue on our end affecting some users. We have applied a fix and confirmed that your operations should now be functioning correctly. Please verify and let us know if you encounter any further issues.\n\nBest,\nHasura Support",
+    "created_at": "2024-04-09 03:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "547",
+    "ticket_id": "191",
+    "body": "Hi Hasura Support,\n\nThank you for the quick response. I have tested the GraphQL operations, and everything appears to be functioning as expected now. We appreciate your assistance in resolving this issue promptly.\n\nBest regards,\nTeam",
+    "created_at": "2024-04-10 04:00:00+00",
+    "user_id": "55"
+  },
+  {
+    "id": "548",
+    "ticket_id": "192",
+    "body": "Hello,\n\nThank you for reaching out to us regarding the resource exhaustion and slow response times you're experiencing with the Permissions feature. We understand how critical this is for your production environment.\n\nOur initial recommendation is to review your current permissions setup to ensure there are no overly complex rules that could be impacting performance. Additionally, consider optimizing your database queries related to permissions.\n\nWe will analyze the details further and keep you updated.",
+    "created_at": "2024-05-23 05:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "549",
+    "ticket_id": "192",
+    "body": "Hi,\n\nAfter analyzing your project, we found that certain permission rules could be simplified. We recommend minimizing the use of nested permissions where possible, as these can lead to slower query performance.\n\nAlso, ensure that your PostgreSQL database is properly indexed for the fields used in your permission checks. This can significantly improve response times.\n\nPlease make these adjustments and let us know if you notice any improvements.",
+    "created_at": "2024-05-24 06:30:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "550",
+    "ticket_id": "192",
+    "body": "Thank you for your assistance! We have implemented the recommended changes, and the performance has greatly improved. We appreciate your support in resolving this issue.\n\nBest,\nThe Team",
+    "created_at": "2024-05-26 08:15:00+00",
+    "user_id": "55"
+  },
+  {
+    "id": "551",
+    "ticket_id": "193",
+    "body": "Hi John,\n\nThanks for reaching out to us regarding the HTTP 500 Internal Server Error you're experiencing with your GraphQL operations. I understand how critical this is for your production environment.\n\nLet me look into the logs and check for any issues that might be causing this problem. I'll keep you updated as soon as I have more information.\n\nBest,\nHasura Support",
+    "created_at": "2024-07-13 08:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "552",
+    "ticket_id": "194",
+    "body": "Hello,\n\nThank you for reaching out about the issues you're facing with Event Triggers. I'm struggling to get all the details I need to assist you effectively. Could you provide more information on the specific errors you are encountering? Any error messages or patterns you've noticed would be helpful.\n\nBest,\nHasura support",
+    "created_at": "2024-08-19 02:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "553",
+    "ticket_id": "195",
+    "body": "Hi,\n\nThanks for reaching out. I'm really sorry to hear about the issues you are facing with Actions in your production environment. I will try to investigate this, but I might need more details as intermittency issues can be tricky to diagnose.\n\nCan you share any logs or error messages that you have observed? Also, any particular actions that seem to be failing more frequently would be helpful. \n\nThank you for your patience.",
+    "created_at": "2023-10-02 03:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "554",
+    "ticket_id": "195",
+    "body": "Hello,\n\nI\u2019m still looking into the matter, but it\u2019s proving to be a bit challenging. Could you possibly provide more context on when these failures occur? Like the time of day or specific user actions that might be triggering the failures? This information could help narrow down the issue. \n\nThanks for your understanding.",
+    "created_at": "2023-10-03 04:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "555",
+    "ticket_id": "196",
+    "body": "Hi Michael,\n\nThank you for reaching out to us regarding the 500 Internal Server Error you are experiencing. We understand the urgency of this issue and will prioritize it accordingly.\n\nCould you please provide the following details to help us investigate further?\n1. Any error logs from the Hasura console that might provide more context.\n2. The specific queries that are returning the 500 errors.\n3. Any recent changes to the database or environment, even if they seem unrelated.\n\nOnce we have this information, we can assist you more effectively.\n\nBest,\nHasura Support",
+    "created_at": "2023-11-08 09:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "556",
+    "ticket_id": "197",
+    "body": "Hi,\n\nThank you for reaching out to us regarding the service disruption. I understand how critical this is for your production environment. \n\nLet me check the status of the Hasura GraphQL Engine and see if there are any known issues on our end. I will get back to you shortly.\n\nBest,\nHasura Support",
+    "created_at": "2024-02-08 08:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "557",
+    "ticket_id": "197",
+    "body": "Hello,\n\nI have reviewed the logs and it appears that the GraphQL Engine is not reachable, which could indicate that the service is down or misconfigured. Please confirm if there were any recent changes made to the deployment or server environment that could have affected connectivity.\n\nLooking forward to your response.\n\nThanks,\nHasura Support",
+    "created_at": "2024-02-09 09:30:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "558",
+    "ticket_id": "198",
+    "body": "Hi there,\n\nThank you for reaching out regarding the issues with the Schema Registry. I understand how disruptive this can be for your production environment. To help us investigate further, could you please provide any logs or error messages that you may have encountered during the downtime? Additionally, is there any specific time frame when these issues tend to occur more frequently?\n\nLooking forward to your response.\n\nBest,\nHasura support",
+    "created_at": "2024-02-21 06:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "559",
+    "ticket_id": "199",
+    "body": "Hi [Your Name],\n\nThank you for bringing this to our attention. We investigated the issue and found that there was a temporary outage due to a database connection limit being reached. We have resolved the issue, and your service is now back up and running. Please monitor the performance and let us know if you experience any further issues.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-11-09 06:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "560",
+    "ticket_id": "200",
+    "body": "Hi there,\n\nThank you for bringing this to our attention. I understand that resource exhaustion and slow response times can be quite challenging, especially in a production environment. Upon reviewing your setup, it seems that the addition of the new remote schema for your payments service may have introduced some overhead in processing.\n\nWe have implemented optimizations in our recent updates that can help mitigate these issues. Please ensure you are utilizing connection pooling and monitoring the performance of your remote schemas. Additionally, consider adjusting your query batching settings to improve response times.\n\nLet us know how it goes, and if the performance does not improve, we can explore further options.\n\nBest,\nHasura Support",
+    "created_at": "2024-05-20 07:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "561",
+    "ticket_id": "200",
+    "body": "Hi Hasura Support,\n\nThank you for the prompt response and suggestions. After implementing your recommendations, we noticed a marked improvement in our API response times, and resource usage has stabilized significantly. We will continue to monitor the performance closely and reach out if we encounter any further issues.\n\nThanks again for your assistance!\n\nBest regards,\nThe Team",
+    "created_at": "2024-05-22 10:00:00+00",
+    "user_id": "110"
+  },
+  {
+    "id": "562",
+    "ticket_id": "201",
+    "body": "Hi there,\n\nThank you for reaching out to Hasura Support. I understand the urgency of the situation regarding your Hasura GraphQL API service being down in production. We are actively investigating the issue and will prioritize this matter to ensure minimal downtime for your clients.\n\nCould you please provide any error messages or logs that you are encountering? Additionally, it would be helpful to know if there were any recent changes made to your setup before the issue occurred.\n\nLooking forward to your response so we can resolve this as quickly as possible.\n\nBest,\nHasura Support",
+    "created_at": "2024-08-07 09:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "563",
+    "ticket_id": "202",
+    "body": "Hi there,\n\nThank you for reaching out to Hasura Support regarding the resource exhaustion you're experiencing with Actions. We understand how critical this is for your production environment.\n\nAfter reviewing your setup and usage patterns, we recommend optimizing the logic within your Actions to ensure they are as efficient as possible. Additionally, consider checking the database queries being executed during these Actions for any potential optimizations.\n\nBest,\nHasura Support",
+    "created_at": "2024-04-09 08:15:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "564",
+    "ticket_id": "202",
+    "body": "Hello,\n\nWe also suggest monitoring the CPU and memory usage of your Postgres database to identify any possible bottlenecks or long-running queries that might be affecting performance. Using tools like pg_stat_statements can help you gain insights into query performance.\n\nLet us know if you need assistance with this.\n\nThanks,\nHasura Support",
+    "created_at": "2024-04-10 09:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "565",
+    "ticket_id": "202",
+    "body": "Hi Hasura Team,\n\nThank you for your assistance! We have implemented the suggested optimizations and monitored our system as advised. We're pleased to report that the performance has improved significantly, and the resource usage is now within acceptable limits.\n\nWe appreciate your support and guidance on this matter!\n\nBest regards,\nTeam",
+    "created_at": "2024-04-11 10:30:00+00",
+    "user_id": "1"
+  },
+  {
+    "id": "566",
+    "ticket_id": "203",
+    "body": "Hi [Your Name],\n\nThank you for reaching out to us regarding the resource exhaustion and slow response times with your Remote Schemas. We understand how critical this issue is for your application's performance.\n\nI will start investigating this right away and will update you shortly.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-08-20 02:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "567",
+    "ticket_id": "203",
+    "body": "Hello,\n\nI appreciate your patience as we look into this issue. To better assist you, could you provide us with more details on the specific queries that are causing the high CPU and memory usage? Additionally, any logs or metrics during the peak traffic periods would be helpful.\n\nLooking forward to your response!\n\nThanks,\nHasura Support",
+    "created_at": "2024-08-21 02:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "568",
+    "ticket_id": "204",
+    "body": "Hello,\n\nI am sorry to hear that you are facing issues with the Actions feature. I see you are experiencing intermittent 'Internal server error' messages and timeouts. I would like to understand more about the situation, specifically, could you provide any error logs or screenshots that show the errors? This will help us investigate further.\n\nThank you for your patience.\n\nBest,\nHasura Support",
+    "created_at": "2024-10-18 01:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "569",
+    "ticket_id": "205",
+    "body": "Hello,\n\nThank you for reaching out regarding the critical production issue you're facing. I understand how urgent this is for your operations.\n\nWe are currently investigating the logs and metrics from your Hasura instance to identify the cause of the 500 Internal Server Error responses. I will update you shortly with our findings.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-09-29 03:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "570",
+    "ticket_id": "206",
+    "body": "Hi,\n\nThank you for bringing this to our attention. To assist you better, could you please provide any error messages you are encountering or details on the API requests that are failing? This information will help us investigate the issue more effectively.\n\nBest,\nHasura support",
+    "created_at": "2024-05-29 07:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "571",
+    "ticket_id": "207",
+    "body": "Hi,\n\nThanks for reaching out regarding the issue with the Actions feature. I am really sorry to hear that you are experiencing this problem.\n\nCould you please provide more details about the configuration you have set up for the Action? It might also help if you can share the exact error message you are receiving when you try to execute it.\n\nI appreciate your patience as we look into this.\n\nBest,\nHasura support",
+    "created_at": "2024-12-26 12:39:57.555042+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "572",
+    "ticket_id": "208",
+    "body": "Hi [Your Name],\n\nThank you for reaching out to us regarding the erratic errors from your GraphQL API. We understand how disruptive this can be in a production environment.\n\nI have looked into your project and will investigate the logs to identify the root cause of these inconsistencies. I will keep you updated with my findings.\n\nBest,\nHasura Support",
+    "created_at": "2024-12-08 02:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "573",
+    "ticket_id": "208",
+    "body": "Hello [Your Name],\n\nAfter a thorough review, it appears that the errors were caused by a temporary issue related to connection pooling in your Postgres database. We have made some adjustments to optimize the connection settings, which should enhance stability.\n\nPlease monitor your API and let us know if you encounter any further issues.\n\nThank you for your patience!\n\nBest,\nHasura Support",
+    "created_at": "2024-12-09 10:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "574",
+    "ticket_id": "208",
+    "body": "Hi Hasura Support,\n\nThank you for your prompt assistance! I have monitored the API since your adjustments, and I\u2019m pleased to report that the erratic errors have ceased. Everything is functioning smoothly now.\n\nI appreciate your support in resolving this matter.\n\nBest regards,\n[Your Name]",
+    "created_at": "2024-12-10 15:30:00+00",
+    "user_id": "243"
+  },
+  {
+    "id": "575",
+    "ticket_id": "209",
+    "body": "Hello [Your Name],\n\nThank you for reaching out to us regarding the outage of your production environment. I understand the urgency of this situation and will begin looking into it right away. \n\nCan you please confirm if there have been any recent error messages or logs that might provide insight into the cause of the outage? Additionally, are there any specific services that you believe may be affected more than others?\n\nI appreciate your patience as we work to resolve this issue.\n\nBest,\nHasura Support",
+    "created_at": "2024-12-05 07:10:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "576",
+    "ticket_id": "210",
+    "body": "Hi,\n\nThank you for reaching out. I'm sorry to hear that you're experiencing 500 Internal Server Errors with your GraphQL operations. To assist you better, could you please provide any error logs or messages you have encountered? Additionally, if possible, share the specific queries you are trying to execute.\n\nThanks for your cooperation.\n\nBest,\nHasura Support",
+    "created_at": "2024-03-22 06:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "577",
+    "ticket_id": "211",
+    "body": "Hi there,\n\nThanks for reaching out regarding the intermittent failures with your API requests. Can you please provide more details about the specific error messages you are encountering? Additionally, any logs or traces from the affected requests would be helpful in diagnosing the issue.\n\nLooking forward to your response.\n\nBest,\nHasura support",
+    "created_at": "2024-10-02 06:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "578",
+    "ticket_id": "212",
+    "body": "Hi there,\n\nThank you for reaching out regarding the performance degradation in your Schema Registry operations. We understand how critical this is for your development process. After reviewing your configuration and usage patterns, we recommend optimizing your database queries and ensuring that your indexes are properly set up. This can significantly improve performance.\n\nPlease monitor the performance after making these adjustments and let us know if you continue to experience issues.\n\nBest regards,\nHasura support",
+    "created_at": "2024-07-11 08:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "579",
+    "ticket_id": "212",
+    "body": "Hello,\n\nThank you for the guidance. We have made the recommended changes regarding the database queries and indexes. The performance has improved significantly, and we appreciate your support in resolving this issue.\n\nBest,\nThe Development Team",
+    "created_at": "2024-07-12 09:00:00+00",
+    "user_id": "113"
+  },
+  {
+    "id": "580",
+    "ticket_id": "213",
+    "body": "Hi,\n\nI\u2019m really sorry to hear that your production Hasura service is down. This is quite serious, and I understand the urgency. \n\nCan you please provide more details about any error messages you might be seeing when trying to connect to the GraphQL API? Also, have there been any recent changes made to the configuration or the database that could be related to this issue?\n\nThanks for your patience as we try to resolve this.",
+    "created_at": "2024-11-21 03:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "581",
+    "ticket_id": "213",
+    "body": "Hello,\n\nI\u2019m still looking into this issue, but I\u2019m having some trouble finding the root cause. It would be really helpful if you could check the logs on your Postgres database. \n\nAre there any indications of connection problems or errors that could help us narrow this down? I appreciate your help with this.",
+    "created_at": "2024-11-22 04:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "582",
+    "ticket_id": "214",
+    "body": "Hello,\n\nThank you for reaching out regarding the performance degradation you're experiencing with your GraphQL operations. I understand how critical this is for your production environment.\n\nI will need to look into this further to provide you with an appropriate solution. Can you please provide details on how many concurrent users are experiencing this slowdown? Also, sharing any specific queries that are particularly slow would be helpful.\n\nThank you for your patience as we work through this issue.",
+    "created_at": "2024-01-15 02:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "583",
+    "ticket_id": "215",
+    "body": "Hi there,\n\nThank you for reaching out regarding the intermittent failures with the Actions feature. I understand how frustrating this can be, especially in a production environment. \n\nWe will investigate this issue and keep you updated on our progress. Please provide any error logs or additional details that could help us troubleshoot the problem.\n\nBest,\nHasura Support",
+    "created_at": "2024-10-06 06:10:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "584",
+    "ticket_id": "215",
+    "body": "Hello,\n\nThanks for the prompt response. We have been monitoring the logs, and there are occasional timeout errors when executing Actions. We suspect it might be related to the recent version upgrade, but we need to pinpoint the exact cause.\n\nWe will keep you posted if we find any further details that could assist in the investigation.\n\nThank you,\nSupport Team",
+    "created_at": "2024-10-07 08:15:00+00",
+    "user_id": "45"
+  },
+  {
+    "id": "585",
+    "ticket_id": "216",
+    "body": "Hi there,\n\nThanks for bringing this to our attention. We have identified the performance degradation issue in the Schema Registry operations and have implemented optimizations on our end. We recommend monitoring the performance for any further improvements.\n\nPlease let us know if you have any other questions or concerns.\n\nBest,\nHasura Support",
+    "created_at": "2024-12-06 08:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "586",
+    "ticket_id": "216",
+    "body": "Thank you for the quick response! We've observed improvements in query execution times since the optimizations were implemented. We appreciate the support!\n\nBest regards,\nUser",
+    "created_at": "2024-12-07 09:00:00+00",
+    "user_id": "45"
+  },
+  {
+    "id": "587",
+    "ticket_id": "217",
+    "body": "Hello [Your Name],\n\nThank you for your feature request regarding more granular control over Event Triggers in Hasura. We appreciate your feedback and understand the importance of being able to specify conditions based on updated column values.\n\nCurrently, this feature is not available, but we have noted your request and will discuss it in our upcoming feature prioritization meetings. \n\nBest regards,\nHasura Support",
+    "created_at": "2024-12-17 10:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "588",
+    "ticket_id": "217",
+    "body": "Hi [Your Name],\n\nI wanted to follow up on your request. We have officially submitted your suggestion to our product team for consideration. While I cannot provide a timeline for implementation, we will keep you updated on any progress regarding this feature.\n\nThank you for your patience!\nBest,\nHasura Support",
+    "created_at": "2024-12-18 14:30:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "589",
+    "ticket_id": "217",
+    "body": "Hello Hasura Support,\n\nThank you for acknowledging my request and submitting it to the product team. I look forward to any updates regarding this feature in the future. It would significantly improve our workflow.\n\nBest,\n[Your Name]",
+    "created_at": "2024-12-19 09:00:00+00",
+    "user_id": "197"
+  },
+  {
+    "id": "590",
+    "ticket_id": "218",
+    "body": "Hello,\n\nThank you for reaching out and bringing this to our attention. We understand the urgency of the situation and are looking into your Hasura project access issue right away.\n\nPlease bear with us as we investigate the matter.\n\nBest,\nHasura Support",
+    "created_at": "2024-12-20 01:10:00.048534+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "591",
+    "ticket_id": "218",
+    "body": "Hi,\n\nWe have identified that there was a temporary outage affecting several projects, including yours. The issue has been resolved, and you should now have access to your GraphQL APIs and console.\n\nPlease check and confirm if everything is functioning as expected.\n\nThank you for your patience,\nHasura Support",
+    "created_at": "2024-12-20 01:30:00.048534+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "592",
+    "ticket_id": "218",
+    "body": "Hello,\n\nI can confirm that the issue has been resolved and we can access the project successfully. Thank you for your prompt assistance in this matter.\n\nBest regards,\nThe Team",
+    "created_at": "2024-12-20 02:00:00.048534+00",
+    "user_id": "197"
+  },
+  {
+    "id": "593",
+    "ticket_id": "219",
+    "body": "Hello,\n\nThank you for bringing this to our attention. I understand that the performance degradation you're experiencing is impacting your application significantly. We'll need to gather more details to assist you effectively.\n\nCould you please provide us with the following information?\n1. Any specific queries that are causing the slowdown?\n2. How many remote schemas are currently integrated?\n3. Have you noticed any patterns with the queries that are slower?\n4. Any relevant logs or traces that could help us analyze the issue?\n\nLooking forward to your response so we can work on resolving this.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-01-05 08:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "594",
+    "ticket_id": "220",
+    "body": "Hi,\n\nThank you for reaching out regarding the intermittent failures in your GraphQL queries. \n\nI am currently investigating the issue, but I am having some difficulty in replicating the exact problem you are experiencing. Could you please provide any specific error messages or logs that you might have? This will help me in getting to the bottom of this issue.\n\nThanks for your patience.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-07-31 04:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "595",
+    "ticket_id": "220",
+    "body": "Hi,\n\nThanks for the additional details provided. After reviewing, it seems that the issue may be related to connection timeouts or query planning in PostgreSQL, but I am not entirely sure how to resolve it. I recommend checking the database logs for any anomalies during the time of the failures. If you can share those logs, it may shed some light on the matter.\n\nIf the issue persists, I would suggest considering a performance review of your queries. \n\nBest,\nHasura Support",
+    "created_at": "2024-08-02 04:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "596",
+    "ticket_id": "221",
+    "body": "Hi,\n\nThanks for your patience while we investigated the issue. After reviewing the logs and your configuration, we found that the erratic errors with Remote Schemas were related to the recent upgrade. We have implemented a patch in the latest version to resolve these issues.\n\nPlease update to version v2.45.1 and let us know if you continue to experience any problems.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-11-27 03:10:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "597",
+    "ticket_id": "221",
+    "body": "Thank you for the resolution! I have updated to v2.45.1 and the Remote Schemas are functioning correctly now. Appreciate your help in resolving this matter.\n\nBest,\nUser",
+    "created_at": "2024-11-28 09:30:00+00",
+    "user_id": "159"
+  },
+  {
+    "id": "598",
+    "ticket_id": "222",
+    "body": "Hi [Your Name],\n\nThank you for reaching out regarding the latency issues with your Actions queries. We understand how critical this is for your production workload. \n\nAfter reviewing the details, we have optimized the query execution paths and made some adjustments to improve the overall performance. We recommend you to monitor the queries and let us know if you notice any further delays.\n\nBest,\nHasura Support",
+    "created_at": "2024-11-12 05:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "599",
+    "ticket_id": "222",
+    "body": "Hi Hasura Support,\n\nThank you for the quick response and for addressing the latency issues. We have started monitoring the queries as suggested and have noticed a significant improvement in performance. \n\nI appreciate your assistance in resolving this matter.\n\nBest regards,\n[Your Name]",
+    "created_at": "2024-11-13 06:00:00+00",
+    "user_id": "176"
+  },
+  {
+    "id": "600",
+    "ticket_id": "223",
+    "body": "Hi,\n\nThank you for reaching out to us regarding the intermittent failures in your API requests. \n\nI am looking into this issue, but it seems quite complex. We are going through the logs to identify any patterns or errors that might be causing these timeouts and 500 errors.\n\nWe will need a little time to investigate further.\n\nBest,\nHasura Support",
+    "created_at": "2024-11-23 06:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "601",
+    "ticket_id": "223",
+    "body": "Hello,\n\nI wanted to follow up on your issue with the API failures. \n\nWe have been reviewing the logs, but it is challenging to pinpoint the exact cause of these errors. It could be due to several factors like connection pooling or database query performance. \n\nCould you provide us with specific timestamps when these errors occurred? This information would greatly help us in our investigation.\n\nThanks for your patience,\nHasura Support",
+    "created_at": "2024-11-24 08:15:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "602",
+    "ticket_id": "223",
+    "body": "Hi,\n\nWe appreciate your help in providing the timestamps. \n\nAfter further investigation, we believe that the upgrade to v2.47.5 may have introduced some changes that could affect your setup. We have made some adjustments on our end and believe that the issues should be resolved now. Please monitor the situation and let us know if you encounter any further problems.\n\nThank you for your understanding!\n\nBest regards,\nHasura Support",
+    "created_at": "2024-11-25 10:30:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "603",
+    "ticket_id": "224",
+    "body": "Hello,\n\nI'm really sorry to hear that you're unable to reach your Hasura project. This sounds urgent, and I'm trying to understand the situation better.\n\nCould you please provide more details on what exactly is happening? Are you seeing any specific error messages or behavior when trying to access the project? \n\nThank you for your patience as we work to resolve this issue.\n\nBest regards,\nHasura support",
+    "created_at": "2024-04-09 04:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "604",
+    "ticket_id": "225",
+    "body": "Hi there,\n\nThank you for your patience. We have thoroughly investigated the issue you reported regarding intermittent permission failures. Our team has identified a bug related to permission caching which could cause the behavior you've described.\n\nWe have implemented a fix in the latest patch for version 2.47.4. Please upgrade your instance to this version to resolve the issue. \n\nLet us know if you experience any further problems!\n\nBest,\nHasura Support",
+    "created_at": "2024-10-07 10:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "605",
+    "ticket_id": "225",
+    "body": "Hi Hasura Support,\n\nThank you for the quick response and fix! We have successfully upgraded to version 2.47.4 and the permission issues seem to be resolved. I appreciate your assistance in addressing this matter promptly.\n\nBest regards,\nThe Team",
+    "created_at": "2024-10-08 12:00:00+00",
+    "user_id": "3"
+  },
+  {
+    "id": "606",
+    "ticket_id": "226",
+    "body": "Hi,\n\nThank you for reaching out regarding the 500 Internal Server Errors. We understand the urgency of this issue.\n\nAfter investigating, we found that there were some transient issues with the PostgreSQL database that have since been resolved. Please check your GraphQL operations again, and they should work as expected now.\n\nLet us know if you continue to face any issues.\n\nBest,\nHasura Support",
+    "created_at": "2024-12-05 03:30:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "607",
+    "ticket_id": "226",
+    "body": "Hi Hasura Support,\n\nThank you for the quick resolution! I have tested our GraphQL operations, and they are functioning correctly now. We appreciate your prompt assistance in this matter.\n\nBest regards,\nThe Team",
+    "created_at": "2024-12-05 04:00:00+00",
+    "user_id": "136"
+  },
+  {
+    "id": "608",
+    "ticket_id": "227",
+    "body": "Hi,\n\nThank you for reaching out to us regarding the performance degradation in your application related to permissions after the upgrade to v2.45.0. We understand the impact this has on your production environment.\n\nAfter investigating the issue, we found that there were some optimizations made in our handling of permissions in the latest version. However, due to the complexity of your permissions setup, it may be causing the slowdown you\u2019re experiencing.\n\nWe recommend reviewing your permission rules and ensuring that they are as streamlined as possible. Additionally, consider adjusting your indexing strategies on the relevant tables to improve query performance.\n\nIf you have any specific queries or need further assistance, please feel free to reach out.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-09-20 09:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "609",
+    "ticket_id": "228",
+    "body": "Hi there,\n\nThank you for reaching out to us regarding the timeout issue with your project. I understand how critical this is for your production environment. \n\nWe will investigate the situation and provide an update shortly.\n\nBest,\nHasura support",
+    "created_at": "2023-12-12 01:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "610",
+    "ticket_id": "228",
+    "body": "Hello,\n\nCan you please provide more details about the error you are encountering? Any specific error messages or logs would be helpful for our investigation.\n\nThank you for your patience as we work to resolve this issue.\n\nBest,\nHasura support",
+    "created_at": "2023-12-13 01:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "611",
+    "ticket_id": "229",
+    "body": "Hi there,\n\nThank you for reaching out regarding the issues with Actions in your production environment. I understand how disruptive this can be for your services and users. \n\nTo assist you better, could you please provide more details about the errors you're encountering? Specifically, any error messages or logs when the Actions fail would be very helpful. Additionally, how often are these failures occurring, and do they seem to coincide with any specific activity or load on your system?\n\nLooking forward to your response.\n\nBest,\nHasura Support",
+    "created_at": "2024-02-02 08:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "612",
+    "ticket_id": "230",
+    "body": "Hi,\n\nThank you for bringing this to our attention. I am trying to understand the latency issue you're facing with Schema Registry queries. \n\nCould you provide more details about the specific queries that are running slow? Also, any metrics or logs you can share would be helpful in diagnosing the problem. \n\nI appreciate your patience while we investigate this.\n\nBest,\nHasura support",
+    "created_at": "2023-07-29 02:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "613",
+    "ticket_id": "231",
+    "body": "Hello,\n\nThank you for reaching out regarding the issues you're facing with Event Triggers. I understand the urgency of this matter, especially in a production environment.\n\nTo assist you better, could you please provide the following information:\n1. Can you share specific error messages you're encountering in the logs?\n2. How frequently are the triggers expected to fire, and are there any patterns to the failures?\n3. Are there any recent changes made to the triggers or the database configuration?\n\nOnce I have this information, I will be able to guide you more effectively.\n\nThank you,\nHasura Support",
+    "created_at": "2024-08-21 06:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "614",
+    "ticket_id": "232",
+    "body": "Hi,\n\nThank you for reaching out to Hasura Support. I understand you're experiencing connection timeouts with your GraphQL endpoint, which is indeed a critical issue. We are currently investigating the root cause of this disruption. \n\nI will keep you updated on our progress.\n\nBest,\nHasura support",
+    "created_at": "2024-11-05 06:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "615",
+    "ticket_id": "232",
+    "body": "Hi,\n\nWe have identified the issue related to the connection timeouts and have implemented the necessary fixes. Your Hasura project should be accessible now, and API requests to the GraphQL endpoint should work without any issues. \n\nPlease monitor the performance and let us know if you encounter any further problems.\n\nThank you for your patience!\n\nBest regards,\nHasura support",
+    "created_at": "2024-11-06 06:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "616",
+    "ticket_id": "233",
+    "body": "Hi there,\n\nThank you for bringing this to our attention. I understand how critical this is for your operations. We've investigated the situation and found that the issue was related to a temporary outage in our infrastructure that affected your API requests. \n\nWe have since resolved the issue, and your service should be fully operational now. Please verify and let us know if you experience any further issues.\n\nBest regards,\nHasura support",
+    "created_at": "2023-08-17 03:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "617",
+    "ticket_id": "233",
+    "body": "Hi Hasura team,\n\nThank you for the quick resolution! I can confirm that our API is back online and functioning properly. We appreciate your prompt assistance during this critical downtime. \n\nBest,\nThe Team",
+    "created_at": "2023-08-18 04:00:00+00",
+    "user_id": "109"
+  },
+  {
+    "id": "618",
+    "ticket_id": "234",
+    "body": "Hello,\n\nThank you for reaching out about the latency issues with your Event Triggers. We'll need to gather some more details to assist you effectively. Could you please provide us with the specific queries that are experiencing high latency and any relevant logs that might help us diagnose the problem?\n\nBest,\nHasura Support",
+    "created_at": "2025-01-12 01:06:19.227637+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "619",
+    "ticket_id": "234",
+    "body": "Hi,\n\nWe are currently seeing elevated response times during our internal monitoring for Event Triggers. It would be helpful if you could share the frequency of these triggers and the volume of data they are processing. This information will help us identify any patterns or bottlenecks.\n\nThank you,\nHasura Support",
+    "created_at": "2025-01-13 02:15:19.227637+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "620",
+    "ticket_id": "235",
+    "body": "Hi,\n\nThank you for reaching out. We have investigated the intermittent failures in your production environment and found that they were caused by a temporary connectivity issue between Hasura and your Postgres database. This has since been resolved and you should see improved stability moving forward. If you encounter any further issues, please let us know.\n\nBest,\nHasura Support",
+    "created_at": "2024-11-10 03:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "621",
+    "ticket_id": "236",
+    "body": "Hi there,\n\nThank you for reporting the issue. We understand the urgency of this matter. To assist you better, could you please provide us with the error logs from your service during the time of the outages? Additionally, any recent changes made to the API or database configuration would be helpful.\n\nLooking forward to your response.\n\nBest,\nHasura Support",
+    "created_at": "2024-11-19 04:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "622",
+    "ticket_id": "237",
+    "body": "Hi there,\n\nThank you for reaching out to Hasura Support regarding your project access issue. We understand the urgency of this matter and will prioritize it accordingly.\n\nI will start investigating the unresponsive API endpoints for your project ID: b750445e-fba4-4644-b306-1550cfefad8b and will provide you with updates shortly.\n\nThank you for your patience.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-09-13 01:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "623",
+    "ticket_id": "238",
+    "body": "Hi there,\n\nThank you for bringing this critical issue to our attention. I understand how frustrating it must be to have your production environment down. We are currently investigating the 500 Internal Server Errors affecting your API requests.\n\nI will keep you updated as we work towards a resolution.\n\nBest,\nHasura Support",
+    "created_at": "2024-11-14 05:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "624",
+    "ticket_id": "238",
+    "body": "Hello,\n\nAfter a thorough investigation, we identified that the issue was caused by a temporary outage in our infrastructure affecting multiple users. We have addressed the underlying problem, and all services should be operational again.\n\nPlease verify the functionality on your end and let us know if you encounter any further issues.\n\nThank you for your patience!\n\nBest regards,\nHasura Support",
+    "created_at": "2024-11-14 06:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "625",
+    "ticket_id": "238",
+    "body": "Hi Hasura Team,\n\nThank you for the quick resolution! I have checked our services, and everything is back up and running smoothly now. We appreciate your prompt support during this critical time.\n\nBest,\nUser",
+    "created_at": "2024-11-14 07:00:00+00",
+    "user_id": "75"
+  },
+  {
+    "id": "626",
+    "ticket_id": "239",
+    "body": "Hi,\n\nThank you for reaching out regarding the high latency issue with your FeatureCategory Actions queries. \n\nI understand it can be frustrating when actions take longer than expected. I would recommend checking the database performance and any potential locks or long-running queries that could be causing the delays. Additionally, reviewing your server metrics during the times of latency might provide some insights.\n\nIf the issue persists, please feel free to reach out again, and we can look deeper into this.\n\nBest,\nHasura Support",
+    "created_at": "2024-11-16 06:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "627",
+    "ticket_id": "240",
+    "body": "Hi Team,\n\nThank you for reaching out to us regarding the random request failures in your production environment. We appreciate your detailed description of the issue.\n\nTo start, we will look into the logs and metrics from your project to see if there's any indication of what might be causing these intermittent failures.\n\nWe will get back to you shortly with our findings.\n\nBest,\nHasura Support",
+    "created_at": "2024-11-30 02:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "628",
+    "ticket_id": "240",
+    "body": "Hi Team,\n\nAfter reviewing the logs, we found that the failures could be related to a spike in traffic during specific hours. It could be helpful to monitor the load on your database and ensure that it can handle the traffic.\n\nAdditionally, consider implementing exponential backoff retries for your API requests to handle transient failures more gracefully.\n\nLet us know if you need further assistance.\n\nThanks,\nHasura Support",
+    "created_at": "2024-12-01 10:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "629",
+    "ticket_id": "240",
+    "body": "Hi Hasura Support,\n\nThank you for your assistance! We have implemented the suggestions you provided regarding monitoring and retries. The situation has improved significantly, and we are no longer experiencing the same level of request failures.\n\nWe appreciate your support in resolving this issue!\n\nBest regards,\nThe Team",
+    "created_at": "2024-12-02 15:30:00+00",
+    "user_id": "113"
+  },
+  {
+    "id": "630",
+    "ticket_id": "241",
+    "body": "Hi,\n\nThank you for your patience while we investigated the random API request failures you reported. After thorough analysis, we identified a transient issue with connection pooling that could have contributed to the intermittent failures.\n\nWe have implemented adjustments to optimize connection management in your environment, and I am pleased to inform you that the situation has improved significantly. Please monitor the system and let us know if you encounter any further issues.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-11-19 09:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "631",
+    "ticket_id": "241",
+    "body": "Hello,\n\nThank you for resolving the issue promptly. We have been monitoring the API requests since your changes, and I am happy to report that everything seems to be functioning smoothly now. We appreciate your support and quick turnaround!\n\nBest,\nThe Team",
+    "created_at": "2024-11-20 10:00:00+00",
+    "user_id": "196"
+  },
+  {
+    "id": "632",
+    "ticket_id": "242",
+    "body": "Hi there,\n\nThank you for reaching out to us regarding the outage. We understand the critical impact this has on your users. Our team is currently investigating the 503 Service Unavailable errors affecting your GraphQL API requests. We will provide updates as soon as we have more information.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-11-30 08:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "633",
+    "ticket_id": "242",
+    "body": "Hello,\n\nWe have identified the issue causing the service outage and have implemented a fix. Your Hasura service should now be operational again. Please verify and let us know if you encounter any further issues.\n\nThank you for your patience.\n\nBest,\nHasura Support",
+    "created_at": "2024-12-01 09:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "634",
+    "ticket_id": "243",
+    "body": "Hi,\n\nThank you for reaching out to Hasura Support regarding the performance degradation issues you are facing with your queries involving permissions checks. We've investigated the matter and identified some areas for optimization in your current setup.\n\nWe recommend reviewing your permission rules and considering indexing key columns that are frequently queried. This should help improve the overall performance of your application.\n\nIf you need assistance in making these changes or have any further questions, feel free to reach out.\n\nBest,\nHasura Support",
+    "created_at": "2024-09-25 03:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "635",
+    "ticket_id": "243",
+    "body": "Hi Hasura Support,\n\nThank you for your prompt response. I appreciate the suggestions regarding permission rules and indexing. After implementing your recommendations, we have noticed a significant improvement in query performance. \n\nThanks for your help in resolving this issue!\n\nBest regards,\nUser",
+    "created_at": "2024-09-26 04:00:00+00",
+    "user_id": "83"
+  },
+  {
+    "id": "636",
+    "ticket_id": "244",
+    "body": "Hi there,\n\nThank you for reaching out regarding the intermittent issues with the Actions feature in your production environment. I understand how critical this is for your application's reliability.\n\nAfter investigating the logs and analyzing the actions, it appears that the failures were linked to transient network issues affecting the connection to your AWS Lambda functions. We have implemented certain optimizations on our end to mitigate this.\n\nPlease monitor the situation and let us know if any further issues arise.\n\nBest,\nHasura Support",
+    "created_at": "2023-12-25 02:01:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "637",
+    "ticket_id": "244",
+    "body": "Hi,\n\nWe appreciate your patience as we worked through this issue. We have made adjustments to the timeout settings for the Actions to better handle such intermittent network conditions. \n\nIn addition, we recommend reviewing the AWS Lambda logs to check for any spikes in invocation errors that could correlate with the issues you were experiencing. \n\nLet us know if you have any questions or need further assistance.\n\nThanks,\nHasura Support",
+    "created_at": "2023-12-26 10:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "638",
+    "ticket_id": "244",
+    "body": "Hello,\n\nThank you for your support and assistance in this matter. We have noticed a significant improvement since your adjustments, and the Actions feature is now functioning reliably. \n\nWe will continue to monitor the situation closely and will reach out if we encounter any further problems.\n\nBest regards,\nThe Team",
+    "created_at": "2023-12-27 15:30:00+00",
+    "user_id": "28"
+  },
+  {
+    "id": "639",
+    "ticket_id": "245",
+    "body": "Hi,\n\nThank you for your patience. We have investigated the resource exhaustion issue you reported. It seems that optimizing the queries and ensuring proper indexing can significantly improve the response times. We recommend reviewing your query patterns and applying relevant optimizations.\n\nPlease let us know if you need further assistance or if the performance issues persist.\n\nBest regards,\nHasura support",
+    "created_at": "2024-05-20 02:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "640",
+    "ticket_id": "246",
+    "body": "Hi John,\n\nThank you for reporting the issue with your production Hasura service.\n\nI understand how critical this is and I\u2019m currently looking into the 500 errors you're encountering on your GraphQL endpoints. I will update you as soon as I have more information.\n\nBest,\nHasura Support",
+    "created_at": "2024-07-27 09:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "641",
+    "ticket_id": "246",
+    "body": "Hello,\n\nJust following up on my previous message. I have escalated the issue to our technical team for deeper investigation. Please bear with us as we work to resolve this as quickly as possible.\n\nThanks for your patience,\nHasura Support",
+    "created_at": "2024-07-28 09:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "642",
+    "ticket_id": "247",
+    "body": "Hello,\n\nThank you for contacting Hasura Support regarding the downtime in your production environment. We understand how critical this issue is for your users, and we are here to help you resolve it as quickly as possible.\n\nI will start investigating this matter right away and keep you updated on our progress. In the meantime, could you please provide any error messages you are encountering or any recent changes made to your setup?\n\nThank you for your patience.\n\nBest,\nHasura Support",
+    "created_at": "2024-02-21 02:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "643",
+    "ticket_id": "248",
+    "body": "Hello,\n\nThank you for reaching out regarding the delays you're experiencing with Remote Schemas.\n\nCould you please provide more details on the specific queries that are facing high latency? Additionally, any error messages or logs that can help us understand the issue would be beneficial.\n\nLooking forward to your response.\n\nBest,\nHasura Support",
+    "created_at": "2024-11-01 08:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "644",
+    "ticket_id": "249",
+    "body": "Hi there,\n\nThanks for bringing this to our attention. We will need some additional information to assist you better. Could you please provide us with the specific Action queries that are experiencing latency and any relevant logs or metrics that you have?\n\nBest,\nHasura Support",
+    "created_at": "2024-08-22 03:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "645",
+    "ticket_id": "249",
+    "body": "Hello,\n\nThank you for your prompt response. The Action queries are as follows:\n\n1. `createOrder`\n2. `updateInventory`\n\nWe have noticed that the latency spikes especially during peak hours. Attached are the logs from our monitoring tool that highlight the latency issues. Please let me know if you need anything else.\n\nThank you!",
+    "created_at": "2024-08-23 10:00:00+00",
+    "user_id": "176"
+  },
+  {
+    "id": "646",
+    "ticket_id": "250",
+    "body": "Hi,\n\nThank you for reaching out regarding the resource exhaustion issues you're experiencing.\n\nI will investigate the impact of the recent upgrade to version v2.47.2 on your Actions and resource usage. Please allow me some time to gather the necessary information.\n\nBest,\nHasura support",
+    "created_at": "2024-09-29 09:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "647",
+    "ticket_id": "250",
+    "body": "Hello,\n\nI wanted to follow up on the previous comment. Could you please provide more details about your current Actions setup and any specific logs or metrics you might have observed during the slow response times?\n\nThis information will help us diagnose the issue more effectively.\n\nThanks,\nHasura support",
+    "created_at": "2024-09-30 10:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "648",
+    "ticket_id": "251",
+    "body": "Hi there,\n\nThanks for reaching out regarding the performance degradation you're experiencing with your Hasura setup. I understand how frustrating it can be to have queries that were previously fast now taking significantly longer.\n\nTo assist you better, could you please provide us with some specific queries that are showing this performance issue? Additionally, any logs or metrics you can share during the query execution would be helpful.\n\nLooking forward to your response.\n\nBest,\nHasura Support",
+    "created_at": "2024-10-25 05:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "649",
+    "ticket_id": "251",
+    "body": "Hello,\n\nThanks for the prompt reply. One of the queries that is currently slow is:\n\n```graphql\nquery {\n  users(where: {role: {_eq: \"admin\"}}) {\n    id\n    name\n    permissions {\n      action\n      role\n    }\n  }\n}\n```\n\nThis query used to return results in under 100ms, but it's now taking several seconds. I have also attached some logs for your reference. Please let me know what optimizations can be made.\n\nThanks,\nUser",
+    "created_at": "2024-10-26 06:00:00+00",
+    "user_id": "176"
+  },
+  {
+    "id": "650",
+    "ticket_id": "252",
+    "body": "Hi,\n\nThank you for your patience. We have investigated the issue with the schema registry in your production environment. After thorough analysis, we identified that the failures were linked to a specific configuration in the MySQL database. We have implemented the necessary changes on our end and monitored the service for stability. Please confirm if you are still facing any disruptions.\n\nBest regards,\nHasura Support",
+    "created_at": "2025-01-02 10:15:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "651",
+    "ticket_id": "253",
+    "body": "Hi,\n\nThank you for reaching out regarding the 500 Internal Server Errors you are experiencing. To assist you better, could you please provide the logs from your Hasura instance during the time these errors occurred? Additionally, if there are any specific queries that are consistently failing, sharing those would be helpful.\n\nLooking forward to your response.\n\nBest,\nHasura Support",
+    "created_at": "2024-09-05 08:30:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "652",
+    "ticket_id": "254",
+    "body": "Hi there,\n\nThank you for reaching out regarding the connectivity issue with your project. We understand how critical this is for your production environment. \n\nAfter investigating your project ID: db4d6430-c347-45cb-b49d-9d3f5c250f31, we noticed that there was a temporary outage affecting some users. This has been resolved and you should be able to connect now.\n\nPlease give it another try and let us know if you encounter any further issues.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-09-23 04:05:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "653",
+    "ticket_id": "254",
+    "body": "Hi,\n\nI just tried connecting again, and it appears to be working now! Thank you for the quick resolution. I appreciate your help!\n\nBest,\nUser",
+    "created_at": "2024-09-24 10:15:00+00",
+    "user_id": "160"
+  },
+  {
+    "id": "654",
+    "ticket_id": "254",
+    "body": "Hi,\n\nThat\u2019s great to hear! We're glad the issue is resolved. If you have any more questions or need further assistance, feel free to reach out anytime.\n\nThank you for your patience!\n\nBest,\nHasura Support",
+    "created_at": "2024-09-25 09:30:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "655",
+    "ticket_id": "255",
+    "body": "Hello [Your Name],\n\nI apologize for the inconvenience you're experiencing with the Schema Registry. This is definitely not the expected behavior. \n\nI am not entirely sure what might be causing the random failures, but I recommend checking the logs for any errors or unusual patterns that might provide some insight. It could be related to how the service interacts with PostgreSQL, but I need to do more digging to be certain.\n\nPlease give me some time to investigate further and I will get back to you shortly with any findings.\n\nThank you for your patience.\n\nBest,\nHasura Support",
+    "created_at": "2024-06-15 01:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "656",
+    "ticket_id": "256",
+    "body": "Hi,\n\nWe sincerely apologize for the inconvenience you've experienced with your Hasura project. We identified the issue as a temporary outage on our end, which has now been resolved. \n\nYour project should be accessible again. Please check and let us know if you encounter any further issues.\n\nThank you for your understanding.\n\nBest,\nHasura Support",
+    "created_at": "2024-07-02 08:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "657",
+    "ticket_id": "257",
+    "body": "Hi [Your Name],\n\nThank you for reaching out to us regarding the performance degradation you are experiencing in your GraphQL operations. We understand that this can significantly impact your users.\n\nTo assist you better, could you provide us with the specific queries that are causing the delays? Additionally, any error logs or traces would be helpful for our investigation.\n\nBest,\nHasura Support",
+    "created_at": "2024-04-02 03:01:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "658",
+    "ticket_id": "257",
+    "body": "Hello Hasura Support,\n\nThanks for the quick reply. Here are a couple of queries that have been particularly slow:\n\n1. Query A: `query { ... }`\n2. Query B: `query { ... }`\n\nI'll also check the logs and share any relevant information shortly. \n\nThank you for your assistance!\n\nBest,\n[Your Name]",
+    "created_at": "2024-04-02 03:02:00+00",
+    "user_id": "167"
+  },
+  {
+    "id": "659",
+    "ticket_id": "258",
+    "body": "Hi there,\n\nThanks for reaching out to Hasura Support regarding the intermittent failures with your API requests.\n\nWe are looking into this issue and will update you shortly.\n\nBest regards,\nHasura Support",
+    "created_at": "2023-05-07 02:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "660",
+    "ticket_id": "258",
+    "body": "Hello,\n\nAfter reviewing your logs and setup, we identified a possible issue with connection pooling between the API and MongoDB. We suggest tweaking the connection settings to see if that alleviates the intermittent failures.\n\nPlease let us know if you need further assistance.",
+    "created_at": "2023-05-08 03:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "661",
+    "ticket_id": "258",
+    "body": "Hi Hasura Support,\n\nThank you for your help! We made the adjustments you suggested, and the API requests have stabilized significantly. We appreciate the quick response and effective recommendations.\n\nBest,\nUser",
+    "created_at": "2023-05-09 04:00:00+00",
+    "user_id": "205"
+  },
+  {
+    "id": "662",
+    "ticket_id": "259",
+    "body": "Hi there,\n\nUh, thanks for reaching out regarding the intermittent API failures. I'm a bit... uh, confused about the specifics of the issue, but I'll do my best to assist you. Could you provide any error messages or logs that you may have encountered? That would really help me understand what's going on.\n\nThanks for your patience!\n\nBest,\nHasura Support",
+    "created_at": "2023-10-24 06:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "663",
+    "ticket_id": "260",
+    "body": "Hi there,\n\nThank you for reaching out and bringing this to our attention. I understand the critical nature of this issue regarding your production environment being down.\n\nOur engineering team has identified the root cause of the 500 Internal Server Error responses and has implemented a fix. The services should now be back online and functioning as expected. \n\nPlease monitor your system and let us know if you encounter any further issues.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-04-28 01:05:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "664",
+    "ticket_id": "260",
+    "body": "Hi Hasura Support,\n\nThank you for the prompt resolution! I just checked, and everything is back to normal now. We appreciate your quick response in addressing this critical issue.\n\nBest,\nThe Team",
+    "created_at": "2024-04-28 01:10:00+00",
+    "user_id": "205"
+  },
+  {
+    "id": "665",
+    "ticket_id": "261",
+    "body": "Hello [Your Name],\n\nThank you for reaching out to Hasura Support regarding the performance degradation in your application's permissions operations. I understand how crucial this is for your application.\n\nI will investigate the issue further and get back to you with an update shortly.\n\nBest,\nHasura Support",
+    "created_at": "2024-09-26 06:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "666",
+    "ticket_id": "261",
+    "body": "Hi,\n\nJust following up on my previous message. Could you please provide more details about the specific queries or operations that are experiencing the slowdown? Any error messages or logs would be helpful as well.\n\nThank you!\nHasura Support",
+    "created_at": "2024-09-27 06:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "667",
+    "ticket_id": "262",
+    "body": "Hi there,\n\nThank you for your detailed request regarding the configuration options for remote schemas. We appreciate your feedback and understand the need for more flexibility in timeout durations, custom headers, and schema merging strategies. \n\nI have escalated your request to our product team for further consideration. We will keep you updated on any developments regarding this feature.\n\nThanks for your patience!\n\nBest,\nHasura Support",
+    "created_at": "2024-12-10 14:30:14.666839+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "668",
+    "ticket_id": "262",
+    "body": "Hello Hasura Support,\n\nThank you for your prompt response and for considering our request. We look forward to hearing from you about the potential updates regarding the remote schema configurations. This will greatly aid our integration efforts.\n\nBest regards,\nThe Integration Team",
+    "created_at": "2024-12-12 10:45:14.666839+00",
+    "user_id": "10"
+  },
+  {
+    "id": "669",
+    "ticket_id": "263",
+    "body": "Hi,\n\nThanks for reaching out about the sporadic request failures you're experiencing after upgrading to version v2.45.2. We understand how critical this is for your production environment.\n\nAfter reviewing your case, we found that there were some known issues related to connection handling in this version. We have implemented a patch that should resolve the timeout and connection reset errors. \n\nPlease monitor the performance closely and let us know if you encounter any further issues.\n\nBest,\nHasura Support",
+    "created_at": "2024-04-10 02:01:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "670",
+    "ticket_id": "263",
+    "body": "Thank you for your quick response and for looking into this issue.\n\nI will keep an eye on the situation and see if the patch resolves the problem. I appreciate your help!\n\nBest regards,\nTeam",
+    "created_at": "2024-04-10 02:02:00+00",
+    "user_id": "164"
+  },
+  {
+    "id": "671",
+    "ticket_id": "263",
+    "body": "You're welcome! We're here to help. If the issue persists or you have any other questions, don't hesitate to reach out. \n\nWe appreciate your patience as we worked through this. Have a great day!\n\nThanks,\nHasura Support",
+    "created_at": "2024-04-10 02:03:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "672",
+    "ticket_id": "264",
+    "body": "Hi there,\n\nThank you for reaching out to Hasura Support regarding the critical issue with your GraphQL operations returning 500 Internal Server Errors. I understand the urgency of this matter, especially as it impacts your production environment.\n\nI will begin investigating the issue right away and keep you updated on any findings. In the meantime, could you please provide any relevant logs or error messages that you might have encountered? This will help us in diagnosing the problem more effectively.\n\nBest,\nHasura Support",
+    "created_at": "2024-04-30 01:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "673",
+    "ticket_id": "264",
+    "body": "Hello,\n\nThank you for your prompt response. We have attached the application logs that show the errors occurring during the GraphQL operations. Please let us know if you need any further information from our side.\n\nLooking forward to your assistance in resolving this issue as soon as possible.\n\nBest,\nTeam",
+    "created_at": "2024-04-30 02:00:00+00",
+    "user_id": "164"
+  },
+  {
+    "id": "674",
+    "ticket_id": "265",
+    "body": "Hello,\n\nThank you for reaching out regarding the performance issues with your Actions. We understand how critical this is for your application. Could you provide us with more details, such as the specific Actions that are experiencing degradation and any recent changes made to your setup?\n\nLooking forward to your response.\n\nBest,\nHasura Support",
+    "created_at": "2024-08-27 01:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "675",
+    "ticket_id": "266",
+    "body": "Hi there,\n\nThank you for your patience. We have investigated the issues you reported regarding the Schema Registry. After thorough examination, we believe the root cause is related to intermittent connectivity between your application and our services. \n\nWe recommend ensuring that your network stability is consistent. Please check if you are experiencing any downtime or connectivity issues on your end. \n\nLet us know if you need further assistance.\n\nBest,\nHasura Support",
+    "created_at": "2024-03-13 02:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "676",
+    "ticket_id": "266",
+    "body": "Hello,\n\nThank you for your response. We have implemented the suggested changes, and it seems like the issue has resolved. We will continue to monitor the situation closely. \n\nI appreciate your help in addressing this matter.\n\nBest regards,\nTeam",
+    "created_at": "2024-03-14 02:00:00+00",
+    "user_id": "164"
+  },
+  {
+    "id": "677",
+    "ticket_id": "267",
+    "body": "Hi [Your Name],\n\nThank you for reaching out to Hasura Support regarding the intermittent issues with your Remote Schemas. I'm sorry to hear that you're facing these erratic errors and timeouts in your production environment.\n\nTo assist you better, could you please provide more details about the specific errors or messages you are encountering? Additionally, it would be helpful to know the average load or number of concurrent requests at the time these issues occur.\n\nLooking forward to your response.\n\nBest,\nHasura Support",
+    "created_at": "2024-04-26 02:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "678",
+    "ticket_id": "268",
+    "body": "Hi [Your Name],\n\nThank you for reaching out. We understand the importance of resolving performance issues in a production environment. \n\nI\u2019m currently examining the details of your setup and will try to find the root cause. Please bear with me as I dig through the logs and metrics.\n\nBest,\nHasura Support",
+    "created_at": "2024-07-14 06:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "679",
+    "ticket_id": "268",
+    "body": "Hello again,\n\nI\u2019m still looking into the performance issues you reported. I noticed some potential resource constraints on the server side, which might be contributing to the latency. Could you please provide more details on the server configurations and the load during the slow response times?\n\nThanks for your patience.\n\nRegards,\nHasura Support",
+    "created_at": "2024-07-15 07:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "680",
+    "ticket_id": "268",
+    "body": "Hi [Your Name],\n\nAfter further investigation, we found that there were some unoptimized queries on your end that could be causing the resource exhaustion. We recommend analyzing your queries and adding appropriate indexes to improve the performance. \n\nLet us know if you need any assistance with this!\n\nThanks for your understanding,\nHasura Support",
+    "created_at": "2024-07-16 08:00:00+00",
+    "user_id": "164"
+  },
+  {
+    "id": "681",
+    "ticket_id": "269",
+    "body": "Hi there,\n\nThank you for reaching out regarding the high latency in Schema Registry queries. To assist you better, could you please provide more details about the specific queries that are causing the latency? Additionally, any error messages or performance metrics would be helpful. \n\nLooking forward to your response.\n\nBest,\nHasura Support",
+    "created_at": "2024-10-03 05:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "682",
+    "ticket_id": "270",
+    "body": "Hi,\n\nThanks for reaching out. I\u2019m really sorry to hear about the intermittent API issues. Can you provide more details on the errors you are encountering? Like, are there specific error messages or logs that you can share? It would be really helpful for us to understand the situation better.\n\nBest,\nHasura support",
+    "created_at": "2024-10-22 05:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "683",
+    "ticket_id": "270",
+    "body": "Hello,\n\nI understand that the issues are random, but could you let us know if there are any specific times when these failures occur more often? Also, are there any particular API endpoints that seem to be more affected than others? This information could really assist us in pinpointing the problem.\n\nThank you for your patience.\n\nBest,\nHasura support",
+    "created_at": "2024-10-23 06:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "684",
+    "ticket_id": "271",
+    "body": "Hi,\n\nThank you for reaching out regarding the 500 Internal Server Errors you're experiencing. To assist you better, can you please provide any error logs or additional details about the operations that are failing?\n\nBest,\nHasura support",
+    "created_at": "2024-12-06 04:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "685",
+    "ticket_id": "272",
+    "body": "Hi there,\n\nThank you for reaching out regarding the production downtime. We understand how critical this is for your operations. Our team is currently investigating the issue with your Hasura setup connected to the PostgreSQL database.\n\nWe will keep you updated as we progress.\n\nBest,\nHasura support",
+    "created_at": "2024-01-27 03:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "686",
+    "ticket_id": "272",
+    "body": "Hello,\n\nWe have identified the root cause of the downtime. There was a temporary outage in the database connection which has now been resolved. Your services should be back online shortly.\n\nPlease monitor the system and let us know if you encounter any further issues.\n\nThanks,\nHasura support",
+    "created_at": "2024-01-28 12:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "687",
+    "ticket_id": "272",
+    "body": "Thanks for the quick response and resolution! We're back online now, and everything seems to be functioning well. Appreciate the support from the Hasura team.\n\nBest regards,\nThe Team",
+    "created_at": "2024-01-29 09:00:00+00",
+    "user_id": "6"
+  },
+  {
+    "id": "688",
+    "ticket_id": "273",
+    "body": "Hi,\n\nThank you for reaching out regarding the erratic errors you're experiencing with your Actions in the production environment.\n\nAfter investigating the issue, we found that there were intermittent network connectivity issues affecting the execution of Actions. We have implemented fixes on our end to ensure more stable connections.\n\nPlease monitor the situation and let us know if you encounter any further issues.\n\nThank you for your patience!\n\nBest regards,\nHasura Support",
+    "created_at": "2023-10-20 03:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "689",
+    "ticket_id": "274",
+    "body": "Hi John,\n\nThank you for reaching out to Hasura support regarding the performance issues with Remote Schemas.\n\nWe have looked into your case and identified some optimizations you can implement:\n1. **Batching Requests**: If possible, batch your requests to reduce the number of round trips.\n2. **Reduce Payload Size**: Minimize the data being fetched by only selecting necessary fields.\n3. **Caching**: Implement caching strategies for your Remote Schema queries to improve response times.\n\nWe recommend monitoring your system after applying these changes to see if there\u2019s an improvement. If the issue persists, please feel free to reach out again.\n\nThanks,\nHasura Support",
+    "created_at": "2024-12-03 01:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "690",
+    "ticket_id": "275",
+    "body": "Hi there,\n\nThank you for reaching out to us regarding the performance degradation you've been experiencing. I'm really sorry to hear that the queries are taking much longer than expected since the upgrade to v2.46.2.\n\nI will immediately begin investigating this issue and will keep you updated with our findings. In the meantime, could you please provide any specific queries that are particularly slow? This will help us in diagnosing the root cause more effectively.\n\nThanks for your patience!\n\nBest,\nHasura Support",
+    "created_at": "2023-12-27 09:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "691",
+    "ticket_id": "275",
+    "body": "Hello,\n\nThank you for your prompt response. One of the queries that has been particularly slow is:\n```graphql\nquery {\n  users(where: {status: {_eq: \"active\"}}) {\n    id\n    name\n    created_at\n  }\n}\n```\n\nThis query used to return results almost instantly, but now it takes over 5 seconds. We have also noticed that other queries involving joins are similarly affected.\n\nI appreciate your urgent attention to this matter.\n\nBest,\n[Your Name]",
+    "created_at": "2023-12-28 10:00:00+00",
+    "user_id": "94"
+  },
+  {
+    "id": "692",
+    "ticket_id": "276",
+    "body": "Hello [Your Name],\n\nThank you for reaching out to Hasura Support. I'm truly sorry to hear about the disruption you're experiencing with your project. I understand the urgency of the situation, especially since it\u2019s affecting your production environment.\n\nI will prioritize this ticket and start investigating the issue right away. Please hold tight, and I will update you shortly with any findings.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-02-08 04:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "693",
+    "ticket_id": "277",
+    "body": "Hi there,\n\nThank you for contacting us regarding the issues with the Schema Registry feature. I\u2019m trying to gather more details about the intermittent failures you\u2019re facing. \nCould you please provide any specific error messages or logs that you have encountered during these failures? Also, any additional context around when these issues occur would be really helpful.\n\nThank you for your patience as we look into this.\n\nBest,\nHasura Support",
+    "created_at": "2024-06-18 05:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "694",
+    "ticket_id": "279",
+    "body": "Hi,\n\nThank you for reaching out about the performance issues you're experiencing with the Schema Registry. To better assist you, could you please provide more details regarding the specific operations being performed during these spikes? Additionally, any logs or metrics you can share would be helpful in diagnosing the issue.\n\nLooking forward to your response.\n\nBest,\nHasura support",
+    "created_at": "2024-10-22 05:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "695",
+    "ticket_id": "281",
+    "body": "Hi,\n\nThank you for reaching out to us regarding the HTTP 500 Internal Server Error responses. I understand the urgency of this issue and will investigate it promptly. Could you please provide any error logs or additional context around when this started happening? This information will help us diagnose the problem more effectively.\n\nThanks,\nHasura Support",
+    "created_at": "2024-02-02 03:00:00+00",
+    "user_id": "2024"
+  },
+  {
+    "id": "696",
+    "ticket_id": "282",
+    "body": "Hi there,\n\nThanks for reaching out. I understand that you're facing performance issues with GraphQL queries that involve permissions checks. Let me try to get to the bottom of this, but I might need some time to gather all the necessary information. Can you provide any specific query examples that are particularly slow? \n\nThanks,\nHasura support",
+    "created_at": "2024-05-20 09:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "697",
+    "ticket_id": "282",
+    "body": "Hello,\n\nThanks for your response. One example of a slow query is when we try to fetch user data with the following query:\n\n```graphql\nquery {\n  users(where: {isActive: {_eq: true}}) {\n    id\n    name\n  }\n}\n```\n\nThis query with permissions applied is taking several seconds. When I remove the permissions, it runs almost instantly. Hope this helps!\n\nBest,\nUser",
+    "created_at": "2024-05-21 10:15:00+00",
+    "user_id": "110"
+  },
+  {
+    "id": "698",
+    "ticket_id": "283",
+    "body": "Hello,\n\nThank you for reaching out to Hasura Support. We understand that you're facing random failures with the Remote Schemas feature in your production environment. \n\nI will begin investigating this issue and will get back to you shortly with any updates.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-07-18 05:00:00+00",
+    "user_id": "3280"
+  },
+  {
+    "id": "699",
+    "ticket_id": "284",
+    "body": "Hello John,\n\nThank you for reaching out to Hasura Support. I understand the urgency of the situation and the impact it's having on your application. \n\nI will investigate the timeout error you're experiencing with your GraphQL endpoint and keep you updated on the progress. \n\nPlease bear with me as I look into this matter.\n\nBest,\nHasura Support",
+    "created_at": "2024-09-08 03:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "700",
+    "ticket_id": "285",
+    "body": "Hello,\n\nI\u2019m really sorry to hear about the performance issues you\u2019re experiencing. It\u2019s quite concerning. I\u2019ll need to look into this, but can you please provide more details on what specific queries are running slow? Also, any error messages or logs would be really helpful.\n\nThank you for your patience, and I\u2019ll do my best to assist you.",
+    "created_at": "2024-08-27 06:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "701",
+    "ticket_id": "285",
+    "body": "Hi,\n\nI\u2019m trying to gather all the necessary information to assist you effectively. Could you please share the resource metrics (CPU, memory usage) during the slowdown? This will help us understand the severity of the issue.\n\nThank you for your cooperation, and I apologize for the inconvenience caused.",
+    "created_at": "2024-08-28 07:30:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "702",
+    "ticket_id": "287",
+    "body": "Hi there,\n\nThank you for reaching out to us. I understand how critical this issue is for your production environment.\n\nI will investigate the '404 Project Not Found' error you're experiencing with Project ID: 570737f1-ada3-413b-bec5-e82b6c324fb3 and get back to you shortly with updates.\n\nThanks for your patience,\nHasura Support",
+    "created_at": "2024-12-12 07:00:00+00",
+    "user_id": "3170"
+  },
+  {
+    "id": "703",
+    "ticket_id": "288",
+    "body": "Hi there,\n\nThanks for reaching out about the errors you're encountering with your GraphQL API. I\u2019m really sorry to hear about the issues you\u2019re facing. I am trying to look into this but I\u2019m encountering some challenges gathering the necessary details. \n\nCould you please provide the specific error messages that your users are receiving? Additionally, any logs or traces related to the queries that are failing would be helpful. \n\nThanks for your patience as we work through this.",
+    "created_at": "2024-12-06 10:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "704",
+    "ticket_id": "288",
+    "body": "Hi,\n\nI appreciate your response. I understand this is frustrating. I\u2019m still trying to pinpoint the problem, and I might need a bit more time to dig deeper. \n\nIf possible, can you also share whether this issue happens at specific times or under certain conditions? It might help narrow things down. \n\nThanks for your understanding!",
+    "created_at": "2024-12-07 12:00:00+00",
+    "user_id": "2678"
+  },
+  {
+    "id": "705",
+    "ticket_id": "289",
+    "body": "Hello,\n\nThank you for reaching out about the performance issues with the Schema Registry. \n\nI am currently looking into the matter, but I might need a bit more time to analyze the situation thoroughly. \n\nCould you please provide me with any additional details, like the frequency of the timeouts you are encountering, or any specific operations that seem to be particularly slow?\n\nThank you for your patience, and I will get back to you as soon as possible.",
+    "created_at": "2024-12-01 03:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "706",
+    "ticket_id": "290",
+    "body": "Hi,\n\nThanks for reaching out regarding the issues with Event Triggers in your production environment. I understand how critical this is for your workflows. \n\nCould you please provide more details about the specific triggers that are failing? Additionally, any error messages or logs would be helpful in diagnosing the issue.\n\nLooking forward to your response.\n\nBest,\nHasura Support",
+    "created_at": "2024-09-26 08:00:00+00",
+    "user_id": "3072"
+  },
+  {
+    "id": "463",
+    "ticket_id": "139",
+    "body": "Hello [User Name],\n\nThank you for bringing this to our attention. I'm truly sorry to hear that you're experiencing difficulties accessing your Hasura project. I understand how critical this situation is for your production environment.\n\nI will investigate this issue immediately and keep you updated on my progress. In the meantime, could you please confirm if there have been any recent changes made to your configuration or infrastructure that might have contributed to this problem?\n\nThank you for your patience as we work to resolve this as quickly as possible.\n\nBest regards,\nHasura Support",
+    "created_at": "2024-10-18 03:00:00+00",
+    "user_id": "2678"
+  }
+]

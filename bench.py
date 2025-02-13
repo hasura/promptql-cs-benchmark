@@ -9,6 +9,8 @@ from datetime import datetime, timedelta
 from o1_eval import AIAssistant as OpenAIAssistant
 from claude35_eval import AIAssistant as ClaudeAssistant
 from promptql_eval import AIAssistant as PromptQLAssistant
+from o1_oracle_eval import AIAssistant as OpenAIOracleAssistant
+from claude35_oracle_eval import AIAssistant as ClaudeOracleAssistant
 import traceback
 
 
@@ -19,7 +21,10 @@ class InputVariations(BaseModel):
 
 class InputConfig(BaseModel):
     promptql_prompt: str
-    llm_prompt: str
+    tool_calling_prompt: str
+    oracle_prompt: str
+    oracle_system_prompt: str
+    oracle_files: Optional[Dict[str,str]] = None
     result_artifact_name: Optional[str] = None
     result_artifact_key: Optional[str] = None
     result_tag_name: Optional[str] = None
@@ -38,10 +43,10 @@ def read_input(filepath: str) -> InputConfig:
 
 
 class QueryProcessor:
-    def __init__(self, ai_assistant, input_filepath: str, output_dir: str):
+    def __init__(self, ai_assistant, input_config: InputConfig, output_dir: str):
         self.assistant = ai_assistant
         self.output_dir = output_dir
-        self.input_config = read_input(input_filepath)
+        self.input_config = input_config
 
     def save_results(self, variation_name: str, run_index: int, response: str, elapsed_time: timedelta):
         """Save query results to output directory"""
@@ -94,7 +99,7 @@ class QueryProcessor:
         """Main processing loop"""
         try:
             # Determine query template based on system
-            query_template = self.input_config.promptql_prompt if isinstance(self.assistant, PromptQLAssistant) else self.input_config.llm_prompt
+            query_template = self.input_config.promptql_prompt if isinstance(self.assistant, PromptQLAssistant) else self.input_config.tool_calling_prompt
 
             # Handle variations or default case
             variations = self.input_config.variations or [
@@ -132,6 +137,25 @@ class QueryProcessor:
             print(traceback.format_exc())
             print(f"Error during processing: {e}")
 
+def read_file_content(file_path: str) -> str:
+    """Read and return the content of a file."""
+    try:
+        with open(file_path, 'r') as file:
+            if file_path.endswith('.json'):
+                return json.dumps(json.load(file), indent=2)
+            return file.read()
+    except Exception as e:
+        raise Exception(f"Error reading file {file_path}: {str(e)}")
+    
+def resolve_relative_path(file_path: str, config_filepath: str) -> str:
+    # Get the absolute directory of the config file
+    config_dir = os.path.dirname(os.path.abspath(config_filepath))
+    
+    # Join paths and normalize (this handles '..' properly)
+    absolute_path = os.path.normpath(os.path.join(config_dir, file_path))
+    
+    return absolute_path
+
 async def main():
     import argparse
 
@@ -151,46 +175,57 @@ async def main():
         output_dir = output_dir_base + "/with_python"
     else:
         output_dir = output_dir_base
-
+        
+    input_config = read_input(args.input_filepath)
+    
+    # If oracle_files is specified, read and format the system prompt
+    file_contents = {}
+    if input_config.oracle_files:
+        for key, file_path in input_config.oracle_files.items():
+            absolute_file_path = resolve_relative_path(file_path=file_path, config_filepath=args.input_filepath)
+            file_contents[key] = read_file_content(absolute_file_path)
+        
+        # Format the system prompt with file contents
+    oracle_system_prompt = input_config.oracle_system_prompt.format(**file_contents)
+    
     if args.system == "promptql":
         if args.with_artifacts:
             #TODO
             processor = QueryProcessor(PromptQLAssistant(args.model),
-                                       input_filepath=args.input_filepath,
+                                       input_config=input_config,
                                        output_dir=output_dir)
         else:
             processor = QueryProcessor(PromptQLAssistant(args.model),
-                                       input_filepath=args.input_filepath,
+                                       input_config=input_config,
                                        output_dir=output_dir)
     elif args.system == "tool_calling":
         if args.model == "o1":
             processor = QueryProcessor(OpenAIAssistant("o1", has_python_tool= args.with_python_tool),
-                                       input_filepath=args.input_filepath,
+                                       input_config=input_config,
                                        output_dir=output_dir)
         elif args.model == "o3-mini":
             processor = QueryProcessor(OpenAIAssistant("o3-mini", has_python_tool=args.with_python_tool),
-                                       input_filepath=args.input_filepath,
+                                       input_config=input_config,
                                        output_dir=output_dir)
         elif args.model == "anthropic":
             processor = QueryProcessor(ClaudeAssistant(has_python_tool = args.with_python_tool),
-                                       input_filepath=args.input_filepath,
+                                       input_config=input_config,
                                        output_dir=output_dir)
         else:
             print("unknown model")
             exit(1)
     elif args.system == "oracle":
-        #TODO
         if args.model == "o1":
-            processor = QueryProcessor(OpenAIOracleAssistant("o1", has_python_tool= args.with_python_tool),
-                                       input_filepath=args.input_filepath,
+            processor = QueryProcessor(OpenAIOracleAssistant("o1", has_python_tool= args.with_python_tool, system_prompt=oracle_system_prompt),
+                                       input_config=input_config,
                                        output_dir=output_dir)
         elif args.model == "o3-mini":
-            processor = QueryProcessor(OpenAIOracleAssistant("o3-mini", has_python_tool= args.with_python_tool),
-                                       input_filepath=args.input_filepath,
+            processor = QueryProcessor(OpenAIOracleAssistant("o3-mini", has_python_tool= args.with_python_tool, system_prompt=oracle_system_prompt),
+                                       input_config=input_config,
                                        output_dir=output_dir)
         elif args.model == "anthropic":
-            processor = QueryProcessor(ClaudeOracleAssistant(has_python_tool= args.with_python_tool),
-                                       input_filepath=args.input_filepath,
+            processor = QueryProcessor(ClaudeOracleAssistant(has_python_tool= args.with_python_tool, system_prompt=oracle_system_prompt),
+                                       input_config=input_config,
                                        output_dir=output_dir)
         else:
             print("unknown model")
