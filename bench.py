@@ -17,6 +17,7 @@ import traceback
 class InputVariations(BaseModel):
     name: str
     parameters: Dict[str, Any]
+    ground_truth_path: str
 
 
 class InputConfig(BaseModel):
@@ -28,6 +29,7 @@ class InputConfig(BaseModel):
     result_artifact_name: Optional[str] = None
     result_artifact_key: Optional[str] = None
     result_tag_name: Optional[str] = None
+    ground_truth_path: Optional[str] = None
     variations: Optional[List[InputVariations]] = None
     repeat: Optional[int] = None
 
@@ -103,7 +105,7 @@ class QueryProcessor:
 
             # Handle variations or default case
             variations = self.input_config.variations or [
-                InputVariations(name="default", parameters={})]
+                InputVariations(name="default", parameters={}, ground_truth_path=self.input_config.ground_truth_path)]
 
             for variation in variations:
                 # Format query with parameters (empty dict for default case)
@@ -168,11 +170,14 @@ async def main():
     parser.add_argument('--model', help='LLM to use', required=True)
     parser.add_argument('--system', help='System to evaluate', required=True)
     parser.add_argument('--with-python-tool', help='Add python tool', action='store_true')
+    parser.add_argument('--with-initial-artifacts', help='Add python tool', action='store_false')
     args = parser.parse_args()
     
     output_dir_base =f"{args.output_dir}/{args.system}/{args.model}"
-    if args.with_python_tool:
+    if args.system != "promptql" and args.with_python_tool:
         output_dir = output_dir_base + "/with_python"
+    elif args.system == "promptql" and args.with_initial_artifacts:
+        output_dir = output_dir_base + "/with_initial_artifacts"
     else:
         output_dir = output_dir_base
         
@@ -189,7 +194,7 @@ async def main():
     oracle_system_prompt = input_config.oracle_system_prompt.format(**file_contents)
     
     if args.system == "promptql":
-        if args.with_artifacts:
+        if args.with_initial_artifacts:
             #TODO
             processor = QueryProcessor(PromptQLAssistant(args.model),
                                        input_config=input_config,
