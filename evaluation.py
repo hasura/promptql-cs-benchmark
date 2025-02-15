@@ -27,6 +27,7 @@ class InputConfig(BaseModel):
     result_artifact_name: Optional[str] = None
     result_artifact_key: Optional[str] = None
     result_tag_name: Optional[str] = None
+    ground_truth_path: Optional[str] = None
     variations: Optional[List[InputVariations]] = None
     repeat: Optional[int] = None
 
@@ -86,6 +87,8 @@ def evaluate_directory(base_dir: Path, config: InputConfig, config_path: str, ev
     
     # Create mapping of variation names to ground truth paths
     ground_truth_paths = {}
+    if config.ground_truth_path:
+        ground_truth_paths['default'] = config.ground_truth_path
     if config.variations:
         for variation in config.variations:
             ground_truth_paths[variation.name] = variation.ground_truth_path
