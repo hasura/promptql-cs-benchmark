@@ -235,9 +235,6 @@ async def main():
         # Format the system prompt with file contents
         oracle_system_prompt = input_config.oracle_system_prompt.format(**file_contents)
         
-        print('SYSTEM PROMPT')
-        print(oracle_system_prompt)
-        
         if args.with_python_tool:
             output_dir = output_dir_base + "/with_python"
         else:

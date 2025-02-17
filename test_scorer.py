@@ -11,5 +11,8 @@ def evaluate_score(ground_truth: str, test_result: str) -> float:
     Returns:
         float: Always returns 0.5
     """
-    score = 0.5
+    if ground_truth == test_result:
+        score = 1
+    else:
+        score = 0
     return score

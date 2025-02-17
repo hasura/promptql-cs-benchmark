@@ -55,11 +55,16 @@ tool_calling_prompt: |
   - Prioritize the ticket based on categories using this order: downtime > reliability > performance > bug > feature request > others
   - Compare ticket creation times to prioritize the older ticket.
 
-  Also, print the list of ticket IDs inside the tags <tickets> </tickets> with a single ticket ID in a single line
-  Example:
+  Also, print the list of ticket IDs inside the tags <tickets> </tickets> in the following format. There should be {k} elements inside the json array
   <tickets>
-  123
-  987
+  [
+    {{
+      "ticket_id": 123
+    }},
+    {{
+      "ticket_id": 987
+    }}
+  ]
   </tickets>
 oracle_system_prompt: |
   You are an assistant with access to relevant data in your context
@@ -116,20 +121,26 @@ oracle_prompt: |
   - Prioritize the ticket based on categories using this order: downtime > reliability > performance > bug > feature request > others
   - Compare ticket creation times to prioritize the older ticket.
 
-  Also, print the list of ticket IDs inside the tags <tickets> </tickets> with a single ticket ID in a single line
-  Example:
+  Also, print the list of ticket IDs inside the tags <tickets> </tickets> in the following format. There should be {k} elements inside the json array
   <tickets>
-  123
-  987
+  [
+    {{
+      "ticket_id": 123
+    }},
+    {{
+      "ticket_id": 987
+    }}
+  ]
   </tickets>
 result_artifact_name: prioritized_tickets
+result_artifact_key: ticket_id
 result_tag_name: tickets
 variations:
  - name: top_10_last_10 
    parameters:
      k: 10
      n: 10
-   ground_truth_path: ground_truth_complexity5_k_10_n_10.txt
+   ground_truth_path: ground_truth_complexity3_k_10_n_10.json
 #  - name: top_20_last_20 
 #    parameters:
 #      k: 20

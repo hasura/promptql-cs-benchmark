@@ -3,7 +3,7 @@ import os
 import json
 import argparse
 from pathlib import Path
-from typing import Dict, List, Tuple, Optional, Any
+from typing import Dict, List, Tuple, Optional, NamedTuple
 import importlib.util
 from dataclasses import dataclass
 import pandas as pd
@@ -11,26 +11,7 @@ import yaml
 from pydantic import BaseModel
 import traceback
 
-
-class InputVariations(BaseModel):
-    name: str
-    parameters: Dict[str, Any]
-    ground_truth_path: str
-
-
-class InputConfig(BaseModel):
-    promptql_prompt: str
-    tool_calling_prompt: str
-    oracle_prompt: str
-    oracle_system_prompt: str
-    oracle_files: Optional[Dict[str,str]] = None
-    result_artifact_name: Optional[str] = None
-    result_artifact_key: Optional[str] = None
-    result_tag_name: Optional[str] = None
-    ground_truth_path: Optional[str] = None
-    variations: Optional[List[InputVariations]] = None
-    repeat: Optional[int] = None
-
+from bench import InputConfig
 
 def read_input_config(filepath: str) -> InputConfig:
     """Read and validate input config from YAML file"""
@@ -41,7 +22,6 @@ def read_input_config(filepath: str) -> InputConfig:
     except Exception as e:
         raise Exception(f"Failed to read config file: {e}")
 
-
 @dataclass
 class EvaluationResult:
     system: str
@@ -50,34 +30,70 @@ class EvaluationResult:
     run: int
     score: float
     with_python: bool
+    with_initial_artifacts: bool
+    
+class PathInfo(NamedTuple):
+    system: str
+    model: str
+    with_python: bool
+    with_initial_artifacts: bool
+    variation: str
+    run: int
 
+def read_file_content(file_path: str) -> str:
+    """Read and return the content of a file."""
+    try:
+        with open(file_path, 'r') as file:
+            return file.read()
+    except Exception as e:
+        raise Exception(f"Error reading file {file_path}: {str(e)}")
 
 def find_result_files(base_dir: Path) -> List[Path]:
     """Find all .result files recursively in the given directory."""
     return list(base_dir.rglob("*.result"))
 
 
-def parse_output_path(file_path: Path) -> Tuple[str, str, bool, str, int]:
+def parse_output_path(file_path: Path) -> PathInfo:
     """
     Parse output path to extract metadata.
-    Expected format: {output_dir}/{system}/{model}/[with_python/]{variation_name}_run_{run_index}.result
+    Expected format: {output_dir}/{system}/{model}/[with_python/|with_initial_artifacts/]{variation_name}_run_{run_index}.result
     """
-    parts = file_path.parts
+    parts = list(file_path.parts)
     
-    # Find indices for system and model
-    system_idx = -4 if "with_python" in parts else -3
-    model_idx = -3 if "with_python" in parts else -2
-    
-    system = parts[system_idx]
-    model = parts[model_idx]
-    with_python = "with_python" in parts
-    
-    # Extract variation name and run index from filename
-    filename = file_path.stem  # removes .result
-    variation_name, run_part = filename.rsplit('_run_', 1)
+    # Start from the end and work backwards
+    filename = parts[-1]
+    variation_name, run_part = filename.replace('.result', '').rsplit('_run_', 1)
     run_index = int(run_part)
     
-    return system, model, with_python, variation_name, run_index
+    # Check for special directories
+    with_python = False
+    with_initial_artifacts = False
+    
+    # Find the model and system indices by working backwards
+    model_idx = -3  # Default position if no special directories
+    system_idx = -4  # Default position if no special directories
+    
+    # Check for special directories and adjust indices
+    if "with_python" in parts:
+        with_python = True
+        model_idx -= 1
+        system_idx -= 1
+    elif "with_initial_artifacts" in parts:
+        with_initial_artifacts = True
+        model_idx -= 1
+        system_idx -= 1
+    
+    model = parts[model_idx]
+    system = parts[system_idx]
+    
+    return PathInfo(
+        system=system,
+        model=model,
+        with_python=with_python,
+        with_initial_artifacts=with_initial_artifacts,
+        variation=variation_name,
+        run=run_index
+    )
 
 
 def evaluate_directory(base_dir: Path, config: InputConfig, config_path: str, evaluator_func) -> List[EvaluationResult]:
@@ -87,8 +103,6 @@ def evaluate_directory(base_dir: Path, config: InputConfig, config_path: str, ev
     
     # Create mapping of variation names to ground truth paths
     ground_truth_paths = {}
-    if config.ground_truth_path:
-        ground_truth_paths['default'] = config.ground_truth_path
     if config.variations:
         for variation in config.variations:
             ground_truth_paths[variation.name] = variation.ground_truth_path
@@ -96,14 +110,14 @@ def evaluate_directory(base_dir: Path, config: InputConfig, config_path: str, ev
     for file_path in result_files:
         try:
             # Parse path to get metadata
-            system, model, with_python, variation, run = parse_output_path(file_path)
+            path_info = parse_output_path(file_path)
             
             # Get ground truth path from config
-            if variation not in ground_truth_paths:
-                print(f"Warning: No ground truth path found for variation {variation}")
+            if path_info.variation not in ground_truth_paths:
+                print(f"Warning: No ground truth path found for variation {path_info.variation}")
                 continue
                 
-            ground_truth_path = ground_truth_paths[variation]
+            ground_truth_path = ground_truth_paths[path_info.variation]
             
             # Handle relative paths - assume relative to config directory
             if not os.path.isabs(ground_truth_path):
@@ -115,17 +129,19 @@ def evaluate_directory(base_dir: Path, config: InputConfig, config_path: str, ev
                 continue
                 
             # Evaluate
-            score = evaluator_func(ground_truth_path, str(file_path))
-            print(f"{str(file_path)},{score}")
-            
+            ground_truth = read_file_content(ground_truth_path)
+            test_result = read_file_content(str(file_path))
+            score = evaluator_func(ground_truth, test_result)
+            print(f"TEST FILE: {str(file_path)}, SCORE: {score}") 
             # Store result
             result = EvaluationResult(
-                system=system,
-                model=model,
-                variation=variation,
-                run=run,
+                system=path_info.system,
+                model=path_info.model,
+                variation=path_info.variation,
+                run=path_info.run,
                 score=score,
-                with_python=with_python
+                with_python=path_info.with_python,
+                with_initial_artifacts=path_info.with_initial_artifacts
             )
             results.append(result)
             
