@@ -19,13 +19,17 @@ class InputVariations(BaseModel):
     parameters: Dict[str, Any]
     ground_truth_path: str
 
+class OracleData(BaseModel):
+    identifier: str
+    title: str
+    data_filepath: str
 
 class InputConfig(BaseModel):
     promptql_prompt: str
     tool_calling_prompt: str
     oracle_prompt: str
     oracle_system_prompt: str
-    oracle_files: Optional[Dict[str,str]] = None
+    oracle_data_list: Optional[List[OracleData]] = None
     result_artifact_name: Optional[str] = None
     result_artifact_key: Optional[str] = None
     result_tag_name: Optional[str] = None
@@ -33,6 +37,23 @@ class InputConfig(BaseModel):
     variations: Optional[List[InputVariations]] = None
     repeat: Optional[int] = None
 
+
+def read_file_content(file_path: str) -> str:
+    """Read and return the content of a file."""
+    try:
+        with open(file_path, 'r') as file:
+            return json.dumps(json.load(file), indent=2)
+    except Exception as e:
+        raise Exception(f"Error reading file {file_path}: {str(e)}")
+    
+def resolve_relative_path(file_path: str, config_filepath: str) -> str:
+    # Get the absolute directory of the config file
+    config_dir = os.path.dirname(os.path.abspath(config_filepath))
+    
+    # Join paths and normalize (this handles '..' properly)
+    absolute_path = os.path.normpath(os.path.join(config_dir, file_path))
+    
+    return absolute_path
 
 def read_input(filepath: str) -> InputConfig:
     """Read and validate query from YAML file"""
@@ -139,25 +160,6 @@ class QueryProcessor:
             print(traceback.format_exc())
             print(f"Error during processing: {e}")
 
-def read_file_content(file_path: str) -> str:
-    """Read and return the content of a file."""
-    try:
-        with open(file_path, 'r') as file:
-            if file_path.endswith('.json'):
-                return json.dumps(json.load(file), indent=2)
-            return file.read()
-    except Exception as e:
-        raise Exception(f"Error reading file {file_path}: {str(e)}")
-    
-def resolve_relative_path(file_path: str, config_filepath: str) -> str:
-    # Get the absolute directory of the config file
-    config_dir = os.path.dirname(os.path.abspath(config_filepath))
-    
-    # Join paths and normalize (this handles '..' properly)
-    absolute_path = os.path.normpath(os.path.join(config_dir, file_path))
-    
-    return absolute_path
-
 async def main():
     import argparse
 
@@ -170,40 +172,43 @@ async def main():
     parser.add_argument('--model', help='LLM to use', required=True)
     parser.add_argument('--system', help='System to evaluate', required=True)
     parser.add_argument('--with-python-tool', help='Add python tool', action='store_true')
-    parser.add_argument('--with-initial-artifacts', help='Add python tool', action='store_false')
+    parser.add_argument('--with-initial-artifacts', help='Add python tool', action='store_true')
     args = parser.parse_args()
     
     output_dir_base =f"{args.output_dir}/{args.system}/{args.model}"
-    if args.system != "promptql" and args.with_python_tool:
-        output_dir = output_dir_base + "/with_python"
-    elif args.system == "promptql" and args.with_initial_artifacts:
-        output_dir = output_dir_base + "/with_initial_artifacts"
-    else:
-        output_dir = output_dir_base
-        
     input_config = read_input(args.input_filepath)
     
-    # If oracle_files is specified, read and format the system prompt
-    file_contents = {}
-    if input_config.oracle_files:
-        for key, file_path in input_config.oracle_files.items():
-            absolute_file_path = resolve_relative_path(file_path=file_path, config_filepath=args.input_filepath)
-            file_contents[key] = read_file_content(absolute_file_path)
-        
-        # Format the system prompt with file contents
-    oracle_system_prompt = input_config.oracle_system_prompt.format(**file_contents)
-    
+   
     if args.system == "promptql":
         if args.with_initial_artifacts:
-            #TODO
-            processor = QueryProcessor(PromptQLAssistant(args.model),
+            output_dir = output_dir_base + "/with_initial_artifacts"
+            artifacts = []
+            if input_config.oracle_data_list:
+                for oracle_data in input_config.oracle_data_list:
+                    absolute_file_path = resolve_relative_path(file_path=oracle_data.data_filepath, config_filepath=args.input_filepath)
+                    artifacts.append({
+                        "identifier": oracle_data.identifier, 
+                        "title": oracle_data.title,
+                        "artifact_type": "table", 
+                        "data": json.loads(read_file_content(absolute_file_path))
+                        })
+            else:
+                print("no artifacts given")
+                exit(1)
+            
+            processor = QueryProcessor(PromptQLAssistant(args.model, initial_artifacts=artifacts), # type: ignore
                                        input_config=input_config,
                                        output_dir=output_dir)
         else:
+            output_dir = output_dir_base
             processor = QueryProcessor(PromptQLAssistant(args.model),
                                        input_config=input_config,
                                        output_dir=output_dir)
     elif args.system == "tool_calling":
+        if args.with_python_tool:
+            output_dir = output_dir_base + "/with_python"
+        else:
+            output_dir = output_dir_base
         if args.model == "o1":
             processor = QueryProcessor(OpenAIAssistant("o1", has_python_tool= args.with_python_tool),
                                        input_config=input_config,
@@ -220,6 +225,23 @@ async def main():
             print("unknown model")
             exit(1)
     elif args.system == "oracle":
+        # If oracle_files is specified, read and format the system prompt
+        file_contents = {}
+        if input_config.oracle_data_list:
+            for oracle_data in input_config.oracle_data_list:
+                absolute_file_path = resolve_relative_path(file_path=oracle_data.data_filepath, config_filepath=args.input_filepath)
+                file_contents[oracle_data.identifier] = read_file_content(absolute_file_path)
+        
+        # Format the system prompt with file contents
+        oracle_system_prompt = input_config.oracle_system_prompt.format(**file_contents)
+        
+        print('SYSTEM PROMPT')
+        print(oracle_system_prompt)
+        
+        if args.with_python_tool:
+            output_dir = output_dir_base + "/with_python"
+        else:
+            output_dir = output_dir_base
         if args.model == "o1":
             processor = QueryProcessor(OpenAIOracleAssistant("o1", has_python_tool= args.with_python_tool, system_prompt=oracle_system_prompt),
                                        input_config=input_config,

@@ -81,9 +81,13 @@ oracle_system_prompt: |
   {support_ticket_comments}
 
   ---------------------------------------------------------------------------
-oracle_files:
-  support_tickets: ../support_tickets.json
-  support_ticket_comments: ../support_ticket_comments.json
+oracle_data_list:
+  - identifier: support_tickets
+    title: "support tickets"
+    data_filepath: ../support_tickets.json
+  - identifier: support_ticket_comments
+    title: "support ticket comments"
+    data_filepath: ../support_ticket_comments.json
 oracle_prompt: |
   Give me a sorted list of top {k} support tickets which I should prioritize amongst the last {n} open tickets (i.e., status = 'open').
   
@@ -126,8 +130,8 @@ variations:
      k: 10
      n: 10
    ground_truth_path: ground_truth_complexity5_k_10_n_10.txt
- - name: top_20_last_20 
-   parameters:
-     k: 20
-     n: 20
-   ground_truth_path: ground_truth_complexity5_k_20_n_20.txt
+#  - name: top_20_last_20 
+#    parameters:
+#      k: 20
+#      n: 20
+#    ground_truth_path: ground_truth_complexity5_k_20_n_20.txt

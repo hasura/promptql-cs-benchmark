@@ -1,6 +1,6 @@
 import os
 from openai import AsyncOpenAI
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 import logging
 import json
 from datetime import datetime, date, timedelta
@@ -19,7 +19,7 @@ DDN_SQL_URL= "https://destined-buck-3238.ddn.hasura.app/v1/sql"
 
 
 class AIAssistant:
-    def __init__(self, model: str):
+    def __init__(self, model: str, initial_artifacts: List[Dict] = []):
         self.model = model
         if model == "anthropic":
             self.llm_key = os.getenv('ANTHROPIC_API_KEY')
@@ -27,6 +27,7 @@ class AIAssistant:
             self.llm_key = os.getenv('OPENAI_API_KEY')
         self.messages = []
         self.api_responses = []
+        self.initial_artifacts = initial_artifacts
         
     def _prepare_payload(self, query: str) -> Dict[str, Any]:
         """Prepare the API payload from the conversation history"""
@@ -41,7 +42,7 @@ class AIAssistant:
                 "url": DDN_SQL_URL,
                 "headers": {}
             },
-            "artifacts": [],
+            "artifacts": self.initial_artifacts.copy(),
             "system_instructions": "",  # Add system instructions if needed
             "timezone": "America/Los_Angeles",
             "interactions": self.messages.copy(),
