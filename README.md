@@ -19,11 +19,11 @@ curl -sSL https://install.python-poetry.org | python3 -
 
 Control Plane data:
 - DB name: "control_plane_new"
-- Dump file: control_plane_dump.sql
+- Dump file: data_dumps/control_plane_dump.sql
 
 ```bash
 createdb -h localhost -U postgres control_plane_new
-psql -h localhost -U postgres -d control_plane_new -f control_plane_dump.sql
+psql -h localhost -U postgres -d control_plane_new -f data_dumps/control_plane_dump.sql
 ```
 
 - Support tickets data:
@@ -32,7 +32,7 @@ psql -h localhost -U postgres -d control_plane_new -f control_plane_dump.sql
 
 ```bash
 createdb -h localhost -U postgres support_tickets_new
-psql -h localhost -U postgres -d support_tickets_new -f support_tickets_dump_feb3.sql
+psql -h localhost -U postgres -d support_tickets_new -f data_dumps/support_tickets_dump_feb3.sql
 ```
 
 ### Running PromptQL
@@ -59,6 +59,7 @@ poetry run python o1_eval.py --model <o1|o3-mini>
 ### Automatic benchmarks
 
 System can be `promptql`, `tool_calling` or `oracle`
+
 Model can be `anthropic`, `o1` or `o3-mini`
 
 ```bash
@@ -72,5 +73,7 @@ query file, output directory (which has the evaluation runs) and a python module
 which computes score between ground truth and test result: `evaluate_score(ground_truth: str, test_result: str) -> float`
 
 ```bash
-python evaluation.py queries/rule_based_prioritization/complexity3.yaml output_complexity3 test_scorer.py
+python evaluation.py queries/rule_based_prioritization/complexity3.yaml output_complexity3 scoring/test_scorer.py
 ```
+
+Sample scoring functions for common outputs are provided in `scoring/` directory.
