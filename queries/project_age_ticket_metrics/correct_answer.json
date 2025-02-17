@@ -1,0 +1,21 @@
+{
+    "identifier": "project_age_ticket_metrics",
+    "title": "Project Age Ticket Metrics",
+    "artifact_type": "table",
+    "data": [
+      {
+        "new_accounts": {
+          "total_tickets_filed": 28,
+          "total_tickets_closed": 17
+        },
+        "mid_age_accounts": {
+          "total_tickets_filed": 56,
+          "total_tickets_closed": 21
+        },
+        "old_accounts": {
+          "total_tickets_filed": 50,
+          "total_tickets_closed": 19
+        }
+      }
+    ]
+  }

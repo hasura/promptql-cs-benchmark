@@ -1,0 +1,28 @@
+Partition projects into the following buckets:
+
+- Projects less than 3 months old (created after 2024/10/01)
+- Projects NOT less than 3 months old but less than one year old (created before 2024/10/01 but after 2024/01/01)
+- Projects NOT less than one year old (created before 2024/01/01)
+
+For each of these buckets, compute the total number of tickets (open or closed) filed, and the average number of closed tickets (not counting open tickets) filed
+
+Fetch tickets from the Support_Ticket table and extract project IDs (which are UUIDs) from the descriptions.
+
+Use a current date of 2025/01/01. 
+
+Respond with an artifact of metrics in the following format:
+
+{
+    "new_accounts": {
+        "total_tickets_filed": ...,
+        "total_tickets_closed": ...,
+    },
+    "mid_age_accounts": {
+        "total_tickets_filed": ...,
+        "total_tickets_closed": ...,
+    },
+    "old_accounts": {
+        "total_tickets_filed": ...,
+        "total_tickets_closed": ...,
+    }
+}
