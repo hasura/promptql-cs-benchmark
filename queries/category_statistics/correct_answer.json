@@ -1,0 +1,31 @@
+{
+    "identifier": "issue_categories",
+    "title": "Open Issue Categories and Metrics",
+    "artifact_type": "table",
+    "data": [
+      {
+        "category": "free_tier_bugs",
+        "issue_count": 3,
+        "mean_time": 142,
+        "issues": "187,283,288"
+      },
+      {
+        "category": "free_tier_non_bugs",
+        "issue_count": 6,
+        "mean_time": 327.67,
+        "issues": "144,175,209,214,230,289"
+      },
+      {
+        "category": "paid_tiers_performance",
+        "issue_count": 10,
+        "mean_time": 177.1,
+        "issues": "169,182,203,250,251,261,265,275,282,285"
+      },
+      {
+        "category": "paid_tiers_non_performance",
+        "issue_count": 31,
+        "mean_time": 214.32,
+        "issues": "139,143,150,166,178,180,186,188,190,193,195,197,201,205,215,224,228,237,246,247,259,264,267,276,277,280,281,284,286,287,290"
+      }
+    ]
+  }
