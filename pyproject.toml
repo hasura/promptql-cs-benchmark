@@ -16,6 +16,8 @@ requests = "^2.32.3"
 faker = "^35.1.0"
 numpy = "^2.2.2"
 argparse = "^1.4.0"
+pandas = "^2.2.3"
+colorama = "^0.4.6"
 
 
 [build-system]

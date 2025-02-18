@@ -43,7 +43,7 @@ class AIAssistant:
                 "headers": {}
             },
             "artifacts": self.initial_artifacts.copy(),
-            "system_instructions": "",  # Add system instructions if needed
+            "system_instructions": "- use cmp_to_key if writing a sorting algorithm focused on pairwise comparison",
             "timezone": "America/Los_Angeles",
             "interactions": self.messages.copy(),
             "stream": False
