@@ -67,9 +67,8 @@ class DatabaseTool:
         else:
             return []
 
-
 class AIAssistant:
-    def __init__(self, model, has_python_tool, system_prompt):
+    def __init__(self, model, has_python_tool):
         self.model = model
         self.has_python_tool = has_python_tool
         self.python_tool = DatabaseTool(has_python_tool=has_python_tool)
@@ -79,7 +78,7 @@ class AIAssistant:
         self.init_messages = [
             {
                 "role": "system",
-                "content": system_prompt 
+                "content": "TODO" 
             }
         ]
         self.messages = self.init_messages.copy()
@@ -89,7 +88,7 @@ class AIAssistant:
         self.messages = self.init_messages.copy()
         self.api_responses = []
 
-    async def process_query(self, query: str) -> str:
+    async def process_query(self, query: str, artifacts: list) -> str:
         """Process a query using available tools and GPT-4 while maintaining conversation history"""
         # Add the new user query to the conversation history
         self.messages.append({"role": "user", "content": query})

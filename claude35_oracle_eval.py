@@ -72,18 +72,18 @@ class DatabaseTool:
 
 
 class AIAssistant:
-    def __init__(self, has_python_tool, system_prompt):
+    def __init__(self, has_python_tool):
         self.has_python_tool = has_python_tool
         self.python_tool = DatabaseTool(has_python_tool=has_python_tool)
         self.client = anthropic.AsyncAnthropic(
             api_key=os.environ.get("ANTHROPIC_API_KEY")
         )
 
-        self.system_prompt = system_prompt
+        self.system_prompt = "TODO"
         self.messages = []
         self.api_responses = []
 
-    async def process_query(self, query: str) -> str:
+    async def process_query(self, query: str, artifacts: list) -> str:
         """Process a query using available tools and Claude while maintaining conversation history"""
         self.messages.append({"role": "user", "content": query})
 
