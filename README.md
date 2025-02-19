@@ -58,12 +58,12 @@ poetry run python o1_eval.py --model <o1|o3-mini>
 
 ### Automatic benchmarks
 
-System can be `promptql`, `tool_calling` or `oracle`
+System can be `promptql`, `tool_calling` or `tool_calling_python`
 
-Model can be `anthropic`, `o1` or `o3-mini`
+Model can be `claude`, `o1` or `o3-mini`
 
 ```bash
-python bench.py --input_filepath queries/rule_based_prioritization/complexity3.yaml --output_dir output_complexity3 --system tool_calling_python --oracle --model anthropic
+python bench.py --input_filepath queries/score_based_prioritization/task.yaml --output_dir score_based_prioritization --system tool_calling_python --oracle --model claude
 ```
 
 #### Measure score
@@ -71,6 +71,8 @@ python bench.py --input_filepath queries/rule_based_prioritization/complexity3.y
 You can also automatically compute scores by comparing ground truth with evaluation runs by providing the 
 query file, output directory (which has the evaluation runs) and a python module file which has a function 
 which computes score between ground truth and test result: `evaluate_score(ground_truth: str, test_result: str) -> float`
+
+TODO: This script needs to be fixed with the new bench.py changes and won't work currently.
 
 ```bash
 python evaluation.py --input_filepath queries/rule_based_prioritization/complexity3.yaml --output_dir output_complexity3 --evaluator_module scoring/test_scorer.py
