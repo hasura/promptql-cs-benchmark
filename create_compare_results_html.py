@@ -353,7 +353,6 @@ def generate_html_content(data: Dict, model: str) -> str:
                 display: block;
             }
             .result-section {
-                margin-top: 20px;
                 padding: 15px;
                 background-color: #f8f9fa;
                 border-left: 4px solid #6c757d;
@@ -508,7 +507,7 @@ def generate_html_content(data: Dict, model: str) -> str:
                     html += "</div>"
 
                 # Add result section
-                html += "<div class='result-section'>"
+                html += "<hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'>"
                 html += "<div class='section-title'>Result:</div>"
                 if 'result' in system_data and system_data['result']:
                     html += f'<pre>{system_data["result"]}</pre>'

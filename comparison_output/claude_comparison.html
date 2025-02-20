@@ -107,7 +107,6 @@
                 display: block;
             }
             .result-section {
-                margin-top: 20px;
                 padding: 15px;
                 background-color: #f8f9fa;
                 border-left: 4px solid #6c757d;
@@ -191,7 +190,7 @@
     <div class="title-container">
         <h1>With CLAUDE</h1>
         <a href="index.html" class="back-link">&larr;Back</a>
-    </div><div class='timestamp'>Generated on: 2025-02-21 00:51:57</div><div class='tabs'><button class='tab-button' data-run='1'>Run 1</button><button class='tab-button' data-run='2'>Run 2</button><button class='tab-button' data-run='3'>Run 3</button></div><div id='run-1' class='tab-content'><div class='container'><div class='system'><h3 class='system-title'>promptql</h3> <span class='execution-time'>(Execution time: 37.75s)</span><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
+    </div><div class='timestamp'>Generated on: 2025-02-21 00:57:02</div><div class='tabs'><button class='tab-button' data-run='1'>Run 1</button><button class='tab-button' data-run='2'>Run 2</button><button class='tab-button' data-run='3'>Run 3</button></div><div id='run-1' class='tab-content'><div class='container'><div class='system'><h3 class='system-title'>promptql</h3> <span class='execution-time'>(Execution time: 37.75s)</span><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
 
 For each ticket do the following:
 - get the description of the ticket
@@ -466,7 +465,7 @@ The tickets are ordered by their total priority score (0-100) which considers:
 - Ticket age (up to 20 points, with newer tickets scoring higher)
 
 Would you like to see more details about any specific ticket or understand how the scoring was calculated for particular cases?
-</pre></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
+</pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
     "ticket_id": 143
   },
@@ -765,7 +764,7 @@ The sorting reflects:
 7. Ticket 289: Performance issue, free plan, recent
 8. Ticket 251: Performance issue, base plan
 9. Ticket 139: Downtime but older ticket, base plan
-10. Ticket 166: Feature request (lowest category priority)</div></pre></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
+10. Ticket 166: Feature request (lowest category priority)</div></pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
     "ticket_id": 286
   },
@@ -1050,7 +1049,7 @@ This prioritization is based on:
 3. The revenue impact (both project-specific and total user revenue)
 4. The age of the ticket (newer tickets given slightly higher priority)
 
-The top tickets (286, 287, 143) are all related to system downtime for customers on advanced or base plans with significant revenue impact. The middle-priority tickets (288, 139, 169) involve reliability and performance issues, while the lower-priority tickets (289, 251, 166) are a mix of performance issues and feature requests, with lower revenue impact or free-tier customers.</div></pre></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
+The top tickets (286, 287, 143) are all related to system downtime for customers on advanced or base plans with significant revenue impact. The middle-priority tickets (288, 139, 169) involve reliability and performance issues, while the lower-priority tickets (289, 251, 166) are a mix of performance issues and feature requests, with lower revenue impact or free-tier customers.</div></pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
     "ticket_id": 286
   },
@@ -1606,7 +1605,7 @@ Here are the prioritized tickets in order of importance:
 <artifact identifier='prioritized_tickets' warning='I cannot see the full data so I must not make up observations' />
 
 From the scoring output, we can see that ticket #143 received the highest total score (75.0) due to being a downtime issue (25 points), from a base plan customer (10 points), with high user revenue impact (20 points), and being the newest ticket (20 points).
-</pre></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
+</pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
     "ticket_id": 143
   },
@@ -1935,7 +1934,7 @@ This prioritization takes into account:
 3. The revenue impact both at project and user level
 4. The age of the ticket
 
-The top tickets are primarily downtime issues from high-revenue customers on advanced plans, followed by reliability and performance issues, and finally feature requests at the bottom of the priority list.</div></pre></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
+The top tickets are primarily downtime issues from high-revenue customers on advanced plans, followed by reliability and performance issues, and finally feature requests at the bottom of the priority list.</div></pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
     "ticket_id": 287
   },
@@ -3594,7 +3593,7 @@ The ordering generally prioritizes:
 4. More recent tickets over older ones
 5. Feature requests and other non-critical issues at the bottom
 
-Each ticket's final position in the list reflects the combined weight of all these factors according to the scoring system you specified.</div></pre></div><div class='result-section'><div class='section-title'>Result:</div><pre>No result returned</pre></div></div></div></div><div id='run-3' class='tab-content'><div class='container'><div class='system'><h3 class='system-title'>promptql</h3> <span class='execution-time'>(Execution time: 40.10s)</span><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
+Each ticket's final position in the list reflects the combined weight of all these factors according to the scoring system you specified.</div></pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>No result returned</pre></div></div></div></div><div id='run-3' class='tab-content'><div class='container'><div class='system'><h3 class='system-title'>promptql</h3> <span class='execution-time'>(Execution time: 40.10s)</span><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
 
 For each ticket do the following:
 - get the description of the ticket
@@ -3895,7 +3894,7 @@ Each ticket's priority was calculated using:
 - Plan type (up to 15 points): Advanced plan projects got 15 points, base plan got 10 points
 - Revenue impact (up to 40 points): Split between project revenue (20) and total user revenue (20), scaled relative to highest values
 - Ticket age (up to 20 points): Newer tickets got higher priority, scaled linearly
-</pre></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
+</pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
     "ticket_id": 143
   },
@@ -4202,7 +4201,7 @@ This prioritization takes into account:
 3. Revenue impact (both project and user total revenue)
 4. Age of the ticket (with newer tickets getting higher priority)
 
-The combination of these factors determines the final ordering, with critical issues from high-revenue customers on advanced plans generally getting the highest priority.</div></pre></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
+The combination of these factors determines the final ordering, with critical issues from high-revenue customers on advanced plans generally getting the highest priority.</div></pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
     "ticket_id": 286
   },
@@ -4474,7 +4473,7 @@ Let me calculate the final scores and sort them:</div></pre></div><div class='me
 
 The tickets are now sorted in order of highest priority to lowest priority, taking into account all these factors. The output shows the ticket IDs in the requested format, with all 10 tickets included in the prioritized list.
 
-Each ticket's final position in the list reflects its total score based on the severity of the issue (category), the customer's plan level, their revenue contribution (both project-specific and total user revenue), and how recently the ticket was created.</div></pre></div><div class='result-section'><div class='section-title'>Result:</div><pre>No result returned</pre></div></div></div></div>
+Each ticket's final position in the list reflects its total score based on the severity of the issue (category), the customer's plan level, their revenue contribution (both project-specific and total user revenue), and how recently the ticket was created.</div></pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>No result returned</pre></div></div></div></div>
     </body>
     </html>
     

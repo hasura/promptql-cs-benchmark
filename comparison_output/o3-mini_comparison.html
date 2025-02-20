@@ -107,7 +107,6 @@
                 display: block;
             }
             .result-section {
-                margin-top: 20px;
                 padding: 15px;
                 background-color: #f8f9fa;
                 border-left: 4px solid #6c757d;
@@ -191,7 +190,7 @@
     <div class="title-container">
         <h1>With O3-MINI</h1>
         <a href="index.html" class="back-link">&larr;Back</a>
-    </div><div class='timestamp'>Generated on: 2025-02-21 00:51:57</div><div class='tabs'><button class='tab-button' data-run='1'>Run 1</button><button class='tab-button' data-run='2'>Run 2</button><button class='tab-button' data-run='3'>Run 3</button></div><div id='run-1' class='tab-content'><div class='container'><div class='system'><h3 class='system-title'>promptql</h3> <span class='execution-time'>(Execution time: 2m 10s)</span><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
+    </div><div class='timestamp'>Generated on: 2025-02-21 00:57:02</div><div class='tabs'><button class='tab-button' data-run='1'>Run 1</button><button class='tab-button' data-run='2'>Run 2</button><button class='tab-button' data-run='3'>Run 3</button></div><div id='run-1' class='tab-content'><div class='container'><div class='system'><h3 class='system-title'>promptql</h3> <span class='execution-time'>(Execution time: 2m 10s)</span><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
 
 For each ticket do the following:
 - get the description of the ticket
@@ -575,7 +574,7 @@ Stored prioritized tickets artifact.
 
 </pre></div></div><div class='message assistant'><strong>Assistant:</strong><div class="section-title">Message:</div><pre>Here is the sorted list of prioritized ticket IDs:
 <artifact identifier = 'prioritized_tickets' />
-</pre></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
+</pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
     "ticket_id": 143
   },
@@ -1032,7 +1031,7 @@ Sorted Ticket IDs based on priority:
 
 </pre></div></div><div class='message assistant'><strong>Assistant:</strong><div class="section-title">Message:</div><pre>Here is your sorted list of prioritized ticket IDs:
 <artifact identifier="prioritized_tickets" />
-</pre></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
+</pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
     "ticket_id": 143
   },
@@ -1427,7 +1426,7 @@ Prioritized tickets computed and stored.
 
 </pre></div></div><div class='message assistant'><strong>Assistant:</strong><div class="section-title">Message:</div><pre>Here is your prioritized list of open support tickets:
 <artifact identifier="prioritized_tickets" />
-</pre></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
+</pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
     "ticket_id": 143
   },
