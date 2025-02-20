@@ -142,23 +142,23 @@ variations:
      n: 10
    ground_truth_path: ground_truth_last_10.json
    oracle_data_file_paths: []
- - name: last_20
-   parameters:
-     n: 20
-   ground_truth_path: ground_truth_last_20.json
-   oracle_data_file_paths: []
- - name: last_30
-   parameters:
-     n: 30
-   ground_truth_path: ground_truth_last_30.json
-   oracle_data_file_paths: []
- - name: last_40
-   parameters:
-     n: 40
-   ground_truth_path: ground_truth_last_40.json
-   oracle_data_file_paths: []
- - name: last_50
-   parameters:
-     n: 50
-   ground_truth_path: ground_truth_last_50.json
-   oracle_data_file_paths: []
+# - name: last_20
+#   parameters:
+#     n: 20
+#   ground_truth_path: ground_truth_last_20.json
+#   oracle_data_file_paths: []
+# - name: last_30
+#   parameters:
+#     n: 30
+#   ground_truth_path: ground_truth_last_30.json
+#   oracle_data_file_paths: []
+# - name: last_40
+#   parameters:
+#     n: 40
+#   ground_truth_path: ground_truth_last_40.json
+#   oracle_data_file_paths: []
+# - name: last_50
+#   parameters:
+#     n: 50
+#   ground_truth_path: ground_truth_last_50.json
+#   oracle_data_file_paths: []

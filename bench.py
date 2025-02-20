@@ -289,14 +289,14 @@ async def main():
         "--model",
         type=Model,
         help="LLM to use",
-        required=True,
+        required=False,
         choices=list(Model),
     )
     parser.add_argument(
         "--system",
         type=System,
         help="System to evaluate",
-        required=True,
+        required=False,
         choices=list(System),
     )
     parser.add_argument("--oracle", help="Use oracle data", action="store_true")
@@ -312,7 +312,8 @@ async def main():
             )
             for system in System
             for model in Model
-            for oracle in [False, True]
+            # for oracle in [False, True]
+            for oracle in [False]
         ]
         await asyncio.gather(*tasks)
     else:
