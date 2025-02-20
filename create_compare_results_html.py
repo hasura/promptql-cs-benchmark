@@ -89,11 +89,22 @@ def extract_messages(history_data: List) -> List[Dict]:
                                 # Extract SQL query
                                 sql_match = re.search(r"'sql': \"(.*?)(?<!\\)\"", item, re.DOTALL)
                                 if sql_match:
-                                    sql_content = sql_match.group(1).replace('\n', '<br>')
+                                    sql_content = sql_match.group(1).encode('utf-8').decode('unicode_escape')
                                     formatted_content.append(
                                         f'<div class="sql-block">'
                                         f'<button class="collapsible">Show SQL Query +</button>'
                                         f'<div class="content"><pre>{sql_content}</pre></div>'
+                                        f'</div>'
+                                    )
+                                # Extract Python code
+                                # TODO: fix
+                                python_match = re.search(r"'pythonCode': \"(.*?)(?<!\\)\"", item, re.DOTALL)
+                                if python_match:
+                                    python_content = python_match.group(1).encode('utf-8').decode('unicode_escape')
+                                    formatted_content.append(
+                                        f'<div class="python-block">'
+                                        f'<button class="collapsible">Show Python Code +</button>'
+                                        f'<div class="content"><pre>{python_content}</pre></div>'
                                         f'</div>'
                                     )
                     
