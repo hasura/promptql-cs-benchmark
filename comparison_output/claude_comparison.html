@@ -191,7 +191,7 @@
     <div class="title-container">
         <h1>With CLAUDE</h1>
         <a href="index.html" class="back-link">&larr;Back</a>
-    </div><div class='timestamp'>Generated on: 2025-02-21 00:48:34</div><div class='tabs'><button class='tab-button' data-run='1'>Run 1</button><button class='tab-button' data-run='2'>Run 2</button><button class='tab-button' data-run='3'>Run 3</button></div><div id='run-1' class='tab-content'><div class='container'><div class='system'><h3 class='system-title'>promptql</h3> <span class='execution-time'>(Execution time: 37.75s)</span><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
+    </div><div class='timestamp'>Generated on: 2025-02-21 00:51:57</div><div class='tabs'><button class='tab-button' data-run='1'>Run 1</button><button class='tab-button' data-run='2'>Run 2</button><button class='tab-button' data-run='3'>Run 3</button></div><div id='run-1' class='tab-content'><div class='container'><div class='system'><h3 class='system-title'>promptql</h3> <span class='execution-time'>(Execution time: 37.75s)</span><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
 
 For each ticket do the following:
 - get the description of the ticket
@@ -568,7 +568,9 @@ Respond with the sorted list of ticket IDs inside the tags <prioritized_tickets>
 </prioritized_tickets>
 
 Include all tickets that you have processed in this list. Don't worry about brevity.
-</div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="text-block">I'll help you get that prioritized list of support tickets. Let's break this down into steps as requested.\n\nFirst, let's get the open tickets with their details:</div>
+</div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="text-block">I'll help you get that prioritized list of support tickets. Let's break this down into steps as requested.
+
+First, let's get the open tickets with their details:</div>
 <div class="sql-block"><button class="collapsible">Show SQL Query +</button><div class="content"><pre>WITH ticket_details AS (\n    SELECT \n        t.id as ticket_id,\n        t.subject,\n        t.description,\n        t.created_at,\n        u.email as requester_email\n    FROM support_ticket t\n    JOIN support_user u ON t.requester_id = u.id\n    WHERE t.status = 'open'\n    ORDER BY t.created_at DESC\n    LIMIT 10\n)\nSELECT * FROM ticket_details;</pre></div></div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">[
   {
     "ticket_id": 143,
@@ -865,7 +867,9 @@ Respond with the sorted list of ticket IDs inside the tags <prioritized_tickets>
 </prioritized_tickets>
 
 Include all tickets that you have processed in this list. Don't worry about brevity.
-</div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="text-block">I'll help you create this prioritized list by following the steps outlined. Let me break this down into parts:\n\n1. First, let's get all open tickets with their details:</div>
+</div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="text-block">I'll help you create this prioritized list by following the steps outlined. Let me break this down into parts:
+
+1. First, let's get all open tickets with their details:</div>
 <div class="sql-block"><button class="collapsible">Show SQL Query +</button><div class="content"><pre>WITH ticket_data AS (\n  SELECT \n    t.id as ticket_id,\n    t.subject,\n    t.description,\n    t.created_at,\n    u.email as requester_email\n  FROM support_ticket t\n  JOIN support_user u ON t.requester_id = u.id\n  WHERE t.status = 'open'\n  ORDER BY t.created_at DESC\n  LIMIT 10\n)\nSELECT * FROM ticket_data;</pre></div></div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">[
   {
     "ticket_id": 143,
@@ -1704,7 +1708,9 @@ Respond with the sorted list of ticket IDs inside the tags <prioritized_tickets>
 </prioritized_tickets>
 
 Include all tickets that you have processed in this list. Don't worry about brevity.
-</div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="text-block">I'll help you prioritize the open support tickets following your detailed criteria. Let's execute this step by step.\n\nFirst, let's get the open tickets with their details:</div>
+</div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="text-block">I'll help you prioritize the open support tickets following your detailed criteria. Let's execute this step by step.
+
+First, let's get the open tickets with their details:</div>
 <div class="sql-block"><button class="collapsible">Show SQL Query +</button><div class="content"><pre>WITH ticket_users AS (\n    SELECT t.*, u.email as requester_email\n    FROM support_ticket t\n    JOIN support_user u ON t.requester_id = u.id\n    WHERE t.status = 'open'\n    ORDER BY t.created_at DESC\n    LIMIT 10\n)\nSELECT \n    t.id,\n    t.subject,\n    t.description,\n    t.created_at,\n    t.requester_email,\n    REGEXP_MATCHES(t.description, '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}', 'g') as extracted_project_ids\nFROM ticket_users t;</pre></div></div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">[
   {
     "id": 143,
@@ -2031,7 +2037,11 @@ Respond with the sorted list of ticket IDs inside the tags <prioritized_tickets>
 </prioritized_tickets>
 
 Include all tickets that you have processed in this list. Don't worry about brevity.
-</div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="text-block">I'll help you analyze and prioritize the open support tickets following your detailed steps.\n\nLet's break this down into parts:\n\n1. First, let's get all open tickets with required details:</div>
+</div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="text-block">I'll help you analyze and prioritize the open support tickets following your detailed steps.
+
+Let's break this down into parts:
+
+1. First, let's get all open tickets with required details:</div>
 <div class="sql-block"><button class="collapsible">Show SQL Query +</button><div class="content"><pre>WITH ticket_details AS (\n  SELECT \n    t.id as ticket_id,\n    t.subject,\n    t.description,\n    t.created_at,\n    u.email as requester_email\n  FROM support_ticket t\n  JOIN support_user u ON t.requester_id = u.id\n  WHERE t.status = 'open'\n  ORDER BY t.created_at DESC\n  LIMIT 10\n)\nSELECT *\nFROM ticket_details;</pre></div></div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">[
   {
     "ticket_id": 143,
@@ -3987,7 +3997,9 @@ Respond with the sorted list of ticket IDs inside the tags <prioritized_tickets>
 </prioritized_tickets>
 
 Include all tickets that you have processed in this list. Don't worry about brevity.
-</div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="text-block">I'll help you analyze and prioritize the open support tickets. Let's go through this step by step.\n\nFirst, let's get all the open tickets with their details:</div>
+</div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="text-block">I'll help you analyze and prioritize the open support tickets. Let's go through this step by step.
+
+First, let's get all the open tickets with their details:</div>
 <div class="sql-block"><button class="collapsible">Show SQL Query +</button><div class="content"><pre>WITH ticket_info AS (\n    SELECT \n        st.id as ticket_id,\n        st.subject,\n        st.description,\n        st.created_at,\n        su.email as requester_email\n    FROM support_ticket st\n    JOIN support_user su ON st.requester_id = su.id\n    WHERE st.status = 'open'\n    ORDER BY st.created_at DESC\n    LIMIT 10\n)\nSELECT * FROM ticket_info;</pre></div></div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">[
   {
     "ticket_id": 143,
@@ -4292,7 +4304,9 @@ Respond with the sorted list of ticket IDs inside the tags <prioritized_tickets>
 </prioritized_tickets>
 
 Include all tickets that you have processed in this list. Don't worry about brevity.
-</div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="text-block">I'll help you analyze and prioritize the open support tickets following your detailed steps. Let me break this down into parts and execute the necessary queries.\n\n1. First, let's get the open tickets with required details:</div>
+</div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="text-block">I'll help you analyze and prioritize the open support tickets following your detailed steps. Let me break this down into parts and execute the necessary queries.
+
+1. First, let's get the open tickets with required details:</div>
 <div class="sql-block"><button class="collapsible">Show SQL Query +</button><div class="content"><pre>WITH ticket_details AS (\n  SELECT \n    t.id as ticket_id,\n    t.subject,\n    t.description,\n    t.created_at,\n    u.email as requester_email\n  FROM support_ticket t\n  JOIN support_user u ON t.requester_id = u.id\n  WHERE t.status = 'open'\n  ORDER BY t.created_at DESC\n  LIMIT 10\n)\nSELECT * FROM ticket_details;</pre></div></div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">[
   {
     "ticket_id": 143,
@@ -4421,7 +4435,34 @@ Include all tickets that you have processed in this list. Don't worry about brev
     "owner_email": "aaron.davis@cooper-schultz.com",
     "user_total_revenue": "6300.00"
   }
-]</pre></div></div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="text-block">Let me process this data and create the prioritized list based on your scoring criteria:\n\n1. First, I'll classify each ticket:\n- Ticket 143: Downtime (25 points)\n- Ticket 166: Feature Request (5 points)\n- Ticket 287: Downtime (25 points)\n- Ticket 288: Reliability (20 points)\n- Ticket 209: Downtime (25 points)\n- Ticket 289: Performance (15 points)\n- Ticket 169: Performance (15 points)\n- Ticket 286: Downtime (25 points)\n- Ticket 251: Performance (15 points)\n- Ticket 139: Downtime (25 points)\n\n2. Plan weights:\n- advanced: 15 points\n- base: 10 points\n- free: 0 points\n\n3. Revenue impact (scaling based on highest values):\n- Highest project revenue: 7980.00\n- Highest user revenue: 45486.00\n\n4. Age scoring (newest to oldest, linear scale):\n- Newest: 2025-01-03\n- Oldest: 2024-10-18\n\nLet me calculate the final scores and sort them:</div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">{
+]</pre></div></div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="text-block">Let me process this data and create the prioritized list based on your scoring criteria:
+
+1. First, I'll classify each ticket:
+- Ticket 143: Downtime (25 points)
+- Ticket 166: Feature Request (5 points)
+- Ticket 287: Downtime (25 points)
+- Ticket 288: Reliability (20 points)
+- Ticket 209: Downtime (25 points)
+- Ticket 289: Performance (15 points)
+- Ticket 169: Performance (15 points)
+- Ticket 286: Downtime (25 points)
+- Ticket 251: Performance (15 points)
+- Ticket 139: Downtime (25 points)
+
+2. Plan weights:
+- advanced: 15 points
+- base: 10 points
+- free: 0 points
+
+3. Revenue impact (scaling based on highest values):
+- Highest project revenue: 7980.00
+- Highest user revenue: 45486.00
+
+4. Age scoring (newest to oldest, linear scale):
+- Newest: 2025-01-03
+- Oldest: 2024-10-18
+
+Let me calculate the final scores and sort them:</div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">{
   "stdout": "<prioritized_tickets>\n[\n  {\n    \"ticket_id\": 143\n  },\n  {\n    \"ticket_id\": 287\n  },\n  {\n    \"ticket_id\": 286\n  },\n  {\n    \"ticket_id\": 169\n  },\n  {\n    \"ticket_id\": 166\n  },\n  {\n    \"ticket_id\": 139\n  },\n  {\n    \"ticket_id\": 288\n  },\n  {\n    \"ticket_id\": 209\n  },\n  {\n    \"ticket_id\": 251\n  },\n  {\n    \"ticket_id\": 289\n  }\n]\n</prioritized_tickets>\n",
   "stderr": "",
   "exitCode": 0

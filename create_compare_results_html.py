@@ -82,7 +82,9 @@ def extract_messages(history_data: List) -> List[Dict]:
                                 # Extract text content
                                 text_match = re.search(r'text="([^"]*)"', item)
                                 if text_match:
-                                    formatted_content.append(f'<div class="text-block">{text_match.group(1)}</div>')
+                                    # Unescape the string to handle all escaped characters (\n, \t, \", etc.)
+                                    text_content = text_match.group(1).encode('utf-8').decode('unicode_escape')
+                                    formatted_content.append(f'<div class="text-block">{text_content}</div>')
                             elif "ToolUseBlock" in item:
                                 # Extract SQL query
                                 sql_match = re.search(r"'sql': \"(.*?)(?<!\\)\"", item, re.DOTALL)
