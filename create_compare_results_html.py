@@ -119,7 +119,7 @@ def read_system_data(base_dir: str, model: str, system: str) -> Dict:
         return data
 
     # Read all files first
-    for file in path.glob("last_10_run_*.history"):
+    for file in path.glob("last_*_run_*.history"):
         try:
             with open(file, 'r') as f:
                 history = json.load(f)
