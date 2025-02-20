@@ -186,8 +186,62 @@ def format_execution_time(time_str: str) -> str:
     except (ValueError, IndexError):
         return time_str
 
-def generate_html_content(data: Dict[str, Dict[str, Any]], model: str) -> str:
-    """Generate HTML content from the data"""
+def generate_html_content(data: Dict, model: str) -> str:
+    """Generate HTML content for comparison"""
+    if not data:
+        html = """
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Model Comparison</title>
+            <style>
+                body { 
+                    font-family: Arial, sans-serif;
+                    margin: 20px;
+                    background-color: #f5f5f5;
+                }
+                .message {
+                    text-align: center;
+                    padding: 50px;
+                    background-color: white;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    margin-top: 20px;
+                }
+                .title-container {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 20px;
+                }
+                .back-link {
+                    text-decoration: none;
+                    color: #0066cc;
+                }
+                .timestamp {
+                    color: #666;
+                    font-style: italic;
+                    margin-bottom: 20px;
+                }
+            </style>
+        </head>
+        <body>
+        """
+        
+        html += f"""<div class="title-container">
+            <h1>With {model.upper()}</h1>
+            <a href="index.html" class="back-link">&larr;Back</a>
+        </div>"""
+        html += f"<div class='timestamp'>Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</div>"
+        html += """
+            <div class="message">
+                <h2>No data found for this model</h2>
+            </div>
+        </body>
+        </html>
+        """
+        return html
+
     html = """
     <!DOCTYPE html>
     <html>
@@ -575,18 +629,18 @@ def main():
                         model_data[run_number] = {}
                     model_data[run_number][system] = data
             
-            if model_data:
-                # Generate HTML
-                html_content = generate_html_content(model_data, model)
+            # Generate HTML regardless of whether we found data
+            html_content = generate_html_content(model_data, model)
+            
+            # Write HTML file
+            output_file = f'comparison_output/{model}_comparison.html'
+            with open(output_file, 'w', encoding='utf-8') as f:
+                f.write(html_content)
                 
-                # Write HTML file
-                output_file = f'comparison_output/{model}_comparison.html'
-                with open(output_file, 'w', encoding='utf-8') as f:
-                    f.write(html_content)
-                    
+            if model_data:
                 print(f"Generated comparison for {model}: {output_file}")
             else:
-                print(f"No data found for {model}")
+                print(f"Generated empty comparison for {model}: {output_file} (no data found)")
             
         except Exception as e:
             print(f"Error processing {model}: {str(e)}")
