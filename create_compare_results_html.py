@@ -584,7 +584,7 @@ def generate_index_html(models: List[str]) -> str:
     </head>
     <body>
         <div class="container">
-            <h1>Comparing <span class="promptql">PromptQL</span> vs Tool Calling vs Tool Calling with Python</h1>
+            <h2>Comparing <span class="promptql">PromptQL</span> vs Tool-Calling vs Tool-Calling-with-Python</h1>
             <div class="timestamp">Generated on: """ + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + """</div>
             <div class="links">
     """
