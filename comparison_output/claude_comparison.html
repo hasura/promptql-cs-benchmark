@@ -190,7 +190,7 @@
     <div class="title-container">
         <h1>With CLAUDE</h1>
         <a href="index.html" class="back-link">&larr;Back</a>
-    </div><div class='timestamp'>Generated on: 2025-02-21 01:27:15</div><div class='tabs'><button class='tab-button' data-run='1'>Run 1</button><button class='tab-button' data-run='2'>Run 2</button><button class='tab-button' data-run='3'>Run 3</button></div><div id='run-1' class='tab-content'><div class='container'><div class='system'><h3 class='system-title'>promptql</h3> <span class='execution-time'>(Execution time: 37.75s)</span><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
+    </div><div class='timestamp'>Generated on: 2025-02-21 01:45:00</div><div class='tabs'><button class='tab-button' data-run='1'>Run 1</button><button class='tab-button' data-run='2'>Run 2</button><button class='tab-button' data-run='3'>Run 3</button></div><div id='run-1' class='tab-content'><div class='container'><div class='system'><h3 class='system-title'>promptql</h3> <span class='execution-time'>(Execution time: 37.75s)</span><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
 
 For each ticket do the following:
 - get the description of the ticket
@@ -1121,11 +1121,243 @@ WHERE p.id IN (
     "total_user_revenue": "6300.00",
     "owner_email": "aaron.davis@cooper-schultz.com"
   }
-]</pre></div></div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="text-block">Now, I'll process this data to categorize and score each ticket. Let me write a Python program to handle the calculations:</div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">{
+]</pre></div></div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="text-block">Now, I'll process this data to categorize and score each ticket. Let me write a Python program to handle the calculations:</div>
+<div class="python-block"><button class="collapsible">Show Python Code +</button><div class="content"><pre>import json
+from datetime import datetime
+
+# Helper function to classify tickets
+def classify_ticket(subject, description):
+    subject_desc = (subject + " " + description).lower()
+    
+    if any(word in subject_desc for word in ['down', 'outage', '500 error', 'unable to access']):
+        return 'downtime'
+    elif any(word in subject_desc for word in ['intermittent', 'erratic', 'reliability']):
+        return 'reliability'
+    elif any(word in subject_desc for word in ['performance', 'slow', 'degradation']):
+        return 'performance'
+    elif any(word in subject_desc for word in ['bug', 'incorrect', 'wrong']):
+        return 'bug'
+    elif any(word in subject_desc for word in ['feature request', 'enhancement']):
+        return 'feature request'
+    return 'others'
+
+# Category weights
+category_weights = {
+    'downtime': 25,
+    'reliability': 20,
+    'performance': 15,
+    'bug': 10,
+    'feature request': 5,
+    'others': 0
+}
+
+# Plan weights
+plan_weights = {
+    'advanced': 15,
+    'base': 10,
+    'free': 0
+}
+
+# Calculate scores for each ticket
+def calculate_scores(tickets, project_data):
+    scores = []
+    
+    # Find max revenues for scaling
+    max_project_revenue = max(float(p['project_revenue']) for p in project_data)
+    max_user_revenue = max(float(p['total_user_revenue']) for p in project_data)
+    
+    # Get timestamp range for age calculation
+    timestamps = [datetime.fromisoformat(t['created_at'].replace('Z', '+00:00')) for t in tickets]
+    newest = max(timestamps)
+    oldest = min(timestamps)
+    time_range = (newest - oldest).total_seconds()
+    
+    for ticket in tickets:
+        score = {}
+        score['ticket_id'] = ticket['ticket_id']
+        
+        # Category score
+        category = classify_ticket(ticket['subject'], ticket['description'])
+        score['category_score'] = category_weights[category]
+        
+        # Find matching project data
+        project_id = None
+        for line in ticket['description'].split('\n'):
+            if 'Project ID:' in line:
+                project_id = line.split('Project ID:')[-1].strip()
+                break
+        
+        project = next((p for p in project_data if p['project_id'] == project_id), None)
+        
+        # Plan score
+        if project:
+            score['plan_score'] = plan_weights.get(project['plan_name'], 0)
+            
+            # Revenue scores
+            if max_project_revenue > 0:
+                score['project_revenue_score'] = (float(project['project_revenue']) / max_project_revenue) * 20
+            else:
+                score['project_revenue_score'] = 0
+                
+            if max_user_revenue > 0:
+                score['user_revenue_score'] = (float(project['total_user_revenue']) / max_user_revenue) * 20
+            else:
+                score['user_revenue_score'] = 0
+        else:
+            score['plan_score'] = 0
+            score['project_revenue_score'] = 0
+            score['user_revenue_score'] = 0
+        
+        # Age score
+        ticket_time = datetime.fromisoformat(ticket['created_at'].replace('Z', '+00:00'))
+        if time_range > 0:
+            age_factor = (ticket_time - oldest).total_seconds() / time_range
+            score['age_score'] = age_factor * 20
+        else:
+            score['age_score'] = 20
+            
+        # Calculate total score
+        score['total_score'] = (
+            score['category_score'] +
+            score['plan_score'] +
+            score['project_revenue_score'] +
+            score['user_revenue_score'] +
+            score['age_score']
+        )
+        
+        scores.append(score)
+    
+    # Sort by total score in descending order
+    scores.sort(key=lambda x: x['total_score'], reverse=True)
+    
+    # Format the output
+    output = {"prioritized_tickets": [{"ticket_id": s['ticket_id']} for s in scores]}
+    print(json.dumps(output, indent=2))
+
+# Parse the input data
+tickets_data = [
+    # Your tickets data here
+]
+
+project_data = [
+    # Your project data here
+]
+
+calculate_scores(tickets_data, project_data)</pre></div></div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">{
   "stdout": "",
   "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpasl2zc3j.py\", line 122, in <module>\n    calculate_scores(tickets_data, project_data)\n  File \"/tmp/tmpasl2zc3j.py\", line 42, in calculate_scores\n    max_project_revenue = max(float(p['project_revenue']) for p in project_data)\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: max() iterable argument is empty\n",
   "exitCode": 1
-}</pre></div></div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">{
+}</pre></div></div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="python-block"><button class="collapsible">Show Python Code +</button><div class="content"><pre>import json
+from datetime import datetime
+
+# Helper function to classify tickets
+def classify_ticket(subject, description):
+    subject_desc = (subject + " " + description).lower()
+    
+    if any(word in subject_desc for word in ['down', 'outage', '500 error', 'unable to access', 'unreachable']):
+        return 'downtime'
+    elif any(word in subject_desc for word in ['intermittent', 'erratic', 'reliability']):
+        return 'reliability'
+    elif any(word in subject_desc for word in ['performance', 'slow', 'degradation']):
+        return 'performance'
+    elif any(word in subject_desc for word in ['bug', 'incorrect', 'wrong']):
+        return 'bug'
+    elif any(word in subject_desc for word in ['feature request', 'enhancement']):
+        return 'feature request'
+    return 'others'
+
+# Category weights
+category_weights = {
+    'downtime': 25,
+    'reliability': 20,
+    'performance': 15,
+    'bug': 10,
+    'feature request': 5,
+    'others': 0
+}
+
+# Plan weights
+plan_weights = {
+    'advanced': 15,
+    'base': 10,
+    'free': 0
+}
+
+# Calculate scores for each ticket
+def calculate_scores(tickets, project_data):
+    scores = []
+    
+    # Find max revenues for scaling
+    max_project_revenue = max(float(p.get('project_revenue', 0)) for p in project_data) if project_data else 0
+    max_user_revenue = max(float(p.get('total_user_revenue', 0)) for p in project_data) if project_data else 0
+    
+    # Get timestamp range for age calculation
+    timestamps = [datetime.fromisoformat(t['created_at'].replace('Z', '+00:00')) for t in tickets]
+    newest = max(timestamps)
+    oldest = min(timestamps)
+    time_range = (newest - oldest).total_seconds()
+    
+    for ticket in tickets:
+        score = {}
+        score['ticket_id'] = ticket['ticket_id']
+        
+        # Category score
+        category = classify_ticket(ticket['subject'], ticket['description'])
+        score['category_score'] = category_weights[category]
+        
+        # Find matching project data
+        project_id = None
+        for line in ticket['description'].split('\n'):
+            if 'Project ID:' in line:
+                project_id = line.split('Project ID:')[-1].strip()
+                break
+        
+        project = next((p for p in project_data if p['project_id'] == project_id), None)
+        
+        # Plan score
+        if project:
+            score['plan_score'] = plan_weights.get(project['plan_name'].lower(), 0)
+            
+            # Revenue scores
+            if max_project_revenue > 0:
+                score['project_revenue_score'] = (float(project['project_revenue']) / max_project_revenue) * 20
+            else:
+                score['project_revenue_score'] = 0
+                
+            if max_user_revenue > 0:
+                score['user_revenue_score'] = (float(project['total_user_revenue']) / max_user_revenue) * 20
+            else:
+                score['user_revenue_score'] = 0
+        else:
+            score['plan_score'] = 0
+            score['project_revenue_score'] = 0
+            score['user_revenue_score'] = 0
+        
+        # Age score
+        ticket_time = datetime.fromisoformat(ticket['created_at'].replace('Z', '+00:00'))
+        if time_range > 0:
+            age_factor = (ticket_time - oldest).total_seconds() / time_range
+            score['age_score'] = age_factor * 20
+        else:
+            score['age_score'] = 20
+            
+        # Calculate total score
+        score['total_score'] = (
+            score['category_score'] +
+            score['plan_score'] +
+            score['project_revenue_score'] +
+            score['user_revenue_score'] +
+            score['age_score']
+        )
+        
+        scores.append(score)
+    
+    # Sort by total score in descending order
+    scores.sort(key=lambda x: x['total_score'], reverse=True)
+    
+    # Format the output
+    output = {"prioritized_tickets": [{"ticket_id": s['ticket_id']} for s in scores]}
+    print(json.dumps(output, indent=2))</pre></div></div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">{
   "stdout": "",
   "stderr": "",
   "exitCode": 0
@@ -3759,19 +3991,600 @@ FROM ticket_details;</pre></div></div></pre></div><div class='message user'><str
     "user_email": "christie.owens@peterson.com",
     "user_total_revenue": "2700.00"
   }
-]</pre></div></div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="text-block">Now I'll analyze the tickets and calculate their priority scores based on the provided criteria. Here's the Python code to process the data and generate the prioritized list:</div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">{
+]</pre></div></div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="text-block">Now I'll analyze the tickets and calculate their priority scores based on the provided criteria. Here's the Python code to process the data and generate the prioritized list:</div>
+<div class="python-block"><button class="collapsible">Show Python Code +</button><div class="content"><pre>import json
+from datetime import datetime
+
+def categorize_ticket(subject, description):
+    subject_desc = (subject + " " + description).lower()
+    
+    # Downtime indicators
+    if any(term in subject_desc for term in ['down', 'outage', 'unable to access', '500 error', 'service disruption']):
+        return 'downtime'
+    
+    # Reliability indicators
+    elif any(term in subject_desc for term in ['intermittent', 'random failure', 'unstable', 'erratic']):
+        return 'reliability'
+    
+    # Performance indicators
+    elif any(term in subject_desc for term in ['performance', 'slow', 'degradation', 'latency']):
+        return 'performance'
+    
+    # Bug indicators
+    elif any(term in subject_desc for term in ['bug', 'incorrect', 'wrong result', 'not working as expected']):
+        return 'bug'
+    
+    # Feature request indicators
+    elif any(term in subject_desc for term in ['feature request', 'enhancement', 'support for']):
+        return 'feature_request'
+    
+    # Default category
+    return 'others'
+
+def calculate_category_score(category):
+    scores = {
+        'downtime': 25,
+        'reliability': 20,
+        'performance': 15,
+        'bug': 10,
+        'feature_request': 5,
+        'others': 0
+    }
+    return scores.get(category, 0)
+
+def calculate_plan_score(plan):
+    scores = {
+        'advanced': 15,
+        'base': 10,
+        'free': 0
+    }
+    return scores.get(plan, 0)
+
+def normalize_revenue_score(revenue, max_revenue):
+    if max_revenue == 0:
+        return 0
+    return (float(revenue) / float(max_revenue)) * 20
+
+def calculate_age_score(created_at, newest_date, oldest_date):
+    if newest_date == oldest_date:
+        return 20
+    
+    ticket_date = datetime.strptime(created_at, '%Y-%m-%d %H:%M:%S%z')
+    newest = datetime.strptime(newest_date, '%Y-%m-%d %H:%M:%S%z')
+    oldest = datetime.strptime(oldest_date, '%Y-%m-%d %H:%M:%S%z')
+    
+    total_time_span = (newest - oldest).total_seconds()
+    ticket_age = (newest - ticket_date).total_seconds()
+    
+    if total_time_span == 0:
+        return 20
+        
+    normalized_age = 1 - (ticket_age / total_time_span)
+    return normalized_age * 20
+
+# Process the tickets
+tickets = []
+max_project_revenue = max(float(p.get('project_revenue', 0)) for p in proj_data)
+max_user_revenue = max(float(p.get('user_total_revenue', 0)) for p in proj_data)
+
+# Find newest and oldest ticket dates
+dates = [t['created_at'] for t in ticket_data]
+newest_date = max(dates)
+oldest_date = min(dates)
+
+for ticket in ticket_data:
+    # Extract project_id from description
+    import re
+    project_id_match = re.search(r'Project ID: ([0-9a-f-]+)', ticket['description'])
+    if not project_id_match:
+        continue
+        
+    project_id = project_id_match.group(1)
+    
+    # Find project data
+    project = next((p for p in proj_data if p['project_id'] == project_id), None)
+    if not project:
+        continue
+    
+    category = categorize_ticket(ticket['subject'], ticket['description'])
+    
+    # Calculate scores
+    category_score = calculate_category_score(category)
+    plan_score = calculate_plan_score(project['plan_name'])
+    project_revenue_score = normalize_revenue_score(project['project_revenue'], max_project_revenue)
+    user_revenue_score = normalize_revenue_score(project['user_total_revenue'], max_user_revenue)
+    age_score = calculate_age_score(ticket['created_at'], newest_date, oldest_date)
+    
+    total_score = category_score + plan_score + project_revenue_score + user_revenue_score + age_score
+    
+    tickets.append({
+        'ticket_id': ticket['ticket_id'],
+        'score': total_score
+    })
+
+# Sort tickets by score in descending order
+sorted_tickets = sorted(tickets, key=lambda x: x['score'], reverse=True)
+
+# Format the output
+output = {
+    'tickets': sorted_tickets[:10]
+}
+
+result = []
+for ticket in sorted_tickets[:10]:
+    result.append({"ticket_id": ticket['ticket_id']})
+
+print("<prioritized_tickets>")
+print(json.dumps(result, indent=2))
+print("</prioritized_tickets>")</pre></div></div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">{
   "stdout": "",
   "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp2zf6xt7f.py\", line 73, in <module>\n    max_project_revenue = max(float(p.get('project_revenue', 0)) for p in proj_data)\n                                                                          ^^^^^^^^^\nNameError: name 'proj_data' is not defined\n",
   "exitCode": 1
-}</pre></div></div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">{
+}</pre></div></div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="python-block"><button class="collapsible">Show Python Code +</button><div class="content"><pre>import json
+from datetime import datetime
+
+def categorize_ticket(subject, description):
+    subject_desc = (subject + " " + description).lower()
+    
+    # Downtime indicators
+    if any(term in subject_desc for term in ['down', 'outage', 'unable to access', '500 error', 'service disruption']):
+        return 'downtime'
+    
+    # Reliability indicators
+    elif any(term in subject_desc for term in ['intermittent', 'random failure', 'unstable', 'erratic']):
+        return 'reliability'
+    
+    # Performance indicators
+    elif any(term in subject_desc for term in ['performance', 'slow', 'degradation', 'latency']):
+        return 'performance'
+    
+    # Bug indicators
+    elif any(term in subject_desc for term in ['bug', 'incorrect', 'wrong result', 'not working as expected']):
+        return 'bug'
+    
+    # Feature request indicators
+    elif any(term in subject_desc for term in ['feature request', 'enhancement', 'support for']):
+        return 'feature_request'
+    
+    # Default category
+    return 'others'
+
+def calculate_category_score(category):
+    scores = {
+        'downtime': 25,
+        'reliability': 20,
+        'performance': 15,
+        'bug': 10,
+        'feature_request': 5,
+        'others': 0
+    }
+    return scores.get(category, 0)
+
+def calculate_plan_score(plan):
+    scores = {
+        'advanced': 15,
+        'base': 10,
+        'free': 0
+    }
+    return scores.get(plan, 0)
+
+def normalize_revenue_score(revenue, max_revenue):
+    if max_revenue == 0:
+        return 0
+    return (float(revenue) / float(max_revenue)) * 20
+
+def calculate_age_score(created_at, newest_date, oldest_date):
+    if newest_date == oldest_date:
+        return 20
+    
+    ticket_date = datetime.strptime(created_at.split('+')[0], '%Y-%m-%d %H:%M:%S')
+    newest = datetime.strptime(newest_date.split('+')[0], '%Y-%m-%d %H:%M:%S')
+    oldest = datetime.strptime(oldest_date.split('+')[0], '%Y-%m-%d %H:%M:%S')
+    
+    total_time_span = (newest - oldest).total_seconds()
+    ticket_age = (newest - ticket_date).total_seconds()
+    
+    if total_time_span == 0:
+        return 20
+        
+    normalized_age = 1 - (ticket_age / total_time_span)
+    return normalized_age * 20
+
+def main(ticket_data, project_data):
+    # Process the tickets
+    tickets = []
+    max_project_revenue = max(float(p['project_revenue']) for p in project_data)
+    max_user_revenue = max(float(p['user_total_revenue']) for p in project_data)
+
+    # Find newest and oldest ticket dates
+    dates = [t['created_at'] for t in ticket_data]
+    newest_date = max(dates)
+    oldest_date = min(dates)
+
+    for ticket in ticket_data:
+        # Extract project_id from description
+        import re
+        project_id_match = re.search(r'Project ID: ([0-9a-f-]+)', ticket['description'])
+        if not project_id_match:
+            continue
+            
+        project_id = project_id_match.group(1)
+        
+        # Find project data
+        project = next((p for p in project_data if p['project_id'] == project_id), None)
+        if not project:
+            continue
+        
+        category = categorize_ticket(ticket['subject'], ticket['description'])
+        
+        # Calculate scores
+        category_score = calculate_category_score(category)
+        plan_score = calculate_plan_score(project['plan_name'])
+        project_revenue_score = normalize_revenue_score(project['project_revenue'], max_project_revenue)
+        user_revenue_score = normalize_revenue_score(project['user_total_revenue'], max_user_revenue)
+        age_score = calculate_age_score(ticket['created_at'], newest_date, oldest_date)
+        
+        total_score = category_score + plan_score + project_revenue_score + user_revenue_score + age_score
+        
+        tickets.append({
+            'ticket_id': ticket['ticket_id'],
+            'score': total_score
+        })
+
+    # Sort tickets by score in descending order
+    sorted_tickets = sorted(tickets, key=lambda x: x['score'], reverse=True)
+
+    # Format the output
+    result = []
+    for ticket in sorted_tickets[:10]:
+        result.append({"ticket_id": ticket['ticket_id']})
+
+    print("<prioritized_tickets>")
+    print(json.dumps(result, indent=2))
+    print("</prioritized_tickets>")
+
+# Parse input data
+import sys
+input_data = json.loads(sys.argv[1])
+ticket_data = input_data['ticket_data']
+project_data = input_data['proj_data']
+
+main(ticket_data, project_data)</pre></div></div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">{
   "stdout": "",
   "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp3lgs7247.py\", line 126, in <module>\n    input_data = json.loads(sys.argv[1])\n                            ~~~~~~~~^^^\nIndexError: list index out of range\n",
   "exitCode": 1
-}</pre></div></div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">{
+}</pre></div></div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="python-block"><button class="collapsible">Show Python Code +</button><div class="content"><pre>import json
+from datetime import datetime
+
+def categorize_ticket(subject, description):
+    subject_desc = (subject + " " + description).lower()
+    
+    # Downtime indicators
+    if any(term in subject_desc for term in ['down', 'outage', 'unable to access', '500 error', 'service disruption']):
+        return 'downtime'
+    
+    # Reliability indicators
+    elif any(term in subject_desc for term in ['intermittent', 'random failure', 'unstable', 'erratic']):
+        return 'reliability'
+    
+    # Performance indicators
+    elif any(term in subject_desc for term in ['performance', 'slow', 'degradation', 'latency']):
+        return 'performance'
+    
+    # Bug indicators
+    elif any(term in subject_desc for term in ['bug', 'incorrect', 'wrong result', 'not working as expected']):
+        return 'bug'
+    
+    # Feature request indicators
+    elif any(term in subject_desc for term in ['feature request', 'enhancement', 'support for']):
+        return 'feature_request'
+    
+    # Default category
+    return 'others'
+
+def calculate_category_score(category):
+    scores = {
+        'downtime': 25,
+        'reliability': 20,
+        'performance': 15,
+        'bug': 10,
+        'feature_request': 5,
+        'others': 0
+    }
+    return scores.get(category, 0)
+
+def calculate_plan_score(plan):
+    scores = {
+        'advanced': 15,
+        'base': 10,
+        'free': 0
+    }
+    return scores.get(plan, 0)
+
+def normalize_revenue_score(revenue, max_revenue):
+    if max_revenue == 0:
+        return 0
+    return (float(revenue) / float(max_revenue)) * 20
+
+def calculate_age_score(created_at, newest_date, oldest_date):
+    if newest_date == oldest_date:
+        return 20
+    
+    ticket_date = datetime.strptime(created_at.split('+')[0], '%Y-%m-%d %H:%M:%S')
+    newest = datetime.strptime(newest_date.split('+')[0], '%Y-%m-%d %H:%M:%S')
+    oldest = datetime.strptime(oldest_date.split('+')[0], '%Y-%m-%d %H:%M:%S')
+    
+    total_time_span = (newest - oldest).total_seconds()
+    ticket_age = (newest - ticket_date).total_seconds()
+    
+    if total_time_span == 0:
+        return 20
+        
+    normalized_age = 1 - (ticket_age / total_time_span)
+    return normalized_age * 20
+
+# Sample data
+ticket_data = [
+    {
+        "ticket_id": 143,
+        "subject": "URGENT: Cannot Access Project",
+        "description": "I am unable to access my project on Hasura Cloud. When I try to open the project dashboard, it fails to load and shows an error message. This is critically impacting our production environment and needs immediate attention.\n\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\n",
+        "created_at": "2025-01-03 20:32:35.345840+00:00"
+    },
+    {
+        "ticket_id": 166,
+        "subject": "Feature Request: Support for Custom GraphQL Directives",
+        "description": "Hello,\n\nWe are using your platform with a PostgreSQL database and would like to request support for custom GraphQL directives in queries and mutations.\n\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\n",
+        "created_at": "2024-12-21 14:32:35.345840+00:00"
+    },
+    {
+        "ticket_id": 287,
+        "subject": "Urgent: Cannot Access Project",
+        "description": "Hi Support Team,\n\nWe are currently unable to access our project.\n\nProject ID: 570737f1-ada3-413b-bec5-e82b6c324fb3\n",
+        "created_at": "2024-12-12 07:00:00+00:00"
+    },
+    {
+        "ticket_id": 288,
+        "subject": "GraphQL not functioning as expected in production",
+        "description": "Hi team,\n\nWe're experiencing erratic errors with our GraphQL API.\n\nProject ID: 936120f2-5ed2-4bcb-af57-e9b3eeacee81\n",
+        "created_at": "2024-12-06 08:00:00+00:00"
+    },
+    {
+        "ticket_id": 209,
+        "subject": "Urgent: Production Environment Down",
+        "description": "Hello,\n\nWe are experiencing a complete outage.\n\nProject ID: 76de9616-3d7b-49d7-b909-e154dda91489\n",
+        "created_at": "2024-12-05 07:00:00+00:00"
+    },
+    {
+        "ticket_id": 289,
+        "subject": "Performance degradation in Schema Registry operations",
+        "description": "Performance issues.\n\nProject ID: 3039d26f-0ab2-4501-8e64-07b16526115a\n",
+        "created_at": "2024-12-01 03:00:00+00:00"
+    },
+    {
+        "ticket_id": 169,
+        "subject": "Schema Registry causing high resource usage",
+        "description": "Performance issues.\n\nProject ID: 386d8856-9020-47eb-a21a-2ebe6b81428e\n",
+        "created_at": "2024-11-12 05:00:00+00:00"
+    },
+    {
+        "ticket_id": 286,
+        "subject": "URGENT: Service is down",
+        "description": "Service down.\n\nProject ID: 386d8856-9020-47eb-a21a-2ebe6b81428e\n",
+        "created_at": "2024-11-10 03:00:00+00:00"
+    },
+    {
+        "ticket_id": 251,
+        "subject": "Performance degradation",
+        "description": "Performance issues.\n\nProject ID: d5dc02fc-707a-4084-854a-79f5866d4dd3\n",
+        "created_at": "2024-10-25 04:00:00+00:00"
+    },
+    {
+        "ticket_id": 139,
+        "subject": "Cannot access my project",
+        "description": "Access issues.\n\nProject ID: 5ad39764-9b9b-48cb-8819-43ab40694b06\n",
+        "created_at": "2024-10-18 03:00:00+00:00"
+    }
+]
+
+project_data = [
+    {"project_id": "2a8d4b07-c391-450f-8153-f6521f8a20a0", "plan_name": "base", "project_revenue": "0", "user_total_revenue": "45486.00"},
+    {"project_id": "570737f1-ada3-413b-bec5-e82b6c324fb3", "plan_name": "advanced", "project_revenue": "4617.00", "user_total_revenue": "8617.00"},
+    {"project_id": "936120f2-5ed2-4bcb-af57-e9b3eeacee81", "plan_name": "free", "project_revenue": "0", "user_total_revenue": "15050.00"},
+    {"project_id": "76de9616-3d7b-49d7-b909-e154dda91489", "plan_name": "free", "project_revenue": "0", "user_total_revenue": "0"},
+    {"project_id": "3039d26f-0ab2-4501-8e64-07b16526115a", "plan_name": "free", "project_revenue": "0", "user_total_revenue": "0"},
+    {"project_id": "386d8856-9020-47eb-a21a-2ebe6b81428e", "plan_name": "advanced", "project_revenue": "7980.00", "user_total_revenue": "7980.00"},
+    {"project_id": "d5dc02fc-707a-4084-854a-79f5866d4dd3", "plan_name": "base", "project_revenue": "840.00", "user_total_revenue": "6300.00"},
+    {"project_id": "5ad39764-9b9b-48cb-8819-43ab40694b06", "plan_name": "base", "project_revenue": "4560.00", "user_total_revenue": "4560.00"}
+]
+
+# Process the tickets
+tickets = []
+max_project_revenue = max(float(p['project_revenue']) for p in project_data)
+max_user_revenue = max(float(p['user_total_revenue']) for p in project_data)
+
+# Find newest and oldest ticket dates
+dates = [t['created_at'] for t in ticket_data]
+newest_date = max(dates)
+oldest_date = min(dates)
+
+for ticket in ticket_data:
+    # Extract project_id from description
+    import re
+    project_id_match = re.search(r'Project ID: ([0-9a-f-]+)', ticket['description'])
+    if not project_id_match:
+        continue
+        
+    project_id = project_id_match.group(1)
+    
+    # Find project data
+    project = next((p for p in project_data if p['project_id'] == project_id), None)
+    if not project:
+        continue
+    
+    category = categorize_ticket(ticket['subject'], ticket['description'])
+    
+    # Calculate scores
+    category_score = calculate_category_score(category)
+    plan_score = calculate_plan_score(project['plan_name'])
+    project_revenue_score = normalize_revenue_score(project['project_revenue'], max_project_revenue)
+    user_revenue_score = normalize_revenue_score(project['user_total_revenue'], max_user_revenue)
+    age_score = calculate_age_score(ticket['created_at'], newest_date, oldest_date)
+    
+    total_score = category_score + plan_score + project_revenue_score + user_revenue_score + age_score
+    
+    tickets.append({
+        'ticket_id': ticket['ticket_id'],
+        'score': total_score
+    })
+
+# Sort tickets by score in descending order
+sorted_tickets = sorted(tickets, key=lambda x: x['score'], reverse=True)
+
+# Format the output
+result = []
+for ticket in sorted_tickets[:10]:
+    result.append({"ticket_id": ticket['ticket_id']})
+
+print("<prioritized_tickets>")
+print(json.dumps(result, indent=2))
+print("</prioritized_tickets>")</pre></div></div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">{
   "stdout": "",
   "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpomv5ozsl.py\", line 177, in <module>\n    age_score = calculate_age_score(ticket['created_at'], newest_date, oldest_date)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/tmpomv5ozsl.py\", line 58, in calculate_age_score\n    ticket_date = datetime.strptime(created_at.split('+')[0], '%Y-%m-%d %H:%M:%S')\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/_strptime.py\", line 554, in _strptime_datetime\n    tt, fraction, gmtoff_fraction = _strptime(data_string, format)\n                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/_strptime.py\", line 336, in _strptime\n    raise ValueError(\"unconverted data remains: %s\" %\nValueError: unconverted data remains: .345840\n",
   "exitCode": 1
-}</pre></div></div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">{
+}</pre></div></div></pre></div><div class='message assistant'><strong>Assistant:</strong><pre><div class="python-block"><button class="collapsible">Show Python Code +</button><div class="content"><pre>import json
+from datetime import datetime
+
+def categorize_ticket(subject, description):
+    subject_desc = (subject + " " + description).lower()
+    if any(term in subject_desc for term in ['down', 'outage', 'unable to access', '500 error', 'service disruption']):
+        return 'downtime'
+    elif any(term in subject_desc for term in ['intermittent', 'random failure', 'unstable', 'erratic']):
+        return 'reliability'
+    elif any(term in subject_desc for term in ['performance', 'slow', 'degradation', 'latency']):
+        return 'performance'
+    elif any(term in subject_desc for term in ['bug', 'incorrect', 'wrong result', 'not working as expected']):
+        return 'bug'
+    elif any(term in subject_desc for term in ['feature request', 'enhancement', 'support for']):
+        return 'feature_request'
+    return 'others'
+
+def calculate_category_score(category):
+    scores = {
+        'downtime': 25,
+        'reliability': 20,
+        'performance': 15,
+        'bug': 10,
+        'feature_request': 5,
+        'others': 0
+    }
+    return scores.get(category, 0)
+
+def calculate_plan_score(plan):
+    scores = {
+        'advanced': 15,
+        'base': 10,
+        'free': 0
+    }
+    return scores.get(plan, 0)
+
+def normalize_revenue_score(revenue, max_revenue):
+    if max_revenue == 0:
+        return 0
+    return (float(revenue) / float(max_revenue)) * 20
+
+def calculate_age_score(created_at, newest_date, oldest_date):
+    try:
+        ticket_date = datetime.strptime(created_at[:19], '%Y-%m-%d %H:%M:%S')
+        newest = datetime.strptime(newest_date[:19], '%Y-%m-%d %H:%M:%S')
+        oldest = datetime.strptime(oldest_date[:19], '%Y-%m-%d %H:%M:%S')
+        
+        total_time_span = (newest - oldest).total_seconds()
+        if total_time_span == 0:
+            return 20
+            
+        ticket_age = (newest - ticket_date).total_seconds()
+        normalized_age = 1 - (ticket_age / total_time_span)
+        return normalized_age * 20
+    except:
+        return 10
+
+# Sample data hardcoded from the previous responses
+ticket_data = [
+    {"ticket_id": 143, "subject": "URGENT: Cannot Access Project", "description": "Project ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0", "created_at": "2025-01-03 20:32:35"},
+    {"ticket_id": 166, "subject": "Feature Request: Support for Custom GraphQL Directives", "description": "Project ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0", "created_at": "2024-12-21 14:32:35"},
+    {"ticket_id": 287, "subject": "Urgent: Cannot Access Project", "description": "Project ID: 570737f1-ada3-413b-bec5-e82b6c324fb3", "created_at": "2024-12-12 07:00:00"},
+    {"ticket_id": 288, "subject": "GraphQL not functioning as expected in production", "description": "Project ID: 936120f2-5ed2-4bcb-af57-e9b3eeacee81", "created_at": "2024-12-06 08:00:00"},
+    {"ticket_id": 209, "subject": "Urgent: Production Environment Down", "description": "Project ID: 76de9616-3d7b-49d7-b909-e154dda91489", "created_at": "2024-12-05 07:00:00"},
+    {"ticket_id": 289, "subject": "Performance degradation in Schema Registry operations", "description": "Project ID: 3039d26f-0ab2-4501-8e64-07b16526115a", "created_at": "2024-12-01 03:00:00"},
+    {"ticket_id": 169, "subject": "Schema Registry causing high resource usage", "description": "Project ID: 386d8856-9020-47eb-a21a-2ebe6b81428e", "created_at": "2024-11-12 05:00:00"},
+    {"ticket_id": 286, "subject": "URGENT: Service is down", "description": "Project ID: 386d8856-9020-47eb-a21a-2ebe6b81428e", "created_at": "2024-11-10 03:00:00"},
+    {"ticket_id": 251, "subject": "Performance degradation", "description": "Project ID: d5dc02fc-707a-4084-854a-79f5866d4dd3", "created_at": "2024-10-25 04:00:00"},
+    {"ticket_id": 139, "subject": "Cannot access my project", "description": "Project ID: 5ad39764-9b9b-48cb-8819-43ab40694b06", "created_at": "2024-10-18 03:00:00"}
+]
+
+project_data = [
+    {"project_id": "2a8d4b07-c391-450f-8153-f6521f8a20a0", "plan_name": "base", "project_revenue": "0", "user_total_revenue": "45486.00"},
+    {"project_id": "570737f1-ada3-413b-bec5-e82b6c324fb3", "plan_name": "advanced", "project_revenue": "4617.00", "user_total_revenue": "8617.00"},
+    {"project_id": "936120f2-5ed2-4bcb-af57-e9b3eeacee81", "plan_name": "free", "project_revenue": "0", "user_total_revenue": "15050.00"},
+    {"project_id": "76de9616-3d7b-49d7-b909-e154dda91489", "plan_name": "free", "project_revenue": "0", "user_total_revenue": "0"},
+    {"project_id": "3039d26f-0ab2-4501-8e64-07b16526115a", "plan_name": "free", "project_revenue": "0", "user_total_revenue": "0"},
+    {"project_id": "386d8856-9020-47eb-a21a-2ebe6b81428e", "plan_name": "advanced", "project_revenue": "7980.00", "user_total_revenue": "7980.00"},
+    {"project_id": "d5dc02fc-707a-4084-854a-79f5866d4dd3", "plan_name": "base", "project_revenue": "840.00", "user_total_revenue": "6300.00"},
+    {"project_id": "5ad39764-9b9b-48cb-8819-43ab40694b06", "plan_name": "base", "project_revenue": "4560.00", "user_total_revenue": "4560.00"}
+]
+
+# Process the tickets
+tickets = []
+max_project_revenue = max(float(p['project_revenue']) for p in project_data)
+max_user_revenue = max(float(p['user_total_revenue']) for p in project_data)
+
+# Find newest and oldest ticket dates
+dates = [t['created_at'] for t in ticket_data]
+newest_date = max(dates)
+oldest_date = min(dates)
+
+for ticket in ticket_data:
+    # Extract project_id from description
+    import re
+    project_id_match = re.search(r'Project ID: ([0-9a-f-]+)', ticket['description'])
+    if not project_id_match:
+        continue
+        
+    project_id = project_id_match.group(1)
+    
+    # Find project data
+    project = next((p for p in project_data if p['project_id'] == project_id), None)
+    if not project:
+        continue
+    
+    category = categorize_ticket(ticket['subject'], ticket['description'])
+    
+    # Calculate scores
+    category_score = calculate_category_score(category)
+    plan_score = calculate_plan_score(project['plan_name'])
+    project_revenue_score = normalize_revenue_score(project['project_revenue'], max_project_revenue)
+    user_revenue_score = normalize_revenue_score(project['user_total_revenue'], max_user_revenue)
+    age_score = calculate_age_score(ticket['created_at'], newest_date, oldest_date)
+    
+    total_score = category_score + plan_score + project_revenue_score + user_revenue_score + age_score
+    
+    tickets.append({
+        'ticket_id': ticket['ticket_id'],
+        'score': total_score
+    })
+
+# Sort tickets by score in descending order
+sorted_tickets = sorted(tickets, key=lambda x: x['score'], reverse=True)
+
+# Format the output
+result = []
+for ticket in sorted_tickets[:10]:
+    result.append({"ticket_id": ticket['ticket_id']})
+
+print("<prioritized_tickets>")
+print(json.dumps(result, indent=2))
+print("</prioritized_tickets>")</pre></div></div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">{
   "stdout": "<prioritized_tickets>\n[\n  {\n    \"ticket_id\": 286\n  },\n  {\n    \"ticket_id\": 166\n  },\n  {\n    \"ticket_id\": 143\n  },\n  {\n    \"ticket_id\": 169\n  },\n  {\n    \"ticket_id\": 287\n  },\n  {\n    \"ticket_id\": 209\n  },\n  {\n    \"ticket_id\": 251\n  },\n  {\n    \"ticket_id\": 289\n  },\n  {\n    \"ticket_id\": 139\n  },\n  {\n    \"ticket_id\": 288\n  }\n]\n</prioritized_tickets>\n",
   "stderr": "",
   "exitCode": 0
@@ -4774,7 +5587,147 @@ WHERE p.id IN (
 - Newest: 2025-01-03
 - Oldest: 2024-10-18
 
-Let me calculate the final scores and sort them:</div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">{
+Let me calculate the final scores and sort them:</div>
+<div class="python-block"><button class="collapsible">Show Python Code +</button><div class="content"><pre>import json
+from datetime import datetime
+
+tickets = [
+    {
+        "ticket_id": 143,
+        "category_score": 25,  # Downtime
+        "project_id": "2a8d4b07-c391-450f-8153-f6521f8a20a0",
+        "created_at": "2025-01-03T20:32:35.345840+00:00",
+        "plan_name": "base",
+        "project_revenue": 0,
+        "user_revenue": 45486.00
+    },
+    {
+        "ticket_id": 166,
+        "category_score": 5,  # Feature Request
+        "project_id": "2a8d4b07-c391-450f-8153-f6521f8a20a0",
+        "created_at": "2024-12-21T14:32:35.345840+00:00",
+        "plan_name": "base",
+        "project_revenue": 0,
+        "user_revenue": 45486.00
+    },
+    {
+        "ticket_id": 287,
+        "category_score": 25,  # Downtime
+        "project_id": "570737f1-ada3-413b-bec5-e82b6c324fb3",
+        "created_at": "2024-12-12T07:00:00+00:00",
+        "plan_name": "advanced",
+        "project_revenue": 4617.00,
+        "user_revenue": 8617.00
+    },
+    {
+        "ticket_id": 288,
+        "category_score": 20,  # Reliability
+        "project_id": "936120f2-5ed2-4bcb-af57-e9b3eeacee81",
+        "created_at": "2024-12-06T08:00:00+00:00",
+        "plan_name": "free",
+        "project_revenue": 0,
+        "user_revenue": 15050.00
+    },
+    {
+        "ticket_id": 209,
+        "category_score": 25,  # Downtime
+        "project_id": "76de9616-3d7b-49d7-b909-e154dda91489",
+        "created_at": "2024-12-05T07:00:00+00:00",
+        "plan_name": "free",
+        "project_revenue": 0,
+        "user_revenue": 0
+    },
+    {
+        "ticket_id": 289,
+        "category_score": 15,  # Performance
+        "project_id": "3039d26f-0ab2-4501-8e64-07b16526115a",
+        "created_at": "2024-12-01T03:00:00+00:00",
+        "plan_name": "free",
+        "project_revenue": 0,
+        "user_revenue": 0
+    },
+    {
+        "ticket_id": 169,
+        "category_score": 15,  # Performance
+        "project_id": "386d8856-9020-47eb-a21a-2ebe6b81428e",
+        "created_at": "2024-11-12T05:00:00+00:00",
+        "plan_name": "advanced",
+        "project_revenue": 7980.00,
+        "user_revenue": 7980.00
+    },
+    {
+        "ticket_id": 286,
+        "category_score": 25,  # Downtime
+        "project_id": "386d8856-9020-47eb-a21a-2ebe6b81428e",
+        "created_at": "2024-11-10T03:00:00+00:00",
+        "plan_name": "advanced",
+        "project_revenue": 7980.00,
+        "user_revenue": 7980.00
+    },
+    {
+        "ticket_id": 251,
+        "category_score": 15,  # Performance
+        "project_id": "d5dc02fc-707a-4084-854a-79f5866d4dd3",
+        "created_at": "2024-10-25T04:00:00+00:00",
+        "plan_name": "base",
+        "project_revenue": 840.00,
+        "user_revenue": 6300.00
+    },
+    {
+        "ticket_id": 139,
+        "category_score": 25,  # Downtime
+        "project_id": "5ad39764-9b9b-48cb-8819-43ab40694b06",
+        "created_at": "2024-10-18T03:00:00+00:00",
+        "plan_name": "base",
+        "project_revenue": 4560.00,
+        "user_revenue": 4560.00
+    }
+]
+
+# Calculate scores
+newest_date = datetime.fromisoformat("2025-01-03T20:32:35.345840+00:00")
+oldest_date = datetime.fromisoformat("2024-10-18T03:00:00+00:00")
+date_range = (newest_date - oldest_date).total_seconds()
+
+max_project_revenue = 7980.00
+max_user_revenue = 45486.00
+
+for ticket in tickets:
+    # Plan score
+    plan_score = {
+        "advanced": 15,
+        "base": 10,
+        "free": 0
+    }.get(ticket["plan_name"], 0)
+    
+    # Revenue scores
+    project_revenue_score = (ticket["project_revenue"] / max_project_revenue * 20) if max_project_revenue > 0 else 0
+    user_revenue_score = (ticket["user_revenue"] / max_user_revenue * 20) if max_user_revenue > 0 else 0
+    
+    # Age score
+    ticket_age = (newest_date - datetime.fromisoformat(ticket["created_at"])).total_seconds()
+    age_score = 20 * (1 - ticket_age / date_range)
+    
+    # Total score
+    ticket["total_score"] = (
+        ticket["category_score"] +  # Category weight (0-25)
+        plan_score +                # Plan weight (0-15)
+        project_revenue_score +     # Project revenue (0-20)
+        user_revenue_score +        # User revenue (0-20)
+        age_score                   # Age score (0-20)
+    )
+
+# Sort tickets by total score
+sorted_tickets = sorted(tickets, key=lambda x: x["total_score"], reverse=True)
+
+# Create final output
+output = {
+    "prioritized_tickets": [{"ticket_id": ticket["ticket_id"]} for ticket in sorted_tickets]
+}
+
+print("<prioritized_tickets>")
+print(json.dumps(output["prioritized_tickets"], indent=2))
+print("</prioritized_tickets>")</pre></div></div></pre></div><div class='message user'><strong>User:</strong><pre><div class="tool-result"><button class="collapsible">Show Tool Result +</button><div class="content"><pre class="json">{
   "stdout": "<prioritized_tickets>\n[\n  {\n    \"ticket_id\": 143\n  },\n  {\n    \"ticket_id\": 287\n  },\n  {\n    \"ticket_id\": 286\n  },\n  {\n    \"ticket_id\": 169\n  },\n  {\n    \"ticket_id\": 166\n  },\n  {\n    \"ticket_id\": 139\n  },\n  {\n    \"ticket_id\": 288\n  },\n  {\n    \"ticket_id\": 209\n  },\n  {\n    \"ticket_id\": 251\n  },\n  {\n    \"ticket_id\": 289\n  }\n]\n</prioritized_tickets>\n",
   "stderr": "",
   "exitCode": 0

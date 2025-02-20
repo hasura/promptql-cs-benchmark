@@ -97,8 +97,7 @@ def extract_messages(history_data: List) -> List[Dict]:
                                         f'</div>'
                                     )
                                 # Extract Python code
-                                # TODO: fix
-                                python_match = re.search(r"'pythonCode': \"(.*?)(?<!\\)\"", item, re.DOTALL)
+                                python_match = re.search(r"'pythonCode': '(.*?)(?<!\\)'", item, re.DOTALL)
                                 if python_match:
                                     python_content = python_match.group(1).encode('utf-8').decode('unicode_escape')
                                     formatted_content.append(
