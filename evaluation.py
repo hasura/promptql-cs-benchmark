@@ -31,15 +31,13 @@ class EvaluationResult:
     variation: str
     run: int
     score: float
-    with_python: bool
-    with_initial_artifacts: bool
+    oracle: bool
 
 
 class PathInfo(NamedTuple):
     system: str
     model: str
-    with_python: bool
-    with_initial_artifacts: bool
+    oracle: bool
     variation: str
     run: int
 
@@ -61,7 +59,7 @@ def find_result_files(base_dir: Path) -> List[Path]:
 def parse_output_path(file_path: Path) -> PathInfo:
     """
     Parse output path to extract metadata.
-    Expected format: {output_dir}/{system}/{model}/[with_python/|with_initial_artifacts/]{variation_name}_run_{run_index}.result
+    Expected format: {output_dir}/{model}/{system}/{retrieval|oracle}/{variation_name}_run_{run_index}.result
     """
     parts = list(file_path.parts)
 
@@ -70,32 +68,14 @@ def parse_output_path(file_path: Path) -> PathInfo:
     variation_name, run_part = filename.replace(".result", "").rsplit("_run_", 1)
     run_index = int(run_part)
 
-    # Check for special directories
-    with_python = False
-    with_initial_artifacts = False
-
-    # Find the model and system indices by working backwards
-    model_idx = -3  # Default position if no special directories
-    system_idx = -4  # Default position if no special directories
-
-    # Check for special directories and adjust indices
-    if "with_python" in parts:
-        with_python = True
-        model_idx -= 1
-        system_idx -= 1
-    elif "with_initial_artifacts" in parts:
-        with_initial_artifacts = True
-        model_idx -= 1
-        system_idx -= 1
-
-    model = parts[model_idx]
-    system = parts[system_idx]
+    oracle = parts[-2] == "oracle"
+    system = parts[-3]
+    model = parts[-4]
 
     return PathInfo(
         system=system,
         model=model,
-        with_python=with_python,
-        with_initial_artifacts=with_initial_artifacts,
+        oracle=oracle,
         variation=variation_name,
         run=run_index,
     )
@@ -149,8 +129,7 @@ def evaluate_directory(
                 variation=path_info.variation,
                 run=path_info.run,
                 score=score,
-                with_python=path_info.with_python,
-                with_initial_artifacts=path_info.with_initial_artifacts,
+                oracle=path_info.oracle,
             )
             results.append(result)
 
@@ -165,7 +144,7 @@ def save_results(results: List[EvaluationResult], output_path: Path):
     import csv
 
     # Define the fieldnames based on the dataclass fields
-    fieldnames = ["system", "model", "variation", "run", "score", "with_python"]
+    fieldnames = ["model", "system", "oracle", "variation", "run", "score"]
 
     with open(output_path, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
@@ -175,12 +154,12 @@ def save_results(results: List[EvaluationResult], output_path: Path):
         for r in results:
             writer.writerow(
                 {
-                    "system": r.system,
                     "model": r.model,
+                    "system": r.system,
+                    "oracle": r.oracle,
                     "variation": r.variation,
                     "run": r.run,
                     "score": r.score,
-                    "with_python": r.with_python,
                 }
             )
 

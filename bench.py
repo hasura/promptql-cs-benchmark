@@ -13,6 +13,7 @@ from promptql_eval import AIAssistant as PromptQLAssistant
 from o1_oracle_eval import AIAssistant as OpenAIOracleAssistant
 from claude35_oracle_eval import AIAssistant as ClaudeOracleAssistant
 import traceback
+from ai_assistant import AIAssistantResponse, AIAssistantBase, ToolCallingAIAssistant
 
 
 class System(str, Enum):
@@ -85,7 +86,7 @@ def read_input(filepath: str) -> InputConfig:
 class QueryProcessor:
     def __init__(
         self,
-        ai_assistant,
+        ai_assistant: AIAssistantBase,
         input_config: InputConfig,
         output_dir: str,
         repeat: int,
@@ -101,7 +102,7 @@ class QueryProcessor:
         self,
         variation_name: str,
         run_index: int,
-        response: str,
+        response: AIAssistantResponse,
         elapsed_time: timedelta,
     ):
         """Save query results to output directory"""
@@ -111,15 +112,15 @@ class QueryProcessor:
 
         # Save main output
         with open(f"{base_filename}.result", "w") as f:
-            f.write(response)
+            f.write(self.process_response(response))
 
         # Save conversation history
         with open(f"{base_filename}.history", "w") as f:
-            json.dump(self.assistant.messages, f, indent=2, default=str)
+            json.dump(response.history, f, indent=2, default=str)
 
         # Save actual API responses
         with open(f"{base_filename}.api", "w") as f:
-            json.dump(self.assistant.api_responses, f, indent=2, default=str)
+            json.dump(response.api_responses, f, indent=2, default=str)
 
         with open(f"{base_filename}.time", "w") as f:
             f.write(f"{elapsed_time}")
@@ -129,15 +130,7 @@ class QueryProcessor:
         output_file = Path(self.output_dir) / f"{variation_name}_run_{run_index}.result"
         return output_file.exists()
 
-    async def process_query(self, query: str, artifacts: list) -> str:
-        """Process a single query with given parameters"""
-        self.assistant.clear_history()
-        # query = query_template.format(k=run_info['topk'], n=run_info['lastn'])
-        response = await self.assistant.process_query(query)
-
-        return self.process_response(response)
-
-    def process_response(self, response: str) -> str:
+    def process_response(self, response: AIAssistantResponse) -> str:
         processed_response = ""
 
         if isinstance(self.assistant, PromptQLAssistant):
@@ -150,11 +143,40 @@ class QueryProcessor:
                 indent=2,
             )
         else:
+            assert isinstance(self.assistant, ToolCallingAIAssistant)
             processed_response = self.assistant.process_response(
                 response, self.input_config.tool_calling.result_tag_name
             )
 
         return processed_response
+
+    async def run_impl(
+        self,
+        input_filepath: str,
+        query: str,
+        variation: InputVariations,
+        run_index: int,
+        wait: int,
+    ):
+        await asyncio.sleep(wait)
+
+        # Process query and measure time
+        start_time = datetime.now()
+        artifacts = []
+
+        if self.oracle:
+            for relative_file_path in variation.oracle_data_file_paths:
+                absolute_file_path = resolve_relative_path(
+                    file_path=relative_file_path,
+                    config_filepath=input_filepath,
+                )
+                artifacts.append(json.loads(read_file_content(absolute_file_path)))
+
+        response = await self.assistant.process_query(query=query, artifacts=artifacts)
+        elapsed_time = datetime.now() - start_time
+
+        print(f"TOTAL PROCESSING TIME: {elapsed_time} seconds")
+        self.save_results(variation.name, run_index, response, elapsed_time)
 
     async def run(self, input_filepath: str):
         """Main processing loop"""
@@ -174,6 +196,7 @@ class QueryProcessor:
             # Handle variations or default case
             variations = self.input_config.variations
 
+            tasks = []
             for variation in variations:
                 # Format query with parameters (empty dict for default case)
                 query = query_template.format(**variation.parameters)
@@ -181,40 +204,27 @@ class QueryProcessor:
                 for run_index in range(1, self.repeat + 1):
                     # Log processing status
                     param_info = (
-                        f" with params: {variation.parameters}"
-                        if variation.parameters
-                        else ""
+                        f" with params: {variation.parameters}" if variation.parameters else ""
                     )
                     print(f"Processing {input_filepath} run {run_index}{param_info}")
 
                     # Skip if output exists
                     if self.should_skip(variation.name, run_index):
-                        print(
-                            f"Skipping existing output for run {run_index}{param_info}"
-                        )
+                        print(f"Skipping existing output for run {run_index}{param_info}")
                         continue
 
-                    # Process query and measure time
-                    start_time = datetime.now()
-                    artifacts = []
-
-                    if self.oracle:
-                        for relative_file_path in variation.oracle_data_file_paths:
-                            absolute_file_path = resolve_relative_path(
-                                file_path=relative_file_path,
-                                config_filepath=input_filepath,
-                            )
-                            artifacts.append(
-                                json.loads(read_file_content(absolute_file_path))
-                            )
-
-                    response = await self.process_query(
-                        query=query, artifacts=artifacts
+                    tasks.append(
+                        self.run_impl(
+                            input_filepath=input_filepath,
+                            query=query,
+                            variation=variation,
+                            run_index=run_index,
+                            wait=len(tasks)
+                            * 30,  # Wait 30 seconds per task to avoid overload
+                        )
                     )
-                    elapsed_time = datetime.now() - start_time
 
-                    print(f"TOTAL PROCESSING TIME: {elapsed_time} seconds")
-                    self.save_results(variation.name, run_index, response, elapsed_time)
+            await asyncio.gather(*tasks)
 
         except Exception as e:
             print(traceback.format_exc())
@@ -230,7 +240,7 @@ async def run(
     repeat: int,
 ):
     input_config = read_input(input_filepath)
-    output_dir = f"{output_dir}/{model}/{system}"
+    output_dir = f"{output_dir}/{model.value}/{system.value}"
     if oracle:
         output_dir += "/oracle"
     else:
@@ -239,7 +249,7 @@ async def run(
         match model:
             case Model.O1 | Model.O3_MINI:
                 promptql_llm_provider = "openai"
-                promptql_llm_model = str(model)
+                promptql_llm_model = model.value
             case Model.CLAUDE:
                 promptql_llm_provider = "anthropic"
                 promptql_llm_model = None
@@ -251,7 +261,7 @@ async def run(
         match model:
             case Model.O1 | Model.O3_MINI:
                 assistant = (OpenAIOracleAssistant if oracle else OpenAIAssistant)(
-                    str(model), has_python_tool=has_python_tool
+                    model.value, has_python_tool=has_python_tool
                 )
             case Model.CLAUDE:
                 assistant = (ClaudeOracleAssistant if oracle else ClaudeAssistant)(
