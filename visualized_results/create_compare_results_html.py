@@ -535,7 +535,8 @@ def generate_html_content(data: Dict, model: str) -> str:
                                             html += f'<button class="collapsible">Show {current_section.strip(":")} +</button>'
                                             html += f'<div class="content"><pre>{"".join(current_content)}</pre></div>'
                                         else:
-                                            html += f'<div class="section-title">{current_section}</div>'
+                                            if current_section != "Message:":  # Don't show Message: title
+                                                html += f'<div class="section-title">{current_section}</div>'
                                             html += f'<pre>{"".join(current_content)}</pre>'
 
                                     current_section = line.strip()
@@ -550,7 +551,8 @@ def generate_html_content(data: Dict, model: str) -> str:
                                     html += f'<button class="collapsible">Show {current_section.strip(":")} +</button>'
                                     html += f'<div class="content"><pre>{"".join(current_content)}</pre></div>'
                                 else:
-                                    html += f'<div class="section-title">{current_section}</div>'
+                                    if current_section != "Message:":  # Don't show Message: title
+                                        html += f'<div class="section-title">{current_section}</div>'
                                     html += f'<pre>{"".join(current_content)}</pre>'
                         else:
                             html += f'<pre>{message["content"]}</pre>'

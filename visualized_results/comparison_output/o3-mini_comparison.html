@@ -227,7 +227,7 @@
     <div class="title-container">
         <h1>With O3-MINI</h1>
         <a href="index.html" class="back-link">&larr;Back</a>
-    </div><div class='timestamp'>Generated on: 2025-02-21 14:52:58</div><div class='tabs'><button class='tab-button' data-run='1'>Run 1</button><button class='tab-button' data-run='2'>Run 2</button><button class='tab-button' data-run='3'>Run 3</button></div><div id='run-1' class='tab-content'><div class='container'><div class='system-column'><div class='sticky-header'><h3 class='system-title'>promptql</h3><span class='execution-time'>(Execution time: 2m 10s)</span></div><div class='system'><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
+    </div><div class='timestamp'>Generated on: 2025-02-21 14:59:18</div><div class='tabs'><button class='tab-button' data-run='1'>Run 1</button><button class='tab-button' data-run='2'>Run 2</button><button class='tab-button' data-run='3'>Run 3</button></div><div id='run-1' class='tab-content'><div class='container'><div class='system-column'><div class='sticky-header'><h3 class='system-title'>promptql</h3><span class='execution-time'>(Execution time: 2m 10s)</span></div><div class='system'><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
 
 For each ticket do the following:
 - get the description of the ticket
@@ -285,7 +285,7 @@ Linear scale where:
     },
     ...
 ]
-</pre></div><div class='message assistant'><strong>Assistant:</strong><div class="section-title">Message:</div><pre>I'll start by retrieving the 10 most recent open support tickets. For each ticket we will:
+</pre></div><div class='message assistant'><strong>Assistant:</strong><pre>I'll start by retrieving the 10 most recent open support tickets. For each ticket we will:
 
 1. Get the ticket’s description and extract the project ID (a UUID) using our extraction function.
 2. For the identified project, retrieve:
@@ -609,7 +609,7 @@ Classified 1 items
 Stored table artifact: identifier = 'prioritized_tickets', title = 'Prioritized Support Tickets', number of rows = 10, sample rows = [{'ticket_id': 143}, {'ticket_id': 286}]
 Stored prioritized tickets artifact.
 
-</pre></div></div><div class='message assistant'><strong>Assistant:</strong><div class="section-title">Message:</div><pre>Here is the sorted list of prioritized ticket IDs:
+</pre></div></div><div class='message assistant'><strong>Assistant:</strong><pre>Here is the sorted list of prioritized ticket IDs:
 <artifact identifier = 'prioritized_tickets' />
 </pre></div><div style='width: 100%;'><div class='separator'></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
@@ -700,7 +700,7 @@ Linear scale where:
     },
     ...
 ]
-</pre></div><div class='message assistant'><strong>Assistant:</strong><div class="section-title">Message:</div><pre>I'll now retrieve the last 10 open support tickets and, for each, pull together the detailed information (including extracting the project ID from the description, retrieving the latest plan details, computing revenue figures both for the project and for the user who created the ticket, and classifying the ticket category). Then I'll compute a priority score based on the scoring rules and finally return a sorted list of ticket IDs in descending order of priority.
+</pre></div><div class='message assistant'><strong>Assistant:</strong><pre>I'll now retrieve the last 10 open support tickets and, for each, pull together the detailed information (including extracting the project ID from the description, retrieving the latest plan details, computing revenue figures both for the project and for the user who created the ticket, and classifying the ticket category). Then I'll compute a priority score based on the scoring rules and finally return a sorted list of ticket IDs in descending order of priority.
 
 </pre><div class="section-title">Plan:</div><pre>1. Query the 10 most recent open support tickets (status = 'open') from the support ticket table (selecting id, description, created_at, requester_id).
 2. For each ticket:
@@ -1066,7 +1066,7 @@ Stored table artifact: identifier = 'prioritized_tickets', title = 'Prioritized 
 Sorted Ticket IDs based on priority:
 [{'ticket_id': 143}, {'ticket_id': 287}, {'ticket_id': 286}, {'ticket_id': 169}, {'ticket_id': 166}, {'ticket_id': 139}, {'ticket_id': 288}, {'ticket_id': 209}, {'ticket_id': 251}, {'ticket_id': 289}]
 
-</pre></div></div><div class='message assistant'><strong>Assistant:</strong><div class="section-title">Message:</div><pre>Here is your sorted list of prioritized ticket IDs:
+</pre></div></div><div class='message assistant'><strong>Assistant:</strong><pre>Here is your sorted list of prioritized ticket IDs:
 <artifact identifier="prioritized_tickets" />
 </pre></div><div style='width: 100%;'><div class='separator'></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
@@ -1157,7 +1157,7 @@ Linear scale where:
     },
     ...
 ]
-</pre></div><div class='message assistant'><strong>Assistant:</strong><div class="section-title">Message:</div><pre>Let’s break the task into the following steps:
+</pre></div><div class='message assistant'><strong>Assistant:</strong><pre>Let’s break the task into the following steps:
 
 1. Query the most recent 10 open tickets from the support tickets table.
 2. For each ticket, we:
@@ -1461,7 +1461,7 @@ Classified 10 items
 Stored table artifact: identifier = 'prioritized_tickets', title = 'Prioritized Tickets', number of rows = 10, sample rows = [{'ticket_id': 143}, {'ticket_id': 287}]
 Prioritized tickets computed and stored.
 
-</pre></div></div><div class='message assistant'><strong>Assistant:</strong><div class="section-title">Message:</div><pre>Here is your prioritized list of open support tickets:
+</pre></div></div><div class='message assistant'><strong>Assistant:</strong><pre>Here is your prioritized list of open support tickets:
 <artifact identifier="prioritized_tickets" />
 </pre></div><div style='width: 100%;'><div class='separator'></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {

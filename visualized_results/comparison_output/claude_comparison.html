@@ -227,7 +227,7 @@
     <div class="title-container">
         <h1>With CLAUDE</h1>
         <a href="index.html" class="back-link">&larr;Back</a>
-    </div><div class='timestamp'>Generated on: 2025-02-21 14:52:58</div><div class='tabs'><button class='tab-button' data-run='1'>Run 1</button><button class='tab-button' data-run='2'>Run 2</button><button class='tab-button' data-run='3'>Run 3</button></div><div id='run-1' class='tab-content'><div class='container'><div class='system-column'><div class='sticky-header'><h3 class='system-title'>promptql</h3><span class='execution-time'>(Execution time: 37.75s)</span></div><div class='system'><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
+    </div><div class='timestamp'>Generated on: 2025-02-21 14:59:18</div><div class='tabs'><button class='tab-button' data-run='1'>Run 1</button><button class='tab-button' data-run='2'>Run 2</button><button class='tab-button' data-run='3'>Run 3</button></div><div id='run-1' class='tab-content'><div class='container'><div class='system-column'><div class='sticky-header'><h3 class='system-title'>promptql</h3><span class='execution-time'>(Execution time: 37.75s)</span></div><div class='system'><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
 
 For each ticket do the following:
 - get the description of the ticket
@@ -285,7 +285,7 @@ Linear scale where:
     },
     ...
 ]
-</pre></div><div class='message assistant'><strong>Assistant:</strong><div class="section-title">Message:</div><pre>I'll help you analyze and prioritize the support tickets.
+</pre></div><div class='message assistant'><strong>Assistant:</strong><pre>I'll help you analyze and prioritize the support tickets.
 
 </pre><div class="section-title">Plan:</div><pre>1. Get the last 10 open support tickets with their details, descriptions, and requester information
 2. For each ticket:
@@ -492,7 +492,7 @@ SQL statement returned 1 rows.
 SQL statement returned 1 rows.
 Stored table artifact: identifier = 'prioritized_tickets', title = 'Prioritized Support Tickets', number of rows = 10, sample rows = [{'ticket_id': 143}, {'ticket_id': 287}]
 
-</pre></div></div><div class='message assistant'><strong>Assistant:</strong><div class="section-title">Message:</div><pre>Here are the support tickets sorted by priority based on the scoring criteria:
+</pre></div></div><div class='message assistant'><strong>Assistant:</strong><pre>Here are the support tickets sorted by priority based on the scoring criteria:
 <artifact identifier='prioritized_tickets' warning='I cannot see the full data so I must not make up observations' />
 
 The tickets are ordered by their total priority score (0-100) which considers:
@@ -1530,7 +1530,7 @@ Linear scale where:
     },
     ...
 ]
-</pre></div><div class='message assistant'><strong>Assistant:</strong><div class="section-title">Message:</div><pre>I'll help you analyze and prioritize the support tickets.
+</pre></div><div class='message assistant'><strong>Assistant:</strong><pre>I'll help you analyze and prioritize the support tickets.
 
 </pre><div class="section-title">Plan:</div><pre>1. Get the last 10 open support tickets with their details, descriptions, and requester information
 2. For each ticket:
@@ -1754,7 +1754,7 @@ SQL statement returned 1 rows.
   File "<exec>", line 112, in <module>
 TypeError: '>' not supported between instances of 'NoneType' and 'int'
 
-</pre></div><div class='message assistant'><strong>Assistant:</strong><div class="section-title">Message:</div><pre>I apologize for the error. It seems some of the revenue values are None, which caused issues in comparison. Let me fix that and handle null values properly.
+</pre></div><div class='message assistant'><strong>Assistant:</strong><pre>I apologize for the error. It seems some of the revenue values are None, which caused issues in comparison. Let me fix that and handle null values properly.
 
 </pre><div class="section-title">Plan:</div><pre>Same plan as before, but with better null value handling:
 1. Get the last 10 open support tickets with their details
@@ -1987,7 +1987,7 @@ Ticket 251 scores: category=15, plan=10, project_rev=2.1052631578947367, user_re
 Ticket 139 scores: category=25, plan=10, project_rev=11.428571428571427, user_rev=2.0050125313283207, age=0.0, total=48.43358395989975
 Stored table artifact: identifier = 'prioritized_tickets', title = 'Prioritized Support Tickets', number of rows = 10, sample rows = [{'ticket_id': 143}, {'ticket_id': 287}]
 
-</pre></div></div><div class='message assistant'><strong>Assistant:</strong><div class="section-title">Message:</div><pre>I've successfully prioritized the support tickets based on the given criteria. The tickets are now sorted by their total priority score, which considers:
+</pre></div></div><div class='message assistant'><strong>Assistant:</strong><pre>I've successfully prioritized the support tickets based on the given criteria. The tickets are now sorted by their total priority score, which considers:
 - Category severity (with downtime being highest priority)
 - Plan type (with advanced plans getting higher priority)
 - Revenue impact (both project-specific and total user revenue)
@@ -4698,7 +4698,7 @@ Linear scale where:
     },
     ...
 ]
-</pre></div><div class='message assistant'><strong>Assistant:</strong><div class="section-title">Message:</div><pre>I'll help you analyze and prioritize the support tickets.
+</pre></div><div class='message assistant'><strong>Assistant:</strong><pre>I'll help you analyze and prioritize the support tickets.
 
 </pre><div class="section-title">Plan:</div><pre>1. Get the last 10 open support tickets with their details, descriptions, and requester information
 2. For each ticket:
@@ -4933,7 +4933,7 @@ SQL statement returned 1 rows.
 Classified 10 items
 Stored table artifact: identifier = 'prioritized_tickets', title = 'Prioritized Support Tickets', number of rows = 10, sample rows = [{'ticket_id': 143}, {'ticket_id': 287}]
 
-</pre></div></div><div class='message assistant'><strong>Assistant:</strong><div class="section-title">Message:</div><pre>Here are the support tickets sorted by priority based on the category, plan type, revenue impact, and age:
+</pre></div></div><div class='message assistant'><strong>Assistant:</strong><pre>Here are the support tickets sorted by priority based on the category, plan type, revenue impact, and age:
 <artifact identifier='prioritized_tickets' warning='I cannot see the full data so I must not make up observations' />
 
 Each ticket's priority was calculated using:
