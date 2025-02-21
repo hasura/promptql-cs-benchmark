@@ -422,6 +422,15 @@ def generate_html_content(data: Dict, model: str) -> str:
             .back-link:hover {
                 color: #333;
             }
+            .separator {
+                height: 2px;
+                background-color: #ccc;
+                margin: 20px 0;
+                width: 100%;
+                align-self: stretch;
+                flex-shrink: 0;
+                display: block;
+            }
         </style>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -551,13 +560,13 @@ def generate_html_content(data: Dict, model: str) -> str:
                     html += "</div>"
 
                 # Add result section with a clear delimiter
-                html += "<hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'>"
+                html += "<div style='width: 100%;'><div class='separator'></div><div class='result-section'>"
                 html += "<div class='section-title'>Result:</div>"
                 if 'result' in system_data and system_data['result']:
                     html += f'<pre>{system_data["result"]}</pre>'
                 else:
                     html += "<pre>No result returned</pre>"
-                html += "</div>"
+                html += "</div></div>"
 
             else:
                 html += "<p>Run not found</p>"
