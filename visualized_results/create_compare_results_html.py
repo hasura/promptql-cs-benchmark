@@ -269,6 +269,31 @@ def generate_html_content(data: Dict, model: str) -> str:
                 display: flex; 
                 gap: 20px; 
                 margin-bottom: 40px;
+                height: calc(100vh - 100px); /* Adjust for top margin and title space */
+            }
+            .system-column {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+            }
+            .sticky-header {
+                position: sticky;
+                top: 0;
+                background-color: #ffffff;
+                padding: 20px;
+                margin-bottom: 15px;
+                z-index: 100;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                border-bottom: 1px solid #e6e6e6;
+                border-radius: 8px 8px 0 0;
+            }
+            .system-title {
+                display: inline-block;
+                margin: 0;
+                margin-right: 10px;
+                font-weight: bold;
+                font-size: 1.3em;
+                color: #2c3e50;
             }
             .system { 
                 flex: 1; 
@@ -277,14 +302,17 @@ def generate_html_content(data: Dict, model: str) -> str:
                 background-color: white;
                 border-radius: 8px;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
-            .system-title {
-                display: inline;
+                display: flex;
+                flex-direction: column;
+                max-height: 100%;
+                overflow-y: auto;
+                # margin-top: 10px;
             }
             .execution-time {
                 font-size: 16px;
                 margin-left: 5px;
                 display: inline;
+                color: #666;
             }
             .message { 
                 margin: 10px 0; 
@@ -463,14 +491,20 @@ def generate_html_content(data: Dict, model: str) -> str:
         html += "<div class='container'>"
 
         for system_type in ['promptql', 'tool_calling', 'tool_calling_python']:
-            html += f"<div class='system'>"
+            html += "<div class='system-column'>"
+            # Create a sticky header container outside the system div
+            html += f"<div class='sticky-header'>"
             if system_type in systems:
                 execution_time = systems[system_type].get('execution_time', 'N/A')
                 formatted_time = format_execution_time(execution_time)
-                html += f"<h3 class='system-title'>{system_type}</h3> <span class='execution-time'>(Execution time: {formatted_time})</span>"
+                html += f"<h3 class='system-title'>{system_type}</h3>"
+                html += f"<span class='execution-time'>(Execution time: {formatted_time})</span>"
             else:
-                html += f"<h3>{system_type}</h3>"
+                html += f"<h3 class='system-title'>{system_type}</h3>"
+            html += "</div>"
 
+            # System content div
+            html += f"<div class='system'>"
             if system_type in systems:
                 system_data = systems[system_type]
                 for message in system_data['messages']:
@@ -516,7 +550,7 @@ def generate_html_content(data: Dict, model: str) -> str:
 
                     html += "</div>"
 
-                # Add result section
+                # Add result section with a clear delimiter
                 html += "<hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'>"
                 html += "<div class='section-title'>Result:</div>"
                 if 'result' in system_data and system_data['result']:
@@ -528,6 +562,7 @@ def generate_html_content(data: Dict, model: str) -> str:
             else:
                 html += "<p>Run not found</p>"
 
+            html += "</div>"
             html += "</div>"
 
         html += "</div></div>"
