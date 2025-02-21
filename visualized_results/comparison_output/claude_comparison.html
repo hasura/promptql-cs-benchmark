@@ -13,6 +13,31 @@
                 display: flex; 
                 gap: 20px; 
                 margin-bottom: 40px;
+                height: calc(100vh - 100px); /* Adjust for top margin and title space */
+            }
+            .system-column {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+            }
+            .sticky-header {
+                position: sticky;
+                top: 0;
+                background-color: #ffffff;
+                padding: 20px;
+                margin-bottom: 15px;
+                z-index: 100;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                border-bottom: 1px solid #e6e6e6;
+                border-radius: 8px 8px 0 0;
+            }
+            .system-title {
+                display: inline-block;
+                margin: 0;
+                margin-right: 10px;
+                font-weight: bold;
+                font-size: 1.3em;
+                color: #2c3e50;
             }
             .system { 
                 flex: 1; 
@@ -21,14 +46,17 @@
                 background-color: white;
                 border-radius: 8px;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
-            .system-title {
-                display: inline;
+                display: flex;
+                flex-direction: column;
+                max-height: 100%;
+                overflow-y: auto;
+                # margin-top: 10px;
             }
             .execution-time {
                 font-size: 16px;
                 margin-left: 5px;
                 display: inline;
+                color: #666;
             }
             .message { 
                 margin: 10px 0; 
@@ -138,6 +166,15 @@
             .back-link:hover {
                 color: #333;
             }
+            .separator {
+                height: 2px;
+                background-color: #ccc;
+                margin: 20px 0;
+                width: 100%;
+                align-self: stretch;
+                flex-shrink: 0;
+                display: block;
+            }
         </style>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -190,7 +227,7 @@
     <div class="title-container">
         <h1>With CLAUDE</h1>
         <a href="index.html" class="back-link">&larr;Back</a>
-    </div><div class='timestamp'>Generated on: 2025-02-21 01:45:00</div><div class='tabs'><button class='tab-button' data-run='1'>Run 1</button><button class='tab-button' data-run='2'>Run 2</button><button class='tab-button' data-run='3'>Run 3</button></div><div id='run-1' class='tab-content'><div class='container'><div class='system'><h3 class='system-title'>promptql</h3> <span class='execution-time'>(Execution time: 37.75s)</span><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
+    </div><div class='timestamp'>Generated on: 2025-02-21 14:52:58</div><div class='tabs'><button class='tab-button' data-run='1'>Run 1</button><button class='tab-button' data-run='2'>Run 2</button><button class='tab-button' data-run='3'>Run 3</button></div><div id='run-1' class='tab-content'><div class='container'><div class='system-column'><div class='sticky-header'><h3 class='system-title'>promptql</h3><span class='execution-time'>(Execution time: 37.75s)</span></div><div class='system'><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
 
 For each ticket do the following:
 - get the description of the ticket
@@ -465,7 +502,7 @@ The tickets are ordered by their total priority score (0-100) which considers:
 - Ticket age (up to 20 points, with newer tickets scoring higher)
 
 Would you like to see more details about any specific ticket or understand how the scoring was calculated for particular cases?
-</pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>[
+</pre></div><div style='width: 100%;'><div class='separator'></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
     "ticket_id": 143
   },
@@ -496,7 +533,7 @@ Would you like to see more details about any specific ticket or understand how t
   {
     "ticket_id": 289
   }
-]</pre></div></div><div class='system'><h3 class='system-title'>tool_calling</h3> <span class='execution-time'>(Execution time: 26.38s)</span><div class='message user'><strong>User:</strong><pre><div class="text-block">Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
+]</pre></div></div></div></div><div class='system-column'><div class='sticky-header'><h3 class='system-title'>tool_calling</h3><span class='execution-time'>(Execution time: 26.38s)</span></div><div class='system'><div class='message user'><strong>User:</strong><pre><div class="text-block">Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
 
 # Step 1
 
@@ -829,7 +866,7 @@ The sorting reflects:
 7. Ticket 289: Performance issue, free plan, recent
 8. Ticket 251: Performance issue, base plan
 9. Ticket 139: Downtime but older ticket, base plan
-10. Ticket 166: Feature request (lowest category priority)</div></pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>[
+10. Ticket 166: Feature request (lowest category priority)</div></pre></div><div style='width: 100%;'><div class='separator'></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
     "ticket_id": 286
   },
@@ -860,7 +897,7 @@ The sorting reflects:
   {
     "ticket_id": 166
   }
-]</pre></div></div><div class='system'><h3 class='system-title'>tool_calling_python</h3> <span class='execution-time'>(Execution time: 2m 15s)</span><div class='message user'><strong>User:</strong><pre><div class="text-block">Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
+]</pre></div></div></div></div><div class='system-column'><div class='sticky-header'><h3 class='system-title'>tool_calling_python</h3><span class='execution-time'>(Execution time: 2m 15s)</span></div><div class='system'><div class='message user'><strong>User:</strong><pre><div class="text-block">Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
 
 # Step 1
 
@@ -1404,7 +1441,7 @@ This prioritization is based on:
 3. The revenue impact (both project-specific and total user revenue)
 4. The age of the ticket (newer tickets given slightly higher priority)
 
-The top tickets (286, 287, 143) are all related to system downtime for customers on advanced or base plans with significant revenue impact. The middle-priority tickets (288, 139, 169) involve reliability and performance issues, while the lower-priority tickets (289, 251, 166) are a mix of performance issues and feature requests, with lower revenue impact or free-tier customers.</div></pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>[
+The top tickets (286, 287, 143) are all related to system downtime for customers on advanced or base plans with significant revenue impact. The middle-priority tickets (288, 139, 169) involve reliability and performance issues, while the lower-priority tickets (289, 251, 166) are a mix of performance issues and feature requests, with lower revenue impact or free-tier customers.</div></pre></div><div style='width: 100%;'><div class='separator'></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
     "ticket_id": 286
   },
@@ -1435,7 +1472,7 @@ The top tickets (286, 287, 143) are all related to system downtime for customers
   {
     "ticket_id": 166
   }
-]</pre></div></div></div></div><div id='run-2' class='tab-content'><div class='container'><div class='system'><h3 class='system-title'>promptql</h3> <span class='execution-time'>(Execution time: 1m 21s)</span><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
+]</pre></div></div></div></div></div></div><div id='run-2' class='tab-content'><div class='container'><div class='system-column'><div class='sticky-header'><h3 class='system-title'>promptql</h3><span class='execution-time'>(Execution time: 1m 21s)</span></div><div class='system'><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
 
 For each ticket do the following:
 - get the description of the ticket
@@ -1960,7 +1997,7 @@ Here are the prioritized tickets in order of importance:
 <artifact identifier='prioritized_tickets' warning='I cannot see the full data so I must not make up observations' />
 
 From the scoring output, we can see that ticket #143 received the highest total score (75.0) due to being a downtime issue (25 points), from a base plan customer (10 points), with high user revenue impact (20 points), and being the newest ticket (20 points).
-</pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>[
+</pre></div><div style='width: 100%;'><div class='separator'></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
     "ticket_id": 143
   },
@@ -1991,7 +2028,7 @@ From the scoring output, we can see that ticket #143 received the highest total 
   {
     "ticket_id": 289
   }
-]</pre></div></div><div class='system'><h3 class='system-title'>tool_calling</h3> <span class='execution-time'>(Execution time: 29.21s)</span><div class='message user'><strong>User:</strong><pre><div class="text-block">Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
+]</pre></div></div></div></div><div class='system-column'><div class='sticky-header'><h3 class='system-title'>tool_calling</h3><span class='execution-time'>(Execution time: 29.21s)</span></div><div class='system'><div class='message user'><strong>User:</strong><pre><div class="text-block">Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
 
 # Step 1
 
@@ -2349,7 +2386,7 @@ This prioritization takes into account:
 3. The revenue impact both at project and user level
 4. The age of the ticket
 
-The top tickets are primarily downtime issues from high-revenue customers on advanced plans, followed by reliability and performance issues, and finally feature requests at the bottom of the priority list.</div></pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>[
+The top tickets are primarily downtime issues from high-revenue customers on advanced plans, followed by reliability and performance issues, and finally feature requests at the bottom of the priority list.</div></pre></div><div style='width: 100%;'><div class='separator'></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
     "ticket_id": 287
   },
@@ -2380,7 +2417,7 @@ The top tickets are primarily downtime issues from high-revenue customers on adv
   {
     "ticket_id": 166
   }
-]</pre></div></div><div class='system'><h3 class='system-title'>tool_calling_python</h3> <span class='execution-time'>(Execution time: 4m 7s)</span><div class='message user'><strong>User:</strong><pre><div class="text-block">Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
+]</pre></div></div></div></div><div class='system-column'><div class='sticky-header'><h3 class='system-title'>tool_calling_python</h3><span class='execution-time'>(Execution time: 4m 7s)</span></div><div class='system'><div class='message user'><strong>User:</strong><pre><div class="text-block">Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
 
 # Step 1
 
@@ -4603,7 +4640,7 @@ The ordering generally prioritizes:
 4. More recent tickets over older ones
 5. Feature requests and other non-critical issues at the bottom
 
-Each ticket's final position in the list reflects the combined weight of all these factors according to the scoring system you specified.</div></pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>No result returned</pre></div></div></div></div><div id='run-3' class='tab-content'><div class='container'><div class='system'><h3 class='system-title'>promptql</h3> <span class='execution-time'>(Execution time: 40.10s)</span><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
+Each ticket's final position in the list reflects the combined weight of all these factors according to the scoring system you specified.</div></pre></div><div style='width: 100%;'><div class='separator'></div><div class='result-section'><div class='section-title'>Result:</div><pre>No result returned</pre></div></div></div></div></div></div><div id='run-3' class='tab-content'><div class='container'><div class='system-column'><div class='sticky-header'><h3 class='system-title'>promptql</h3><span class='execution-time'>(Execution time: 40.10s)</span></div><div class='system'><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
 
 For each ticket do the following:
 - get the description of the ticket
@@ -4904,7 +4941,7 @@ Each ticket's priority was calculated using:
 - Plan type (up to 15 points): Advanced plan projects got 15 points, base plan got 10 points
 - Revenue impact (up to 40 points): Split between project revenue (20) and total user revenue (20), scaled relative to highest values
 - Ticket age (up to 20 points): Newer tickets got higher priority, scaled linearly
-</pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>[
+</pre></div><div style='width: 100%;'><div class='separator'></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
     "ticket_id": 143
   },
@@ -4935,7 +4972,7 @@ Each ticket's priority was calculated using:
   {
     "ticket_id": 289
   }
-]</pre></div></div><div class='system'><h3 class='system-title'>tool_calling</h3> <span class='execution-time'>(Execution time: 26.65s)</span><div class='message user'><strong>User:</strong><pre><div class="text-block">Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
+]</pre></div></div></div></div><div class='system-column'><div class='sticky-header'><h3 class='system-title'>tool_calling</h3><span class='execution-time'>(Execution time: 26.65s)</span></div><div class='system'><div class='message user'><strong>User:</strong><pre><div class="text-block">Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
 
 # Step 1
 
@@ -5269,7 +5306,7 @@ This prioritization takes into account:
 3. Revenue impact (both project and user total revenue)
 4. Age of the ticket (with newer tickets getting higher priority)
 
-The combination of these factors determines the final ordering, with critical issues from high-revenue customers on advanced plans generally getting the highest priority.</div></pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>[
+The combination of these factors determines the final ordering, with critical issues from high-revenue customers on advanced plans generally getting the highest priority.</div></pre></div><div style='width: 100%;'><div class='separator'></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
     "ticket_id": 286
   },
@@ -5300,7 +5337,7 @@ The combination of these factors determines the final ordering, with critical is
   {
     "ticket_id": 166
   }
-]</pre></div></div><div class='system'><h3 class='system-title'>tool_calling_python</h3> <span class='execution-time'>(Execution time: 46.28s)</span><div class='message user'><strong>User:</strong><pre><div class="text-block">Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
+]</pre></div></div></div></div><div class='system-column'><div class='sticky-header'><h3 class='system-title'>tool_calling_python</h3><span class='execution-time'>(Execution time: 46.28s)</span></div><div class='system'><div class='message user'><strong>User:</strong><pre><div class="text-block">Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
 
 # Step 1
 
@@ -5739,7 +5776,7 @@ print("</prioritized_tickets>")</pre></div></div></pre></div><div class='message
 
 The tickets are now sorted in order of highest priority to lowest priority, taking into account all these factors. The output shows the ticket IDs in the requested format, with all 10 tickets included in the prioritized list.
 
-Each ticket's final position in the list reflects its total score based on the severity of the issue (category), the customer's plan level, their revenue contribution (both project-specific and total user revenue), and how recently the ticket was created.</div></pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>No result returned</pre></div></div></div></div>
+Each ticket's final position in the list reflects its total score based on the severity of the issue (category), the customer's plan level, their revenue contribution (both project-specific and total user revenue), and how recently the ticket was created.</div></pre></div><div style='width: 100%;'><div class='separator'></div><div class='result-section'><div class='section-title'>Result:</div><pre>No result returned</pre></div></div></div></div></div></div>
     </body>
     </html>
     

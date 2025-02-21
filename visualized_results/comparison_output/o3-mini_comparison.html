@@ -13,6 +13,31 @@
                 display: flex; 
                 gap: 20px; 
                 margin-bottom: 40px;
+                height: calc(100vh - 100px); /* Adjust for top margin and title space */
+            }
+            .system-column {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+            }
+            .sticky-header {
+                position: sticky;
+                top: 0;
+                background-color: #ffffff;
+                padding: 20px;
+                margin-bottom: 15px;
+                z-index: 100;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                border-bottom: 1px solid #e6e6e6;
+                border-radius: 8px 8px 0 0;
+            }
+            .system-title {
+                display: inline-block;
+                margin: 0;
+                margin-right: 10px;
+                font-weight: bold;
+                font-size: 1.3em;
+                color: #2c3e50;
             }
             .system { 
                 flex: 1; 
@@ -21,14 +46,17 @@
                 background-color: white;
                 border-radius: 8px;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
-            .system-title {
-                display: inline;
+                display: flex;
+                flex-direction: column;
+                max-height: 100%;
+                overflow-y: auto;
+                # margin-top: 10px;
             }
             .execution-time {
                 font-size: 16px;
                 margin-left: 5px;
                 display: inline;
+                color: #666;
             }
             .message { 
                 margin: 10px 0; 
@@ -138,6 +166,15 @@
             .back-link:hover {
                 color: #333;
             }
+            .separator {
+                height: 2px;
+                background-color: #ccc;
+                margin: 20px 0;
+                width: 100%;
+                align-self: stretch;
+                flex-shrink: 0;
+                display: block;
+            }
         </style>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -190,7 +227,7 @@
     <div class="title-container">
         <h1>With O3-MINI</h1>
         <a href="index.html" class="back-link">&larr;Back</a>
-    </div><div class='timestamp'>Generated on: 2025-02-21 01:45:00</div><div class='tabs'><button class='tab-button' data-run='1'>Run 1</button><button class='tab-button' data-run='2'>Run 2</button><button class='tab-button' data-run='3'>Run 3</button></div><div id='run-1' class='tab-content'><div class='container'><div class='system'><h3 class='system-title'>promptql</h3> <span class='execution-time'>(Execution time: 2m 10s)</span><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
+    </div><div class='timestamp'>Generated on: 2025-02-21 14:52:58</div><div class='tabs'><button class='tab-button' data-run='1'>Run 1</button><button class='tab-button' data-run='2'>Run 2</button><button class='tab-button' data-run='3'>Run 3</button></div><div id='run-1' class='tab-content'><div class='container'><div class='system-column'><div class='sticky-header'><h3 class='system-title'>promptql</h3><span class='execution-time'>(Execution time: 2m 10s)</span></div><div class='system'><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
 
 For each ticket do the following:
 - get the description of the ticket
@@ -574,7 +611,7 @@ Stored prioritized tickets artifact.
 
 </pre></div></div><div class='message assistant'><strong>Assistant:</strong><div class="section-title">Message:</div><pre>Here is the sorted list of prioritized ticket IDs:
 <artifact identifier = 'prioritized_tickets' />
-</pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>[
+</pre></div><div style='width: 100%;'><div class='separator'></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
     "ticket_id": 143
   },
@@ -605,7 +642,7 @@ Stored prioritized tickets artifact.
   {
     "ticket_id": 289
   }
-]</pre></div></div><div class='system'><h3>tool_calling</h3><p>Run not found</p></div><div class='system'><h3>tool_calling_python</h3><p>Run not found</p></div></div></div><div id='run-2' class='tab-content'><div class='container'><div class='system'><h3 class='system-title'>promptql</h3> <span class='execution-time'>(Execution time: 1m 0s)</span><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
+]</pre></div></div></div></div><div class='system-column'><div class='sticky-header'><h3 class='system-title'>tool_calling</h3></div><div class='system'><p>Run not found</p></div></div><div class='system-column'><div class='sticky-header'><h3 class='system-title'>tool_calling_python</h3></div><div class='system'><p>Run not found</p></div></div></div></div><div id='run-2' class='tab-content'><div class='container'><div class='system-column'><div class='sticky-header'><h3 class='system-title'>promptql</h3><span class='execution-time'>(Execution time: 1m 0s)</span></div><div class='system'><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
 
 For each ticket do the following:
 - get the description of the ticket
@@ -1031,7 +1068,7 @@ Sorted Ticket IDs based on priority:
 
 </pre></div></div><div class='message assistant'><strong>Assistant:</strong><div class="section-title">Message:</div><pre>Here is your sorted list of prioritized ticket IDs:
 <artifact identifier="prioritized_tickets" />
-</pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>[
+</pre></div><div style='width: 100%;'><div class='separator'></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
     "ticket_id": 143
   },
@@ -1062,7 +1099,7 @@ Sorted Ticket IDs based on priority:
   {
     "ticket_id": 289
   }
-]</pre></div></div><div class='system'><h3>tool_calling</h3><p>Run not found</p></div><div class='system'><h3>tool_calling_python</h3><p>Run not found</p></div></div></div><div id='run-3' class='tab-content'><div class='container'><div class='system'><h3 class='system-title'>promptql</h3> <span class='execution-time'>(Execution time: 1m 9s)</span><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
+]</pre></div></div></div></div><div class='system-column'><div class='sticky-header'><h3 class='system-title'>tool_calling</h3></div><div class='system'><p>Run not found</p></div></div><div class='system-column'><div class='sticky-header'><h3 class='system-title'>tool_calling_python</h3></div><div class='system'><p>Run not found</p></div></div></div></div><div id='run-3' class='tab-content'><div class='container'><div class='system-column'><div class='sticky-header'><h3 class='system-title'>promptql</h3><span class='execution-time'>(Execution time: 1m 9s)</span></div><div class='system'><div class='message user'><strong>User:</strong><pre>Give me a sorted list of last 10 open (status = 'open') support tickets according to how I should prioritize them. 
 
 For each ticket do the following:
 - get the description of the ticket
@@ -1426,7 +1463,7 @@ Prioritized tickets computed and stored.
 
 </pre></div></div><div class='message assistant'><strong>Assistant:</strong><div class="section-title">Message:</div><pre>Here is your prioritized list of open support tickets:
 <artifact identifier="prioritized_tickets" />
-</pre></div><hr style='margin-top: 20px; margin-bottom: 20px;'/><div class='result-section'><div class='section-title'>Result:</div><pre>[
+</pre></div><div style='width: 100%;'><div class='separator'></div><div class='result-section'><div class='section-title'>Result:</div><pre>[
   {
     "ticket_id": 143
   },
@@ -1457,7 +1494,7 @@ Prioritized tickets computed and stored.
   {
     "ticket_id": 289
   }
-]</pre></div></div><div class='system'><h3>tool_calling</h3><p>Run not found</p></div><div class='system'><h3>tool_calling_python</h3><p>Run not found</p></div></div></div>
+]</pre></div></div></div></div><div class='system-column'><div class='sticky-header'><h3 class='system-title'>tool_calling</h3></div><div class='system'><p>Run not found</p></div></div><div class='system-column'><div class='sticky-header'><h3 class='system-title'>tool_calling_python</h3></div><div class='system'><p>Run not found</p></div></div></div></div>
     </body>
     </html>
     
