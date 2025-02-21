@@ -281,6 +281,7 @@ async def run(
 
 async def main():
     import argparse
+    import sys
 
     parser = argparse.ArgumentParser(description="Process queries using AI Assistant")
     parser.add_argument("--input_filepath", help="Input query file path", required=True)
@@ -289,14 +290,14 @@ async def main():
         "--model",
         type=Model,
         help="LLM to use",
-        required=False,
+        required='--all' not in sys.argv,
         choices=list(Model),
     )
     parser.add_argument(
         "--system",
         type=System,
         help="System to evaluate",
-        required=False,
+        required='--all' not in sys.argv,
         choices=list(System),
     )
     parser.add_argument("--oracle", help="Use oracle data", action="store_true")
@@ -304,6 +305,9 @@ async def main():
     parser.add_argument("--repeat", help="Number of runs", type=int, default=3)
 
     args = parser.parse_args()
+
+    if not args.all and (bool(args.system) != bool(args.model)):
+        parser.error("--system and --model must be specified together")
 
     if args.all:
         tasks = [
