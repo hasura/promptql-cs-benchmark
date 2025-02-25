@@ -1,0 +1,287 @@
+{
+  "identifier": "control_plane_details_for_last_40_tickets",
+  "title": "Control Plane Details For Last 40 Tickets",
+  "artifact_type": "table",
+  "data": [
+    {
+      "project_id": "0a2cfc2f-be0c-463e-b3ba-87862a1e79c3",
+      "owner_id": "fa8daae1-b6ef-47d1-8550-9b94507f39ce",
+      "project_plan": "advanced",
+      "project_revenue": 4214,
+      "owner_total_revenue": 15050
+    },
+    {
+      "project_id": "11ee5798-e7e9-4b78-a087-9e7c1d05751c",
+      "owner_id": "43d43f08-0018-4c79-b6c7-912846b75097",
+      "project_plan": "advanced",
+      "project_revenue": 9048,
+      "owner_total_revenue": 9048
+    },
+    {
+      "project_id": "2a3b7790-2cc4-48b5-a290-e6e880bb76e2",
+      "owner_id": "537ec004-ab10-4429-bdcc-6f8de6e4413a",
+      "project_plan": "advanced",
+      "project_revenue": 12710,
+      "owner_total_revenue": 63558
+    },
+    {
+      "project_id": "2a8d4b07-c391-450f-8153-f6521f8a20a0",
+      "owner_id": "883bacf7-a849-41e2-97e8-b5511304bd28",
+      "project_plan": "base",
+      "project_revenue": 0,
+      "owner_total_revenue": 45486
+    },
+    {
+      "project_id": "2a8d4b07-c391-450f-8153-f6521f8a20a0",
+      "owner_id": "883bacf7-a849-41e2-97e8-b5511304bd28",
+      "project_plan": "base",
+      "project_revenue": 0,
+      "owner_total_revenue": 45486
+    },
+    {
+      "project_id": "2dcc6504-ce95-4167-8a18-8ffc21d3c071",
+      "owner_id": "a60e3b16-5299-45aa-8ff3-8d57e0bd8f8b",
+      "project_plan": "free",
+      "project_revenue": 0,
+      "owner_total_revenue": 0
+    },
+    {
+      "project_id": "3039d26f-0ab2-4501-8e64-07b16526115a",
+      "owner_id": "ab7062d2-11a5-4a6e-805d-f4b05e92c87c",
+      "project_plan": "free",
+      "project_revenue": 0,
+      "owner_total_revenue": 0
+    },
+    {
+      "project_id": "386d8856-9020-47eb-a21a-2ebe6b81428e",
+      "owner_id": "3cb1a69e-56de-4016-80fe-b819548faa70",
+      "project_plan": "advanced",
+      "project_revenue": 7980,
+      "owner_total_revenue": 7980
+    },
+    {
+      "project_id": "386d8856-9020-47eb-a21a-2ebe6b81428e",
+      "owner_id": "3cb1a69e-56de-4016-80fe-b819548faa70",
+      "project_plan": "advanced",
+      "project_revenue": 7980,
+      "owner_total_revenue": 7980
+    },
+    {
+      "project_id": "4aeefe6f-7dee-4395-82be-6d8e51aea9fd",
+      "owner_id": "82a73d00-cc81-4ef7-bb0a-430af5204b1b",
+      "project_plan": "advanced",
+      "project_revenue": 5400,
+      "owner_total_revenue": 5400
+    },
+    {
+      "project_id": "4d76af73-0ea4-4d9f-9247-78ab43a23704",
+      "owner_id": "1b1bb780-2de6-4515-b37b-562e2991bda4",
+      "project_plan": "base",
+      "project_revenue": 0,
+      "owner_total_revenue": 20882
+    },
+    {
+      "project_id": "4e291cdc-0aab-4573-86a4-c82490831964",
+      "owner_id": "b2dd03c7-9332-4faa-9f55-afa6986f3162",
+      "project_plan": "base",
+      "project_revenue": 2680,
+      "owner_total_revenue": 2680
+    },
+    {
+      "project_id": "4fbe297d-f58e-477e-a6c9-f5c98cb92555",
+      "owner_id": "5f6bdd8c-3e58-4d9a-90c5-7f8b8531361f",
+      "project_plan": "free",
+      "project_revenue": 0,
+      "owner_total_revenue": 0
+    },
+    {
+      "project_id": "5267a67e-d8ea-4154-b385-6269b033a471",
+      "owner_id": "61f9c589-70ee-4685-bf2c-0ef4a8e137c2",
+      "project_plan": "advanced",
+      "project_revenue": 1904,
+      "owner_total_revenue": 1904
+    },
+    {
+      "project_id": "529fbeeb-39fe-46bc-9b22-aa898eb82745",
+      "owner_id": "36cf90bd-5c56-4823-965e-67367553c778",
+      "project_plan": "base",
+      "project_revenue": 4160,
+      "owner_total_revenue": 6680
+    },
+    {
+      "project_id": "529fbeeb-39fe-46bc-9b22-aa898eb82745",
+      "owner_id": "36cf90bd-5c56-4823-965e-67367553c778",
+      "project_plan": "base",
+      "project_revenue": 4160,
+      "owner_total_revenue": 6680
+    },
+    {
+      "project_id": "570737f1-ada3-413b-bec5-e82b6c324fb3",
+      "owner_id": "d9879f3a-1ef7-4c84-b16c-60cc73fcaac1",
+      "project_plan": "advanced",
+      "project_revenue": 4617,
+      "owner_total_revenue": 8617
+    },
+    {
+      "project_id": "598b3a1b-0166-420f-ac63-fa734cbf5c63",
+      "owner_id": "51b2bc6e-0dc4-470d-8a54-2d189768638a",
+      "project_plan": "base",
+      "project_revenue": 315,
+      "owner_total_revenue": 315
+    },
+    {
+      "project_id": "598b3a1b-0166-420f-ac63-fa734cbf5c63",
+      "owner_id": "51b2bc6e-0dc4-470d-8a54-2d189768638a",
+      "project_plan": "base",
+      "project_revenue": 315,
+      "owner_total_revenue": 315
+    },
+    {
+      "project_id": "5ad39764-9b9b-48cb-8819-43ab40694b06",
+      "owner_id": "b9fdedf0-dd4c-4ad4-9845-5bda982616c6",
+      "project_plan": "base",
+      "project_revenue": 4560,
+      "owner_total_revenue": 4560
+    },
+    {
+      "project_id": "5ad39764-9b9b-48cb-8819-43ab40694b06",
+      "owner_id": "b9fdedf0-dd4c-4ad4-9845-5bda982616c6",
+      "project_plan": "base",
+      "project_revenue": 4560,
+      "owner_total_revenue": 4560
+    },
+    {
+      "project_id": "5f4d1be1-61b7-4b11-ba51-6e9b7f094c82",
+      "owner_id": "d83206a1-e4cb-4967-ae64-42135537fbbe",
+      "project_plan": "advanced",
+      "project_revenue": 16544,
+      "owner_total_revenue": 16544
+    },
+    {
+      "project_id": "76de9616-3d7b-49d7-b909-e154dda91489",
+      "owner_id": "17f7695f-46b8-4006-9f8d-1e0bf4fbe49d",
+      "project_plan": "free",
+      "project_revenue": 0,
+      "owner_total_revenue": 0
+    },
+    {
+      "project_id": "8edf6e2c-99b6-49af-b342-4aefe811b2f3",
+      "owner_id": "1b1bb780-2de6-4515-b37b-562e2991bda4",
+      "project_plan": "base",
+      "project_revenue": 4450,
+      "owner_total_revenue": 20882
+    },
+    {
+      "project_id": "936120f2-5ed2-4bcb-af57-e9b3eeacee81",
+      "owner_id": "fa8daae1-b6ef-47d1-8550-9b94507f39ce",
+      "project_plan": "free",
+      "project_revenue": 0,
+      "owner_total_revenue": 15050
+    },
+    {
+      "project_id": "9aed3be2-245d-4e1e-9040-5317a8a8daf1",
+      "owner_id": "fa020c09-9ac1-4519-8bb3-89fade59e41f",
+      "project_plan": "advanced",
+      "project_revenue": 11352,
+      "owner_total_revenue": 36334
+    },
+    {
+      "project_id": "9b8f8c9a-7f76-4bc2-95c9-652b13f13a44",
+      "owner_id": "00c620ba-a70a-4174-a707-1b18ed54c09f",
+      "project_plan": "free",
+      "project_revenue": 0,
+      "owner_total_revenue": 0
+    },
+    {
+      "project_id": "a2976ee4-8966-4ed9-8def-2cab3e171cd8",
+      "owner_id": "1435fa3b-b1dd-41e9-9c8c-327806231e95",
+      "project_plan": "advanced",
+      "project_revenue": 24768,
+      "owner_total_revenue": 26688
+    },
+    {
+      "project_id": "b750445e-fba4-4644-b306-1550cfefad8b",
+      "owner_id": "1435fa3b-b1dd-41e9-9c8c-327806231e95",
+      "project_plan": "base",
+      "project_revenue": 1470,
+      "owner_total_revenue": 26688
+    },
+    {
+      "project_id": "c5d9c906-2b61-424e-967b-fa3e27d09d44",
+      "owner_id": "17a5d40e-12b0-4b8a-9fdc-e90e76a59668",
+      "project_plan": "advanced",
+      "project_revenue": 28615,
+      "owner_total_revenue": 41510
+    },
+    {
+      "project_id": "c73759e8-6f3d-4607-b276-8d61011c124d",
+      "owner_id": "d9879f3a-1ef7-4c84-b16c-60cc73fcaac1",
+      "project_plan": "base",
+      "project_revenue": 4000,
+      "owner_total_revenue": 8617
+    },
+    {
+      "project_id": "d5dc02fc-707a-4084-854a-79f5866d4dd3",
+      "owner_id": "bb5ee704-86cd-44cd-87d5-0d5a5f28b373",
+      "project_plan": "base",
+      "project_revenue": 840,
+      "owner_total_revenue": 6300
+    },
+    {
+      "project_id": "d5dc02fc-707a-4084-854a-79f5866d4dd3",
+      "owner_id": "bb5ee704-86cd-44cd-87d5-0d5a5f28b373",
+      "project_plan": "base",
+      "project_revenue": 840,
+      "owner_total_revenue": 6300
+    },
+    {
+      "project_id": "e452f72b-66e1-4c56-ada2-3525ab8fb280",
+      "owner_id": "883bacf7-a849-41e2-97e8-b5511304bd28",
+      "project_plan": "advanced",
+      "project_revenue": 45486,
+      "owner_total_revenue": 45486
+    },
+    {
+      "project_id": "e75d06e3-6ec1-4649-bc83-7d19cd07fd77",
+      "owner_id": "ea4b3d25-52c0-448f-bff1-cf147e387370",
+      "project_plan": "advanced",
+      "project_revenue": 26973,
+      "owner_total_revenue": 31783
+    },
+    {
+      "project_id": "e75d06e3-6ec1-4649-bc83-7d19cd07fd77",
+      "owner_id": "ea4b3d25-52c0-448f-bff1-cf147e387370",
+      "project_plan": "advanced",
+      "project_revenue": 26973,
+      "owner_total_revenue": 31783
+    },
+    {
+      "project_id": "e75d06e3-6ec1-4649-bc83-7d19cd07fd77",
+      "owner_id": "ea4b3d25-52c0-448f-bff1-cf147e387370",
+      "project_plan": "advanced",
+      "project_revenue": 26973,
+      "owner_total_revenue": 31783
+    },
+    {
+      "project_id": "eabbc719-c5cb-461c-9144-e531de1b0617",
+      "owner_id": "ea4b3d25-52c0-448f-bff1-cf147e387370",
+      "project_plan": "advanced",
+      "project_revenue": 4810,
+      "owner_total_revenue": 31783
+    },
+    {
+      "project_id": "fc2590f9-6bdc-43e3-9984-9246fd96f2dd",
+      "owner_id": "17a5d40e-12b0-4b8a-9fdc-e90e76a59668",
+      "project_plan": "base",
+      "project_revenue": 6460,
+      "owner_total_revenue": 41510
+    },
+    {
+      "project_id": "fc2590f9-6bdc-43e3-9984-9246fd96f2dd",
+      "owner_id": "17a5d40e-12b0-4b8a-9fdc-e90e76a59668",
+      "project_plan": "base",
+      "project_revenue": 6460,
+      "owner_total_revenue": 41510
+    }
+  ]
+}

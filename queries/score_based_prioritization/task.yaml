@@ -1,7 +1,7 @@
 promptql:
   retrieval_prompt: |
     Give me a sorted list of last {n} open (status = 'open') support tickets according to how I should prioritize them. 
-    
+
     For each ticket do the following:
     - get the description of the ticket
     - intelligently (without heuristics) extract the project ID from the ticket description. project IDs are UUIDs
@@ -43,7 +43,7 @@ promptql:
 
     3. Revenue Impact (0-40 points total):
     - Project Revenue: Up to 20 points (scaled relative to highest project revenue)
-    - User Total Revenue: Up to 20 points (scaled relative to highest user revenue)
+    - Owner Total Revenue: Up to 20 points (scaled relative to highest owner revenue)
 
     4. Age (0-20 points):
     Linear scale where:
@@ -54,11 +54,75 @@ promptql:
     - Respond with an artifact with identifier "prioritized_tickets" containing sorted list of ticket IDs in the following format:
     [
         {{
-          "ticket_id": 1,
+          "ticket_id": ...,
+          "project_id": ...,
+          "ticket_category": ...,
+          "project_total_revenue": ...,
+          "owner_total_revenue": ...,
+          "ticket_age_in_days_relative_to_newest": ...,
+          "priority_score": ...
         }},
         ...
     ]
-  oracle_prompt: TODO
+  oracle_prompt: |
+    Give me a sorted list of these support tickets according to how I should prioritize them.
+    I have uploaded the list of tickets and relevant control plane data for the projects they're talking about.
+
+    The project ID (UUID) should be somewhere in the ticket description and can be used to correlate it. Intelligently extract the project ID, do not use heuristics.
+
+    Then, classify each ticket ticket into one of these categories: downtime, reliability, performance, bug, feature request, others.
+
+    Category descriptions for AI Classification instructions:
+
+    1. Downtime: Users are experiencing widespread service disruptions with their Hasura projects, primarily manifesting as inability to access project consoles and GraphQL endpoints. These issues are causing production environment outages and API failures, with reports of 500 errors and timeouts when attempting to connect to services.
+
+    2. Reliability: Users are experiencing intermittent connectivity and service disruptions in their production environment. The issues manifest as random request failures, service instability or intermittent errors, affecting system reliability and user experience.
+
+    3. Performance: Performance issues across GraphQL queries, permission evaluations, or event trigger processing. Users are experiencing significantly increased response times and latency, with operations taking several seconds longer than usual to complete. 
+
+    4. Bug: Users are reporting bugs in the behaviour of software e.g. bug in Schema Registry allowed unauthorized users to access and modify schemas beyond their permission levels or graphql api returning wrong results when using _in operator  
+
+    5. Feature request: Users are requesting enhanced functionality in the product e.g. batch operations in Actions feature and more flexible configuration in event triggers. 
+
+    6. Others: Any other type of ticket which does not fit the above categories
+
+    Then sort the tickets in order of priority using the following scoring:
+
+    1. Category Weight (0-25 points):
+    - Downtime: 25 points
+    - Reliability: 20 points
+    - Performance: 15 points
+    - Bug: 10 points
+    - Feature Request: 5 points
+    - Others: 0 points
+
+    2. Plan Weight (0-15 points):
+    - advanced: 15 points
+    - base: 10 points
+    - free: 0 points
+
+    3. Revenue Impact (0-40 points total):
+    - Project Revenue: Up to 20 points (scaled relative to highest project revenue)
+    - Owner Total Revenue: Up to 20 points (scaled relative to highest owner revenue)
+
+    4. Age (0-20 points):
+    Linear scale where:
+    - Newest ticket = 20 points
+    - Oldest ticket = 0 points
+    - Other tickets scaled linearly between these points
+
+    - Respond with an artifact with identifier "prioritized_tickets" containing sorted list of ticket IDs in the following format:
+    [
+        {{
+          "ticket_id": ...,
+          "project_id": ...,
+          "ticket_category": ...,
+          "ticket_age_in_days_relative_to_newest": ...,
+          "priority_score": ...
+        }},
+        ...
+    ]
+
   result_artifact_name: prioritized_tickets
   result_artifact_key: ticket_id
 tool_calling:
@@ -134,31 +198,100 @@ tool_calling:
     </prioritized_tickets>
 
     Include all tickets that you have processed in this list. Don't worry about brevity.
-  oracle_prompt: TODO
+  oracle_prompt: |
+    Give me a sorted list of these support tickets according to how I should prioritize them.
+    I have uploaded the list of tickets and relevant control plane data for the projects they're talking about.
+
+    The project ID (UUID) should be somewhere in the ticket description and can be used to correlate it.
+
+    Then, intelligently (without heuristics) classify each ticket ticket into one of these categories: downtime, reliability, performance, bug, feature request, others.
+
+    Classification instructions:
+
+    1. Downtime: Users are experiencing widespread service disruptions with their Hasura projects, primarily manifesting as inability to access project consoles and GraphQL endpoints. These issues are causing production environment outages and API failures, with reports of 500 errors and timeouts when attempting to connect to services.
+
+    2. Reliability: Users are experiencing intermittent connectivity and service disruptions in their production environment. The issues manifest as random request failures, service instability or intermittent errors, affecting system reliability and user experience.
+
+    3. Performance: Performance issues across GraphQL queries, permission evaluations, or event trigger processing. Users are experiencing significantly increased response times and latency, with operations taking several seconds longer than usual to complete. 
+
+    4. Bug: Users are reporting bugs in the behaviour of software e.g. bug in Schema Registry allowed unauthorized users to access and modify schemas beyond their permission levels or graphql api returning wrong results when using _in operator  
+
+    5. Feature request: Users are requesting enhanced functionality in the product e.g. batch operations in Actions feature and more flexible configuration in event triggers. 
+
+    6. Others: Any other type of ticket which does not fit the above categories
+
+    Then sort the tickets in order of priority using the following scoring:
+
+    1. Category Weight (0-25 points):
+    - Downtime: 25 points
+    - Reliability: 20 points
+    - Performance: 15 points
+    - Bug: 10 points
+    - Feature Request: 5 points
+    - Others: 0 points
+
+    2. Plan Weight (0-15 points):
+    - advanced: 15 points
+    - base: 10 points
+    - free: 0 points
+
+    3. Revenue Impact (0-40 points total):
+    - Project Revenue: Up to 20 points (scaled relative to highest project revenue)
+    - Owner Total Revenue: Up to 20 points (scaled relative to highest owner revenue)
+
+    4. Age (0-20 points):
+    Linear scale where:
+    - Newest ticket = 20 points
+    - Oldest ticket = 0 points
+    - Other tickets scaled linearly between these points
+
+    Respond with the sorted list of ticket IDs inside the tags <prioritized_tickets> </prioritized_tickets> in the following format. There should be {n} elements inside the json array
+    <prioritized_tickets>
+    [
+      {{
+        "ticket_id": 123
+      }},
+      {{
+        "ticket_id": 987
+      }}
+    ]
+    </prioritized_tickets>
+
+    Include all tickets that you have processed in this list. Don't worry about brevity.
   result_tag_name: prioritized_tickets
 variations:
- - name: last_10
-   parameters:
-     n: 10
-   ground_truth_path: ground_truth_last_10.json
-   oracle_data_file_paths: []
-# - name: last_20
-#   parameters:
-#     n: 20
-#   ground_truth_path: ground_truth_last_20.json
-#   oracle_data_file_paths: []
-# - name: last_30
-#   parameters:
-#     n: 30
-#   ground_truth_path: ground_truth_last_30.json
-#   oracle_data_file_paths: []
-# - name: last_40
-#   parameters:
-#     n: 40
-#   ground_truth_path: ground_truth_last_40.json
-#   oracle_data_file_paths: []
-# - name: last_50
-#   parameters:
-#     n: 50
-#   ground_truth_path: ground_truth_last_50.json
-#   oracle_data_file_paths: []
+  - name: last_10
+    parameters:
+      n: 10
+    ground_truth_path: ground_truth_last_10.json
+    oracle_data_file_paths:
+      - Last 10 Open Support Tickets.json
+      - Control Plane Details For Last 10 Tickets.json
+  - name: last_20
+    parameters:
+      n: 20
+    ground_truth_path: ground_truth_last_20.json
+    oracle_data_file_paths:
+      - Last 20 Open Support Tickets.json
+      - Control Plane Details For Last 20 Tickets.json
+  - name: last_30
+    parameters:
+      n: 30
+    ground_truth_path: ground_truth_last_30.json
+    oracle_data_file_paths:
+      - Last 30 Open Support Tickets.json
+      - Control Plane Details For Last 30 Tickets.json
+  - name: last_40
+    parameters:
+      n: 40
+    ground_truth_path: ground_truth_last_40.json
+    oracle_data_file_paths:
+      - Last 40 Open Support Tickets.json
+      - Control Plane Details For Last 40 Tickets.json
+  - name: last_50
+    parameters:
+      n: 50
+    ground_truth_path: ground_truth_last_50.json
+    oracle_data_file_paths:
+      - Last 50 Open Support Tickets.json
+      - Control Plane Details For Last 50 Tickets.json

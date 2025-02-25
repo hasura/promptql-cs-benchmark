@@ -1,0 +1,67 @@
+{
+  "identifier": "last_10_open_support_tickets",
+  "title": "Last 10 Open Support Tickets",
+  "artifact_type": "table",
+  "data": [
+    {
+      "ticket_id": 143,
+      "subject": "URGENT: Cannot Access Project",
+      "description": "I am unable to access my project on Hasura Cloud. When I try to open the project dashboard, it fails to load and shows an error message. This is critically impacting our production environment and needs immediate attention.\n\nProject ID: abc123\n\nWe are using PostgreSQL as our database.\n\nVersion: v2.41.0\n\nPlease assist as soon as possible.\n\nThank you.\n\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\n",
+      "created_at": "2025-01-03T20:32:35.345840"
+    },
+    {
+      "ticket_id": 166,
+      "subject": "Feature Request: Support for Custom GraphQL Directives",
+      "description": "Hello,\n\nWe are using your platform with a PostgreSQL database and would like to request support for custom GraphQL directives in queries and mutations. This feature would greatly help us implement advanced query logic and improve our application's flexibility.\n\nIs this something that could be supported in future releases?\n\nThank you for your assistance.\n\n\nProject ID: 2a8d4b07-c391-450f-8153-f6521f8a20a0\n",
+      "created_at": "2024-12-21T14:32:35.345840"
+    },
+    {
+      "ticket_id": 287,
+      "subject": "Urgent: Cannot Access Project",
+      "description": "Hi Support Team,\n\nWe are currently unable to access our project on your platform. When we try to open the project dashboard, we receive a '404 Project Not Found' error. This is impacting our production environment and needs immediate attention. We are using PostgreSQL as our database. Version: v2.47.8.\n\nPlease fix this issue as soon as possible.\n\nThank you.\n\nProject ID: 570737f1-ada3-413b-bec5-e82b6c324fb3\n",
+      "created_at": "2024-12-12T07:00:00"
+    },
+    {
+      "ticket_id": 288,
+      "subject": "GraphQL not functioning as expected in production",
+      "description": "Hi team,\n\nWe're experiencing erratic errors with our GraphQL API in our production environment. Queries that previously worked are now failing intermittently without any consistent pattern. This issue is impacting our users as they're receiving unexpected errors during normal operations.\n\nOur backend is using PostgreSQL as the database. We're currently running Version: v2.46.2.\n\nWe haven't made any recent changes to our schema or infrastructure that would explain this behavior. Could you please look into this urgently?\n\nThank you.\n\nProject ID: 936120f2-5ed2-4bcb-af57-e9b3eeacee81\n",
+      "created_at": "2024-12-06T08:00:00"
+    },
+    {
+      "ticket_id": 209,
+      "subject": "Urgent: Production Environment Down - Immediate Assistance Required",
+      "description": "Hello,\n\nWe are experiencing a complete outage of our production environment. All our services are down, and users are unable to access the application, leading to a major disruption in our operations.\n\nOur application uses PostgreSQL as the database, and we are currently running version v2.48.5. We have not made any recent changes or deployments that could have caused this issue.\n\nWe urgently need assistance to resolve this problem.\n\nThank you,\n[Your Name]\n\nProject ID: 76de9616-3d7b-49d7-b909-e154dda91489\n",
+      "created_at": "2024-12-05T07:00:00"
+    },
+    {
+      "ticket_id": 289,
+      "subject": "Performance degradation in Schema Registry operations",
+      "description": "Over the past few days, we've been experiencing significant performance degradation when performing operations in the Schema Registry. Actions like saving schema changes or retrieving schema diffs are taking much longer than usual, occasionally timing out. This is affecting our deployment schedules.\n\nWe are using PostgreSQL as our database, and our Hasura version is v2.45.3.\n\nCould you please look into this issue?\n\nProject ID: 3039d26f-0ab2-4501-8e64-07b16526115a\n",
+      "created_at": "2024-12-01T03:00:00"
+    },
+    {
+      "ticket_id": 169,
+      "subject": "Schema Registry causing high resource usage and slow responses in production",
+      "description": "Hi,\n\nWe are experiencing resource exhaustion issues while using the Schema Registry feature in our production environment. The Schema Registry seems to consume a lot of CPU and memory resources, leading to slow responses from our application.\n\nWe are using PostgreSQL as our database.\n\nVersion: v2.46.0\n\nCould you please help us resolve this issue?\n\nThanks.\n\nProject ID: 386d8856-9020-47eb-a21a-2ebe6b81428e\n",
+      "created_at": "2024-11-12T05:00:00"
+    },
+    {
+      "ticket_id": 286,
+      "subject": "URGENT: Service is down - critical issue",
+      "description": "Hi,\n\nOur API service is completely down and unresponsive. All our production endpoints are failing, and this is causing severe disruption to our business operations. We haven't made any recent changes on our end.\n\nWhen trying to access the API, we're getting 5xx errors.\n\nOur system uses PostgreSQL and MongoDB databases, and we're running version v2.45.3.\n\nPlease investigate and resolve this issue as soon as possible.\n\nThanks.\n\nProject ID: 386d8856-9020-47eb-a21a-2ebe6b81428e\n",
+      "created_at": "2024-11-10T03:00:00"
+    },
+    {
+      "ticket_id": 251,
+      "subject": "Performance degradation in permission-related operations",
+      "description": "Hi Support,\n\nWe are experiencing significant performance degradation when performing operations that involve permissions in our Hasura setup. Queries that used to execute in milliseconds are now taking several seconds to complete, especially those with complex permission rules.\n\nWe are using PostgreSQL as our database. Current Hasura version: v2.44.0.\n\nCould you please help us troubleshoot this issue and suggest any optimizations?\n\nThanks.\n\nProject ID: d5dc02fc-707a-4084-854a-79f5866d4dd3\n",
+      "created_at": "2024-10-25T04:00:00"
+    },
+    {
+      "ticket_id": 139,
+      "subject": "Cannot access my project - urgent assistance needed",
+      "description": "Hi support team,\n\nWe are experiencing a critical issue where we cannot access our Hasura project. The GraphQL endpoint and the console are both unreachable, and our application is down as a result. This is impacting our production environment.\n\nWe are using Postgres as our database backend. Our Hasura version is v2.47.1.\n\nThis issue is urgent and requires immediate attention. Please help us resolve this as soon as possible.\n\nThank you,\n[User Name]\n\nProject ID: 5ad39764-9b9b-48cb-8819-43ab40694b06\n",
+      "created_at": "2024-10-18T03:00:00"
+    }
+  ]
+}

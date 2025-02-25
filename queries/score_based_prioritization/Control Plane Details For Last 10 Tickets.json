@@ -1,0 +1,77 @@
+{
+  "identifier": "control_plane_details_for_last_10_tickets",
+  "title": "Control Plane Details For Last 10 Tickets",
+  "artifact_type": "table",
+  "data": [
+    {
+      "project_id": "2a8d4b07-c391-450f-8153-f6521f8a20a0",
+      "owner_id": "883bacf7-a849-41e2-97e8-b5511304bd28",
+      "project_plan": "base",
+      "project_revenue": 0,
+      "owner_total_revenue": 45486
+    },
+    {
+      "project_id": "2a8d4b07-c391-450f-8153-f6521f8a20a0",
+      "owner_id": "883bacf7-a849-41e2-97e8-b5511304bd28",
+      "project_plan": "base",
+      "project_revenue": 0,
+      "owner_total_revenue": 45486
+    },
+    {
+      "project_id": "3039d26f-0ab2-4501-8e64-07b16526115a",
+      "owner_id": "ab7062d2-11a5-4a6e-805d-f4b05e92c87c",
+      "project_plan": "free",
+      "project_revenue": 0,
+      "owner_total_revenue": 0
+    },
+    {
+      "project_id": "386d8856-9020-47eb-a21a-2ebe6b81428e",
+      "owner_id": "3cb1a69e-56de-4016-80fe-b819548faa70",
+      "project_plan": "advanced",
+      "project_revenue": 7980,
+      "owner_total_revenue": 7980
+    },
+    {
+      "project_id": "386d8856-9020-47eb-a21a-2ebe6b81428e",
+      "owner_id": "3cb1a69e-56de-4016-80fe-b819548faa70",
+      "project_plan": "advanced",
+      "project_revenue": 7980,
+      "owner_total_revenue": 7980
+    },
+    {
+      "project_id": "570737f1-ada3-413b-bec5-e82b6c324fb3",
+      "owner_id": "d9879f3a-1ef7-4c84-b16c-60cc73fcaac1",
+      "project_plan": "advanced",
+      "project_revenue": 4617,
+      "owner_total_revenue": 8617
+    },
+    {
+      "project_id": "5ad39764-9b9b-48cb-8819-43ab40694b06",
+      "owner_id": "b9fdedf0-dd4c-4ad4-9845-5bda982616c6",
+      "project_plan": "base",
+      "project_revenue": 4560,
+      "owner_total_revenue": 4560
+    },
+    {
+      "project_id": "76de9616-3d7b-49d7-b909-e154dda91489",
+      "owner_id": "17f7695f-46b8-4006-9f8d-1e0bf4fbe49d",
+      "project_plan": "free",
+      "project_revenue": 0,
+      "owner_total_revenue": 0
+    },
+    {
+      "project_id": "936120f2-5ed2-4bcb-af57-e9b3eeacee81",
+      "owner_id": "fa8daae1-b6ef-47d1-8550-9b94507f39ce",
+      "project_plan": "free",
+      "project_revenue": 0,
+      "owner_total_revenue": 15050
+    },
+    {
+      "project_id": "d5dc02fc-707a-4084-854a-79f5866d4dd3",
+      "owner_id": "bb5ee704-86cd-44cd-87d5-0d5a5f28b373",
+      "project_plan": "base",
+      "project_revenue": 840,
+      "owner_total_revenue": 6300
+    }
+  ]
+}

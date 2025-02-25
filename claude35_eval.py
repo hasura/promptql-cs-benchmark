@@ -210,7 +210,7 @@ Additional Instructions:
 
     async def process_query(self, query: str, artifacts: list) -> AIAssistantResponse:
         assert len(artifacts) == 0, "Artifacts unsupported in this assistant"
-        final_response = ""
+        response_text = ""
         messages = []
         api_responses = []
         """Process a query using available tools and Claude while maintaining conversation history"""
@@ -313,22 +313,22 @@ Additional Instructions:
                         final_content = " ".join(text_blocks)
 
                     messages.append({"role": "assistant", "content": final_content})
-                    final_response = final_content
+                    response_text = final_content
                     break
 
                 if tool_loop_count >= MAX_TOOL_LOOPS:
                     warning = "Maximum number of tool uses reached. Providing final response based on gathered information."
                     messages.append({"role": "assistant", "content": warning})
-                    final_response = warning
+                    response_text = warning
 
         except Exception as e:
             error_message = f"Error processing query: {str(e)}"
             logger.error(error_message)
             messages.append({"role": "assistant", "content": error_message})
-            final_response = error_message
+            response_text = error_message
 
         return AIAssistantResponse(
-            response=final_response,
+            response=response_text,
             api_responses=api_responses,
             history=messages,
         )

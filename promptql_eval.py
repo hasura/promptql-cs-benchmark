@@ -56,7 +56,8 @@ class AIAssistant(AIAssistantBase):
     ) -> AIAssistantResponse:
         """Process a query using the API while maintaining conversation history"""
         history = []
-        response = ""
+        response_text = ""
+        api_responses = []
         try:
             interaction = {}
 
@@ -73,15 +74,18 @@ class AIAssistant(AIAssistantBase):
             async with httpx.AsyncClient(timeout=httpx.Timeout(5, read=600)) as client:
                 try:
                     response = await client.post(
-                        "https://api.promptql.pro.hasura.io/query",
+                        # "https://api.promptql.pro.hasura.io/query",
+                        "http://localhost:5558/query",
                         json=payload,
                         headers={
                             "Content-Type": "application/json",
                         },
                     )
+                    api_responses.append(response.text)
                     response.raise_for_status()
 
                     result = response.json()
+                    api_responses[0] = result # Replace API response with deserialized JSON
                     interaction.update(result)
 
                     # Extract the assistant's response
@@ -95,7 +99,7 @@ class AIAssistant(AIAssistantBase):
                     # Add the assistant's response to conversation history
                     history.append(interaction)
 
-                    response = assistant_message
+                    response_text = assistant_message
 
                 except httpx.HTTPStatusError as e:
                     error_msg = (
@@ -112,9 +116,11 @@ class AIAssistant(AIAssistantBase):
         except Exception as e:
             error_message = f"Error processing query: {str(e)}"
             logger.error(error_message)
-            response = error_message
+            response_text = error_message
 
-        return AIAssistantResponse(response=response, api_responses=[], history=history)
+        return AIAssistantResponse(
+            response=response_text, api_responses=[], history=history
+        )
 
     def process_response(
         self, response: AIAssistantResponse, artifact_name: str, key: str | None = None

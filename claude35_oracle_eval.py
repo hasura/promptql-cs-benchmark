@@ -92,14 +92,14 @@ class AIAssistant(ToolCallingAIAssistant):
         system_prompt = f"""
 You are an AI assistant.
 
-The user has uploaded the following files for the conversation:
+The user has uploaded the following files/artifacts for the conversation:
 
 {artifacts}
         """
 
         messages = []
         api_responses = []
-        response = None
+        response_text = None
 
         messages.append({"role": "user", "content": query})
 
@@ -109,22 +109,15 @@ The user has uploaded the following files for the conversation:
         try:
             while tool_loop_count < MAX_TOOL_LOOPS:
 
-                if self.has_python_tool:
-                    message = await self.client.messages.create(
-                        model=self.model,
-                        max_tokens=4096,
-                        system=system_prompt,
-                        messages=messages,
-                        tools=self.python_tool.tool_schemas,  # type: ignore
-                    )
-                else:
-                    message = await self.client.messages.create(
-                        model=self.model,
-                        max_tokens=4096,
-                        system=system_prompt,
-                        messages=messages,
-                    )
-
+                max_tokens = 64000 if self.model.startswith("claude-3-7") else 4096
+                message = await self.client.messages.create(
+                    model=self.model,
+                    max_tokens=max_tokens,
+                    system=system_prompt,
+                    messages=messages,
+                    tools=self.python_tool.tool_schemas if self.has_python_tool else [],  # type: ignore
+                )
+                print(message)
                 api_responses.append(
                     {
                         "timestamp": datetime.now().isoformat(),
@@ -197,21 +190,22 @@ The user has uploaded the following files for the conversation:
                         final_content = " ".join(text_blocks)
 
                     messages.append({"role": "assistant", "content": final_content})
-                    response = final_content
+                    response_text = final_content
+                    break
 
                 if tool_loop_count >= MAX_TOOL_LOOPS:
                     warning = "Maximum number of tool uses reached. Providing final response based on gathered information."
                     messages.append({"role": "assistant", "content": warning})
-                    response = warning
-            if response is None:
-                response = "Too many tool calls"
+                    response_text = warning
+            if response_text is None:
+                response_text = "Too many tool calls"
         except Exception as e:
             error_message = f"Error processing query: {str(e)}"
             logger.error(error_message)
             messages.append({"role": "assistant", "content": error_message})
-            response = error_message
+            response_text = error_message
         return AIAssistantResponse(
-            response=response, api_responses=api_responses, history=messages
+            response=response_text, api_responses=api_responses, history=messages
         )
 
     def clear_history(self):
