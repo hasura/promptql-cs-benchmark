@@ -74,8 +74,8 @@ class AIAssistant(AIAssistantBase):
             async with httpx.AsyncClient(timeout=httpx.Timeout(5, read=600)) as client:
                 try:
                     response = await client.post(
-                        # "https://api.promptql.pro.hasura.io/query",
-                        "http://localhost:5558/query",
+                        "https://api.promptql.pro.hasura.io/query",
+                        # "http://localhost:5558/query",
                         json=payload,
                         headers={
                             "Content-Type": "application/json",
