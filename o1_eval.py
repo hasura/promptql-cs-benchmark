@@ -1,6 +1,10 @@
 import os
 import psycopg2
 from openai import AsyncOpenAI
+from openai.types.chat import (
+    ChatCompletionMessageParam,
+    ChatCompletionToolParam,
+)
 from typing import List, Dict, Any
 import logging
 import json
@@ -10,6 +14,8 @@ import tempfile
 import subprocess
 import argparse
 import re
+
+from ai_assistant import AIAssistantResponse, ToolCallingAIAssistant
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -94,7 +100,9 @@ class DatabaseTool:
             try:
                 cursor.execute("BEGIN TRANSACTION READ ONLY")
                 cursor.execute(sql)
-                columns = [desc[0] for desc in cursor.description]
+                description = cursor.description
+                assert description is not None
+                columns = [desc[0] for desc in description]
                 results = [dict(zip(columns, row)) for row in cursor.fetchall()]
                 conn.rollback()
                 return results
@@ -103,9 +111,9 @@ class DatabaseTool:
                 raise e
 
     @property
-    def tool_schemas(self) -> List[Dict]:
+    def tool_schemas(self) -> list[ChatCompletionToolParam]:
         """Return the tool schemas in OpenAI format"""
-        tools = [
+        tools: list[ChatCompletionToolParam] = [
             {
                 "type": "function",
                 "function": {
@@ -140,11 +148,10 @@ class DatabaseTool:
                     },
                 },
             },
-
         ]
-        
+
         if self.has_python_tool:
-            python_tool = {
+            python_tool: ChatCompletionToolParam = {
                 "type": "function",
                 "function": {
                     "name": "execute_python_program",
@@ -154,17 +161,17 @@ class DatabaseTool:
                         "properties": {
                             "pythonCode": {
                                 "type": "string",
-                                "description": "Python code to execute"
+                                "description": "Python code to execute",
                             }
                         },
-                        "required": ["pythonCode"]
-                    }
-                }
-            } 
+                        "required": ["pythonCode"],
+                    },
+                },
+            }
             tools.append(python_tool)
-        
+
         return tools
-    
+
     def execute_python_code(self, python_code: str) -> Dict[str, str]:
         """Execute Python code and return the results"""
 
@@ -182,10 +189,13 @@ class DatabaseTool:
                 text=True,
             )
             stdout, stderr = process.communicate()
-            return {"stdout": stdout, "stderr": stderr, "exitCode": process.returncode}
+            return {
+                "stdout": stdout,
+                "stderr": stderr,
+                "exitCode": str(process.returncode),
+            }
         finally:
             os.unlink(tmp_path)
-
 
     def close(self):
         """Close database connections"""
@@ -193,8 +203,8 @@ class DatabaseTool:
         self.support_tickets_conn.close()
 
 
-class AIAssistant:
-    def __init__(self, model: str = 'o1', has_python_tool: bool = False):
+class AIAssistant(ToolCallingAIAssistant):
+    def __init__(self, model: str = "o1", has_python_tool: bool = False):
         self.model = model
         self.tools = DatabaseTool(has_python_tool)
         self.client = AsyncOpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
@@ -206,7 +216,7 @@ class AIAssistant:
             self.tools.support_tickets_conn, "table_name LIKE 'support%'"
         )
         # Initialize conversation history with system message
-        self.init_messages = [
+        self.init_messages: list[ChatCompletionMessageParam] = [
             {
                 "role": "system",
                 "content": f"""You are an assistant with access to two databases with the following schemas:
@@ -225,17 +235,18 @@ Additional Instructions:
 """,
             }
         ]
-        self.messages = self.init_messages.copy()
-        self.api_responses = []
 
-    def clear_history(self):
-        self.messages = self.init_messages.copy()
-        self.api_responses = []
-
-    async def process_query(self, query: str) -> str:
+    async def process_query(self, query: str, artifacts: list) -> AIAssistantResponse:
         """Process a query using available tools and GPT-4 while maintaining conversation history"""
+
+        assert len(artifacts) == 0, "Don't support artifacts"
+
+        messages = self.init_messages.copy()
+        api_responses = []
+        response_text = None
+
         # Add the new user query to the conversation history
-        self.messages.append({"role": "user", "content": query})
+        messages.append({"role": "user", "content": query})
         tool_loop_count = 0
         MAX_TOOL_LOOPS = 10
 
@@ -244,17 +255,18 @@ Additional Instructions:
                 print(f"\n[{datetime.now()}] waiting for llm response...")
                 completion = await self.client.chat.completions.create(
                     model=self.model,
-                    messages=self.messages,
+                    messages=messages,
                     tools=self.tools.tool_schemas,
                     tool_choice="auto",
                 )
                 print(f"[{datetime.now()}] received llm response...\n")
+                assert completion.usage is not None
                 print(
                     f"Model: {completion.model} Usage: {completion.usage.model_dump()}"
                 )
 
                 # Store the API response
-                self.api_responses.append(
+                api_responses.append(
                     {
                         "timestamp": datetime.now().isoformat(),
                         "response": completion.model_dump(),
@@ -265,26 +277,28 @@ Additional Instructions:
 
                 if not assistant_message.tool_calls:
                     # Add the assistant's response to conversation history
-                    self.messages.append(
+                    messages.append(
                         {
                             "role": "assistant",
                             "content": assistant_message.content or "",
                         }
                     )
-                    return assistant_message.content or ""
+                    response_text = assistant_message.content or ""
 
                 # Add assistant message with tool calls to conversation history
-                self.messages.append(
+                messages.append(
                     {
                         "role": "assistant",
                         "content": assistant_message.content or "",
                         "tool_calls": assistant_message.tool_calls,
-                    }
+                    }  # type: ignore
                 )
-                if len(assistant_message.tool_calls) > 0:
+                tool_calls = (
+                    assistant_message.tool_calls if assistant_message.tool_calls else []
+                )
+                if len(tool_calls) > 0:
                     tool_loop_count += 1
-                for tool_call in assistant_message.tool_calls:
-
+                for tool_call in tool_calls:
                     function_name = tool_call.function.name
                     function_args = json.loads(tool_call.function.arguments)
 
@@ -312,7 +326,7 @@ Additional Instructions:
                         result = {"error": error_message}
 
                     # Add tool response to conversation history
-                    self.messages.append(
+                    messages.append(
                         {
                             "role": "tool",
                             "tool_call_id": tool_call.id,
@@ -320,12 +334,12 @@ Additional Instructions:
                             "content": json.dumps(
                                 result, indent=2, cls=DateTimeEncoder
                             ),
-                        }
+                        }  # type: ignore
                     )
 
                 if tool_loop_count >= MAX_TOOL_LOOPS:
                     # Add max tool use warning to conversation history
-                    self.messages.append(
+                    messages.append(
                         {
                             "role": "user",
                             "content": "You have reached the maximum number of tool uses. Please provide a final response based on the information you have gathered so far.",
@@ -333,11 +347,11 @@ Additional Instructions:
                     )
 
             final_completion = await self.client.chat.completions.create(
-                model=model, messages=self.messages
+                model=self.model, messages=messages
             )
 
             # Store the final API response
-            self.api_responses.append(
+            api_responses.append(
                 {
                     "timestamp": datetime.now().isoformat(),
                     "response": final_completion.model_dump(),
@@ -346,19 +360,23 @@ Additional Instructions:
 
             final_response = final_completion.choices[0].message.content or ""
             # Add final response to conversation history
-            self.messages.append({"role": "assistant", "content": final_response})
-            return final_response
+            messages.append({"role": "assistant", "content": final_response})
+            response_text = final_response
 
         except Exception as e:
             error_message = f"Error processing query: {str(e)}"
             logger.error(error_message)
             # Add error message to conversation history
-            self.messages.append({"role": "assistant", "content": error_message})
-            return error_message
+            messages.append({"role": "assistant", "content": error_message})
+            response_text = error_message
 
-    def process_response(self, response: str, tag_name: str) -> str | None:
-        return extract_xml_tag_content(response, tag_name=tag_name)
-        
+        return AIAssistantResponse(
+            response=response_text, api_responses=api_responses, history=messages
+        )
+
+    def process_response(self, response: AIAssistantResponse, tag_name: str) -> str:
+        return str(extract_xml_tag_content(response.response, tag_name=tag_name))
+
     async def close(self):
         """Close all connections"""
         self.tools.close()
@@ -370,6 +388,7 @@ def extract_xml_tag_content(xml_string, tag_name):
     if match:
         return match.group(1).strip()
     return None
+
 
 async def main():
     parser = argparse.ArgumentParser()
@@ -408,7 +427,7 @@ async def main():
             if not query:
                 continue
 
-            response = await assistant.process_query(query=query)
+            response = await assistant.process_query(query=query, artifacts=[])
             print("\nModel's response:")
             print(response)
 

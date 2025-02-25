@@ -182,7 +182,8 @@ class DatabaseTool:
 
 
 class AIAssistant(ToolCallingAIAssistant):
-    def __init__(self, has_python_tool: bool = False):
+    def __init__(self, model: str, has_python_tool: bool = False):
+        self.model = model
         self.tools = DatabaseTool(has_python_tool=has_python_tool)
         self.client = anthropic.AsyncAnthropic(
             api_key=os.environ.get("ANTHROPIC_API_KEY")
@@ -221,7 +222,7 @@ Additional Instructions:
         try:
             while tool_loop_count < MAX_TOOL_LOOPS:
                 message = await self.client.messages.create(
-                    model="claude-3-5-sonnet-20241022",
+                    model=self.model,
                     max_tokens=4096,
                     system=self.system_prompt,
                     messages=messages,
@@ -354,7 +355,7 @@ def extract_xml_tag_content(xml_string, tag_name):
 
 
 async def main():
-    assistant = AIAssistant()
+    assistant = AIAssistant(model='claude-3-7-sonnet-latest')
 
     try:
         while True:

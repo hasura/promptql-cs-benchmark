@@ -1,5 +1,9 @@
 import os
 from openai import AsyncOpenAI
+from openai.types.chat import (
+    ChatCompletionMessageParam,
+    ChatCompletionToolParam,
+)
 import re
 from typing import List, Dict, Any
 import logging
@@ -10,9 +14,12 @@ import tempfile
 import subprocess
 import argparse
 
+from ai_assistant import AIAssistantResponse, ToolCallingAIAssistant
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 class DatabaseTool:
 
@@ -36,12 +43,16 @@ class DatabaseTool:
                 text=True,
             )
             stdout, stderr = process.communicate()
-            return {"stdout": stdout, "stderr": stderr, "exitCode": process.returncode}
+            return {
+                "stdout": stdout,
+                "stderr": stderr,
+                "exitCode": str(process.returncode),
+            }
         finally:
             os.unlink(tmp_path)
 
     @property
-    def tool_schemas(self) -> List[Dict]:
+    def tool_schemas(self) -> list[ChatCompletionToolParam]:
         """Return the tool schemas in OpenAI format"""
 
         if self.has_python_tool:
@@ -56,42 +67,38 @@ class DatabaseTool:
                             "properties": {
                                 "pythonCode": {
                                     "type": "string",
-                                    "description": "Python code to execute"
+                                    "description": "Python code to execute",
                                 }
                             },
-                            "required": ["pythonCode"]
-                        }
-                    }
+                            "required": ["pythonCode"],
+                        },
+                    },
                 }
             ]
         else:
             return []
 
-class AIAssistant:
+
+class AIAssistant(ToolCallingAIAssistant):
     def __init__(self, model, has_python_tool):
         self.model = model
         self.has_python_tool = has_python_tool
         self.python_tool = DatabaseTool(has_python_tool=has_python_tool)
         self.client = AsyncOpenAI(
-            api_key=os.environ.get("OPENAI_API_KEY"), timeout=3600)
+            api_key=os.environ.get("OPENAI_API_KEY"), timeout=3600
+        )
         # Initialize conversation history with system message
-        self.init_messages = [
-            {
-                "role": "system",
-                "content": "TODO" 
-            }
+        self.init_messages: list[ChatCompletionMessageParam] = [
+            {"role": "system", "content": "TODO"}
         ]
-        self.messages = self.init_messages.copy()
-        self.api_responses = []
 
-    def clear_history(self):
-        self.messages = self.init_messages.copy()
-        self.api_responses = []
-
-    async def process_query(self, query: str, artifacts: list) -> str:
+    async def process_query(self, query: str, artifacts: list) -> AIAssistantResponse:
         """Process a query using available tools and GPT-4 while maintaining conversation history"""
+        messages = self.init_messages.copy()
+        api_responses = []
+        response_text = None
         # Add the new user query to the conversation history
-        self.messages.append({"role": "user", "content": query})
+        messages.append({"role": "user", "content": query})
         tool_loop_count = 0
         MAX_TOOL_LOOPS = 10
 
@@ -101,23 +108,23 @@ class AIAssistant:
                 if self.has_python_tool:
                     completion = await self.client.chat.completions.create(
                         model=self.model,
-                        messages=self.messages,
+                        messages=messages,
                         tools=self.python_tool.tool_schemas,
                         tool_choice="auto",
                     )
                 else:
                     completion = await self.client.chat.completions.create(
-                        model=self.model,
-                        messages=self.messages
+                        model=self.model, messages=messages
                     )
 
                 print(f"[{datetime.now()}] received llm response...\n")
+                assert completion.usage is not None
                 print(
                     f"Model: {completion.model} Usage: {completion.usage.model_dump()}"
                 )
 
                 # Store the API response
-                self.api_responses.append(
+                api_responses.append(
                     {
                         "timestamp": datetime.now().isoformat(),
                         "response": completion.model_dump(),
@@ -128,25 +135,28 @@ class AIAssistant:
 
                 if not assistant_message.tool_calls:
                     # Add the assistant's response to conversation history
-                    self.messages.append(
+                    messages.append(
                         {
                             "role": "assistant",
                             "content": assistant_message.content or "",
                         }
                     )
-                    return assistant_message.content or ""
+                    response_text = assistant_message.content or ""
 
                 # Add assistant message with tool calls to conversation history
-                self.messages.append(
+                messages.append(
                     {
                         "role": "assistant",
                         "content": assistant_message.content or "",
                         "tool_calls": assistant_message.tool_calls,
-                    }
+                    }  # type: ignore
                 )
-                if len(assistant_message.tool_calls) > 0:
+                tool_calls = (
+                    assistant_message.tool_calls if assistant_message.tool_calls else []
+                )
+                if len(tool_calls) > 0:
                     tool_loop_count += 1
-                for tool_call in assistant_message.tool_calls:
+                for tool_call in tool_calls:
 
                     function_name = tool_call.function.name
                     function_args = json.loads(tool_call.function.arguments)
@@ -165,20 +175,18 @@ class AIAssistant:
                         result = {"error": error_message}
 
                     # Add tool response to conversation history
-                    self.messages.append(
+                    messages.append(
                         {
                             "role": "tool",
                             "tool_call_id": tool_call.id,
                             "name": function_name,
-                            "content": json.dumps(
-                                result, indent=2
-                            ),
-                        }
+                            "content": json.dumps(result, indent=2),
+                        }  # type: ignore
                     )
 
                 if tool_loop_count >= MAX_TOOL_LOOPS:
                     # Add max tool use warning to conversation history
-                    self.messages.append(
+                    messages.append(
                         {
                             "role": "user",
                             "content": "You have reached the maximum number of tool uses. Please provide a final response based on the information you have gathered so far.",
@@ -186,12 +194,11 @@ class AIAssistant:
                     )
 
             final_completion = await self.client.chat.completions.create(
-                model=self.model,
-                messages=self.messages
+                model=self.model, messages=messages
             )
 
             # Store the final API response
-            self.api_responses.append(
+            api_responses.append(
                 {
                     "timestamp": datetime.now().isoformat(),
                     "response": final_completion.model_dump(),
@@ -200,20 +207,23 @@ class AIAssistant:
 
             final_response = final_completion.choices[0].message.content or ""
             # Add final response to conversation history
-            self.messages.append(
-                {"role": "assistant", "content": final_response})
-            return final_response
+            messages.append({"role": "assistant", "content": final_response})
+            response_text = final_response
 
         except Exception as e:
             error_message = f"Error processing query: {str(e)}"
             logger.error(error_message)
             # Add error message to conversation history
-            self.messages.append(
-                {"role": "assistant", "content": error_message})
-            return error_message
-        
-    def process_response(self, response: str, tag_name: str) -> str | None:
-        return extract_xml_tag_content(response, tag_name=tag_name)
+            messages.append({"role": "assistant", "content": error_message})
+            response_text = error_message
+
+        return AIAssistantResponse(
+            response=response_text, api_responses=api_responses, history=messages
+        )
+
+    def process_response(self, response: AIAssistantResponse, tag_name: str) -> str:
+        return str(extract_xml_tag_content(response, tag_name=tag_name))
+
 
 def extract_xml_tag_content(xml_string, tag_name):
     pattern = f"<{tag_name}>(.*?)</{tag_name}>"
@@ -230,24 +240,33 @@ async def main():
     )
 
     parser.add_argument(
-        "--support_tickets", type=str, default="support_ticket.json", help="path to support tickets"
+        "--support_tickets",
+        type=str,
+        default="support_ticket.json",
+        help="path to support tickets",
     )
 
     parser.add_argument(
-        "--support_ticket_comments", type=str, default="support_ticket_comment.json", help="path to support ticket comments"
+        "--support_ticket_comments",
+        type=str,
+        default="support_ticket_comment.json",
+        help="path to support ticket comments",
     )
     args = parser.parse_args()
 
-    with open(args.support_tickets, 'r') as file:
+    with open(args.support_tickets, "r") as file:
         support_tickets = file.read()
 
-    with open(args.support_ticket_comments, 'r') as file:
+    with open(args.support_ticket_comments, "r") as file:
         support_ticket_comments = file.read()
 
-    with open('empty_file.json', 'r') as file:
+    with open("empty_file.json", "r") as file:
         user_data = file.read()
 
-    assistant = AIAssistant(model=args.model, has_python_tool=args.with_python_tool, system_prompt=system_prompt)
+    assistant = AIAssistant(
+        model=args.model,
+        has_python_tool=args.with_python_tool,
+    )
 
     try:
         while True:
@@ -277,12 +296,13 @@ async def main():
             if not query:
                 continue
 
-            response = await assistant.process_query(query=query)
+            response = await assistant.process_query(query=query, artifacts=[])
             print("\nModel's response:")
             print(response)
 
     except KeyboardInterrupt:
         print("\nExiting...")
+
 
 if __name__ == "__main__":
     import asyncio

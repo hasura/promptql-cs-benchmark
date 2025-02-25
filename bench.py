@@ -23,7 +23,7 @@ class System(str, Enum):
 
 
 class Model(str, Enum):
-    CLAUDE = "claude"
+    CLAUDE_3_7_SONNET = "claude-3-7-sonnet"
     O1 = "o1"
     O3_MINI = "o3-mini"
 
@@ -204,13 +204,17 @@ class QueryProcessor:
                 for run_index in range(1, self.repeat + 1):
                     # Log processing status
                     param_info = (
-                        f" with params: {variation.parameters}" if variation.parameters else ""
+                        f" with params: {variation.parameters}"
+                        if variation.parameters
+                        else ""
                     )
                     print(f"Processing {input_filepath} run {run_index}{param_info}")
 
                     # Skip if output exists
                     if self.should_skip(variation.name, run_index):
-                        print(f"Skipping existing output for run {run_index}{param_info}")
+                        print(
+                            f"Skipping existing output for run {run_index}{param_info}"
+                        )
                         continue
 
                     tasks.append(
@@ -250,9 +254,9 @@ async def run(
             case Model.O1 | Model.O3_MINI:
                 promptql_llm_provider = "openai"
                 promptql_llm_model = model.value
-            case Model.CLAUDE:
+            case Model.CLAUDE_3_7_SONNET:
                 promptql_llm_provider = "anthropic"
-                promptql_llm_model = None
+                promptql_llm_model = f"{model.value}-latest"
 
         assistant = PromptQLAssistant(promptql_llm_provider, promptql_llm_model)
     else:
@@ -263,9 +267,9 @@ async def run(
                 assistant = (OpenAIOracleAssistant if oracle else OpenAIAssistant)(
                     model.value, has_python_tool=has_python_tool
                 )
-            case Model.CLAUDE:
+            case Model.CLAUDE_3_7_SONNET:
                 assistant = (ClaudeOracleAssistant if oracle else ClaudeAssistant)(
-                    has_python_tool=has_python_tool
+                    model=f"{model.value}-latest", has_python_tool=has_python_tool
                 )
 
     processor = QueryProcessor(
@@ -290,14 +294,14 @@ async def main():
         "--model",
         type=Model,
         help="LLM to use",
-        required='--all' not in sys.argv,
+        required="--all" not in sys.argv,
         choices=list(Model),
     )
     parser.add_argument(
         "--system",
         type=System,
         help="System to evaluate",
-        required='--all' not in sys.argv,
+        required="--all" not in sys.argv,
         choices=list(System),
     )
     parser.add_argument("--oracle", help="Use oracle data", action="store_true")

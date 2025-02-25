@@ -1,3 +1,4 @@
+# type: ignore
 import os
 import psycopg2
 from openai import AsyncOpenAI
