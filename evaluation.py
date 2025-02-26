@@ -171,7 +171,7 @@ def main():
         description="Evaluate results against ground truth"
     )
     parser.add_argument(
-        "--input_config", type=str, help="Path to input config YAML file", required=True
+        "--input_filepath", type=str, help="Path to input config YAML file", required=True
     )
     parser.add_argument(
         "--output_dir",
@@ -196,7 +196,7 @@ def main():
 
     try:
         # Load config
-        input_config = read_input_config(args.input_config)
+        input_config = read_input_config(args.input_filepath)
 
         # Load evaluator module
         spec = importlib.util.spec_from_file_location(
@@ -214,7 +214,7 @@ def main():
         # Process directory
         base_dir = Path(args.output_dir)
         results = evaluate_directory(
-            base_dir, input_config, args.input_config, evaluator.evaluate_score
+            base_dir, input_config, args.input_filepath, evaluator.evaluate_score
         )
 
         save_results(results, Path(args.results_file))

@@ -42,10 +42,16 @@ class DateTimeEncoder(json.JSONEncoder):
 
 
 class DatabaseTool:
+    _control_plane_conn = None
+    _support_tickets_conn = None
     def __init__(self, has_python_tool: bool = False):
         # Initialize database connections
-        self.control_plane_conn = psycopg2.connect(CONTROL_PLANE_URL)
-        self.support_tickets_conn = psycopg2.connect(SUPPORT_TICKETS_URL)
+        if DatabaseTool._control_plane_conn is None:
+            DatabaseTool._control_plane_conn = psycopg2.connect(CONTROL_PLANE_URL)
+        if DatabaseTool._support_tickets_conn is None:
+            DatabaseTool._support_tickets_conn = psycopg2.connect(SUPPORT_TICKETS_URL)
+        self.control_plane_conn = DatabaseTool._control_plane_conn
+        self.support_tickets_conn = DatabaseTool._support_tickets_conn
         self.has_python_tool = has_python_tool
         self.schema_cache = {}
 
@@ -184,6 +190,7 @@ class DatabaseTool:
         try:
             process = subprocess.Popen(
                 ["python3", tmp_path],
+                stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,
@@ -199,8 +206,9 @@ class DatabaseTool:
 
     def close(self):
         """Close database connections"""
-        self.control_plane_conn.close()
-        self.support_tickets_conn.close()
+        pass
+        # self.control_plane_conn.close()
+        # self.support_tickets_conn.close()
 
 
 class AIAssistant(ToolCallingAIAssistant):
@@ -244,6 +252,7 @@ Additional Instructions:
         messages = self.init_messages.copy()
         api_responses = []
         response_text = None
+        is_error = False
 
         # Add the new user query to the conversation history
         messages.append({"role": "user", "content": query})
@@ -252,14 +261,14 @@ Additional Instructions:
 
         try:
             while tool_loop_count < MAX_TOOL_LOOPS:
-                print(f"\n[{datetime.now()}] waiting for llm response...")
+                print(f"\n[{datetime.now()}] waiting for OpenAI response...")
                 completion = await self.client.chat.completions.create(
                     model=self.model,
                     messages=messages,
                     tools=self.tools.tool_schemas,
                     tool_choice="auto",
                 )
-                print(f"[{datetime.now()}] received llm response...\n")
+                print(f"[{datetime.now()}] received OpenAI response...\n")
                 assert completion.usage is not None
                 print(
                     f"Model: {completion.model} Usage: {completion.usage.model_dump()}"
@@ -369,9 +378,13 @@ Additional Instructions:
             # Add error message to conversation history
             messages.append({"role": "assistant", "content": error_message})
             response_text = error_message
+            is_error = True
 
         return AIAssistantResponse(
-            response=response_text, api_responses=api_responses, history=messages
+            response=response_text,
+            is_error=is_error,
+            api_responses=api_responses,
+            history=messages,
         )
 
     def process_response(self, response: AIAssistantResponse, tag_name: str) -> str:

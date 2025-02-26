@@ -25,10 +25,14 @@ class AIAssistant(AIAssistantBase):
     ):
         self.provider = provider
         self.model = model
+        self.ai_primitives_model = model
         if provider == "anthropic":
             self.llm_key = os.getenv("ANTHROPIC_API_KEY")
         else:
             self.llm_key = os.getenv("OPENAI_API_KEY")
+            if model is not None and model.startswith("o"):
+                self.ai_primitives_model = "gpt-4o"
+
         self.initial_artifacts = initial_artifacts
 
     def _prepare_payload(self) -> Dict[str, Any]:
@@ -42,6 +46,11 @@ class AIAssistant(AIAssistantBase):
                 "provider": self.provider,
                 "api_key": self.llm_key,
                 "model": self.model,
+            },
+            "ai_primitives_llm": {
+                "provider": self.provider,
+                "api_key": self.llm_key,
+                "model": self.ai_primitives_model,
             },
             "ddn": {"url": DDN_SQL_URL, "headers": {}},
             "artifacts": self.initial_artifacts.copy(),
@@ -58,6 +67,7 @@ class AIAssistant(AIAssistantBase):
         history = []
         response_text = ""
         api_responses = []
+        is_error = False
         try:
             interaction = {}
 
@@ -69,57 +79,70 @@ class AIAssistant(AIAssistantBase):
             payload["artifacts"].extend(artifacts)
             payload["interactions"].append(interaction)
 
-            # Make the API call
-            print(f"\n[{datetime.now()}] waiting for llm response...")
-            async with httpx.AsyncClient(timeout=httpx.Timeout(5, read=600)) as client:
-                try:
-                    response = await client.post(
-                        "https://api.promptql.pro.hasura.io/query",
-                        # "http://localhost:5558/query",
-                        json=payload,
-                        headers={
-                            "Content-Type": "application/json",
-                        },
-                    )
-                    api_responses.append(response.text)
-                    response.raise_for_status()
+            good_response = False
+            while len(payload["interactions"]) <= 2 and not good_response:
 
-                    result = response.json()
-                    api_responses[0] = result # Replace API response with deserialized JSON
-                    interaction.update(result)
+                # Make the API call
+                async with httpx.AsyncClient(
+                    timeout=httpx.Timeout(5, read=600)
+                ) as client:
+                    try:
+                        print(f"\n[{datetime.now()}] waiting for PromptQL response...")
+                        response = await client.post(
+                            # "https://api.promptql.pro.hasura.io/query",
+                            "http://localhost:5558/query",
+                            json=payload,
+                            headers={
+                                "Content-Type": "application/json",
+                            },
+                        )
+                        print(f"\n[{datetime.now()}] received PromptQL response...")
+                        api_responses.append(response.text)
+                        response.raise_for_status()
 
-                    # Extract the assistant's response
-                    if result.get("assistant_actions"):
-                        assistant_message = result.get("assistant_actions")[-1][
-                            "message"
-                        ]
-                    else:
-                        assistant_message = "No response received from the model"
+                        result = response.json()
+                        api_responses[0] = (
+                            result  # Replace API response with deserialized JSON
+                        )
+                        interaction.update(result)
 
-                    # Add the assistant's response to conversation history
-                    history.append(interaction)
+                        # Extract the assistant's response
+                        assistant_actions = result.get("assistant_actions")
+                        assistant_message = assistant_actions[-1]["message"]
 
-                    response_text = assistant_message
+                        # Add the assistant's response to conversation history
+                        history.append(interaction)
 
-                except httpx.HTTPStatusError as e:
-                    error_msg = (
-                        f"API request failed with status {e.response.status_code}"
-                    )
-                    logger.error(error_msg)
-                    logger.error(f"Response: {e.response.text}")
-                    raise Exception(error_msg)
-                except httpx.RequestError as e:
-                    error_msg = f"API request failed: {repr(e)}"
-                    logger.error(error_msg)
-                    raise Exception(error_msg)
+                        response_text = assistant_message
+                        if len(assistant_actions) > 1:
+                            good_response = True
+                        else:
+                            # In case PromptQL only proposes a plan but doesn't execute it
+                            payload["interactions"].append(
+                                {"user_message": {"text": "okay, do it"}}
+                            )
+
+                    except httpx.HTTPStatusError as e:
+                        error_msg = f"API request failed with status {e.response.status_code} body {e.response.text}"
+                        logger.error(error_msg)
+                        logger.error(f"Response: {e.response.text}")
+                        raise Exception(error_msg)
+                    except httpx.RequestError as e:
+                        error_msg = f"API request failed: {repr(e)}"
+                        logger.error(error_msg)
+                        raise Exception(error_msg)
 
         except Exception as e:
             error_message = f"Error processing query: {str(e)}"
             logger.error(error_message)
             response_text = error_message
+            is_error = True
 
         return AIAssistantResponse(
-            response=response_text, api_responses=[], history=history
+            response=response_text,
+            is_error=is_error,
+            api_responses=api_responses,
+            history=history,
         )
 
     def process_response(

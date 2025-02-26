@@ -38,6 +38,7 @@ class DatabaseTool:
         try:
             process = subprocess.Popen(
                 ["python3", tmp_path],
+                stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,
@@ -97,6 +98,7 @@ class AIAssistant(ToolCallingAIAssistant):
         messages = self.init_messages.copy()
         api_responses = []
         response_text = None
+        is_error = False
         # Add the new user query to the conversation history
         messages.append({"role": "user", "content": query})
         tool_loop_count = 0
@@ -104,7 +106,7 @@ class AIAssistant(ToolCallingAIAssistant):
 
         try:
             while tool_loop_count < MAX_TOOL_LOOPS:
-                print(f"\n[{datetime.now()}] waiting for llm response...")
+                print(f"\n[{datetime.now()}] waiting for OpenAI response...")
                 if self.has_python_tool:
                     completion = await self.client.chat.completions.create(
                         model=self.model,
@@ -117,7 +119,7 @@ class AIAssistant(ToolCallingAIAssistant):
                         model=self.model, messages=messages
                     )
 
-                print(f"[{datetime.now()}] received llm response...\n")
+                print(f"[{datetime.now()}] received OpenAI response...\n")
                 assert completion.usage is not None
                 print(
                     f"Model: {completion.model} Usage: {completion.usage.model_dump()}"
@@ -216,9 +218,13 @@ class AIAssistant(ToolCallingAIAssistant):
             # Add error message to conversation history
             messages.append({"role": "assistant", "content": error_message})
             response_text = error_message
+            is_error = True
 
         return AIAssistantResponse(
-            response=response_text, api_responses=api_responses, history=messages
+            response=response_text,
+            is_error=is_error,
+            api_responses=api_responses,
+            history=messages,
         )
 
     def process_response(self, response: AIAssistantResponse, tag_name: str) -> str:

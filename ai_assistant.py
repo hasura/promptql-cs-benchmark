@@ -6,6 +6,7 @@ from typing import Any
 @dataclass
 class AIAssistantResponse:
     response: str
+    is_error: bool
     api_responses: list[Any]
     history: list[Any]
 

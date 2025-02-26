@@ -63,7 +63,7 @@ System can be `promptql`, `tool_calling` or `tool_calling_python`
 Model can be `claude`, `o1` or `o3-mini`
 
 ```bash
-python bench.py --input_filepath queries/score_based_prioritization/task.yaml --output_dir score_based_prioritization --system tool_calling_python --oracle --model claude
+python bench.py --input_filepath queries/score_based_prioritization/task.yaml --output_dir score_based_prioritization --system tool_calling_python --oracle --model claude-3-7-sonnet
 ```
 
 #### Measure score
@@ -73,7 +73,7 @@ query file, output directory (which has the evaluation runs) and a python module
 which computes score between ground truth and test result: `evaluate_score(ground_truth: str, test_result: str) -> float`
 
 ```bash
-python evaluation.py --input_filepath queries/rule_based_prioritization/complexity3.yaml --output_dir output_complexity3 --evaluator_module scoring/test_scorer.py
+python evaluation.py --input_config queries/rule_based_prioritization/complexity3.yaml --output_dir output_complexity3 --evaluator_module scoring/test_scorer.py
 ```
 
 Sample scoring functions for common outputs are provided in `scoring/` directory.

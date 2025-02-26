@@ -35,10 +35,17 @@ class DateTimeEncoder(json.JSONEncoder):
 
 
 class DatabaseTool:
+    _control_plane_conn = None
+    _support_tickets_conn = None
+
     def __init__(self, has_python_tool: bool = False):
         # Initialize database connections
-        self.control_plane_conn = psycopg2.connect(CONTROL_PLANE_URL)
-        self.support_tickets_conn = psycopg2.connect(SUPPORT_TICKETS_URL)
+        if DatabaseTool._control_plane_conn is None:
+            DatabaseTool._control_plane_conn = psycopg2.connect(CONTROL_PLANE_URL)
+        if DatabaseTool._support_tickets_conn is None:
+            DatabaseTool._support_tickets_conn = psycopg2.connect(SUPPORT_TICKETS_URL)
+        self.control_plane_conn = DatabaseTool._control_plane_conn
+        self.support_tickets_conn = DatabaseTool._support_tickets_conn
         self.has_python_tool = has_python_tool
         self.schema_cache = {}
 
@@ -141,11 +148,7 @@ class DatabaseTool:
                         "pythonCode": {
                             "type": "string",
                             "description": "Python code to execute",
-                        },
-                        "dataValues": {
-                            "type": "string",
-                            "description": "JSON string of data values",
-                        },
+                        }
                     },
                     "required": ["pythonCode"],
                 },
@@ -166,6 +169,7 @@ class DatabaseTool:
         try:
             process = subprocess.Popen(
                 ["python3", tmp_path],
+                stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,
@@ -177,8 +181,9 @@ class DatabaseTool:
 
     def close(self):
         """Close database connections"""
-        self.control_plane_conn.close()
-        self.support_tickets_conn.close()
+        pass
+        # self.control_plane_conn.close()
+        # self.support_tickets_conn.close()
 
 
 class AIAssistant(ToolCallingAIAssistant):
@@ -213,6 +218,7 @@ Additional Instructions:
         response_text = ""
         messages = []
         api_responses = []
+        is_error = False
         """Process a query using available tools and Claude while maintaining conversation history"""
         messages.append({"role": "user", "content": query})
 
@@ -221,14 +227,16 @@ Additional Instructions:
 
         try:
             while tool_loop_count < MAX_TOOL_LOOPS:
+                max_tokens = 64000 if self.model.startswith("claude-3-7") else 4096
+                print(f"\n[{datetime.now()}] waiting for Anthropic response...")
                 message = await self.client.messages.create(
                     model=self.model,
-                    max_tokens=4096,
+                    max_tokens=max_tokens,
                     system=self.system_prompt,
                     messages=messages,
                     tools=self.tools.tool_schemas,
                 )
-
+                print(f"[{datetime.now()}] received Anthropic response...\n")
                 api_responses.append(
                     {
                         "timestamp": datetime.now().isoformat(),
@@ -326,17 +334,14 @@ Additional Instructions:
             logger.error(error_message)
             messages.append({"role": "assistant", "content": error_message})
             response_text = error_message
+            is_error = True
 
         return AIAssistantResponse(
             response=response_text,
+            is_error=is_error,
             api_responses=api_responses,
             history=messages,
         )
-
-    def clear_history(self):
-        """Clear conversation history"""
-        messages = []
-        api_responses = []
 
     def process_response(self, response: AIAssistantResponse, tag_name: str) -> str:
         return extract_xml_tag_content(response.response, tag_name=tag_name)
@@ -355,7 +360,7 @@ def extract_xml_tag_content(xml_string, tag_name):
 
 
 async def main():
-    assistant = AIAssistant(model='claude-3-7-sonnet-latest')
+    assistant = AIAssistant(model="claude-3-7-sonnet-latest")
 
     try:
         while True:

@@ -23,6 +23,7 @@ class System(str, Enum):
 
 
 class Model(str, Enum):
+    CLAUDE_3_5_SONNET = "claude-3-5-sonnet"
     CLAUDE_3_7_SONNET = "claude-3-7-sonnet"
     O1 = "o1"
     O3_MINI = "o3-mini"
@@ -110,9 +111,14 @@ class QueryProcessor:
 
         os.makedirs(self.output_dir, exist_ok=True)
 
-        # Save main output
-        with open(f"{base_filename}.result", "w") as f:
-            f.write(self.process_response(response))
+        if response.is_error:
+            # Save the error
+            with open(f"{base_filename}.err", "w") as f:
+                f.write(response.response)
+        else:
+            # Save main output
+            with open(f"{base_filename}.result", "w") as f:
+                f.write(self.process_response(response))
 
         # Save conversation history
         with open(f"{base_filename}.history", "w") as f:
@@ -159,7 +165,6 @@ class QueryProcessor:
         wait: int,
     ):
         await asyncio.sleep(wait)
-
         # Process query and measure time
         start_time = datetime.now()
         artifacts = []
@@ -208,14 +213,17 @@ class QueryProcessor:
                         if variation.parameters
                         else ""
                     )
-                    print(f"Processing {input_filepath} run {run_index}{param_info}")
 
                     # Skip if output exists
                     if self.should_skip(variation.name, run_index):
                         print(
-                            f"Skipping existing output for run {run_index}{param_info}"
+                            f"Skipping existing output for {input_filepath} run {run_index}{param_info} targeting {self.output_dir}"
                         )
                         continue
+
+                    print(
+                        f"Processing {input_filepath} run {run_index}{param_info} targeting {self.output_dir}"
+                    )
 
                     tasks.append(
                         self.run_impl(
@@ -242,6 +250,7 @@ async def run(
     model: Model,
     output_dir: str,
     repeat: int,
+    wait: int,
 ):
     input_config = read_input(input_filepath)
     output_dir = f"{output_dir}/{model.value}/{system.value}"
@@ -254,7 +263,7 @@ async def run(
             case Model.O1 | Model.O3_MINI:
                 promptql_llm_provider = "openai"
                 promptql_llm_model = model.value
-            case Model.CLAUDE_3_7_SONNET:
+            case Model.CLAUDE_3_5_SONNET | Model.CLAUDE_3_7_SONNET:
                 promptql_llm_provider = "anthropic"
                 promptql_llm_model = f"{model.value}-latest"
 
@@ -267,7 +276,7 @@ async def run(
                 assistant = (OpenAIOracleAssistant if oracle else OpenAIAssistant)(
                     model.value, has_python_tool=has_python_tool
                 )
-            case Model.CLAUDE_3_7_SONNET:
+            case Model.CLAUDE_3_5_SONNET | Model.CLAUDE_3_7_SONNET:
                 assistant = (ClaudeOracleAssistant if oracle else ClaudeAssistant)(
                     model=f"{model.value}-latest", has_python_tool=has_python_tool
                 )
@@ -280,6 +289,8 @@ async def run(
         oracle=oracle,
     )
 
+    if wait > 0:
+        await asyncio.sleep(wait)
     await processor.run(input_filepath)
 
 
@@ -316,12 +327,20 @@ async def main():
     if args.all:
         tasks = [
             run(
-                args.input_filepath, system, oracle, model, args.output_dir, args.repeat
+                args.input_filepath,
+                system,
+                oracle,
+                model,
+                args.output_dir,
+                args.repeat,
+                index * 7,
             )
-            for system in System
-            for model in Model
-            # for oracle in [False, True]
-            for oracle in [False]
+            for index, (system, model, oracle) in enumerate(
+                (s, m, o)
+                for s in [System.PROMPTQL]
+                for m in [Model.O3_MINI]
+                for o in [False, True]
+            )
         ]
         await asyncio.gather(*tasks)
     else:
@@ -332,6 +351,7 @@ async def main():
             args.model,
             args.output_dir,
             args.repeat,
+            0,
         )
 
 

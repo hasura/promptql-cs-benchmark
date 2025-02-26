@@ -19,6 +19,8 @@ argparse = "^1.4.0"
 pandas = "^2.2.3"
 colorama = "^0.4.6"
 httpx = "^0.28.1"
+scipy = "^1.15.2"
+scikit-learn = "^1.6.1"
 
 
 [build-system]

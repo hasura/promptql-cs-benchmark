@@ -35,6 +35,7 @@ class DatabaseTool:
         try:
             process = subprocess.Popen(
                 ["python3", tmp_path],
+                stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,
@@ -63,11 +64,7 @@ class DatabaseTool:
                             "pythonCode": {
                                 "type": "string",
                                 "description": "Python code to execute",
-                            },
-                            "dataValues": {
-                                "type": "string",
-                                "description": "JSON string of data values",
-                            },
+                            }
                         },
                         "required": ["pythonCode"],
                     },
@@ -100,6 +97,7 @@ The user has uploaded the following files/artifacts for the conversation:
         messages = []
         api_responses = []
         response_text = None
+        is_error = False
 
         messages.append({"role": "user", "content": query})
 
@@ -110,6 +108,7 @@ The user has uploaded the following files/artifacts for the conversation:
             while tool_loop_count < MAX_TOOL_LOOPS:
 
                 max_tokens = 64000 if self.model.startswith("claude-3-7") else 4096
+                print(f"\n[{datetime.now()}] waiting for Anthropic response...")
                 message = await self.client.messages.create(
                     model=self.model,
                     max_tokens=max_tokens,
@@ -117,7 +116,7 @@ The user has uploaded the following files/artifacts for the conversation:
                     messages=messages,
                     tools=self.python_tool.tool_schemas if self.has_python_tool else [],  # type: ignore
                 )
-                print(message)
+                print(f"[{datetime.now()}] received Anthropic response...\n")
                 api_responses.append(
                     {
                         "timestamp": datetime.now().isoformat(),
@@ -204,14 +203,13 @@ The user has uploaded the following files/artifacts for the conversation:
             logger.error(error_message)
             messages.append({"role": "assistant", "content": error_message})
             response_text = error_message
+            is_error = True
         return AIAssistantResponse(
-            response=response_text, api_responses=api_responses, history=messages
+            response=response_text,
+            is_error=is_error,
+            api_responses=api_responses,
+            history=messages,
         )
-
-    def clear_history(self):
-        """Clear conversation history"""
-        messages = []
-        api_responses = []
 
     def process_response(self, response: AIAssistantResponse, tag_name: str) -> str:
         return extract_xml_tag_content(response.response, tag_name=tag_name)
