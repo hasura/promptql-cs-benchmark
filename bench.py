@@ -337,8 +337,8 @@ async def main():
             )
             for index, (system, model, oracle) in enumerate(
                 (s, m, o)
-                for s in [System.PROMPTQL]
-                for m in [Model.O3_MINI]
+                for s in System
+                for m in [Model.CLAUDE_3_7_SONNET, Model.O3_MINI]
                 for o in [False, True]
             )
         ]
